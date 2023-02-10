@@ -2,13 +2,10 @@
   "root": true,
   "env": {
     "browser": true,
-    "es2021": true,
-    "node": true
+    "es2021": true
   },
   "extends": [
-    "airbnb",
-    "airbnb-typescript",
-    "airbnb/hooks",
+    "standard-with-typescript",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -31,6 +28,15 @@
   "plugins": ["import", "prettier", "react", "@typescript-eslint"],
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": 0,
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": true,
+        "fixStyle": "separate-type-imports"
+      }
+    ],
     "jsx-a11y/no-noninteractive-element-interactions": 0,
     "linebreak-style": 0,
     "no-shadow": 0,
@@ -45,6 +51,28 @@
     "react/jsx-filename-extension": [
       2,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "alphabetize": { "order": "asc" }
+      }
     ]
   },
   "settings": {
