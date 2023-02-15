@@ -3,6 +3,7 @@ import { Montserrat } from '@next/font/google';
 import localFont from '@next/font/local';
 import type { SerializedStyles, Theme } from '@emotion/react';
 import type { NextFont } from '@next/font/dist/types';
+import colors from 'constants/colors';
 
 const pretendard = localFont({
   src: [
@@ -86,6 +87,7 @@ const fontStyle = ({
 };
 
 const theme: Theme = {
+  colors,
   fonts: {
     diary_title: fontStyle({
       fontFamily: montserrat.style.fontFamily,
