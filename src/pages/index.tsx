@@ -20,4 +20,5 @@ export default Home;
 
 const Text = styled.p`
   ${({ theme }) => theme.fonts.diary_title};
+  color: ${({ theme }) => theme.colors.main};
 `;
