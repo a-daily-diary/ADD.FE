@@ -1,6 +1,8 @@
+import styled from '@emotion/styled';
 import Head from 'next/head';
+import type { NextPage } from 'next';
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
     <>
       <Head>
@@ -8,8 +10,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main>
-        <p>ADD Front End</p>
+        <Text>ADD Front End</Text>
       </main>
     </>
   );
-}
+};
+
+export default Home;
+
+const Text = styled.p`
+  ${({ theme }) => theme.fonts.diary_title};
+`;
