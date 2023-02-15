@@ -59,7 +59,6 @@ const montserrat = Montserrat({
     'Segoe UI Symbol',
     'sans-serif',
   ],
-  subsets: ['latin'],
 });
 
 interface Font {
