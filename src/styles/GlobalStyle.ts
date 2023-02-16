@@ -19,6 +19,11 @@ const GlobalStyle = css`
     text-decoration: none;
   }
 
+  img {
+    display: block;
+    width: 100%;
+  }
+
   @media (prefers-color-scheme: dark) {
     html {
       color-scheme: dark;
