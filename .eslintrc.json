@@ -23,7 +23,8 @@
     },
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "ADD.FE"
   },
   "plugins": ["import", "prettier", "react", "@typescript-eslint"],
   "rules": {
