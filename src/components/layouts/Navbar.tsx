@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import HomeIcon from './../../assets/navigation/home.svg';
-import MachingIcon from './../../assets/navigation/matching.svg';
-import ProfileIcon from './../../assets/navigation/profile.svg';
-import WriteIcon from './../../assets/navigation/write.svg';
+import HomeIcon from 'assets/navigation/home.svg';
+import MachingIcon from 'assets/navigation/matching.svg';
+import ProfileIcon from 'assets/navigation/profile.svg';
+import WriteIcon from 'assets/navigation/write.svg';
 
 const NAVIGATION_LIST = [
   {
