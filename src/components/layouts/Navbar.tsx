@@ -1,23 +1,31 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import HomeIcon from './../../assets/navigation/home.svg';
+import MachingIcon from './../../assets/navigation/matching.svg';
+import ProfileIcon from './../../assets/navigation/profile.svg';
+import WriteIcon from './../../assets/navigation/write.svg';
 
 const NAVIGATION_LIST = [
   {
     label: '홈',
     href: '/',
+    icon: <HomeIcon />,
   },
   {
     label: '랜덤매칭',
     href: '/matching',
+    icon: <MachingIcon />,
   },
   {
     label: '일기작성',
     href: '/write',
+    icon: <WriteIcon />,
   },
   {
     label: '프로필',
     href: '/profile',
+    icon: <ProfileIcon />,
   },
 ];
 
@@ -29,13 +37,13 @@ const Navbar = () => {
     <Navigation>
       <NavigationList>
         {NAVIGATION_LIST.map((navigation) => {
-          const { label, href } = navigation;
+          const { label, href, icon } = navigation;
           const isActive = pathname.match(href) !== null;
 
           return (
             <li key={`navigation-item-${label}`}>
               <NavigationLink href={href}>
-                <EmptyIcon isActive={isActive} />
+                <IconBox isActive={isActive}>{icon}</IconBox>
                 <Label isActive={isActive}>{label}</Label>
               </NavigationLink>
             </li>
@@ -71,12 +79,12 @@ const NavigationLink = styled(Link)`
   ${({ theme }) => theme.fonts.navigation}
 `;
 
-// 아이콘 svg 적용 전, 아이콘 위치 잡기 위해 EmptyIcon 적용
-const EmptyIcon = styled.div<{ isActive: boolean }>`
-  width: 24px;
-  height: 24px;
-  background-color: ${({ theme, isActive }) =>
-    isActive ? theme.colors.main : theme.colors.gray_999};
+const IconBox = styled.div<{ isActive: boolean }>`
+  line-height: 0;
+  & svg {
+    fill: ${({ theme, isActive }) =>
+      isActive ? theme.colors.main : theme.colors.gray_ddd};
+  }
 `;
 
 const Label = styled.span<{ isActive: boolean }>`
