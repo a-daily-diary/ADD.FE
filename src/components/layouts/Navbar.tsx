@@ -38,7 +38,7 @@ const Navbar = () => {
       <NavigationList>
         {NAVIGATION_LIST.map((navigation) => {
           const { label, href, icon } = navigation;
-          const isActive = pathname.match(href) !== null;
+          const isActive = pathname === href;
 
           return (
             <li key={`navigation-item-${label}`}>
