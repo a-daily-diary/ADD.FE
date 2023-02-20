@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import type { NextPage } from 'next';
-import Navbar from 'components/layouts/Navbar';
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +12,6 @@ const Home: NextPage = () => {
       <section>
         <Text>ADD Front End</Text>
       </section>
-      <Navbar />
     </>
   );
 };
