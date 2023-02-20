@@ -26,6 +26,7 @@ declare module '@emotion/react' {
       diary_title: SerializedStyles;
       diary_body: SerializedStyles;
       diary_info: SerializedStyles;
+      navigation: SerializedStyles;
     };
   }
 }

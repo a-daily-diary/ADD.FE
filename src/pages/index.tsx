@@ -9,16 +9,16 @@ const Home: NextPage = () => {
         <title>Home | ADD</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main>
+      <section>
         <Text>ADD Front End</Text>
-      </main>
+      </section>
     </>
   );
 };
 
 export default Home;
 
-const Text = styled.p`
+const Text = styled.h1`
   ${({ theme }) => theme.fonts.diary_title};
   color: ${({ theme }) => theme.colors.main};
 `;
