@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import type { NextPage } from 'next';
+import NextImage from 'components/common/NextImage';
 import { DIARY_LIST_MOCK_DATA } from 'mocks/DiaryList';
 
 const Home: NextPage = () => {
@@ -30,6 +31,15 @@ const Home: NextPage = () => {
               <li key={`diary-list-${id}`}>
                 <h2>{title}</h2>
                 <p>{content}</p>
+                {imgUrl?.length > 0 && (
+                  <NextImage
+                    src={imgUrl}
+                    alt={title}
+                    width={320}
+                    height={160}
+                    aspectRatio={2 / 1}
+                  />
+                )}
               </li>
             );
           })}
