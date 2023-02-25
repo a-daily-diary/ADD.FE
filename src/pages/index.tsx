@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import type { NextPage } from 'next';
+import BookmarkIcon from 'assets/icons/bookmark.svg';
+import CommentIcon from 'assets/icons/comment.svg';
+import HeartIcon from 'assets/icons/heart.svg';
 import NextImage from 'components/common/NextImage';
 import { DIARY_LIST_MOCK_DATA } from 'mocks/DiaryList';
 
@@ -40,6 +43,21 @@ const Home: NextPage = () => {
                     aspectRatio={2 / 1}
                   />
                 )}
+                <IconContainer>
+                  <IconInnerContainer>
+                    <IconButton type="button">
+                      <HeartIcon />
+                      {favoriteCount}
+                    </IconButton>
+                    <IconButton type="button">
+                      <CommentIcon />
+                      {commentCount}
+                    </IconButton>
+                  </IconInnerContainer>
+                  <button type="button">
+                    <BookmarkIcon />
+                  </button>
+                </IconContainer>
               </li>
             );
           })}
@@ -54,4 +72,24 @@ export default Home;
 const Text = styled.h1`
   ${({ theme }) => theme.fonts.diary_title};
   color: ${({ theme }) => theme.colors.main};
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  ${({ theme }) => theme.fonts.diary_icon};
+`;
+
+const IconInnerContainer = styled.div`
+  display: flex;
+  gap: 16px;
+`;
+
+const IconButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;

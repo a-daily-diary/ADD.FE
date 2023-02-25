@@ -108,6 +108,13 @@ const theme: Theme = {
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
+    diary_icon: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 12,
+      weight: 500,
+      lineHeight: 100,
+      letterSpacing: -0.02,
+    }),
     navigation: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 12,
