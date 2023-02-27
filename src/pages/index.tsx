@@ -11,6 +11,7 @@ const Home: NextPage = () => {
       </Head>
       <section>
         <Text>ADD Front End</Text>
+        <p>Test</p>
       </section>
     </>
   );
