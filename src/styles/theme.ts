@@ -8,17 +8,17 @@ import colors from 'constants/colors';
 const pretendard = localFont({
   src: [
     {
-      path: '../../public/fonts/Pretendard-Regular.woff2',
+      path: '../assets/fonts/Pretendard-Regular.woff2',
       weight: '400',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Pretendard-Medium.woff2',
+      path: '../assets/fonts/Pretendard-Medium.woff2',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Pretendard-Bold.woff2',
+      path: '../assets/fonts/Pretendard-Bold.woff2',
       weight: '700',
       style: 'normal',
     },
