@@ -11,8 +11,8 @@ export const DIARY_LIST_MOCK_DATA = [
     favoriteCount: 1,
     isFavorite: false,
     isBookmark: true,
-    createdAt: '2022-04-01 19:02:52',
-    modifiedAt: '2022-07-14 19:27:18',
+    createdAt: '2023-02-28 16:35:52',
+    modifiedAt: '2023-02-28 19:27:18',
     author: '3000c091-d501-406e-8a36-ce67c26defb4',
   },
   {
