@@ -95,7 +95,7 @@ const theme: Theme = {
       weight: 700,
       lineHeight: 140,
     }),
-    diary_body: fontStyle({
+    diary_content: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 14,
       weight: 400,
