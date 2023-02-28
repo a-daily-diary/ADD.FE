@@ -5,6 +5,8 @@ import CommentIcon from 'assets/icons/comment.svg';
 import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
 import NextImage from 'components/common/NextImage';
+import { EllipsisStyle } from 'styles/EllipsisStyle';
+import { dateFormat, timeFormat } from 'utils/Formatter';
 
 interface DiaryProps {
   id: number;
@@ -32,19 +34,38 @@ const Diary = ({
   modifiedAt,
   author,
 }: DiaryProps) => {
+  // 목데이터의 날짜 데이터 형식이 서버 날짜 데이터 형식과 다름
+  // API 연결 후 삭제할 코드
+  const convertToDate = (dateString: string): Date =>
+    new Date(dateString.replace(' ', 'T'));
+
+  // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
+  // API 연결 후 삭제할 코드
+  const authorId = author.slice(0, 20);
+
   return (
-    <li>
-      <h2>{title}</h2>
-      <p>{content}</p>
-      {imgUrl?.length > 0 && (
-        <NextImage
-          src={imgUrl}
-          alt={title}
-          width={320}
-          height={160}
-          aspectRatio={2 / 1}
-        />
-      )}
+    <Container>
+      <ContentContainer>
+        <Title>{title}</Title>
+        <Content>{content}</Content>
+        {imgUrl?.length > 0 && (
+          <NextImage
+            src={imgUrl}
+            alt={title}
+            width={320}
+            height={160}
+            aspectRatio={2 / 1}
+          />
+        )}
+        <DateContainer>
+          <span>
+            <span>{authorId}</span>
+            <span>・</span>
+            <span>{dateFormat(convertToDate(createdAt))}</span>
+          </span>
+          <span>{timeFormat(convertToDate(createdAt))}</span>
+        </DateContainer>
+      </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
           <IconButton type="button">
@@ -60,11 +81,37 @@ const Diary = ({
           {isBookmark ? <OnBookmarkIcon /> : <BookmarkIcon />}
         </button>
       </IconContainer>
-    </li>
+    </Container>
   );
 };
 
 export default Diary;
+
+const Container = styled.li`
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const ContentContainer = styled.div`
+  padding: 20px;
+`;
+
+const Title = styled.h3`
+  ${({ theme }) => theme.fonts.diary_title}
+`;
+
+const Content = styled.p`
+  ${EllipsisStyle}
+  ${({ theme }) => theme.fonts.diary_content}
+  margin: 4px 0 6px;
+`;
+
+const DateContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  ${({ theme }) => theme.fonts.diary_info}
+  color: ${({ theme }) => theme.colors.gray_999};
+`;
 
 const IconContainer = styled.div`
   display: flex;
