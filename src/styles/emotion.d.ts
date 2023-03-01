@@ -24,8 +24,9 @@ declare module '@emotion/react' {
     };
     fonts: {
       diary_title: SerializedStyles;
-      diary_body: SerializedStyles;
+      diary_content: SerializedStyles;
       diary_info: SerializedStyles;
+      diary_icon: SerializedStyles;
       navigation: SerializedStyles;
     };
   }
