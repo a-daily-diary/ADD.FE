@@ -122,6 +122,13 @@ const theme: Theme = {
       lineHeight: 100,
       letterSpacing: -0.04,
     }),
+    button: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 14,
+      weight: 700,
+      lineHeight: 100,
+      letterSpacing: -0.02,
+    }),
   },
 };
 
