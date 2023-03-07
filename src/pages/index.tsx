@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import Link from 'next/link';
-import type { NextPage } from 'next';
 import NextImage from 'components/common/NextImage';
+import type { NextPageWithLayout } from './_app';
+import type { ReactElement } from 'react';
 import DiaryList from 'components/diary/DiaryList';
+import Layout from 'components/layouts/Layout';
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
@@ -26,6 +28,10 @@ const Home: NextPage = () => {
       <DiaryList />
     </>
   );
+};
+
+Home.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
 };
 
 export default Home;
