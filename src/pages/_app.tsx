@@ -1,16 +1,25 @@
 import { Global, ThemeProvider } from '@emotion/react';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import Layout from 'components/layouts/Layout';
+import type { ReactElement, ReactNode } from 'react';
 import GlobalStyle from 'styles/GlobalStyle';
 import theme from 'styles/theme';
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <ThemeProvider theme={theme}>
       <Global styles={GlobalStyle} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      {getLayout(<Component {...pageProps} />)}
     </ThemeProvider>
   );
 }

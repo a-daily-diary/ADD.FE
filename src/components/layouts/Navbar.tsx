@@ -62,6 +62,7 @@ const Navigation = styled.nav`
   bottom: 0;
   left: 0;
   border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const NavigationList = styled.ul`
