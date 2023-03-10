@@ -1,19 +1,16 @@
 import styled from '@emotion/styled';
-import Head from 'next/head';
 import Link from 'next/link';
-import NextImage from 'components/common/NextImage';
 import type { NextPageWithLayout } from './_app';
 import type { ReactElement } from 'react';
+import NextImage from 'components/common/NextImage';
+import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
 
 const Home: NextPageWithLayout = () => {
   return (
     <>
-      <Head>
-        <title>Home | ADD</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      <Seo title={'a daily diary'} />
       <BannerContainer>
         <Link href={'/write'}>
           <NextImage
