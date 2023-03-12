@@ -1,16 +1,31 @@
 import { Global, ThemeProvider } from '@emotion/react';
+import Head from 'next/head';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import Layout from 'components/layouts/Layout';
+import type { ReactElement, ReactNode } from 'react';
 import GlobalStyle from 'styles/GlobalStyle';
 import theme from 'styles/theme';
 
-export default function App({ Component, pageProps }: AppProps) {
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
-    <ThemeProvider theme={theme}>
-      <Global styles={GlobalStyle} />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <Global styles={GlobalStyle} />
+        {getLayout(<Component {...pageProps} />)}
+      </ThemeProvider>
+    </>
   );
 }
