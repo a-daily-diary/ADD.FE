@@ -30,6 +30,8 @@ declare module '@emotion/react' {
       diary_icon: SerializedStyles;
       navigation: SerializedStyles;
       button: SerializedStyles;
+      button_lg: SerializedStyles;
+      button_xl: SerializedStyles;
     };
   }
 }
