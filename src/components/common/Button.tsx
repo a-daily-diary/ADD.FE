@@ -1,142 +1,121 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import type { Theme } from '@emotion/react';
 import type { ReactNode } from 'react';
 
 interface ButtonProps {
-  type: 'box' | 'round' | 'circle' | 'icon';
+  pattern: 'box' | 'round';
   size: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'default' | 'active' | 'line' | 'highlight' | '';
-  color?: string;
+  variant?: 'default' | 'active' | 'highlight' | 'line';
+  fullWidth?: boolean;
+  theme?: Theme;
   onClick?: () => void;
   children: ReactNode;
 }
 
-type Props = Partial<ButtonProps>;
-
 const Button = ({
-  type,
+  pattern,
   size,
   variant,
-  color,
+  fullWidth,
   onClick,
   children,
 }: ButtonProps) => {
   return (
     <ButtonLayout
-      className={`${type}-${size} ${(variant ??= '')}`}
+      pattern={pattern}
+      size={size}
+      variant={variant}
+      fullWidth={fullWidth}
       onClick={onClick}
-      color={color}
     >
       {children}
     </ButtonLayout>
   );
 };
 
-const ButtonLayout = styled.button<Props>`
-  display: flex;
-  width: fit-content;
+const patternStyles = ({ pattern }: ButtonProps) => css`
+  ${pattern === 'box' &&
+  css`
+    border-radius: 10px;
+  `}
+
+  ${pattern === 'round' &&
+  css`
+    border-radius: 100px;
+  `}
+`;
+
+const sizeStyles = ({ size, theme }: ButtonProps) => css`
+  ${size === 'sm' &&
+  css`
+    ${theme?.fonts.button}
+    padding: 8px 10px;
+  `}
+
+  ${size === 'md' &&
+  css`
+    ${theme?.fonts.button}
+    padding: 12px 20px;
+  `}
+
+  ${size === 'lg' &&
+  css`
+    ${theme?.fonts.button_lg}
+    padding: 17px 32px;
+  `}
+
+  ${size === 'xl' &&
+  css`
+    ${theme?.fonts.button_xl}
+    padding: 20px 48px;
+  `}
+`;
+
+const variantStyles = ({ variant, theme }: ButtonProps) => css`
+  ${variant === 'default' &&
+  css`
+    background: ${theme?.colors.bg_f4f4f4};
+    color: ${theme?.colors.black};
+  `}
+
+  ${variant === 'active' &&
+  css`
+    background: ${theme?.colors.main};
+    color: ${theme?.colors.white};
+  `}
+
+  ${variant === 'highlight' &&
+  css`
+    background: ${theme?.colors.sub};
+    color: ${theme?.colors.main};
+  `}
+
+  ${variant === 'line' &&
+  css`
+    background: ${theme?.colors.white};
+    color: ${theme?.colors.black};
+    border: 1px solid ${theme?.colors.gray_ddd};
+    box-sizing: border-box;
+  `}
+`;
+
+const ButtonLayout = styled.button<ButtonProps>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
   border: none;
-  background: ${({ theme }) => theme.colors.bg_f4f4f4};
-  ${({ theme }) => theme.fonts.button};
-  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
   cursor: pointer;
   user-select: none;
 
-  &.box-sm {
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.colors.black};
-    :active {
-      background: ${({ theme }) => theme.colors.main};
-      color: ${({ theme }) => theme.colors.white};
-    }
-  }
-
-  &.box-lg {
-    width: 100%;
-    padding: 17px 0;
-    border-radius: 10px;
-    :active {
-      background: ${({ theme }) => theme.colors.main};
-    }
-  }
-
-  &.round-md {
-    padding: 12px 20px;
-    border-radius: 120px;
-    background: ${({ theme }) => theme.colors.bg_f4f4f4};
-    font-size: 12px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.colors.black};
-  }
-
-  &.round-lg {
-    padding: 17px 32px;
-    background: ${({ theme }) => theme.colors.bg_f4f4f4};
-    border-radius: 100px;
-    font-weight: 500;
-    color: ${({ theme }) => theme.colors.black};
-  }
-
-  &.round-xl {
-    padding: 20px 48px;
-    border-radius: 100px;
-    background: ${({ theme }) => theme.colors.main};
-    font-size: 16px;
-    :active {
-      background: ${({ theme }) => theme.colors.bg_f4f4f4};
-      color: ${({ theme }) => theme.colors.black};
-    }
-  }
-
-  &.circle-sm {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: ${({ color }) => color};
-  }
-
-  &.circle-md {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: ${({ color }) => color};
-  }
-
-  &.circle-lg {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: ${({ color }) => color};
-  }
-
-  &.circle-xl {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: ${({ color }) => color};
-    :active {
-      border: 2px solid ${({ theme }) => theme.colors.main};
-    }
-  }
-
-  &.icon-sm {
-    padding: 0;
-    background: none;
-  }
-
-  &.highlight {
-    background: ${({ theme }) => theme.colors.sub};
-    color: ${({ theme }) => theme.colors.main};
-  }
-
-  &.line {
-    border: 1px solid ${({ theme }) => theme.colors.gray_ddd};
-    background: none;
-    color: ${({ theme }) => theme.colors.black};
-    box-sizing: border-box;
-  }
+  ${patternStyles}
+  ${sizeStyles}
+  ${variantStyles}
 `;
 
 export default Button;
