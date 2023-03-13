@@ -12,14 +12,14 @@ interface DiaryProps {
   id: number;
   title: string;
   content: string;
-  imgUrl: string;
+  imgUrl: string | null;
   commentCount: number;
   favoriteCount: number;
   isFavorite: boolean;
   isBookmark: boolean;
   createdAt: string;
   modifiedAt: string;
-  author: string;
+  authorUsername: string;
 }
 
 const Diary = ({
@@ -32,23 +32,18 @@ const Diary = ({
   isBookmark,
   createdAt,
   modifiedAt,
-  author,
+  authorUsername,
 }: DiaryProps) => {
-  // 목데이터의 날짜 데이터 형식이 서버 날짜 데이터 형식과 다름
-  // API 연결 후 삭제할 코드
-  const convertToDate = (dateString: string): Date =>
-    new Date(dateString.replace(' ', 'T'));
-
   // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
   // API 연결 후 삭제할 코드
-  const authorId = author.slice(0, 20);
+  const username = authorUsername.slice(0, 20);
 
   return (
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
         <Content>{content}</Content>
-        {imgUrl?.length > 0 && (
+        {imgUrl !== null && (
           <NextImage
             src={imgUrl}
             alt={title}
@@ -59,11 +54,11 @@ const Diary = ({
         )}
         <DateContainer>
           <span>
-            <span>{authorId}</span>
+            <span>{username}</span>
             <span>・</span>
-            <span>{dateFormat(convertToDate(createdAt))}</span>
+            <span>{dateFormat(createdAt)}</span>
           </span>
-          <span>{timeFormat(convertToDate(createdAt))}</span>
+          <span>{timeFormat(createdAt)}</span>
         </DateContainer>
       </ContentContainer>
       <IconContainer>
