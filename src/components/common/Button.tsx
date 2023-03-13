@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 interface ButtonProps {
   pattern: 'box' | 'round';
   size: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'default' | 'active' | 'highlight' | 'line';
+  variant?: 'active' | 'highlight' | 'line';
   fullWidth?: boolean;
   theme?: Theme;
   onClick?: () => void;
@@ -73,12 +73,6 @@ const sizeStyles = ({ size, theme }: ButtonProps) => css`
 `;
 
 const variantStyles = ({ variant, theme }: ButtonProps) => css`
-  ${variant === 'default' &&
-  css`
-    background: ${theme?.colors.bg_f4f4f4};
-    color: ${theme?.colors.black};
-  `}
-
   ${variant === 'active' &&
   css`
     background: ${theme?.colors.main};
@@ -106,11 +100,10 @@ const ButtonLayout = styled.button<ButtonProps>`
   justify-content: center;
   position: relative;
   width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
-  border: none;
+  background: ${({ theme }) => theme.colors.bg_f4f4f4};
+  color: ${({ theme }) => theme.colors.black};
   text-align: center;
-  text-decoration: none;
   vertical-align: middle;
-  cursor: pointer;
   user-select: none;
 
   ${patternStyles}

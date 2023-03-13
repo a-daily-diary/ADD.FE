@@ -50,10 +50,8 @@ const ButtonLayout = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   position: relative;
-  border: none;
   border-radius: 50%;
   background: ${({ color }) => color};
-  cursor: pointer;
   user-select: none;
 
   ${sizeStyles}
