@@ -4,7 +4,7 @@ import OnBookmarkIcon from 'assets/icons/bookmark_on.svg';
 import CommentIcon from 'assets/icons/comment.svg';
 import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
-import NextImage from 'components/common/NextImage';
+import ResponsiveImage from 'components/common/ResponsiveImage';
 import { EllipsisStyle } from 'styles/EllipsisStyle';
 import { dateFormat, timeFormat } from 'utils/Formatter';
 
@@ -44,7 +44,7 @@ const Diary = ({
         <Title>{title}</Title>
         <Content>{content}</Content>
         {imgUrl !== null && (
-          <NextImage
+          <ResponsiveImage
             src={imgUrl}
             alt={title}
             width={320}
