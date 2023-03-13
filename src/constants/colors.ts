@@ -11,6 +11,7 @@ const colors = Object.freeze({
   bg_fafafa: '#FAFAFA',
   bg_f4f4f4: '#F4F4F4',
   main: '#00C73C',
+  sub: '#E8F9EC',
   error: '#F84D4D',
   pink: '#FF89D7',
 });
