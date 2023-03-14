@@ -19,6 +19,7 @@ declare module '@emotion/react' {
       bg_fafafa: string;
       bg_f4f4f4: string;
       main: string;
+      sub: string;
       error: string;
       pink: string;
     };
@@ -28,6 +29,9 @@ declare module '@emotion/react' {
       diary_info: SerializedStyles;
       diary_icon: SerializedStyles;
       navigation: SerializedStyles;
+      button: SerializedStyles;
+      button_lg: SerializedStyles;
+      button_xl: SerializedStyles;
     };
   }
 }
