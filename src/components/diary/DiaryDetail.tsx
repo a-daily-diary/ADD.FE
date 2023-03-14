@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import BookmarkIcon from 'assets/icons/bookmark.svg';
 import OnBookmarkIcon from 'assets/icons/bookmark_on.svg';
 import CommentIcon from 'assets/icons/comment.svg';
 import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
 import ResponsiveImage from 'components/common/ResponsiveImage';
-import { EllipsisStyle } from 'styles/EllipsisStyle';
 import { dateFormat, timeFormat } from 'utils/Formatter';
 
-interface DiaryProps {
+interface DiaryDetailProps {
   id: number;
   title: string;
   content: string;
@@ -20,9 +20,10 @@ interface DiaryProps {
   createdAt: string;
   modifiedAt: string;
   authorUsername: string;
+  authorThumbnailUrl: string;
 }
 
-const Diary = ({
+const DiaryDetail = ({
   title,
   content,
   imgUrl,
@@ -31,35 +32,45 @@ const Diary = ({
   isFavorite,
   isBookmark,
   createdAt,
-  modifiedAt,
   authorUsername,
-}: DiaryProps) => {
-  // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
-  // API 연결 후 삭제할 코드
-  const username = authorUsername.slice(0, 20);
-
+  authorThumbnailUrl,
+}: DiaryDetailProps) => {
   return (
     <Container>
       <ContentContainer>
+        <AuthorContainer>
+          {authorThumbnailUrl !== null && (
+            // TODO
+            // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
+            // 2. 프로필 이미지 컴포넌트 분리
+            <AuthorImageContainer>
+              <Image
+                src={authorThumbnailUrl}
+                alt={authorUsername}
+                width={28}
+                height={28}
+              />
+            </AuthorImageContainer>
+          )}
+          <UsernameText>{authorUsername.slice(0, 20)}</UsernameText>
+          <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
+        </AuthorContainer>
         <Title>{title}</Title>
-        <Content>{content}</Content>
         {imgUrl !== null && (
-          <ResponsiveImage
-            src={imgUrl}
-            alt={title}
-            width={320}
-            height={160}
-            aspectRatio={2 / 1}
-          />
+          <ImageContainer>
+            <ResponsiveImage
+              src={imgUrl}
+              alt={title}
+              width={320}
+              height={160}
+              aspectRatio={'auto'}
+            />
+          </ImageContainer>
         )}
-        <DateContainer>
-          <span>
-            <span>{username}</span>
-            <span>・</span>
-            <span>{dateFormat(createdAt)}</span>
-          </span>
-          <span>{timeFormat(createdAt)}</span>
-        </DateContainer>
+        <Content>{content}</Content>
+        {timeFormat(createdAt) !== null && (
+          <TimeContainer>{timeFormat(createdAt)}</TimeContainer>
+        )}
       </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
@@ -80,29 +91,61 @@ const Diary = ({
   );
 };
 
-export default Diary;
+export default DiaryDetail;
 
-const Container = styled.li`
+const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ContentContainer = styled.div`
-  padding: 20px;
+  padding: 18px 20px 20px;
+`;
+
+const AuthorContainer = styled.div`
+  display: grid;
+  grid-template-columns: 28px auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 24px;
+`;
+
+const AuthorImageContainer = styled.div`
+  overflow: hidden;
+  border-radius: 50%;
+  width: 28px;
+  aspect-ratio: 1;
+`;
+
+const UsernameText = styled.span`
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+`;
+
+const CreatedAtText = styled.span`
+  color: ${({ theme }) => theme.colors.gray_999};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 100%;
+  letter-spacing: -0.02em;
+  text-align: right;
 `;
 
 const Title = styled.h3`
   ${({ theme }) => theme.fonts.diary_title}
 `;
 
-const Content = styled.p`
-  ${EllipsisStyle}
-  ${({ theme }) => theme.fonts.diary_content}
-  margin: 4px 0 6px;
+const ImageContainer = styled.div`
+  margin: 12px 0 10px;
 `;
 
-const DateContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Content = styled.p`
+  ${({ theme }) => theme.fonts.diary_content}
+  margin-top: 4px;
+`;
+
+const TimeContainer = styled.div`
   margin-top: 12px;
   ${({ theme }) => theme.fonts.diary_info}
   color: ${({ theme }) => theme.colors.gray_999};
