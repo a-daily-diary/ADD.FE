@@ -14,7 +14,7 @@ const HeaderRight = ({ menu, onClick }: HeaderRightProps) => {
     <HeaderRightLayout>
       {menu === '더보기' && (
         <button onClick={onClick}>
-          <MoreIcon />
+          <StyledMoreIcon />
         </button>
       )}
       {menu === '검색' && (
@@ -38,4 +38,9 @@ const HeaderRightLayout = styled.div`
 const TextButton = styled.button`
   color: ${({ theme }) => theme.colors.gray_ccc};
   ${({ theme }) => theme.fonts.header_button}
+`;
+
+const StyledMoreIcon = styled(MoreIcon)`
+  width: 24px;
+  height: 24px;
 `;
