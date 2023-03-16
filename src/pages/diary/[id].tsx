@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import MoreIcon from 'assets/icons/more.svg';
 import ReplyIcon from 'assets/icons/reply.svg';
+import SendAvtiveIcon from 'assets/icons/send_active.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
 import DiaryDetail from 'components/diary/DiaryDetail';
 import { COMMENT_LIST_MOCK_DATA } from 'mocks/CommentList';
@@ -23,6 +24,7 @@ const DiaryDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [commentData, setCommentData] = useState<CommentProps[]>([]);
+  const [activeSendButton, setActiveSendButton] = useState<boolean>(false);
   const replyTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -32,6 +34,7 @@ const DiaryDetailPage = () => {
   const handleReplyTextarea = (element: HTMLTextAreaElement) => {
     element.style.height = 'auto';
     element.style.height = `${element.scrollHeight}px`;
+    setActiveSendButton(element.value.trim().length > 0);
   };
 
   // TODO: API 연동하기
@@ -110,7 +113,7 @@ const DiaryDetailPage = () => {
               }}
             />
             <ReplyButton type="submit">
-              <SendIcon />
+              {activeSendButton ? <SendAvtiveIcon /> : <SendIcon />}
             </ReplyButton>
           </ReplyBox>
         </ReplyContainer>
