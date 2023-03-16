@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import MoreIcon from 'assets/icons/more.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
 import DiaryDetail from 'components/diary/DiaryDetail';
@@ -22,10 +22,16 @@ const DiaryDetailPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [commentData, setCommentData] = useState<CommentProps[]>([]);
+  const replyTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setCommentData(COMMENT_LIST_MOCK_DATA);
   }, []);
+
+  const handleReplyTextarea = (element: HTMLTextAreaElement) => {
+    element.style.height = 'auto';
+    element.style.height = `${element.scrollHeight}px`;
+  };
 
   // TODO: API 연동하기
   const data = DIARY_LIST_MOCK_DATA[Number(id)];
@@ -87,7 +93,16 @@ const DiaryDetailPage = () => {
         )}
         <ReplyContainer>
           <ReplyBox>
-            <ReplyTextarea rows={1} placeholder="댓글을 입력해주세요." />
+            <ReplyTextarea
+              placeholder="댓글을 입력해주세요."
+              rows={1}
+              ref={replyTextareaRef}
+              onChange={() => {
+                handleReplyTextarea(
+                  replyTextareaRef.current as HTMLTextAreaElement,
+                );
+              }}
+            />
             <ReplyButton type="submit">
               <SendIcon />
             </ReplyButton>
