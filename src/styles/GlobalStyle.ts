@@ -48,6 +48,10 @@ const GlobalStyle = css`
     }
   }
 
+  textarea {
+    font: inherit;
+  }
+
   @media (prefers-color-scheme: dark) {
     html {
       color-scheme: dark;
