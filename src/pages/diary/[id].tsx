@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import MoreIcon from 'assets/icons/more.svg';
+import ReplyIcon from 'assets/icons/reply.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
 import DiaryDetail from 'components/diary/DiaryDetail';
 import { COMMENT_LIST_MOCK_DATA } from 'mocks/CommentList';
@@ -91,9 +92,14 @@ const DiaryDetailPage = () => {
             가장 먼저 댓글을 남겨보세요.
           </NoCommentText>
         )}
+        <WriteReplyLabel htmlFor="replyTextarea">
+          <ReplyIcon />
+          <WriteReplyLabelText>댓글쓰기</WriteReplyLabelText>
+        </WriteReplyLabel>
         <ReplyContainer>
           <ReplyBox>
             <ReplyTextarea
+              id="replyTextarea"
               placeholder="댓글을 입력해주세요."
               rows={1}
               ref={replyTextareaRef}
@@ -116,7 +122,7 @@ const DiaryDetailPage = () => {
 export default DiaryDetailPage;
 
 const Section = styled.section`
-  margin-bottom: 52px;
+  margin-bottom: 92px;
   border-top: 6px solid ${({ theme }) => theme.colors.gray_eee};
 `;
 
@@ -190,6 +196,26 @@ const NoCommentText = styled.p`
   line-height: 140%;
   text-align: center;
   letter-spacing: -0.02em;
+`;
+
+const WriteReplyLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 105px;
+  height: 40px;
+  margin: 20px auto 40px;
+  border-radius: 120px;
+  background-color: ${({ theme }) => theme.colors.bg_f4f4f4};
+`;
+
+const WriteReplyLabelText = styled.span`
+  margin-top: 2px;
+  color: ${({ theme }) => theme.colors.gray_666};
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 100%;
 `;
 
 const ReplyContainer = styled.div`
