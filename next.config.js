@@ -4,6 +4,7 @@ const nextConfig = {
     domains: [
       "127.0.0.1",
       "dummyimage.com", // 목데이터의 이미지 URL 도메인, 추후 삭제
+      "robohash.org" // 목데이터의 이미지 URL 도메인, 추후 삭제
     ]
   },
   reactStrictMode: true,
