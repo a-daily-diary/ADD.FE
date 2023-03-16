@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import MoreIcon from 'assets/icons/more.svg';
+import SendIcon from 'assets/icons/send_inactive.svg';
 import DiaryDetail from 'components/diary/DiaryDetail';
 import { COMMENT_LIST_MOCK_DATA } from 'mocks/CommentList';
 import { DIARY_LIST_MOCK_DATA } from 'mocks/DiaryList';
@@ -84,6 +85,14 @@ const DiaryDetailPage = () => {
             가장 먼저 댓글을 남겨보세요.
           </NoCommentText>
         )}
+        <ReplyContainer>
+          <ReplyBox>
+            <ReplyTextarea rows={1} placeholder="댓글을 입력해주세요." />
+            <ReplyButton type="submit">
+              <SendIcon />
+            </ReplyButton>
+          </ReplyBox>
+        </ReplyContainer>
       </Section>
     </>
   );
@@ -92,6 +101,7 @@ const DiaryDetailPage = () => {
 export default DiaryDetailPage;
 
 const Section = styled.section`
+  margin-bottom: 52px;
   border-top: 6px solid ${({ theme }) => theme.colors.gray_eee};
 `;
 
@@ -165,4 +175,47 @@ const NoCommentText = styled.p`
   line-height: 140%;
   text-align: center;
   letter-spacing: -0.02em;
+`;
+
+const ReplyContainer = styled.div`
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 10px 20px 8px;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const ReplyBox = styled.div`
+  display: grid;
+  grid-template-columns: auto 20px;
+  align-items: center;
+  padding: 7px 12px 7px 14px;
+  border-radius: 34px;
+  background-color: ${({ theme }) => theme.colors.bg_fafafa};
+`;
+
+const ReplyTextarea = styled.textarea`
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.02em;
+  resize: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.gray_999};
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 140%;
+    letter-spacing: -0.02em;
+  }
+`;
+
+const ReplyButton = styled.button`
+  font-size: 0;
 `;
