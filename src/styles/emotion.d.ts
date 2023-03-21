@@ -32,6 +32,8 @@ declare module '@emotion/react' {
       button: SerializedStyles;
       button_lg: SerializedStyles;
       button_xl: SerializedStyles;
+      header: SerializedStyles;
+      header_button: SerializedStyles;
     };
   }
 }
