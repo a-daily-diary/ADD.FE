@@ -1,13 +1,20 @@
 import styled from '@emotion/styled';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type { FormEventHandler } from 'react';
 import SendAvtiveIcon from 'assets/icons/send_active.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
 
-const DiaryCommentInput = () => {
-  const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
-  const commentTextareaRef = useRef<HTMLTextAreaElement>(null);
+interface DiaryCommentInputProps {
+  content: string;
+}
 
-  const handleTextareaAutosize = (element: HTMLTextAreaElement) => {
+const DiaryCommentInput = () => {
+  const { register } = useForm<DiaryCommentInputProps>();
+  const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
+
+  const handleTextareaAutosize: FormEventHandler<HTMLTextAreaElement> = (e) => {
+    const element = e.target as HTMLTextAreaElement;
     element.style.height = 'auto';
     element.style.height = `${element.scrollHeight}px`;
     setIsActiveSendButton(element.value.trim().length > 0);
@@ -15,22 +22,19 @@ const DiaryCommentInput = () => {
 
   return (
     <CommentInputContainer>
-      <CommentTextareaBox>
+      <CommentForm>
         <CommentTextarea
           id="diaryCommentTextarea"
           placeholder="댓글을 입력해주세요."
           rows={1}
-          ref={commentTextareaRef}
-          onChange={() => {
-            handleTextareaAutosize(
-              commentTextareaRef.current as HTMLTextAreaElement,
-            );
-          }}
+          {...register('content', {
+            onChange: handleTextareaAutosize,
+          })}
         />
         <CommentSendButton type="submit">
           {isActiveSendButton ? <SendAvtiveIcon /> : <SendIcon />}
         </CommentSendButton>
-      </CommentTextareaBox>
+      </CommentForm>
     </CommentInputContainer>
   );
 };
@@ -47,7 +51,7 @@ const CommentInputContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const CommentTextareaBox = styled.div`
+const CommentForm = styled.form`
   display: grid;
   grid-template-columns: auto 20px;
   align-items: center;
@@ -57,6 +61,7 @@ const CommentTextareaBox = styled.div`
 `;
 
 const CommentTextarea = styled.textarea`
+  max-height: 79px;
   padding: 0;
   border: 0;
   background-color: transparent;
