@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import DiaryComment from './DiaryComment';
+import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
 
 // TODO: 타입 디렉토리에 분리하기
 interface CommentProps {
@@ -48,7 +49,7 @@ const DiaryComments = ({ comments }: CommentsProps) => {
 export default DiaryComments;
 
 const CommentTitle = styled.h3`
-  /* TODO : sr-only 처리하기 */
+  ${ScreenReaderOnly}
 `;
 
 const NoCommentTitle = styled.h3`
