@@ -34,7 +34,6 @@ const DiaryComment = ({ comment }: CommentProps) => {
           </ProfileImageBox>
         )}
         <UsernameSpan>{authorUsername}</UsernameSpan>
-        {/* TODO : #46 풀리퀘스트 머지 후 수정 */}
         <CreatedAtSpan>
           {timeFormat(createdAt) !== null
             ? timeFormat(createdAt)
@@ -116,4 +115,5 @@ const CommentContent = styled.p`
   line-height: 140%;
   letter-spacing: -0.02em;
   word-break: keep-all;
+  white-space: pre-wrap;
 `;
