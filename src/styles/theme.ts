@@ -79,7 +79,7 @@ const fontStyle = ({
 }: Font): SerializedStyles => {
   return css`
     font-family: ${fontFamily};
-    font-size: ${size}px;
+    font-size: ${size}rem;
     font-weight: ${weight};
     line-height: ${lineHeight}%;
     letter-spacing: ${letterSpacing}em;
@@ -91,54 +91,54 @@ const theme: Theme = {
   fonts: {
     diary_title: fontStyle({
       fontFamily: montserrat.style.fontFamily,
-      size: 20,
+      size: 2,
       weight: 700,
       lineHeight: 140,
     }),
     diary_content: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 14,
+      size: 1.4,
       weight: 400,
       lineHeight: 160,
     }),
     diary_info: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 400,
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
     diary_icon: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 500,
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
     navigation: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 500,
       lineHeight: 100,
       letterSpacing: -0.04,
     }),
     button: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 500,
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
     button_lg: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 14,
+      size: 1.4,
       weight: 700,
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
     button_xl: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 16,
+      size: 1.6,
       weight: 700,
       lineHeight: 100,
       letterSpacing: -0.02,

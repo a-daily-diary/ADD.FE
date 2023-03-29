@@ -12,6 +12,8 @@ const GlobalStyle = css`
   body {
     max-width: 100vw;
     overflow-x: hidden;
+    /* 폰트 사이즈 10px = 1rem 으로 설정*/
+    font-size: 62.5%;
   }
 
   a {
