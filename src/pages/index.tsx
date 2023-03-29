@@ -6,6 +6,9 @@ import NextImage from 'components/common/NextImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
+import Header from 'components/layouts/header/Header';
+import HeaderLeft from 'components/layouts/header/HeaderLeft';
+import HeaderRight from 'components/layouts/header/HeaderRight';
 
 const Home: NextPageWithLayout = () => {
   return (
@@ -28,7 +31,15 @@ const Home: NextPageWithLayout = () => {
 };
 
 Home.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
+  return (
+    <Layout>
+      <Header>
+        <HeaderLeft menu="로고" />
+        <HeaderRight menu="검색" />
+      </Header>
+      {page}
+    </Layout>
+  );
 };
 
 export default Home;

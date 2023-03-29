@@ -143,6 +143,20 @@ const theme: Theme = {
       lineHeight: 100,
       letterSpacing: -0.02,
     }),
+    header: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 18,
+      weight: 500,
+      lineHeight: 100,
+      letterSpacing: -0.02,
+    }),
+    header_button: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 16,
+      weight: 500,
+      lineHeight: 100,
+      letterSpacing: -0.02,
+    }),
   },
 };
 
