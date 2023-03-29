@@ -1,24 +1,41 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { FormEventHandler } from 'react';
 import SendAvtiveIcon from 'assets/icons/send_active.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
+import { ERROR_MESSAGE } from 'constants/validation/Message';
+import { VALID_VALUE } from 'constants/validation/Value';
+import textareaAutosize from 'utils/TestareaAutosize';
 
 interface DiaryCommentInputProps {
   content: string;
 }
 
 const DiaryCommentInput = () => {
-  const { register } = useForm<DiaryCommentInputProps>();
+  const {
+    register,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<DiaryCommentInputProps>({ mode: 'onChange' });
+  const { content: contentValue } = getValues();
+  const { content: contentError } = errors;
+
   const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
 
-  const handleTextareaAutosize: FormEventHandler<HTMLTextAreaElement> = (e) => {
+  const handleTextarea: FormEventHandler<HTMLTextAreaElement> = (e) => {
     const element = e.target as HTMLTextAreaElement;
-    element.style.height = 'auto';
-    element.style.height = `${element.scrollHeight}px`;
+    textareaAutosize(element);
     setIsActiveSendButton(element.value.trim().length > 0);
   };
+
+  useEffect(() => {
+    if (contentError?.type === 'maxLength') {
+      setValue('content', contentValue.slice(0, VALID_VALUE.commentMaxLength));
+      alert(contentError.message);
+    }
+  }, [contentError]);
 
   return (
     <CommentInputContainer>
@@ -28,7 +45,11 @@ const DiaryCommentInput = () => {
           placeholder="댓글을 입력해주세요."
           rows={1}
           {...register('content', {
-            onChange: handleTextareaAutosize,
+            maxLength: {
+              value: VALID_VALUE.commentMaxLength,
+              message: ERROR_MESSAGE.commentMaxLength,
+            },
+            onChange: handleTextarea,
           })}
         />
         <CommentSendButton type="submit">
