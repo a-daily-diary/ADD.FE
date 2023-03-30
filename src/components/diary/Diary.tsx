@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import BookmarkIcon from 'assets/icons/bookmark.svg';
 import OnBookmarkIcon from 'assets/icons/bookmark_on.svg';
 import CommentIcon from 'assets/icons/comment.svg';
@@ -23,6 +24,7 @@ interface DiaryProps {
 }
 
 const Diary = ({
+  id,
   title,
   content,
   imgUrl,
@@ -31,7 +33,6 @@ const Diary = ({
   isFavorite,
   isBookmark,
   createdAt,
-  modifiedAt,
   authorUsername,
 }: DiaryProps) => {
   // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
@@ -42,7 +43,7 @@ const Diary = ({
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        <Content>{content}</Content>
+        <ContentLink href={`/diary/${id}`}>{content}</ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage
             src={imgUrl}
@@ -94,10 +95,11 @@ const Title = styled.h3`
   ${({ theme }) => theme.fonts.diary_title}
 `;
 
-const Content = styled.p`
+const ContentLink = styled(Link)`
   ${EllipsisStyle}
   ${({ theme }) => theme.fonts.diary_content}
   margin: 4px 0 6px;
+  cursor: default;
 `;
 
 const DateContainer = styled.div`
