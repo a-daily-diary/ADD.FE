@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { FormEventHandler } from 'react';
@@ -13,10 +14,12 @@ interface DiaryCommentInputProps {
 }
 
 const DiaryCommentInput = () => {
+  const router = useRouter();
   const {
     register,
     setValue,
     getValues,
+    setFocus,
     formState: { errors },
   } = useForm<DiaryCommentInputProps>({ mode: 'onChange' });
   const { content: contentValue } = getValues();
@@ -36,6 +39,12 @@ const DiaryCommentInput = () => {
       alert(contentError.message);
     }
   }, [contentError]);
+
+  useEffect(() => {
+    if (router.query.focus === 'comment') {
+      setFocus('content');
+    }
+  }, [setFocus]);
 
   return (
     <CommentInputContainer>
@@ -99,6 +108,10 @@ const CommentTextarea = styled.textarea`
     font-weight: 400;
     line-height: 140%;
     letter-spacing: -0.02em;
+  }
+
+  &:focus {
+    outline: 0;
   }
 `;
 

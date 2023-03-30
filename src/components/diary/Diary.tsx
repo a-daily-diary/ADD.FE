@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import BookmarkIcon from 'assets/icons/bookmark.svg';
@@ -64,14 +65,14 @@ const Diary = ({
       </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
-          <IconButton type="button">
+          <FavoriteButton type="button">
             {isFavorite ? <OnHeartIcon /> : <HeartIcon />}
             {favoriteCount}
-          </IconButton>
-          <IconButton type="button">
+          </FavoriteButton>
+          <CommentLink href={`/diary/${id}?focus=comment`} as={`/diary/${id}`}>
             <CommentIcon />
             {commentCount}
-          </IconButton>
+          </CommentLink>
         </IconInnerContainer>
         <button type="button">
           {isBookmark ? <OnBookmarkIcon /> : <BookmarkIcon />}
@@ -124,8 +125,16 @@ const IconInnerContainer = styled.div`
   gap: 16px;
 `;
 
-const IconButton = styled.button`
+const IconParentsStyle = css`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+const FavoriteButton = styled.button`
+  ${IconParentsStyle}
+`;
+
+const CommentLink = styled(Link)`
+  ${IconParentsStyle}
 `;
