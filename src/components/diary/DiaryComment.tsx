@@ -40,7 +40,7 @@ const DiaryComment = ({ comment }: CommentProps) => {
             : dateFormat(createdAt)}
         </CreatedAtSpan>
         <MoreButton type="button">
-          <MoreIcon />
+          <StyledMoreIcon />
         </MoreButton>
       </CommentHead>
       <CommentContent>{content}</CommentContent>
@@ -106,6 +106,11 @@ const CreatedAtSpan = styled.span`
 const MoreButton = styled.button`
   position: absolute;
   right: 0;
+`;
+
+const StyledMoreIcon = styled(MoreIcon)`
+  width: 20px;
+  height: 20px;
 `;
 
 const CommentContent = styled.p`
