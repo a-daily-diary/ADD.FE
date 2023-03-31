@@ -44,7 +44,8 @@ const Diary = ({
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        <ContentLink href={`/diary/${id}`}>{content}</ContentLink>
+        {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
+        <ContentLink href={`/diary/${id - 1}`}>{content}</ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage
             src={imgUrl}
@@ -69,7 +70,11 @@ const Diary = ({
             {isFavorite ? <OnHeartIcon /> : <HeartIcon />}
             {favoriteCount}
           </FavoriteButton>
-          <CommentLink href={`/diary/${id}?focus=comment`} as={`/diary/${id}`}>
+          {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
+          <CommentLink
+            href={`/diary/${id - 1}?focus=comment`}
+            as={`/diary/${id - 1}`}
+          >
             <CommentIcon />
             {commentCount}
           </CommentLink>
