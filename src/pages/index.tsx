@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import type { NextPageWithLayout } from './_app';
 import type { ReactElement } from 'react';
-import NextImage from 'components/common/NextImage';
+import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
@@ -16,7 +16,7 @@ const Home: NextPageWithLayout = () => {
       <Seo title={'a daily diary'} />
       <BannerContainer>
         <Link href={'/write'}>
-          <NextImage
+          <ResponsiveImage
             src="/images/main/banner/go_to_write.png"
             alt="오늘 영어 일기 쓰러가기"
             width={640}

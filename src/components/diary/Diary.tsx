@@ -1,10 +1,12 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import BookmarkIcon from 'assets/icons/bookmark.svg';
 import OnBookmarkIcon from 'assets/icons/bookmark_on.svg';
 import CommentIcon from 'assets/icons/comment.svg';
 import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
-import NextImage from 'components/common/NextImage';
+import ResponsiveImage from 'components/common/ResponsiveImage';
 import { EllipsisStyle } from 'styles/EllipsisStyle';
 import { dateFormat, timeFormat } from 'utils/Formatter';
 
@@ -12,17 +14,18 @@ interface DiaryProps {
   id: number;
   title: string;
   content: string;
-  imgUrl: string;
+  imgUrl: string | null;
   commentCount: number;
   favoriteCount: number;
   isFavorite: boolean;
   isBookmark: boolean;
   createdAt: string;
   modifiedAt: string;
-  author: string;
+  authorUsername: string;
 }
 
 const Diary = ({
+  id,
   title,
   content,
   imgUrl,
@@ -31,25 +34,20 @@ const Diary = ({
   isFavorite,
   isBookmark,
   createdAt,
-  modifiedAt,
-  author,
+  authorUsername,
 }: DiaryProps) => {
-  // 목데이터의 날짜 데이터 형식이 서버 날짜 데이터 형식과 다름
-  // API 연결 후 삭제할 코드
-  const convertToDate = (dateString: string): Date =>
-    new Date(dateString.replace(' ', 'T'));
-
   // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
   // API 연결 후 삭제할 코드
-  const authorId = author.slice(0, 20);
+  const username = authorUsername.slice(0, 20);
 
   return (
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        <Content>{content}</Content>
-        {imgUrl?.length > 0 && (
-          <NextImage
+        {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
+        <ContentLink href={`/diary/${id - 1}`}>{content}</ContentLink>
+        {imgUrl !== null && (
+          <ResponsiveImage
             src={imgUrl}
             alt={title}
             width={320}
@@ -59,23 +57,27 @@ const Diary = ({
         )}
         <DateContainer>
           <span>
-            <span>{authorId}</span>
+            <span>{username}</span>
             <span>・</span>
-            <span>{dateFormat(convertToDate(createdAt))}</span>
+            <span>{dateFormat(createdAt)}</span>
           </span>
-          <span>{timeFormat(convertToDate(createdAt))}</span>
+          <span>{timeFormat(createdAt)}</span>
         </DateContainer>
       </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
-          <IconButton type="button">
+          <FavoriteButton type="button">
             {isFavorite ? <OnHeartIcon /> : <HeartIcon />}
             {favoriteCount}
-          </IconButton>
-          <IconButton type="button">
+          </FavoriteButton>
+          {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
+          <CommentLink
+            href={`/diary/${id - 1}?focus=comment`}
+            as={`/diary/${id - 1}`}
+          >
             <CommentIcon />
             {commentCount}
-          </IconButton>
+          </CommentLink>
         </IconInnerContainer>
         <button type="button">
           {isBookmark ? <OnBookmarkIcon /> : <BookmarkIcon />}
@@ -99,10 +101,11 @@ const Title = styled.h3`
   ${({ theme }) => theme.fonts.diary_title}
 `;
 
-const Content = styled.p`
+const ContentLink = styled(Link)`
   ${EllipsisStyle}
   ${({ theme }) => theme.fonts.diary_content}
   margin: 4px 0 6px;
+  cursor: default;
 `;
 
 const DateContainer = styled.div`
@@ -127,8 +130,16 @@ const IconInnerContainer = styled.div`
   gap: 16px;
 `;
 
-const IconButton = styled.button`
+const IconParentsStyle = css`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+const FavoriteButton = styled.button`
+  ${IconParentsStyle}
+`;
+
+const CommentLink = styled(Link)`
+  ${IconParentsStyle}
 `;

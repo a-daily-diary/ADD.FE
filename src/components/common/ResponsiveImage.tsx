@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-interface NextImageStyleProps {
-  aspectRatio: number;
+interface ResponsiveImageStyleProps {
+  aspectRatio: number | 'auto';
 }
 
-interface NextImageProps extends NextImageStyleProps {
+interface ResponsiveImageProps extends ResponsiveImageStyleProps {
   src: string;
   alt: string;
   width: number;
@@ -13,14 +13,14 @@ interface NextImageProps extends NextImageStyleProps {
   quality?: number;
 }
 
-const NextImage = ({
+const ResponsiveImage = ({
   src,
   alt,
   width,
   height,
   quality,
   aspectRatio,
-}: NextImageProps) => {
+}: ResponsiveImageProps) => {
   return (
     <ImageContainer aspectRatio={aspectRatio}>
       <StyledImage
@@ -35,9 +35,9 @@ const NextImage = ({
   );
 };
 
-export default NextImage;
+export default ResponsiveImage;
 
-const ImageContainer = styled.div<NextImageStyleProps>`
+const ImageContainer = styled.div<ResponsiveImageStyleProps>`
   overflow: hidden;
   display: flex;
   place-content: center;
