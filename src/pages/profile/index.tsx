@@ -1,12 +1,40 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
 import SeetingIcon from 'assets/icons/setting.svg';
 import Seo from 'components/common/Seo';
 import Layout from 'components/layouts/Layout';
 
+const PROFILE_TAB_LIST = [
+  { id: 'activities', title: '활동' },
+  { id: 'diaries', title: '일기' },
+  { id: 'bookmarks', title: '북마크' },
+];
+
 const Profile: NextPageWithLayout = () => {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
+  const [indicator, setIndicator] = useState({ width: 0, offsetLeft: 0 });
+
+  useEffect(() => {
+    const setIndicatorPosition = () => {
+      const currentTab = tabsRef.current[activeIndex];
+      setIndicator({
+        width: currentTab?.clientWidth ?? 0,
+        offsetLeft: currentTab?.offsetLeft ?? 0,
+      });
+    };
+
+    setIndicatorPosition();
+    window.addEventListener('resize', setIndicatorPosition);
+
+    return () => {
+      window.removeEventListener('resize', setIndicatorPosition);
+    };
+  }, [activeIndex]);
+
   return (
     <>
       <UserInfoContainer>
@@ -17,6 +45,27 @@ const Profile: NextPageWithLayout = () => {
         <UserName>userid1234</UserName>
         <ProfileEditLink href={'/profile/edit'}>프로필 수정</ProfileEditLink>
       </UserInfoContainer>
+      <section>
+        <TabList indicator={indicator}>
+          {PROFILE_TAB_LIST.map((tab, index) => {
+            const { id, title } = tab;
+            return (
+              <li key={`tab-list-${id}`}>
+                <TabButton
+                  type="button"
+                  ref={(el) => (tabsRef.current[index] = el)}
+                  onClick={() => {
+                    setActiveIndex(index);
+                  }}
+                  active={activeIndex === index}
+                >
+                  {title}
+                </TabButton>
+              </li>
+            );
+          })}
+        </TabList>
+      </section>
     </>
   );
 };
@@ -71,4 +120,32 @@ const ProfileEditLink = styled(Link)`
   font-size: 12px;
   line-height: 1;
   letter-spacing: -0.02em;
+`;
+
+const TabList = styled.ul<{
+  indicator: { width: number; offsetLeft: number };
+}>`
+  display: flex;
+  gap: 28px;
+  position: relative;
+  padding: 24px 28px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    width: ${({ indicator }) => `${indicator.width}px`};
+    height: 2px;
+    background-color: ${({ theme }) => theme.colors.main};
+    transform: translateX(${({ indicator }) => `${indicator.offsetLeft}px`});
+    transition: transform 0.2s;
+    will-change: transform;
+  }
+`;
+
+const TabButton = styled.button<{ active: boolean }>`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
 `;
