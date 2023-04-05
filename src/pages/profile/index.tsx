@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
 import SeetingIcon from 'assets/icons/setting.svg';
 import Seo from 'components/common/Seo';
+import Tab from 'components/common/Tab';
 import Layout from 'components/layouts/Layout';
 import Empty from 'components/profile/Empty';
+import useTabIndicator from 'hooks/useTabIndicator';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
@@ -17,24 +19,7 @@ const PROFILE_TAB_LIST = [
 const Profile: NextPageWithLayout = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
-  const [indicator, setIndicator] = useState({ width: 0, offsetLeft: 0 });
-
-  useEffect(() => {
-    const setIndicatorPosition = () => {
-      const currentTab = tabsRef.current[activeIndex];
-      setIndicator({
-        width: currentTab?.clientWidth ?? 0,
-        offsetLeft: currentTab?.offsetLeft ?? 0,
-      });
-    };
-
-    setIndicatorPosition();
-    window.addEventListener('resize', setIndicatorPosition);
-
-    return () => {
-      window.removeEventListener('resize', setIndicatorPosition);
-    };
-  }, [activeIndex]);
+  const indicator = useTabIndicator({ tabsRef, activeIndex });
 
   return (
     <>
@@ -47,7 +32,7 @@ const Profile: NextPageWithLayout = () => {
         <ProfileEditLink href={'/profile/edit'}>프로필 수정</ProfileEditLink>
       </UserInfoContainer>
       <section>
-        <TabList indicator={indicator}>
+        <Tab indicator={indicator}>
           {PROFILE_TAB_LIST.map((tab, index) => {
             const { id, title } = tab;
             return (
@@ -65,7 +50,7 @@ const Profile: NextPageWithLayout = () => {
               </li>
             );
           })}
-        </TabList>
+        </Tab>
         <article>
           {PROFILE_TAB_LIST[activeIndex].id === 'diaries' &&
             (PROFILE_TAB_LIST[activeIndex].content !== null ? (
@@ -135,28 +120,6 @@ const ProfileEditLink = styled(Link)`
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
-`;
-
-const TabList = styled.ul<{
-  indicator: { width: number; offsetLeft: number };
-}>`
-  display: flex;
-  gap: 28px;
-  position: relative;
-  padding: 24px 28px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 16px;
-    left: 0;
-    width: ${({ indicator }) => `${indicator.width}px`};
-    height: 2px;
-    background-color: ${({ theme }) => theme.colors.main};
-    transform: translateX(${({ indicator }) => `${indicator.offsetLeft}px`});
-    transition: transform 0.2s;
-    will-change: transform;
-  }
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
