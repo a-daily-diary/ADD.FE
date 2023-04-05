@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
@@ -9,8 +10,8 @@ import Layout from 'components/layouts/Layout';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
-  { id: 'diaries', title: '일기' },
-  { id: 'bookmarks', title: '북마크' },
+  { id: 'diaries', title: '일기', content: null },
+  { id: 'bookmarks', title: '북마크', content: null },
 ];
 
 const Profile: NextPageWithLayout = () => {
@@ -65,6 +66,36 @@ const Profile: NextPageWithLayout = () => {
             );
           })}
         </TabList>
+        <article>
+          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' &&
+            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
+              <div>일기</div>
+            ) : (
+              <EmptyBox>
+                <Image
+                  src={'/images/profile/empty.png'}
+                  alt="일기가 없습니다."
+                  width={100}
+                  height={100}
+                />
+                <EmptyText>일기가 없습니다.</EmptyText>
+              </EmptyBox>
+            ))}
+          {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' &&
+            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
+              <div>북마크</div>
+            ) : (
+              <EmptyBox>
+                <Image
+                  src={'/images/profile/empty.png'}
+                  alt="북마크가 없습니다."
+                  width={100}
+                  height={100}
+                />
+                <EmptyText>북마크가 없습니다.</EmptyText>
+              </EmptyBox>
+            ))}
+        </article>
       </section>
     </>
   );
@@ -106,8 +137,8 @@ const UserProfileImage = styled.div`
 
 const UserName = styled.h2`
   margin: 8px 0 6px;
-  font-weight: 700;
   font-size: 24px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.4;
 `;
@@ -116,8 +147,8 @@ const ProfileEditLink = styled(Link)`
   padding: 12px 20px;
   border-radius: 120px;
   background: #f4f4f4;
-  font-weight: 500;
   font-size: 12px;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
 `;
@@ -145,7 +176,23 @@ const TabList = styled.ul<{
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
-  font-weight: 700;
   font-size: 16px;
+  font-weight: 700;
   line-height: 140%;
+`;
+
+const EmptyBox = styled.div`
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 50px;
+  text-align: center;
+`;
+
+const EmptyText = styled.span`
+  color: ${({ theme }) => theme.colors.gray_999};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 100%;
 `;
