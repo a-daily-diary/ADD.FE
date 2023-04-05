@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
@@ -7,6 +6,7 @@ import type { ReactElement } from 'react';
 import SeetingIcon from 'assets/icons/setting.svg';
 import Seo from 'components/common/Seo';
 import Layout from 'components/layouts/Layout';
+import Empty from 'components/profile/Empty';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
@@ -71,29 +71,13 @@ const Profile: NextPageWithLayout = () => {
             (PROFILE_TAB_LIST[activeIndex].content !== null ? (
               <div>일기</div>
             ) : (
-              <EmptyBox>
-                <Image
-                  src={'/images/profile/empty.png'}
-                  alt="일기가 없습니다."
-                  width={100}
-                  height={100}
-                />
-                <EmptyText>일기가 없습니다.</EmptyText>
-              </EmptyBox>
+              <Empty text={'일기가 없습니다.'} />
             ))}
           {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' &&
             (PROFILE_TAB_LIST[activeIndex].content !== null ? (
               <div>북마크</div>
             ) : (
-              <EmptyBox>
-                <Image
-                  src={'/images/profile/empty.png'}
-                  alt="북마크가 없습니다."
-                  width={100}
-                  height={100}
-                />
-                <EmptyText>북마크가 없습니다.</EmptyText>
-              </EmptyBox>
+              <Empty text={'북마크가 없습니다.'} />
             ))}
         </article>
       </section>
@@ -179,20 +163,4 @@ const TabButton = styled.button<{ active: boolean }>`
   font-size: 16px;
   font-weight: 700;
   line-height: 140%;
-`;
-
-const EmptyBox = styled.div`
-  display: grid;
-  place-content: center;
-  gap: 12px;
-  width: 100%;
-  padding: 50px;
-  text-align: center;
-`;
-
-const EmptyText = styled.span`
-  color: ${({ theme }) => theme.colors.gray_999};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 100%;
 `;
