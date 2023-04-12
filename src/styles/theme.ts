@@ -81,7 +81,7 @@ const fontStyle = ({
     font-family: ${fontFamily};
     font-size: ${size}rem;
     font-weight: ${weight};
-    line-height: ${lineHeight}%;
+    line-height: ${lineHeight};
     letter-spacing: ${letterSpacing}em;
   `;
 };
@@ -93,68 +93,68 @@ const theme: Theme = {
       fontFamily: montserrat.style.fontFamily,
       size: 2,
       weight: 700,
-      lineHeight: 140,
+      lineHeight: 1.4,
     }),
     diary_content: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.4,
       weight: 400,
-      lineHeight: 160,
+      lineHeight: 1.6,
     }),
     diary_info: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.2,
       weight: 400,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     diary_icon: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.2,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     navigation: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.2,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.04,
     }),
     button: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.2,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     button_lg: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.4,
       weight: 700,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     button_xl: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.6,
       weight: 700,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     header: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 18,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     header_button: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 16,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
   },
