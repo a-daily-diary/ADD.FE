@@ -117,7 +117,5 @@ const ProfileEditLink = styled(Link)`
 `;
 
 const TabButton = styled.button<{ active: boolean }>`
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 140%;
+  ${({ theme }) => theme.fonts.headline_04};
 `;

@@ -27,6 +27,8 @@ declare module '@emotion/react' {
       headline_01: SerializedStyles;
       headline_02: SerializedStyles;
       headline_03: SerializedStyles;
+      headline_04: SerializedStyles;
+      headline_05: SerializedStyles;
       body_01: SerializedStyles;
       body_02: SerializedStyles;
       body_03: SerializedStyles;

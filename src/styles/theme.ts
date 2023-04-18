@@ -109,6 +109,19 @@ const theme: Theme = {
       weight: 700,
       lineHeight: 1.4,
     }),
+    headline_04: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.6,
+      weight: 700,
+      lineHeight: 1.4,
+      letterSpacing: -0.02,
+    }),
+    headline_05: fontStyle({
+      fontFamily: montserrat.style.fontFamily,
+      size: 1.6,
+      weight: 700,
+      lineHeight: 1,
+    }),
     body_01: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 2,
@@ -140,7 +153,7 @@ const theme: Theme = {
     body_05: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 16,
-      weight: 500,
+      weight: 400,
       lineHeight: 1,
       letterSpacing: -0.02,
     }),
