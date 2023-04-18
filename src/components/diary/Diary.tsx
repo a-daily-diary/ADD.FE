@@ -98,12 +98,12 @@ const ContentContainer = styled.div`
 `;
 
 const Title = styled.h3`
-  ${({ theme }) => theme.fonts.diary_title}
+  ${({ theme }) => theme.fonts.headline_03}
 `;
 
 const ContentLink = styled(Link)`
   ${EllipsisStyle}
-  ${({ theme }) => theme.fonts.diary_content}
+  ${({ theme }) => theme.fonts.body_06}
   margin: 4px 0 6px;
   cursor: default;
 `;
@@ -112,7 +112,7 @@ const DateContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 12px;
-  ${({ theme }) => theme.fonts.diary_info}
+  ${({ theme }) => theme.fonts.caption_02}
   color: ${({ theme }) => theme.colors.gray_999};
 `;
 
@@ -122,7 +122,7 @@ const IconContainer = styled.div`
   justify-content: space-between;
   padding: 10px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
-  ${({ theme }) => theme.fonts.diary_icon};
+  ${({ theme }) => theme.fonts.caption_01};
 `;
 
 const IconInnerContainer = styled.div`

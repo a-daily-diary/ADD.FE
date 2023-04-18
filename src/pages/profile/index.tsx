@@ -106,20 +106,14 @@ const UserProfileImage = styled.div`
 
 const UserName = styled.h2`
   margin: 8px 0 6px;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.4;
+  ${({ theme }) => theme.fonts.headline_01};
 `;
 
 const ProfileEditLink = styled(Link)`
   padding: 12px 20px;
   border-radius: 120px;
   background: #f4f4f4;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  ${({ theme }) => theme.fonts.caption_01};
 `;
 
 const TabButton = styled.button<{ active: boolean }>`

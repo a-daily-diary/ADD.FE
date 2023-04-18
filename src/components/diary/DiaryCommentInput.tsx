@@ -96,18 +96,12 @@ const CommentTextarea = styled.textarea`
   border: 0;
   background-color: transparent;
   color: ${({ theme }) => theme.colors.black};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 140%;
-  letter-spacing: -0.02em;
+  ${({ theme }) => theme.fonts.body_07};
   resize: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_999};
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 140%;
-    letter-spacing: -0.02em;
+    ${({ theme }) => theme.fonts.body_07};
   }
 
   &:focus {

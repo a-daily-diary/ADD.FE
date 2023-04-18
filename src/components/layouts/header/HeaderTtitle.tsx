@@ -33,6 +33,6 @@ const Title = styled.strong<HeaderTitleProps>`
           padding: 0 0 0 4px;
         `};
 
-  ${({ theme }) => theme.fonts.header};
+  ${({ theme }) => theme.fonts.body_02};
   font-weight: ${({ isNumber }) => (isNumber ?? false) && 700};
 `;

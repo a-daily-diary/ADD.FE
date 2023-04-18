@@ -89,17 +89,12 @@ const ProfileImageBox = styled.div`
 const UsernameSpan = styled.span`
   margin: 0 6px 0 8px;
   color: ${({ theme }) => theme.colors.black};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 100%;
+  ${({ theme }) => theme.fonts.body_08};
 `;
 
 const CreatedAtSpan = styled.span`
   color: ${({ theme }) => theme.colors.gray_999};
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 100%;
-  letter-spacing: -0.02em;
+  ${({ theme }) => theme.fonts.caption_02};
   text-align: right;
 `;
 
@@ -115,10 +110,7 @@ const StyledMoreIcon = styled(MoreIcon)`
 
 const CommentContent = styled.p`
   color: ${({ theme }) => theme.colors.black};
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 140%;
-  letter-spacing: -0.02em;
+  ${({ theme }) => theme.fonts.body_09};
   word-break: keep-all;
   white-space: pre-wrap;
 `;
