@@ -118,22 +118,17 @@ const AuthorImageContainer = styled.div`
 
 const UsernameText = styled.span`
   color: ${({ theme }) => theme.colors.black};
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 100%;
+  ${({ theme }) => theme.fonts.body_05};
 `;
 
 const CreatedAtText = styled.span`
   color: ${({ theme }) => theme.colors.gray_999};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 100%;
-  letter-spacing: -0.02em;
+  ${({ theme }) => theme.fonts.body_08};
   text-align: right;
 `;
 
 const Title = styled.h3`
-  ${({ theme }) => theme.fonts.diary_title}
+  ${({ theme }) => theme.fonts.headline_03}
 `;
 
 const ImageContainer = styled.div`
@@ -141,13 +136,13 @@ const ImageContainer = styled.div`
 `;
 
 const Content = styled.p`
-  ${({ theme }) => theme.fonts.diary_content}
+  ${({ theme }) => theme.fonts.body_06}
   margin-top: 4px;
 `;
 
 const TimeContainer = styled.div`
   margin-top: 12px;
-  ${({ theme }) => theme.fonts.diary_info}
+  ${({ theme }) => theme.fonts.caption_02}
   color: ${({ theme }) => theme.colors.gray_999};
 `;
 
@@ -157,7 +152,7 @@ const IconContainer = styled.div`
   justify-content: space-between;
   padding: 10px 20px;
   border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
-  ${({ theme }) => theme.fonts.diary_icon};
+  ${({ theme }) => theme.fonts.caption_01};
 `;
 
 const IconInnerContainer = styled.div`

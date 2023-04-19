@@ -49,25 +49,25 @@ const patternStyles = ({ pattern }: ButtonProps) => css`
 const sizeStyles = ({ size, theme }: ButtonProps) => css`
   ${size === 'sm' &&
   css`
-    ${theme?.fonts.button}
+    ${theme?.fonts.button_01}
     padding: 8px 10px;
   `}
 
   ${size === 'md' &&
   css`
-    ${theme?.fonts.button}
+    ${theme?.fonts.button_01}
     padding: 12px 20px;
   `}
 
   ${size === 'lg' &&
   css`
-    ${theme?.fonts.button_lg}
+    ${theme?.fonts.button_02}
     padding: 17px 32px;
   `}
 
   ${size === 'xl' &&
   css`
-    ${theme?.fonts.button_xl}
+    ${theme?.fonts.button_03}
     padding: 20px 48px;
   `}
 `;

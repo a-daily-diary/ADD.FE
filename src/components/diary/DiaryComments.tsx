@@ -55,9 +55,6 @@ const CommentTitle = styled.h3`
 const NoCommentTitle = styled.h3`
   margin: 40px 0 20px;
   color: ${({ theme }) => theme.colors.gray_999};
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 140%;
+  ${({ theme }) => theme.fonts.body_09};
   text-align: center;
-  letter-spacing: -0.02em;
 `;

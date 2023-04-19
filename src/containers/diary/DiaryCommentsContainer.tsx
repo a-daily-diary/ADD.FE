@@ -56,7 +56,5 @@ const WriteCommentLabel = styled.label`
 const WriteCommentSpan = styled.span`
   margin-top: 2px;
   color: ${({ theme }) => theme.colors.gray_666};
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 100%;
+  ${({ theme }) => theme.fonts.button_01};
 `;

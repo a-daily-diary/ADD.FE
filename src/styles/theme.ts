@@ -79,9 +79,9 @@ const fontStyle = ({
 }: Font): SerializedStyles => {
   return css`
     font-family: ${fontFamily};
-    font-size: ${size}px;
+    font-size: ${size}rem;
     font-weight: ${weight};
-    line-height: ${lineHeight}%;
+    line-height: ${lineHeight};
     letter-spacing: ${letterSpacing}em;
   `;
 };
@@ -89,72 +89,141 @@ const fontStyle = ({
 const theme: Theme = {
   colors,
   fonts: {
-    diary_title: fontStyle({
-      fontFamily: montserrat.style.fontFamily,
-      size: 20,
+    headline_01: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 2.4,
       weight: 700,
-      lineHeight: 140,
-    }),
-    diary_content: fontStyle({
-      fontFamily: pretendard.style.fontFamily,
-      size: 14,
-      weight: 400,
-      lineHeight: 160,
-    }),
-    diary_info: fontStyle({
-      fontFamily: pretendard.style.fontFamily,
-      size: 12,
-      weight: 400,
-      lineHeight: 100,
+      lineHeight: 1.4,
       letterSpacing: -0.02,
     }),
-    diary_icon: fontStyle({
+    headline_02: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 2,
+      weight: 700,
+      lineHeight: 1.6,
+      letterSpacing: -0.02,
+    }),
+    headline_03: fontStyle({
+      fontFamily: montserrat.style.fontFamily,
+      size: 2,
+      weight: 700,
+      lineHeight: 1.4,
+    }),
+    headline_04: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.6,
+      weight: 700,
+      lineHeight: 1.4,
+      letterSpacing: -0.02,
+    }),
+    headline_05: fontStyle({
+      fontFamily: montserrat.style.fontFamily,
+      size: 1.6,
+      weight: 700,
+      lineHeight: 1,
+    }),
+    body_01: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 2,
+      weight: 400,
+      lineHeight: 1,
+      letterSpacing: -0.02,
+    }),
+    body_02: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.8,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
+      letterSpacing: -0.02,
+    }),
+    body_03: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.6,
+      weight: 500,
+      lineHeight: 1.6,
+      letterSpacing: -0.02,
+    }),
+    body_04: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.6,
+      weight: 400,
+      lineHeight: 1.4,
+      letterSpacing: -0.02,
+    }),
+    body_05: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 16,
+      weight: 400,
+      lineHeight: 1,
+      letterSpacing: -0.02,
+    }),
+    body_06: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.4,
+      weight: 400,
+      lineHeight: 1.6,
+    }),
+    body_07: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.4,
+      weight: 400,
+      lineHeight: 1.4,
+      letterSpacing: -0.02,
+    }),
+    body_08: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.4,
+      weight: 400,
+      lineHeight: 1,
+      letterSpacing: -0.02,
+    }),
+    body_09: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.2,
+      weight: 400,
+      lineHeight: 1.4,
+      letterSpacing: -0.02,
+    }),
+    caption_01: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.2,
+      weight: 500,
+      lineHeight: 1,
+      letterSpacing: -0.02,
+    }),
+    caption_02: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1.2,
+      weight: 400,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
     navigation: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.04,
     }),
-    button: fontStyle({
+    button_01: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 12,
+      size: 1.2,
       weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
-    button_lg: fontStyle({
+    button_02: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 14,
+      size: 1.4,
       weight: 700,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
-    button_xl: fontStyle({
+    button_03: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 16,
+      size: 1.6,
       weight: 700,
-      lineHeight: 100,
-      letterSpacing: -0.02,
-    }),
-    header: fontStyle({
-      fontFamily: pretendard.style.fontFamily,
-      size: 18,
-      weight: 500,
-      lineHeight: 100,
-      letterSpacing: -0.02,
-    }),
-    header_button: fontStyle({
-      fontFamily: pretendard.style.fontFamily,
-      size: 16,
-      weight: 500,
-      lineHeight: 100,
+      lineHeight: 1,
       letterSpacing: -0.02,
     }),
   },

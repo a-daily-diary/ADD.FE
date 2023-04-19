@@ -24,16 +24,26 @@ declare module '@emotion/react' {
       pink: string;
     };
     fonts: {
-      diary_title: SerializedStyles;
-      diary_content: SerializedStyles;
-      diary_info: SerializedStyles;
-      diary_icon: SerializedStyles;
+      headline_01: SerializedStyles;
+      headline_02: SerializedStyles;
+      headline_03: SerializedStyles;
+      headline_04: SerializedStyles;
+      headline_05: SerializedStyles;
+      body_01: SerializedStyles;
+      body_02: SerializedStyles;
+      body_03: SerializedStyles;
+      body_04: SerializedStyles;
+      body_05: SerializedStyles;
+      body_06: SerializedStyles;
+      body_07: SerializedStyles;
+      body_08: SerializedStyles;
+      body_09: SerializedStyles;
+      caption_01: SerializedStyles;
+      caption_02: SerializedStyles;
       navigation: SerializedStyles;
-      button: SerializedStyles;
-      button_lg: SerializedStyles;
-      button_xl: SerializedStyles;
-      header: SerializedStyles;
-      header_button: SerializedStyles;
+      button_01: SerializedStyles;
+      button_02: SerializedStyles;
+      button_03: SerializedStyles;
     };
   }
 }

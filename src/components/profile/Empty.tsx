@@ -29,7 +29,5 @@ const EmptyContainer = styled.div`
 const EmptyParagraph = styled.p`
   margin-top: 12px;
   color: ${({ theme }) => theme.colors.gray_999};
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1;
+  ${({ theme }) => theme.fonts.body_08};
 `;

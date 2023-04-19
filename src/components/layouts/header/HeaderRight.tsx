@@ -37,7 +37,7 @@ const HeaderRightLayout = styled.div`
 
 const TextButton = styled.button`
   color: ${({ theme }) => theme.colors.gray_ccc};
-  ${({ theme }) => theme.fonts.header_button}
+  ${({ theme }) => theme.fonts.body_05}
 `;
 
 const StyledMoreIcon = styled(MoreIcon)`

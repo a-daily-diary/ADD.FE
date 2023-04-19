@@ -14,6 +14,16 @@ const GlobalStyle = css`
     overflow-x: hidden;
   }
 
+  html {
+    /* 10px = 1rem */
+    font-size: 62.5%;
+  }
+
+  body {
+    /* 기본 폰트 사이즈 설정: 16px */
+    font-size: 1.6rem;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
