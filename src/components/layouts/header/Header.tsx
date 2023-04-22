@@ -11,7 +11,7 @@ const Header = ({ children }: HeaderProps) => {
 
 export default Header;
 
-const HeaderLayout = styled.body_02`
+const HeaderLayout = styled.header`
   display: flex;
   align-items: center;
   position: fixed;
