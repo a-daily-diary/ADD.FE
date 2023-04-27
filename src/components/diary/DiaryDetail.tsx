@@ -117,12 +117,12 @@ const AuthorImageContainer = styled.div`
 `;
 
 const UsernameText = styled.span`
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_05};
 `;
 
 const CreatedAtText = styled.span`
-  color: ${({ theme }) => theme.colors.gray_999};
+  color: ${({ theme }) => theme.colors.gray_02};
   ${({ theme }) => theme.fonts.body_08};
   text-align: right;
 `;
@@ -143,7 +143,7 @@ const Content = styled.p`
 const TimeContainer = styled.div`
   margin-top: 12px;
   ${({ theme }) => theme.fonts.caption_02}
-  color: ${({ theme }) => theme.colors.gray_999};
+  color: ${({ theme }) => theme.colors.gray_02};
 `;
 
 const IconContainer = styled.div`
@@ -151,7 +151,7 @@ const IconContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   ${({ theme }) => theme.fonts.caption_01};
 `;
 

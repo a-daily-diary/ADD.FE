@@ -75,21 +75,21 @@ const sizeStyles = ({ size, theme }: ButtonProps) => css`
 const variantStyles = ({ variant, theme }: ButtonProps) => css`
   ${variant === 'active' &&
   css`
-    background: ${theme?.colors.main};
+    background: ${theme?.colors.primary_00};
     color: ${theme?.colors.white};
   `}
 
   ${variant === 'highlight' &&
   css`
-    background: ${theme?.colors.sub};
-    color: ${theme?.colors.main};
+    background: ${theme?.colors.primary_03};
+    color: ${theme?.colors.primary_00};
   `}
 
   ${variant === 'line' &&
   css`
     background: ${theme?.colors.white};
-    color: ${theme?.colors.black};
-    border: 1px solid ${theme?.colors.gray_ddd};
+    color: ${theme?.colors.gray_00};
+    border: 1px solid ${theme?.colors.gray_05};
     box-sizing: border-box;
   `}
 `;
@@ -100,8 +100,8 @@ const ButtonLayout = styled.button<ButtonProps>`
   justify-content: center;
   position: relative;
   width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
-  background: ${({ theme }) => theme.colors.bg_f4f4f4};
-  color: ${({ theme }) => theme.colors.black};
+  background: ${({ theme }) => theme.colors.bg_02};
+  color: ${({ theme }) => theme.colors.gray_00};
   text-align: center;
   vertical-align: middle;
   user-select: none;

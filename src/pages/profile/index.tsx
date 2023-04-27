@@ -87,7 +87,7 @@ const UserInfoContainer = styled.section`
   align-items: center;
   position: relative;
   padding: 32px 20px;
-  border-bottom: 12px solid ${({ theme }) => theme.colors.gray_eee};
+  border-bottom: 12px solid ${({ theme }) => theme.colors.gray_06};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
