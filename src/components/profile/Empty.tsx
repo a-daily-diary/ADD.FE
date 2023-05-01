@@ -28,6 +28,6 @@ const EmptyContainer = styled.div`
 
 const EmptyParagraph = styled.p`
   margin-top: 12px;
-  color: ${({ theme }) => theme.colors.gray_999};
+  color: ${({ theme }) => theme.colors.gray_02};
   ${({ theme }) => theme.fonts.body_08};
 `;

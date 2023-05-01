@@ -7,19 +7,21 @@ type ThemeType = typeof theme;
 declare module '@emotion/react' {
   export interface Theme extends ThemeType {
     colors: {
+      primary_00: string;
+      primary_01: string;
+      primary_02: string;
+      primary_03: string;
+      primary_04: string;
+      gray_00: string;
+      gray_01: string;
+      gray_02: string;
+      gray_03: string;
+      gray_04: string;
+      gray_05: string;
+      gray_06: string;
+      bg_01: string;
+      bg_02: string;
       white: string;
-      gray_eee: string;
-      gray_ddd: string;
-      gray_ccc: string;
-      gray_bbb: string;
-      gray_999: string;
-      gray_666: string;
-      black: string;
-      bg_f5fdf7: string;
-      bg_fafafa: string;
-      bg_f4f4f4: string;
-      main: string;
-      sub: string;
       error: string;
       pink: string;
     };

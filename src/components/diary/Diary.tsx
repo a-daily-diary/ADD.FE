@@ -113,7 +113,7 @@ const DateContainer = styled.div`
   justify-content: space-between;
   margin-top: 12px;
   ${({ theme }) => theme.fonts.caption_02}
-  color: ${({ theme }) => theme.colors.gray_999};
+  color: ${({ theme }) => theme.colors.gray_02};
 `;
 
 const IconContainer = styled.div`
@@ -121,7 +121,7 @@ const IconContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   ${({ theme }) => theme.fonts.caption_01};
 `;
 

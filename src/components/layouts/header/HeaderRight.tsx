@@ -36,7 +36,7 @@ const HeaderRightLayout = styled.div`
 `;
 
 const TextButton = styled.button`
-  color: ${({ theme }) => theme.colors.gray_ccc};
+  color: ${({ theme }) => theme.colors.gray_04};
   ${({ theme }) => theme.fonts.body_05}
 `;
 

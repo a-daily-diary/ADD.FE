@@ -61,7 +61,7 @@ const Navigation = styled.nav`
   right: 0;
   bottom: 0;
   left: 0;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -84,11 +84,11 @@ const IconBox = styled.div<{ isActive: boolean }>`
   line-height: 0;
   & svg {
     fill: ${({ theme, isActive }) =>
-      isActive ? theme.colors.main : theme.colors.gray_ddd};
+      isActive ? theme.colors.primary_00 : theme.colors.gray_05};
   }
 `;
 
 const Label = styled.span<{ isActive: boolean }>`
   color: ${({ theme, isActive }) =>
-    isActive ? theme.colors.main : theme.colors.gray_999};
+    isActive ? theme.colors.primary_00 : theme.colors.gray_02};
 `;

@@ -38,7 +38,7 @@ export default DiaryCommentsContainer;
 
 const DiaryCommentSection = styled.section`
   margin-bottom: 92px;
-  border-top: 6px solid ${({ theme }) => theme.colors.gray_eee};
+  border-top: 6px solid ${({ theme }) => theme.colors.gray_06};
 `;
 
 const WriteCommentLabel = styled.label`
@@ -50,11 +50,11 @@ const WriteCommentLabel = styled.label`
   height: 40px;
   margin: 20px auto 40px;
   border-radius: 120px;
-  background-color: ${({ theme }) => theme.colors.bg_f4f4f4};
+  background-color: ${({ theme }) => theme.colors.bg_02};
 `;
 
 const WriteCommentSpan = styled.span`
   margin-top: 2px;
-  color: ${({ theme }) => theme.colors.gray_666};
+  color: ${({ theme }) => theme.colors.gray_01};
   ${({ theme }) => theme.fonts.button_01};
 `;

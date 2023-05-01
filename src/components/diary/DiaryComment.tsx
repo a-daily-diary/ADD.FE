@@ -67,7 +67,7 @@ const CommentItem = styled.li`
     left: 20px;
     width: calc(100% - 40px);
     height: 1px;
-    background-color: ${({ theme }) => theme.colors.gray_eee};
+    background-color: ${({ theme }) => theme.colors.gray_06};
   }
 `;
 
@@ -88,12 +88,12 @@ const ProfileImageBox = styled.div`
 
 const UsernameSpan = styled.span`
   margin: 0 6px 0 8px;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_08};
 `;
 
 const CreatedAtSpan = styled.span`
-  color: ${({ theme }) => theme.colors.gray_999};
+  color: ${({ theme }) => theme.colors.gray_02};
   ${({ theme }) => theme.fonts.caption_02};
   text-align: right;
 `;
@@ -109,7 +109,7 @@ const StyledMoreIcon = styled(MoreIcon)`
 `;
 
 const CommentContent = styled.p`
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_09};
   word-break: keep-all;
   white-space: pre-wrap;

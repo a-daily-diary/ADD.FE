@@ -30,7 +30,7 @@ const TabList = styled.ul<{
     left: 0;
     width: ${({ indicator }) => `${indicator.width}px`};
     height: 2px;
-    background-color: ${({ theme }) => theme.colors.main};
+    background-color: ${({ theme }) => theme.colors.primary_00};
     transform: translateX(${({ indicator }) => `${indicator.offsetLeft}px`});
     transition: transform 0.2s;
     will-change: transform;

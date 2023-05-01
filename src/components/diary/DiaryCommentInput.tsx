@@ -77,7 +77,7 @@ const CommentInputContainer = styled.div`
   bottom: 0;
   left: 0;
   padding: 10px 20px 8px;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
@@ -87,7 +87,7 @@ const CommentForm = styled.form`
   align-items: center;
   padding: 7px 12px 7px 14px;
   border-radius: 34px;
-  background-color: ${({ theme }) => theme.colors.bg_fafafa};
+  background-color: ${({ theme }) => theme.colors.bg_01};
 `;
 
 const CommentTextarea = styled.textarea`
@@ -95,12 +95,12 @@ const CommentTextarea = styled.textarea`
   padding: 0;
   border: 0;
   background-color: transparent;
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_07};
   resize: none;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.gray_999};
+    color: ${({ theme }) => theme.colors.gray_02};
     ${({ theme }) => theme.fonts.body_07};
   }
 

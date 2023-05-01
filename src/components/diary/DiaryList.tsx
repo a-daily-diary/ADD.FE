@@ -19,5 +19,5 @@ export default DiaryList;
 const Container = styled.ul`
   display: grid;
   gap: 6px;
-  background-color: ${({ theme }) => theme.colors.gray_eee};
+  background-color: ${({ theme }) => theme.colors.gray_06};
 `;

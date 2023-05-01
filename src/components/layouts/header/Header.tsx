@@ -20,6 +20,6 @@ const HeaderLayout = styled.header`
   left: 0;
   height: 54px;
   padding: 0 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray_eee};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray_06};
   background: ${({ theme }) => theme.colors.white};
 `;
