@@ -11,6 +11,7 @@ interface ButtonProps {
   theme?: Theme;
   onClick?: () => void;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -20,6 +21,7 @@ const Button = ({
   fullWidth,
   onClick,
   children,
+  disabled,
 }: ButtonProps) => {
   return (
     <ButtonLayout
@@ -28,6 +30,7 @@ const Button = ({
       variant={variant}
       fullWidth={fullWidth}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </ButtonLayout>
@@ -37,7 +40,7 @@ const Button = ({
 const patternStyles = ({ pattern }: ButtonProps) => css`
   ${pattern === 'box' &&
   css`
-    border-radius: 10px;
+    border-radius: 6px;
   `}
 
   ${pattern === 'round' &&
@@ -100,8 +103,8 @@ const ButtonLayout = styled.button<ButtonProps>`
   justify-content: center;
   position: relative;
   width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
-  background: ${({ theme }) => theme.colors.bg_02};
-  color: ${({ theme }) => theme.colors.gray_00};
+  background: ${({ theme }) => theme.colors.primary_00};
+  color: ${({ theme }) => theme.colors.white};
   text-align: center;
   vertical-align: middle;
   user-select: none;
@@ -109,6 +112,11 @@ const ButtonLayout = styled.button<ButtonProps>`
   ${patternStyles}
   ${sizeStyles}
   ${variantStyles}
+
+    &:disabled {
+    background: ${({ theme }) => theme.colors.bg_02};
+    color: ${({ theme }) => theme.colors.gray_00};
+  }
 `;
 
 export default Button;
