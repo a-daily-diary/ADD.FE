@@ -152,7 +152,7 @@ const theme: Theme = {
     }),
     body_05: fontStyle({
       fontFamily: pretendard.style.fontFamily,
-      size: 16,
+      size: 1.6,
       weight: 400,
       lineHeight: 1,
       letterSpacing: -0.02,
