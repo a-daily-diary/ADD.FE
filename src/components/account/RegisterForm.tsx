@@ -7,6 +7,11 @@ import type { SubmitHandler } from 'react-hook-form';
 import type { RegisterSchema } from 'types/Register';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
+import {
+  ERROR_MESSAGE,
+  REQUIRED_MESSAGE,
+  VALID_VALUE,
+} from 'constants/validation';
 
 interface RegisterFormData {
   email: string;
@@ -32,8 +37,8 @@ const RegisterForm = ({
     mode: 'onChange',
   });
 
-  const password = useRef<string | null>(null);
-  password.current = watch('password');
+  const passwordCheckRef = useRef<string | null>(null);
+  passwordCheckRef.current = watch('password');
 
   // 이메일, 유저네임 중복 확인하기 위해 작성
   const [isDoubleCheck, setIsDoubleCheck] = useState({
@@ -70,11 +75,10 @@ const RegisterForm = ({
         <FormInputItem>
           <FormInput
             register={register('email', {
-              required: true,
+              required: REQUIRED_MESSAGE.email,
               pattern: {
-                value:
-                  /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/,
-                message: '올바른 이메일 형식이 아닙니다.',
+                value: VALID_VALUE.email,
+                message: ERROR_MESSAGE.email,
               },
               validate: () =>
                 !isDoubleCheck.email || '이미 가입한 이메일입니다.',
@@ -90,10 +94,10 @@ const RegisterForm = ({
         <FormInputItem>
           <FormInput
             register={register('username', {
-              required: true,
+              required: REQUIRED_MESSAGE.username,
               pattern: {
-                value: /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])|(?=.*[0-9]).{1,20}$/,
-                message: '영어, 숫자, 특수문자로 구성해주세요.',
+                value: VALID_VALUE.username,
+                message: ERROR_MESSAGE.username,
               },
             })}
             name="username"
@@ -119,11 +123,10 @@ const RegisterForm = ({
         <FormInputItem>
           <FormInput
             register={register('password', {
-              required: true,
+              required: REQUIRED_MESSAGE.password,
               pattern: {
-                value:
-                  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/,
-                message: '8-16자 사이의 영문, 숫자, 특수문자로 구성해주세요.',
+                value: VALID_VALUE.password,
+                message: ERROR_MESSAGE.password,
               },
             })}
             name="password"
@@ -137,9 +140,10 @@ const RegisterForm = ({
         <FormInputItem>
           <FormInput
             register={register('passwordCheck', {
-              required: true,
+              required: REQUIRED_MESSAGE.passwordCheck,
               validate: (value) =>
-                value === password.current || '비밀번호가 동일하지 않습니다.',
+                value === passwordCheckRef.current ||
+                ERROR_MESSAGE.passwordCheck,
             })}
             name="passwordCheck"
             type="password"
