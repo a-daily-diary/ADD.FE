@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import type { RegisterSchema } from 'types/Register';
-import Email from 'components/account/Email';
 import Profile from 'components/account/Profile';
+import RegisterForm from 'components/account/RegisterForm';
 import Terms from 'components/account/Terms';
 import Seo from 'components/common/Seo';
 
@@ -24,7 +24,7 @@ const Register = () => {
           {formData.email.length === 0 && (
             <>
               <Title>이메일을 입력해주세요.</Title>
-              <Email formData={formData} setFormData={setFormData} />
+              <RegisterForm formData={formData} setFormData={setFormData} />
             </>
           )}
           {formData.email.length > 0 && formData.imgUrl === '' && (
