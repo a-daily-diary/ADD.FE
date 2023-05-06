@@ -2,16 +2,9 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import type { RegisterSchema } from 'types/Register';
 import Button from 'components/common/Button';
 
-interface IEnterForm {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-  image: string;
-  isAgree: boolean;
-}
 // essential 이용해서 데이터 넘길 때 필수값, 선택값 나누려고 했음
 const TERMS_AND_CONDITIONS_LIST = [
   { id: '1', title: '서비스 이용약관', essential: true },
@@ -24,8 +17,8 @@ const Terms = ({
   formData,
   setFormData,
 }: {
-  formData: IEnterForm;
-  setFormData: Dispatch<SetStateAction<IEnterForm>>;
+  formData: RegisterSchema;
+  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
 }) => {
   const { register, handleSubmit } = useForm();
 

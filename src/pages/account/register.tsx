@@ -1,26 +1,18 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import type { RegisterSchema } from 'types/Register';
 import Email from 'components/account/Email';
 import Profile from 'components/account/Profile';
 import Terms from 'components/account/Terms';
 import Seo from 'components/common/Seo';
 
-interface IEnterForm {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-  image: string;
-  isAgree: boolean;
-}
-
 const Register = () => {
-  const [formData, setFormData] = useState<IEnterForm>({
+  const [formData, setFormData] = useState<RegisterSchema>({
     email: '',
     username: '',
     password: '',
     passwordCheck: '',
-    image: '',
+    imgUrl: '',
     isAgree: false,
   });
 
@@ -35,7 +27,7 @@ const Register = () => {
               <Email formData={formData} setFormData={setFormData} />
             </>
           )}
-          {formData.email.length > 0 && formData.image === '' && (
+          {formData.email.length > 0 && formData.imgUrl === '' && (
             <>
               <Title>프로필 사진을 등록해주세요.</Title>
               <Description>
@@ -45,7 +37,7 @@ const Register = () => {
               <Profile formData={formData} setFormData={setFormData} />
             </>
           )}
-          {formData.image.length > 0 && !formData.isAgree && (
+          {formData.imgUrl.length > 0 && !formData.isAgree && (
             <>
               <Title>약관에 동의해주세요.</Title>
               <Terms formData={formData} setFormData={setFormData} />

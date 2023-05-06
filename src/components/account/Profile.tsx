@@ -3,23 +3,15 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { Dispatch, SetStateAction } from 'react';
+import type { RegisterSchema } from 'types/Register';
 import Button from 'components/common/Button';
-
-interface IEnterForm {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-  image: string;
-  isAgree: boolean;
-}
 
 const Profile = ({
   formData,
   setFormData,
 }: {
-  formData: IEnterForm;
-  setFormData: Dispatch<SetStateAction<IEnterForm>>;
+  formData: RegisterSchema;
+  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
 }) => {
   const { register, handleSubmit } = useForm();
 
@@ -42,7 +34,7 @@ const Profile = ({
   };
 
   const onSubmitHandler = () => {
-    setFormData({ ...formData, image: profileImage });
+    setFormData({ ...formData, imgUrl: profileImage });
   };
 
   return (
