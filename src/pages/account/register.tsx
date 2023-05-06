@@ -1,12 +1,9 @@
 import styled from '@emotion/styled';
-
 import { useState } from 'react';
-
+import Email from 'components/account/Email';
+import Profile from 'components/account/Profile';
+import Terms from 'components/account/Terms';
 import Seo from 'components/common/Seo';
-
-import Email from 'components/signup/Email';
-import Profile from 'components/signup/Profile';
-import Terms from 'components/signup/Terms';
 
 interface IEnterForm {
   email: string;
@@ -17,7 +14,7 @@ interface IEnterForm {
   isAgree: boolean;
 }
 
-const SignUp = () => {
+const Register = () => {
   const [formData, setFormData] = useState<IEnterForm>({
     email: '',
     username: '',
@@ -61,7 +58,7 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;
 
 const Title = styled.h1`
   ${({ theme }) => theme.fonts.headline_01}
