@@ -4,19 +4,11 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { Dispatch, SetStateAction } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
+import type { RegisterSchema } from 'types/Register';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
 
-interface IEnterForm {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-  image: string;
-  isAgree: boolean;
-}
-
-interface IEmailFormData {
+interface RegisterFormData {
   email: string;
   username: string;
   password: string;
@@ -27,8 +19,8 @@ const Email = ({
   formData,
   setFormData,
 }: {
-  formData: IEnterForm;
-  setFormData: Dispatch<SetStateAction<IEnterForm>>;
+  formData: RegisterSchema;
+  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
 }) => {
   const {
     register,
@@ -36,7 +28,7 @@ const Email = ({
     getValues,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<IEmailFormData>({
+  } = useForm<RegisterFormData>({
     mode: 'onChange',
   });
 
@@ -66,7 +58,7 @@ const Email = ({
     }
   };
 
-  const onSubmitHandler: SubmitHandler<IEmailFormData> = (data) => {
+  const onSubmitHandler: SubmitHandler<RegisterFormData> = (data) => {
     const { email, username, password, passwordCheck } = data;
     setFormData({ ...formData, email, username, password, passwordCheck });
   };
