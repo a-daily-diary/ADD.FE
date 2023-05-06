@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { Dispatch, SetStateAction } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
+import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
-import FormInput from 'components/signup/FormInput';
 
 interface IEnterForm {
   email: string;
