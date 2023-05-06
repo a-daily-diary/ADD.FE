@@ -15,7 +15,7 @@ interface RegisterFormData {
   passwordCheck: string;
 }
 
-const Email = ({
+const RegisterForm = ({
   formData,
   setFormData,
 }: {
@@ -156,7 +156,7 @@ const Email = ({
   );
 };
 
-export default Email;
+export default RegisterForm;
 
 const Form = styled.form`
   display: flex;
