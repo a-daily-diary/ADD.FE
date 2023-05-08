@@ -6,7 +6,6 @@ interface IFormInputProps extends ComponentProps<'input'> {
   register: UseFormRegisterReturn;
   label: string;
   errors?: ErrorOption;
-  vaule?: string;
   isDoubleCheck?: boolean;
   doubleCheck?: string;
 }
@@ -20,14 +19,12 @@ const FormInput = ({
   errors,
   isDoubleCheck = false,
   doubleCheck,
-  vaule = '',
 }: IFormInputProps) => {
   return (
     <>
-      {vaule?.length > 0 && errors == null && isDoubleCheck && (
-        <Label htmlFor={name}>{label}</Label>
-      )}
+      {isDoubleCheck && <Label htmlFor={name}>{label}</Label>}
       {isDoubleCheck && doubleCheck != null && <p>{doubleCheck}</p>}
+      <Label htmlFor={name}>{label}</Label>
       <Input
         type={type}
         id={name}

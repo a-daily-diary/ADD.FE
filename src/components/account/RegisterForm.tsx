@@ -64,7 +64,6 @@ const RegisterForm = () => {
           placeholder="이메일"
           label="이메일"
           errors={errors.email}
-          vaule={getValues('email')}
         />
 
         <FormInput
@@ -82,7 +81,6 @@ const RegisterForm = () => {
           errors={errors.username}
           isDoubleCheck={isDoubleCheck.username}
           doubleCheck="중복확인 완료"
-          vaule={getValues('username')}
         />
         {/* TODO: 중복 확인 버튼 UI 수정 */}
         {/* <Button
@@ -108,7 +106,6 @@ const RegisterForm = () => {
           placeholder="비밀번호"
           label="비밀번호"
           errors={errors.password}
-          vaule={getValues('password')}
         />
         <FormInput
           register={register('passwordCheck', {
