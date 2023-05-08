@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import emotionReset from 'emotion-reset';
+import theme from './theme';
 
 const GlobalStyle = css`
   ${emotionReset}
@@ -12,6 +13,7 @@ const GlobalStyle = css`
   body {
     max-width: 100vw;
     overflow-x: hidden;
+    color: ${theme.colors.gray_00};
   }
 
   html {
@@ -60,6 +62,18 @@ const GlobalStyle = css`
 
   textarea {
     font: inherit;
+  }
+
+  input {
+    border: 0;
+    color: inherit;
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    box-shadow: 0 0 0px 1000px #fff inset;
   }
 
   @media (prefers-color-scheme: dark) {
