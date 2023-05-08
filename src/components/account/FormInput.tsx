@@ -29,10 +29,10 @@ const FormInput = ({
         type={type}
         id={name}
         placeholder={placeholder}
-        error={errors != null}
+        isError={errors !== undefined}
         {...register}
       />
-      {errors != null && <Error>{errors.message}</Error>}
+      <ErrorText>{errors?.message}</ErrorText>
     </>
   );
 };
@@ -40,33 +40,32 @@ const FormInput = ({
 export default FormInput;
 
 const Label = styled.label`
-  display: inline-block;
-  margin: 0 0 8px 0;
-  ${({ theme }) => theme.fonts.caption_02}
-  color: #444444;
+  ${({ theme }) => theme.fonts.caption_02};
+  color: ${({ theme }) => theme.colors.gray_01};
 `;
 
-const Input = styled.input<{ error: boolean }>`
+const Input = styled.input<{ isError: boolean }>`
   width: 100%;
-  padding: 0 0 6px 0;
-  border: none;
+  padding: 8px 0 6px;
   border-bottom: 1px solid
-    ${({ theme, error }) => (error ? theme.colors.error : theme.colors.gray_06)};
-  ${({ theme }) => theme.fonts.body_01}
+    ${({ theme, isError }) =>
+      !isError ? theme.colors.gray_06 : theme.colors.error};
+  ${({ theme }) => theme.fonts.body_01};
 
   &:focus {
-    border-bottom: 1px solid
-      ${({ theme, error }) =>
-        error ? theme.colors.error : theme.colors.primary_00};
     outline: none;
+    border-bottom: 1px solid
+      ${({ theme, isError }) =>
+        !isError ? theme.colors.primary_00 : theme.colors.error};
   }
+
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_04};
   }
 `;
 
-const Error = styled.p`
-  margin: 8px 0 0 0;
-  ${({ theme }) => theme.fonts.body_09}
+const ErrorText = styled.p`
+  margin-top: 8px;
   color: ${({ theme }) => theme.colors.error};
+  ${({ theme }) => theme.fonts.body_09};
 `;
