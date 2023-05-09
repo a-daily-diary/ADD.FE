@@ -2,12 +2,11 @@ import styled from '@emotion/styled';
 import type { ComponentProps } from 'react';
 import type { ErrorOption, UseFormRegisterReturn } from 'react-hook-form';
 
-interface IFormInputProps extends ComponentProps<'input'> {
+interface FormInputProps extends ComponentProps<'input'> {
   register: UseFormRegisterReturn;
   label: string;
   errors?: ErrorOption;
-  isDoubleCheck?: boolean;
-  doubleCheck?: string;
+  isShowLabel?: boolean;
 }
 
 const FormInput = ({
@@ -17,14 +16,11 @@ const FormInput = ({
   placeholder,
   label,
   errors,
-  isDoubleCheck = false,
-  doubleCheck,
-}: IFormInputProps) => {
+  isShowLabel = false,
+}: FormInputProps) => {
   return (
     <>
-      {isDoubleCheck && <Label htmlFor={name}>{label}</Label>}
-      {isDoubleCheck && doubleCheck != null && <p>{doubleCheck}</p>}
-      <Label htmlFor={name}>{label}</Label>
+      {isShowLabel && <Label htmlFor={name}>{label}</Label>}
       <Input
         type={type}
         id={name}
@@ -51,6 +47,7 @@ const Input = styled.input<{ isError: boolean }>`
     ${({ theme, isError }) =>
       !isError ? theme.colors.gray_06 : theme.colors.error};
   ${({ theme }) => theme.fonts.body_01};
+  transition: border 0.2s;
 
   &:focus {
     outline: none;
