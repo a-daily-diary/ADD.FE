@@ -88,6 +88,7 @@ const RegisterForm = ({
             placeholder="이메일"
             label="이메일"
             errors={errors.email}
+            isShowLabel={isDoubleCheck.email}
           />
         </FormInputItem>
         <FormInputItem>
@@ -104,8 +105,7 @@ const RegisterForm = ({
             placeholder="닉네임"
             label="닉네임"
             errors={errors.username}
-            isDoubleCheck={isDoubleCheck.username}
-            doubleCheck="중복확인 완료"
+            isShowLabel={isDoubleCheck.username}
           />
           <Button
             pattern="box"
