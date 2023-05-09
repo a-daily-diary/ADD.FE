@@ -69,47 +69,47 @@ const RegisterForm = ({
   };
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <Form onSubmit={handleSubmit(onSubmitHandler)}>
-      <FormInputList>
-        <FormInputItem>
-          <FormInput
-            register={register('email', {
-              required: REQUIRED_MESSAGE.email,
-              pattern: {
-                value: VALID_VALUE.email,
-                message: ERROR_MESSAGE.email,
-              },
-              validate: () =>
-                !isDoubleCheck.email || '이미 가입한 이메일입니다.',
-            })}
-            name="email"
-            type="text"
-            placeholder="이메일"
-            label="이메일"
-            errors={errors.email}
-            vaule={getValues('email')}
-          />
-        </FormInputItem>
-        <FormInputItem>
-          <FormInput
-            register={register('username', {
-              required: REQUIRED_MESSAGE.username,
-              pattern: {
-                value: VALID_VALUE.username,
-                message: ERROR_MESSAGE.username,
-              },
-            })}
-            name="username"
-            type="text"
-            placeholder="닉네임"
-            label="닉네임"
-            errors={errors.username}
-            isDoubleCheck={isDoubleCheck.username}
-            doubleCheck="중복확인 완료"
-            vaule={getValues('username')}
-          />
-          <Button
+    <Section>
+      <TitleContainer>
+        <Title>이메일을 입력해주세요.</Title>
+      </TitleContainer>
+      <FormInputContainer>
+        <FormInput
+          register={register('email', {
+            required: REQUIRED_MESSAGE.email,
+            pattern: {
+              value: VALID_VALUE.email,
+              message: ERROR_MESSAGE.email,
+            },
+            validate: () => !isDoubleCheck.email || '이미 가입한 이메일입니다.',
+          })}
+          name="email"
+          type="text"
+          placeholder="이메일"
+          label="이메일"
+          errors={errors.email}
+          vaule={getValues('email')}
+        />
+
+        <FormInput
+          register={register('username', {
+            required: REQUIRED_MESSAGE.username,
+            pattern: {
+              value: VALID_VALUE.username,
+              message: ERROR_MESSAGE.username,
+            },
+          })}
+          name="username"
+          type="text"
+          placeholder="닉네임"
+          label="닉네임"
+          errors={errors.username}
+          isDoubleCheck={isDoubleCheck.username}
+          doubleCheck="중복확인 완료"
+          vaule={getValues('username')}
+        />
+        {/* TODO: 중복 확인 버튼 UI 수정 */}
+        {/* <Button
             pattern="box"
             size="sm"
             variant="highlight"
@@ -118,70 +118,69 @@ const RegisterForm = ({
             }}
           >
             중복확인
-          </Button>
-        </FormInputItem>
-        <FormInputItem>
-          <FormInput
-            register={register('password', {
-              required: REQUIRED_MESSAGE.password,
-              pattern: {
-                value: VALID_VALUE.password,
-                message: ERROR_MESSAGE.password,
-              },
-            })}
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-            label="비밀번호"
-            errors={errors.password}
-            vaule={getValues('password')}
-          />
-        </FormInputItem>
-        <FormInputItem>
-          <FormInput
-            register={register('passwordCheck', {
-              required: REQUIRED_MESSAGE.passwordCheck,
-              validate: (value) =>
-                value === passwordCheckRef.current ||
-                ERROR_MESSAGE.passwordCheck,
-            })}
-            name="passwordCheck"
-            type="password"
-            placeholder="비밀번호 확인"
-            label="비밀번호 확인"
-            errors={errors.passwordCheck}
-          />
-        </FormInputItem>
-      </FormInputList>
-      <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
-        다음
-      </Button>
-    </Form>
+          </Button> */}
+        <FormInput
+          register={register('password', {
+            required: REQUIRED_MESSAGE.password,
+            pattern: {
+              value: VALID_VALUE.password,
+              message: ERROR_MESSAGE.password,
+            },
+          })}
+          name="password"
+          type="password"
+          placeholder="비밀번호"
+          label="비밀번호"
+          errors={errors.password}
+          vaule={getValues('password')}
+        />
+        <FormInput
+          register={register('passwordCheck', {
+            required: REQUIRED_MESSAGE.passwordCheck,
+            validate: (value) =>
+              value === passwordCheckRef.current || ERROR_MESSAGE.passwordCheck,
+          })}
+          name="passwordCheck"
+          type="password"
+          placeholder="비밀번호 확인"
+          label="비밀번호 확인"
+          errors={errors.passwordCheck}
+        />
+      </FormInputContainer>
+      <ButtonContainer>
+        <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
+          다음
+        </Button>
+      </ButtonContainer>
+    </Section>
   );
 };
 
 export default RegisterForm;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  margin: 40px 0 0;
+const Section = styled.section`
+  margin-bottom: 72px;
 `;
 
-const FormInputList = styled.ul`
+const TitleContainer = styled.div`
+  margin-bottom: 40px;
+`;
+
+const Title = styled.h1`
+  ${({ theme }) => theme.fonts.headline_01};
+`;
+
+const FormInputContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
-  justify-content: space-between;
   gap: 36px;
 `;
 
-const FormInputItem = styled.li`
-  position: relative;
-  button {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
+const ButtonContainer = styled.div`
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 12px 20px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
