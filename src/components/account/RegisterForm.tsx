@@ -79,8 +79,7 @@ const RegisterForm = () => {
           placeholder="닉네임"
           label="닉네임"
           errors={errors.username}
-          isDoubleCheck={isDoubleCheck.username}
-          doubleCheck="중복확인 완료"
+          isShowLabel={isDoubleCheck.username}
         />
         {/* TODO: 중복 확인 버튼 UI 수정 */}
         {/* <Button
