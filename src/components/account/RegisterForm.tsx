@@ -1,9 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import React, { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import type { Dispatch, SetStateAction } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import type { RegisterSchema } from 'types/Register';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
@@ -13,29 +11,13 @@ import {
   VALID_VALUE,
 } from 'constants/validation';
 
-interface RegisterFormData {
-  email: string;
-  username: string;
-  password: string;
-  passwordCheck: string;
-}
-
-const RegisterForm = ({
-  formData,
-  setFormData,
-}: {
-  formData: RegisterSchema;
-  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
-}) => {
+const RegisterForm = () => {
   const {
     register,
     watch,
     getValues,
-    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<RegisterFormData>({
-    mode: 'onChange',
-  });
+  } = useFormContext<RegisterSchema>();
 
   const passwordCheckRef = useRef<string | null>(null);
   passwordCheckRef.current = watch('password');
@@ -45,7 +27,6 @@ const RegisterForm = ({
     email: false,
     username: false,
   });
-
   const usernmaeDoubleCheck = () => {
     const username = getValues('username');
 
@@ -61,11 +42,6 @@ const RegisterForm = ({
     } catch (err) {
       console.log(err);
     }
-  };
-
-  const onSubmitHandler: SubmitHandler<RegisterFormData> = (data) => {
-    const { email, username, password, passwordCheck } = data;
-    setFormData({ ...formData, email, username, password, passwordCheck });
   };
 
   return (
