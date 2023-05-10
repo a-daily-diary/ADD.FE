@@ -5,7 +5,7 @@ export const DIARY_LIST_MOCK_DATA = [
     title: 'Snowbeast',
     content:
       'Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.',
-    imgUrl: 'http://127.0.0.1:5001/media/diaries/avatar1676976810741.png',
+    imgUrl: 'http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG',
     commentCount: 1,
     favoriteCount: 1,
     isFavorite: true,
