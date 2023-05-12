@@ -37,6 +37,12 @@
         "fixStyle": "separate-type-imports"
       }
     ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
     "jsx-a11y/no-noninteractive-element-interactions": "off",
     "linebreak-style": "off",
     "no-shadow": "off",
