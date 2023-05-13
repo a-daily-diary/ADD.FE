@@ -4,10 +4,10 @@ import React, { useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { AxiosResponse } from 'axios';
 import type {
-  RegisterRequest,
   RegisterResponse,
   RegisterSchema,
   RegisterStep,
+  RegisterRequest,
 } from 'types/Register';
 import type { ErrorResponse, SuccessResponse } from 'types/Response';
 import FormInput from 'components/account/FormInput';
@@ -17,15 +17,6 @@ import {
   REQUIRED_MESSAGE,
   VALID_VALUE,
 } from 'constants/validation';
-
-interface ConfirmStatus {
-  status: boolean;
-  message: string;
-}
-interface Confirm {
-  email: ConfirmStatus;
-  username: ConfirmStatus;
-}
 
 interface RegisterProps {
   registerStep: RegisterStep;
@@ -42,14 +33,6 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
 
   const passwordCheckRef = useRef<string | null>(null);
   passwordCheckRef.current = watch('password');
-
-  // 이메일, 유저네임 중복 확인하기 위해 작성
-  const defaultConfirmStats = { status: false, message: '' };
-  const [isConfirmed, setIsConfirmed] = useState<Confirm>({
-    email: defaultConfirmStats,
-    username: defaultConfirmStats,
-  });
-
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
   ).length;
@@ -58,21 +41,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurUsername = async () => {
     try {
       const { username } = getValues();
-      const {
-        data,
-      }: AxiosResponse<
-        SuccessResponse<RegisterResponse>,
-        RegisterRequest
-      > = await axios.post('http://34.168.182.31:5000/users/username-check', {
-        username,
-      });
-
-      setIsConfirmed((state) => {
-        return {
-          ...state,
-          username: { status: true, message: data.data.message },
-        };
-      });
+      await axios.post<SuccessResponse<RegisterResponse>, RegisterRequest>(
+        'http://34.168.182.31:5000/users/username-check',
+        {
+          username,
+        },
+      );
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
@@ -88,21 +62,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurEmail = async () => {
     try {
       const { email } = getValues();
-      const {
-        data,
-      }: AxiosResponse<
-        SuccessResponse<RegisterResponse>,
-        RegisterRequest
-      > = await axios.post('http://34.168.182.31:5000/users/email-check', {
-        email,
-      });
-
-      setIsConfirmed((state) => {
-        return {
-          ...state,
-          email: { status: true, message: data.data.message },
-        };
-      });
+      await axios.post<SuccessResponse<RegisterResponse>, RegisterRequest>(
+        'http://34.168.182.31:5000/users/email-check',
+        {
+          email,
+        },
+      );
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
@@ -139,14 +104,6 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
               message: ERROR_MESSAGE.email,
             },
             onBlur: handleOnBlurEmail,
-            onChange: () => {
-              setIsConfirmed((state) => {
-                return {
-                  ...state,
-                  email: defaultConfirmStats,
-                };
-              });
-            },
           })}
           name="email"
           type="text"
@@ -164,14 +121,6 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
                 message: ERROR_MESSAGE.username,
               },
               onBlur: handleOnBlurUsername,
-              onChange: () => {
-                setIsConfirmed((state) => {
-                  return {
-                    ...state,
-                    username: defaultConfirmStats,
-                  };
-                });
-              },
             })}
             name="username"
             type="text"
