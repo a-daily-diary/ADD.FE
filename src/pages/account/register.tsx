@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import type { RegisterSchema } from 'types/Register';
+import type { SubmitHandler, FieldValues } from 'react-hook-form';
+import type { RegisterSchema, RegisterStep } from 'types/Register';
 import Profile from 'components/account/Profile';
 import RegisterForm from 'components/account/RegisterForm';
 import Terms from 'components/account/Terms';
@@ -9,22 +10,23 @@ import Seo from 'components/common/Seo';
 
 const Register = () => {
   const methods = useForm({ mode: 'onChange' });
-  const [formData, setFormData] = useState<RegisterSchema>({
-    email: '',
-    username: '',
-    password: '',
-    passwordCheck: '',
-    imgUrl: '',
-    isAgree: false,
-  });
+  const { handleSubmit } = methods;
+
+  const [registerStep, setRegisterStep] = useState<RegisterStep>('email');
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (registerStep === 'email') setRegisterStep('username');
+  };
 
   return (
     <>
       <Seo title="회원가입 | a daily diary" />
       <FormProvider {...methods}>
-        <From>
-          {formData.email.length === 0 && <RegisterForm />}
-          {formData.email.length > 0 && formData.imgUrl === '' && (
+        <From onSubmit={handleSubmit(onSubmit)}>
+          {registerStep !== 'imgUrl' && registerStep !== 'isAgree' && (
+            <RegisterForm registerStep={registerStep} />
+          )}
+          {/* {registerStep === 'imgUrl' && (
             <>
               <Title>프로필 사진을 등록해주세요.</Title>
               <Description>
@@ -34,13 +36,13 @@ const Register = () => {
               <Profile formData={formData} setFormData={setFormData} />
             </>
           )}
-          {formData.imgUrl.length > 0 && !formData.isAgree && (
+          {registerStep === 'isAgree' && (
             <>
               <Title>약관에 동의해주세요.</Title>
               <Terms formData={formData} setFormData={setFormData} />
             </>
           )}
-          {formData.isAgree && <p>회원가입 완료</p>}
+          {formData.isAgree && <p>회원가입 완료</p>} */}
         </From>
       </FormProvider>
     </>
