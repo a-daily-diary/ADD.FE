@@ -50,6 +50,40 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
     username: defaultConfirmStats,
   });
 
+  const registerStepValues = Object.values(registerStep).filter(
+    (value) => value,
+  ).length;
+
+  // TODO : lodash 설치 후 username input이 변경될 때 중복확인하는 코드로 수정
+  const handleOnBlurUsername = async () => {
+    try {
+      const { username } = getValues();
+      const {
+        data,
+      }: AxiosResponse<
+        SuccessResponse<RegisterResponse>,
+        RegisterRequest
+      > = await axios.post('http://34.168.182.31:5000/users/username-check', {
+        username,
+      });
+
+      setIsConfirmed((state) => {
+        return {
+          ...state,
+          username: { status: true, message: data.data.message },
+        };
+      });
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        console.log(error);
+        setError('username', {
+          type: 'pattern',
+          message: error.response?.data.message[0],
+        });
+      }
+    }
+  };
+
   // TODO : lodash 설치 후 email input이 변경될 때 중복확인하는 코드로 수정
   const handleOnBlurEmail = async () => {
     try {
@@ -83,38 +117,45 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   return (
     <Section>
       <TitleContainer>
-        {registerStep === 'email' && <Title>이메일을 입력해주세요.</Title>}
-        {registerStep === 'username' && <Title>닉네임을 입력해주세요.</Title>}
+        {registerStep.email && registerStepValues === 1 && (
+          <Title>이메일을 입력해주세요.</Title>
+        )}
+        {registerStep.username && registerStepValues === 2 && (
+          <Title>닉네임을 입력해주세요.</Title>
+        )}
+        {registerStep.password && registerStepValues === 3 && (
+          <Title>비밀번호를 입력해주세요.</Title>
+        )}
+        {registerStep.passwordCheck && registerStepValues === 4 && (
+          <Title>비밀번호를 확인해주세요.</Title>
+        )}
       </TitleContainer>
       <FormInputContainer>
-        <div>
-          <FormInput
-            register={register('email', {
-              required: REQUIRED_MESSAGE.email,
-              pattern: {
-                value: VALID_VALUE.email,
-                message: ERROR_MESSAGE.email,
-              },
-              onBlur: handleOnBlurEmail,
-              onChange: () => {
-                setIsConfirmed((state) => {
-                  return {
-                    ...state,
-                    email: defaultConfirmStats,
-                  };
-                });
-              },
-            })}
-            name="email"
-            type="text"
-            placeholder="이메일"
-            label="이메일"
-            errors={errors.email}
-            isShowLabel={isConfirmed.email.status}
-          />
-          {isConfirmed.email.status && <p>{isConfirmed.email.message}</p>}
-        </div>
-        {registerStep === 'username' && (
+        <FormInput
+          register={register('email', {
+            required: REQUIRED_MESSAGE.email,
+            pattern: {
+              value: VALID_VALUE.email,
+              message: ERROR_MESSAGE.email,
+            },
+            onBlur: handleOnBlurEmail,
+            onChange: () => {
+              setIsConfirmed((state) => {
+                return {
+                  ...state,
+                  email: defaultConfirmStats,
+                };
+              });
+            },
+          })}
+          name="email"
+          type="text"
+          placeholder="이메일"
+          label="이메일"
+          errors={errors.email}
+          isShowLabel={registerStepValues > 1}
+        />
+        {registerStep.username && registerStepValues > 1 && (
           <FormInput
             register={register('username', {
               required: REQUIRED_MESSAGE.username,
@@ -122,27 +163,25 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
                 value: VALID_VALUE.username,
                 message: ERROR_MESSAGE.username,
               },
+              onBlur: handleOnBlurUsername,
+              onChange: () => {
+                setIsConfirmed((state) => {
+                  return {
+                    ...state,
+                    username: defaultConfirmStats,
+                  };
+                });
+              },
             })}
             name="username"
             type="text"
             placeholder="닉네임"
             label="닉네임"
             errors={errors.username}
-            isShowLabel={isConfirmed.username.status}
+            isShowLabel={registerStepValues > 2}
           />
         )}
-        {/* TODO: 중복 확인 버튼 UI 수정 */}
-        {/* <Button
-            pattern="box"
-            size="sm"
-            variant="highlight"
-            onClick={() => {
-              usernmaeDoubleCheck();
-            }}
-          >
-            중복확인
-          </Button> */}
-        {registerStep === 'password' && (
+        {registerStep.password && registerStepValues > 2 && (
           <FormInput
             register={register('password', {
               required: REQUIRED_MESSAGE.password,
@@ -156,9 +195,10 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
             placeholder="비밀번호"
             label="비밀번호"
             errors={errors.password}
+            isShowLabel={registerStepValues > 3}
           />
         )}
-        {registerStep === 'passwordCheck' && (
+        {registerStep.passwordCheck && registerStepValues > 3 && (
           <FormInput
             register={register('passwordCheck', {
               required: REQUIRED_MESSAGE.passwordCheck,
