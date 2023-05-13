@@ -19,7 +19,7 @@ const FormInput = ({
   isShowLabel = false,
 }: FormInputProps) => {
   return (
-    <>
+    <div>
       {isShowLabel && <Label htmlFor={name}>{label}</Label>}
       <Input
         type={type}
@@ -29,7 +29,7 @@ const FormInput = ({
         {...register}
       />
       <ErrorText>{errors?.message}</ErrorText>
-    </>
+    </div>
   );
 };
 
