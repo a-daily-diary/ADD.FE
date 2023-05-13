@@ -6,3 +6,19 @@ export interface RegisterSchema {
   imgUrl: string;
   isAgree: boolean;
 }
+
+export interface RegisterRequest {
+  email: string;
+}
+
+export interface RegisterResponse {
+  message: string;
+}
+
+export type RegisterStep =
+  | 'email'
+  | 'username'
+  | 'password'
+  | 'passwordCheck'
+  | 'imgUrl'
+  | 'isAgree';
