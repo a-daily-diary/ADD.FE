@@ -7,18 +7,17 @@ export interface RegisterSchema {
   isAgree: boolean;
 }
 
-export interface RegisterRequest {
-  email: string;
-}
+export type RegisterRequest = Record<string, string>;
 
 export interface RegisterResponse {
   message: string;
 }
 
-export type RegisterStep =
-  | 'email'
-  | 'username'
-  | 'password'
-  | 'passwordCheck'
-  | 'imgUrl'
-  | 'isAgree';
+export interface RegisterStep {
+  email: boolean;
+  username: boolean;
+  password: boolean;
+  passwordCheck: boolean;
+  imgUrl: boolean;
+  isAgree: boolean;
+}
