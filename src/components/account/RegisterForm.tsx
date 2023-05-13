@@ -25,14 +25,11 @@ interface RegisterProps {
 const RegisterForm = ({ registerStep }: RegisterProps) => {
   const {
     register,
-    watch,
     getValues,
     formState: { errors, isValid },
     setError,
   } = useFormContext<RegisterSchema>();
 
-  const passwordCheckRef = useRef<string | null>(null);
-  passwordCheckRef.current = watch('password');
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
   ).length;
@@ -151,9 +148,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
           <FormInput
             register={register('passwordCheck', {
               required: REQUIRED_MESSAGE.passwordCheck,
-              validate: (value) =>
-                value === passwordCheckRef.current ||
-                ERROR_MESSAGE.passwordCheck,
+              validate: {
+                matchesPreviousPassword: (value) => {
+                  const { password } = getValues();
+                  return password === value || ERROR_MESSAGE.passwordCheck;
+                },
+              },
             })}
             name="passwordCheck"
             type="password"
