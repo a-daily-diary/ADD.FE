@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import axios, { isAxiosError } from 'axios';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { AxiosResponse } from 'axios';
 import type {
   RegisterResponse,
   RegisterSchema,
@@ -14,7 +13,7 @@ import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
 import {
   ERROR_MESSAGE,
-  REQUIRED_MESSAGE,
+  INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
 
@@ -95,10 +94,10 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
       <FormInputContainer>
         <FormInput
           register={register('email', {
-            required: REQUIRED_MESSAGE.email,
+            required: ERROR_MESSAGE.email.required,
             pattern: {
               value: VALID_VALUE.email,
-              message: ERROR_MESSAGE.email,
+              message: ERROR_MESSAGE.email.pattern,
             },
             onBlur: handleOnBlurEmail,
           })}
@@ -112,11 +111,22 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
         {registerStep.username && registerStepValues > 1 && (
           <FormInput
             register={register('username', {
-              required: REQUIRED_MESSAGE.username,
-              pattern: {
-                value: VALID_VALUE.username,
-                message: ERROR_MESSAGE.username,
+              required: ERROR_MESSAGE.username.required,
+              minLength: {
+                value: VALID_VALUE.username.min,
+                message: ERROR_MESSAGE.username.length,
               },
+              maxLength: {
+                value: VALID_VALUE.username.max,
+                message: ERROR_MESSAGE.username.length,
+              },
+              pattern: {
+                value: VALID_VALUE.username.pattern,
+                message: ERROR_MESSAGE.username.pattern,
+              },
+              validate: (value) =>
+                !INVALID_VALUE.username.test(value) ||
+                ERROR_MESSAGE.username.invalidPattern,
               onBlur: handleOnBlurUsername,
             })}
             name="username"
@@ -130,11 +140,22 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
         {registerStep.password && registerStepValues > 2 && (
           <FormInput
             register={register('password', {
-              required: REQUIRED_MESSAGE.password,
-              pattern: {
-                value: VALID_VALUE.password,
-                message: ERROR_MESSAGE.password,
+              required: ERROR_MESSAGE.password.required,
+              minLength: {
+                value: VALID_VALUE.password.min,
+                message: ERROR_MESSAGE.password.length,
               },
+              maxLength: {
+                value: VALID_VALUE.password.max,
+                message: ERROR_MESSAGE.password.length,
+              },
+              pattern: {
+                value: VALID_VALUE.password.pattern,
+                message: ERROR_MESSAGE.password.pattern,
+              },
+              validate: (value) =>
+                !INVALID_VALUE.password.test(value) ||
+                ERROR_MESSAGE.username.invalidPattern,
             })}
             name="password"
             type="password"
@@ -147,11 +168,13 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
         {registerStep.passwordCheck && registerStepValues > 3 && (
           <FormInput
             register={register('passwordCheck', {
-              required: REQUIRED_MESSAGE.passwordCheck,
+              required: ERROR_MESSAGE.passwordCheck.required,
               validate: {
                 matchesPreviousPassword: (value) => {
                   const { password } = getValues();
-                  return password === value || ERROR_MESSAGE.passwordCheck;
+                  return (
+                    password === value || ERROR_MESSAGE.passwordCheck.pattern
+                  );
                 },
               },
             })}
@@ -184,6 +207,12 @@ const TitleContainer = styled.div`
 
 const Title = styled.h1`
   ${({ theme }) => theme.fonts.headline_01};
+`;
+
+const DescriptionText = styled.p`
+  margin-top: 8px;
+  color: ${({ theme }) => theme.colors.gray_02};
+  ${({ theme }) => theme.fonts.body_07};
 `;
 
 const FormInputContainer = styled.div`
