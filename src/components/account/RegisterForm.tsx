@@ -12,7 +12,6 @@ import type { ErrorResponse, SuccessResponse } from 'types/Response';
 import HideIcon from 'assets/icons/hide_pw.svg';
 import ShowIcon from 'assets/icons/show_pw.svg';
 import FormInput from 'components/account/FormInput';
-import Button from 'components/common/Button';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -83,7 +82,7 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   };
 
   return (
-    <Section>
+    <section>
       <TitleContainer>
         {registerStep.email && registerStepValues === 1 && (
           <Title>이메일을 입력해주세요.</Title>
@@ -232,20 +231,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
           </InputPasswordContainer>
         )}
       </FormInputContainer>
-      <ButtonContainer>
-        <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
-          다음
-        </Button>
-      </ButtonContainer>
-    </Section>
+    </section>
   );
 };
 
 export default RegisterForm;
 
-const Section = styled.section`
-  margin-bottom: 72px;
-`;
 const TitleContainer = styled.div`
   margin-bottom: 40px;
 `;
@@ -275,13 +266,4 @@ const PasswordButton = styled.button<{ isError: boolean }>`
   bottom: ${({ isError }) =>
     isError && isError !== undefined ? '23px' : '6px'};
   right: 0;
-`;
-
-const ButtonContainer = styled.div`
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  padding: 12px 20px;
-  background-color: ${({ theme }) => theme.colors.white};
 `;
