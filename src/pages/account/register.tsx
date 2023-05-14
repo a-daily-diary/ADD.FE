@@ -6,11 +6,15 @@ import type { RegisterStep } from 'types/Register';
 import Profile from 'components/account/Profile';
 import RegisterForm from 'components/account/RegisterForm';
 import Terms from 'components/account/Terms';
+import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 
 const Register = () => {
   const methods = useForm({ mode: 'onChange' });
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = methods;
 
   const [registerStep, setRegisterStep] = useState<RegisterStep>({
     email: true,
@@ -65,6 +69,11 @@ const Register = () => {
             </>
           )}
           {/* {formData.isAgree && <p>회원가입 완료</p>} */}
+          <ButtonContainer>
+            <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
+              다음
+            </Button>
+          </ButtonContainer>
         </From>
       </FormProvider>
     </>
@@ -74,6 +83,7 @@ const Register = () => {
 export default Register;
 
 const From = styled.form`
+  margin-bottom: 72px;
   padding: 28px 20px;
 `;
 
@@ -85,4 +95,12 @@ const Description = styled.p`
   margin: 8px 0 0 0;
   ${({ theme }) => theme.fonts.body_07}
   color: ${({ theme }) => theme.colors.gray_02};
+`;
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 12px 20px;
 `;
