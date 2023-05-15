@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import type { RegisterStep } from 'types/Register';
-import Profile from 'components/account/Profile';
 import RegisterForm from 'components/account/RegisterForm';
+import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import Terms from 'components/account/Terms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
@@ -57,7 +57,7 @@ const Register = () => {
           {!registerStep.imgUrl && !registerStep.isAgree && (
             <RegisterForm registerStep={registerStep} />
           )}
-          {registerStep.imgUrl && <Profile />}
+          {registerStep.imgUrl && <RegisterProfileImage />}
           {registerStep.isAgree && (
             <>
               <Title>약관에 동의해주세요.</Title>

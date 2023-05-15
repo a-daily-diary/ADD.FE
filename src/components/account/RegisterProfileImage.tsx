@@ -8,7 +8,7 @@ import SelectImageIcon from 'assets/icons/select_image.svg';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
 
-const Profile = () => {
+const RegisterProfileImage = () => {
   const { register, setValue } = useFormContext<RegisterSchema>();
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
   const [previewImage, setPreviewImage] = useState<string>(
@@ -91,7 +91,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default RegisterProfileImage;
 
 const TitleContainer = styled.div`
   margin-bottom: 48px;
