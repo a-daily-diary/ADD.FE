@@ -14,7 +14,6 @@ import HeaderRight from 'components/layouts/header/HeaderRight';
 const Home: NextPageWithLayout = () => {
   return (
     <>
-      <Seo title={'a daily diary'} />
       <BannerContainer>
         <Link href={'/write'}>
           <ResponsiveImage
@@ -34,6 +33,7 @@ const Home: NextPageWithLayout = () => {
 Home.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
+      <Seo title={'a daily diary'} />
       <Header>
         <HeaderLeft menu="로고" />
         <HeaderRight menu="검색" />
