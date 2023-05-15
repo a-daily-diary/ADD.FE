@@ -42,6 +42,11 @@ const Register = () => {
       setRegisterStep((state) => {
         return { ...state, imgUrl: true };
       });
+    if (registerStep.imgUrl) {
+      setRegisterStep((state) => {
+        return { ...state, isAgree: true };
+      });
+    }
   };
 
   return (
@@ -52,7 +57,7 @@ const Register = () => {
           {!registerStep.imgUrl && !registerStep.isAgree && (
             <RegisterForm registerStep={registerStep} />
           )}
-          {registerStep.imgUrl && <Profile registerStep={registerStep} />}
+          {registerStep.imgUrl && <Profile />}
           {registerStep.isAgree && (
             <>
               <Title>약관에 동의해주세요.</Title>

@@ -1,32 +1,40 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { RegisterSchema, RegisterStep } from 'types/Register';
+import type { MouseEventHandler, ChangeEventHandler } from 'react';
+import type { RegisterSchema } from 'types/Register';
+import SelectImageIcon from 'assets/icons/select_image.svg';
+import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
 
-interface RegisterProps {
-  registerStep: RegisterStep;
-}
-
-const Profile = ({ registerStep }: RegisterProps) => {
-  const { register } = useFormContext<RegisterSchema>();
-
-  const [profileImage, setProfileImage] = useState<string>(
-    '/images/signup/profile_1.png',
+const Profile = () => {
+  const { register, setValue } = useFormContext<RegisterSchema>();
+  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
+  const [previewImage, setPreviewImage] = useState<string>(
+    DEFAULT_PROFILE_IMAGES[0].url,
   );
-  const [index, setindex] = useState(1);
 
-  const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file == null) return;
+  const handleImageFile: ChangeEventHandler = (e) => {
+    const { files } = e.target as HTMLInputElement;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setProfileImage(reader.result);
+    if (files !== null) {
+      const imageUrl = URL.createObjectURL(files[0]);
+      setPreviewImage(imageUrl);
+    }
+  };
+
+  const handleOnClickProfileImage: MouseEventHandler<HTMLButtonElement> = (
+    e,
+  ) => {
+    imageRef.current.forEach((element, index) => {
+      if (element === e.target) {
+        setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
+        setValue('imgUrl', DEFAULT_PROFILE_IMAGES[index].url, {
+          shouldValidate: true,
+        });
       }
-    };
+    });
   };
 
   return (
@@ -38,72 +46,47 @@ const Profile = ({ registerStep }: RegisterProps) => {
           이미지에서 선택해주세요.
         </DescriptionText>
       </TitleContainer>
-      <ImageFile>
-        <Image src={profileImage} alt="프로필" width={160} height={160} />
-        <ImageSection>
-          <ImageWrap
-            active={index === 0}
-            onClick={() => {
-              setindex(0);
-            }}
-          >
-            <ImgLabel>
-              <ImgInput
-                {...register('imgUrl', {
-                  required: true,
-                })}
-                name="image"
-                type="file"
-                id="img"
-                accept="image/*"
-                onChange={handleImageInput}
-              />
-            </ImgLabel>
-          </ImageWrap>
-          <ImageWrap
-            onClick={() => {
-              setindex(1);
-              setProfileImage('/images/signup/profile_1.png');
-            }}
-            active={index === 1}
-          >
-            <Image
-              src={'/images/signup/profile_1.png'}
-              alt="프로필"
-              width={60}
-              height={60}
-            />
-          </ImageWrap>
-          <ImageWrap
-            onClick={() => {
-              setindex(2);
-              setProfileImage('/images/signup/profile_2.png');
-            }}
-            active={index === 2}
-          >
-            <Image
-              src={'/images/signup/profile_2.png'}
-              alt="프로필"
-              width={60}
-              height={60}
-            />
-          </ImageWrap>
-          <ImageWrap
-            onClick={() => {
-              setindex(3);
-              setProfileImage('/images/signup/profile_3.png');
-            }}
-            active={index === 3}
-          >
-            <Image
-              src={'/images/signup/profile_3.png'}
-              alt="프로필"
-              width={60}
-              height={60}
-            />
-          </ImageWrap>
-        </ImageSection>
-      </ImageFile>
+      <PreviewImageContainer>
+        <PreviewImage
+          src={previewImage}
+          alt="프로필"
+          width={160}
+          height={160}
+        />
+      </PreviewImageContainer>
+      <ImageFileContainer>
+        <ImageFileLabel htmlFor="selectImageFile">
+          <SelectImageIcon />
+        </ImageFileLabel>
+        <ImageFileInput
+          {...register('imgUrl', {
+            onChange: handleImageFile,
+          })}
+          type="file"
+          id="selectImageFile"
+          accept="image/*"
+        />
+        <>
+          {DEFAULT_PROFILE_IMAGES.map((image, index) => {
+            const { id, url } = image;
+            return (
+              <ImageButton
+                key={`default-images-${id}`}
+                onClick={handleOnClickProfileImage}
+                isActive={url === previewImage}
+              >
+                <Image
+                  ref={(element) => (imageRef.current[index] = element)}
+                  src={url}
+                  alt={`기본 프로필 이미지 ${id}`}
+                  width={60}
+                  height={60}
+                />
+              </ImageButton>
+            );
+          })}
+        </>
+      </ImageFileContainer>
     </section>
   );
 };
@@ -124,39 +107,49 @@ const DescriptionText = styled.p`
   ${({ theme }) => theme.fonts.body_07};
 `;
 
-const ImageFile = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 36px;
+const PreviewImageContainer = styled.div`
+  overflow: hidden;
+  width: 160px;
+  margin: 0 auto;
+  border-radius: 50%;
+  aspect-ratio: 1;
 `;
 
-const ImageSection = styled.section`
+const PreviewImage = styled(Image)`
+  object-fit: cover;
+`;
+
+const ImageFileContainer = styled.div`
   display: flex;
   gap: 20px;
-`;
-
-const ImageWrap = styled.li<{ active: boolean }>`
-  display: flex;
-  justify-content: center;
   align-items: center;
-  width: 68px;
-  height: 68px;
-  border: ${({ active, theme }) =>
-    active && `1px solid ${theme.colors.primary_00}`};
-  border-radius: 50%;
+  width: fit-content;
+  margin: 32px auto;
 `;
 
-const ImgLabel = styled.label`
-  display: block;
-  position: relative;
+const ImageFileLabel = styled.label`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 60px;
-  height: 60px;
-  border-radius: 100px;
-  background: url('images/signup/btn_album.png');
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.bg_02};
+  aspect-ratio: 1;
   cursor: pointer;
 `;
 
-const ImgInput = styled.input`
-  display: none;
+const ImageFileInput = styled.input`
+  ${ScreenReaderOnly}
+`;
+
+const ImageButton = styled.button<{ isActive: boolean }>`
+  overflow: hidden;
+  padding: 1px;
+  border: 2px solid
+    ${({ theme, isActive }) =>
+      isActive ? theme.colors.primary_00 : 'transparent'};
+  border-radius: 50%;
+  font-size: 0;
+  transition: border 0.2s;
+  aspect-ratio: 1;
 `;
