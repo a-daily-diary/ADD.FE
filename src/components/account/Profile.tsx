@@ -1,19 +1,15 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import type { Dispatch, SetStateAction } from 'react';
-import type { RegisterSchema } from 'types/Register';
-import Button from 'components/common/Button';
+import { useFormContext } from 'react-hook-form';
+import type { RegisterSchema, RegisterStep } from 'types/Register';
 
-const Profile = ({
-  formData,
-  setFormData,
-}: {
-  formData: RegisterSchema;
-  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
-}) => {
-  const { register, handleSubmit } = useForm();
+interface RegisterProps {
+  registerStep: RegisterStep;
+}
+
+const Profile = ({ registerStep }: RegisterProps) => {
+  const { register } = useFormContext<RegisterSchema>();
 
   const [profileImage, setProfileImage] = useState<string>(
     '/images/signup/profile_1.png',
@@ -33,13 +29,15 @@ const Profile = ({
     };
   };
 
-  const onSubmitHandler = () => {
-    setFormData({ ...formData, imgUrl: profileImage });
-  };
-
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <Form onSubmit={handleSubmit(onSubmitHandler)}>
+    <section>
+      <TitleContainer>
+        <Title>프로필 사진을 등록해주세요.</Title>
+        <DescriptionText>
+          프로필로 등록할 사진을 앨범에서 가져오시거나, <br /> 기본 프로필
+          이미지에서 선택해주세요.
+        </DescriptionText>
+      </TitleContainer>
       <ImageFile>
         <Image src={profileImage} alt="프로필" width={160} height={160} />
         <ImageSection>
@@ -51,7 +49,7 @@ const Profile = ({
           >
             <ImgLabel>
               <ImgInput
-                {...register('image', {
+                {...register('imgUrl', {
                   required: true,
                 })}
                 name="image"
@@ -106,21 +104,24 @@ const Profile = ({
           </ImageWrap>
         </ImageSection>
       </ImageFile>
-      <Button pattern="box" size="lg" fullWidth>
-        다음
-      </Button>
-    </Form>
+    </section>
   );
 };
 
 export default Profile;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  margin: 40px 0 0;
+const TitleContainer = styled.div`
+  margin-bottom: 48px;
+`;
+
+const Title = styled.h1`
+  ${({ theme }) => theme.fonts.headline_01}
+`;
+
+const DescriptionText = styled.p`
+  margin-top: 8px;
+  color: ${({ theme }) => theme.colors.gray_02};
+  ${({ theme }) => theme.fonts.body_07};
 `;
 
 const ImageFile = styled.section`
