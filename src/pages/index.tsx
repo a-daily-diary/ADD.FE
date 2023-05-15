@@ -6,6 +6,7 @@ import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
+import Navbar from 'components/layouts/Navbar';
 import Header from 'components/layouts/header/Header';
 import HeaderLeft from 'components/layouts/header/HeaderLeft';
 import HeaderRight from 'components/layouts/header/HeaderRight';
@@ -13,7 +14,6 @@ import HeaderRight from 'components/layouts/header/HeaderRight';
 const Home: NextPageWithLayout = () => {
   return (
     <>
-      <Seo title={'a daily diary'} />
       <BannerContainer>
         <Link href={'/write'}>
           <ResponsiveImage
@@ -33,11 +33,13 @@ const Home: NextPageWithLayout = () => {
 Home.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
+      <Seo title={'a daily diary'} />
       <Header>
         <HeaderLeft menu="로고" />
         <HeaderRight menu="검색" />
       </Header>
       {page}
+      <Navbar />
     </Layout>
   );
 };

@@ -1,4 +1,3 @@
-import Navbar from './Navbar';
 import type { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import type { ReactNode } from 'react';
 interface LayoutProps {
@@ -6,12 +5,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps): ReactJSXElement => {
-  return (
-    <>
-      <main>{children}</main>
-      <Navbar />
-    </>
-  );
+  return <main>{children}</main>;
 };
 
 export default Layout;
