@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { RegisterSchema } from 'types/Register';
@@ -14,6 +14,12 @@ const RegisterProfileImage = () => {
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
+
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(previewImage);
+    };
+  }, [previewImage]);
 
   const handleImageFile: ChangeEventHandler = (e) => {
     const { files } = e.target as HTMLInputElement;
