@@ -72,6 +72,7 @@ const RegisterProfileImage = () => {
             return (
               <ImageButton
                 key={`default-images-${id}`}
+                type="button"
                 onClick={handleOnClickProfileImage}
                 isActive={url === previewImage}
               >
