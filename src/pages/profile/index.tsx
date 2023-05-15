@@ -7,6 +7,7 @@ import SeetingIcon from 'assets/icons/setting.svg';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
 import Layout from 'components/layouts/Layout';
+import Navbar from 'components/layouts/Navbar';
 import Empty from 'components/profile/Empty';
 import useTabIndicator from 'hooks/useTabIndicator';
 
@@ -75,6 +76,7 @@ Profile.getLayout = function getLayout(page: ReactElement) {
     <Layout>
       <Seo title="프로필 | a daily diary" />
       {page}
+      <Navbar />
     </Layout>
   );
 };

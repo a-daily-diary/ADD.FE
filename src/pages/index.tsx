@@ -6,6 +6,7 @@ import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
+import Navbar from 'components/layouts/Navbar';
 import Header from 'components/layouts/header/Header';
 import HeaderLeft from 'components/layouts/header/HeaderLeft';
 import HeaderRight from 'components/layouts/header/HeaderRight';
@@ -38,6 +39,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
         <HeaderRight menu="검색" />
       </Header>
       {page}
+      <Navbar />
     </Layout>
   );
 };
