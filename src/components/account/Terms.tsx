@@ -86,52 +86,63 @@ const Terms = () => {
 
   return (
     <section>
-      <TitleContainer>
-        <Title>약관에 동의해주세요.</Title>
-      </TitleContainer>
+      <Title>약관에 동의해주세요.</Title>
+      <CheckboxInput
+        id="all"
+        type="checkbox"
+        checked={agreedToTerms.all}
+        onChange={handleOnToggleCheckbox}
+      />
       <CheckboxLabel htmlFor="all">
         {agreedToTerms.all ? <CheckedOnIcon /> : <CheckedOffIcon />}
-        <CheckboxInput
-          id="all"
-          type="checkbox"
-          checked={agreedToTerms.all}
-          onChange={handleOnToggleCheckbox}
-        />
         약관 전체 동의하기
       </CheckboxLabel>
-      {TERMS_AND_CONDITIONS.map((term) => {
-        const { id, title, required } = term;
-        return (
-          <div key={`terms-and-conditions-${id}`}>
-            <CheckboxLabel htmlFor={id}>
-              {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}
+      <CheckboxList>
+        {TERMS_AND_CONDITIONS.map((term) => {
+          const { id, title, required } = term;
+          return (
+            <li key={`terms-and-conditions-${id}`}>
               <CheckboxInput
                 id={id}
                 type="checkbox"
                 checked={agreedToTerms[id]}
                 onChange={handleOnToggleCheckbox}
               />
-              {title} {required ? '(필수)' : '(선택)'}
-            </CheckboxLabel>
-          </div>
-        );
-      })}
+              <CheckboxLabel htmlFor={id}>
+                {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}
+                {title} {required ? '(필수)' : '(선택)'}
+              </CheckboxLabel>
+              {/* TODO: 각 이용 약관 모달 형식으로 보여주기 */}
+            </li>
+          );
+        })}
+      </CheckboxList>
     </section>
   );
 };
 
 export default Terms;
 
-const TitleContainer = styled.div`
-  margin-bottom: 40px;
+const Title = styled.h1`
+  margin-bottom: 36px;
+  ${({ theme }) => theme.fonts.headline_01}
 `;
 
-const Title = styled.h1`
-  ${({ theme }) => theme.fonts.headline_01}
+const CheckboxList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
 `;
 
 const CheckboxInput = styled.input`
   display: none;
+
+  &[id='all'] + label {
+    ${({ theme }) => theme.fonts.headline_04}
+  }
 `;
 
 const CheckboxLabel = styled.label`
