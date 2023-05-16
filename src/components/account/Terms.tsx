@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { useForm, useFormContext } from 'react-hook-form';
+import type { ChangeEvent } from 'react';
 import type { RegisterSchema } from 'types/Register';
-import Button from 'components/common/Button';
 
 // essential 이용해서 데이터 넘길 때 필수값, 선택값 나누려고 했음
 const TERMS_AND_CONDITIONS_LIST = [
@@ -13,14 +12,9 @@ const TERMS_AND_CONDITIONS_LIST = [
   { id: '4', title: '마케팅 활용 동의', essential: false },
 ];
 
-const Terms = ({
-  formData,
-  setFormData,
-}: {
-  formData: RegisterSchema;
-  setFormData: Dispatch<SetStateAction<RegisterSchema>>;
-}) => {
-  const { register, handleSubmit } = useForm();
+const Terms = () => {
+  const { setValue } = useFormContext<RegisterSchema>();
+  const { register } = useForm();
 
   const [allFlag, setAllFlag] = useState<boolean>(false);
   const [termsFlag, setTermsFlag] = useState<boolean[]>([
@@ -57,13 +51,11 @@ const Terms = ({
 
   const isAgree = termsFlag[0] && termsFlag[1] && termsFlag[2];
 
-  const onSubmitHandler = () => {
-    setFormData({ ...formData, isAgree });
-  };
-
   return (
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    <Form onSubmit={handleSubmit(onSubmitHandler)}>
+    <section>
+      <TitleContainer>
+        <Title>약관에 동의해주세요.</Title>
+      </TitleContainer>
       <TermsAndConditionsContainer>
         <TermsAllCheck>
           <CheckInput
@@ -94,21 +86,18 @@ const Terms = ({
           );
         })}
       </TermsAndConditionsContainer>
-      <Button disabled={!isAgree} pattern="box" size="lg" fullWidth>
-        다음
-      </Button>
-    </Form>
+    </section>
   );
 };
 
 export default Terms;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  margin: 40px 0 0;
+const TitleContainer = styled.div`
+  margin-bottom: 40px;
+`;
+
+const Title = styled.h1`
+  ${({ theme }) => theme.fonts.headline_01}
 `;
 
 const TermsAndConditionsContainer = styled.section`

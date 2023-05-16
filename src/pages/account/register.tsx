@@ -57,13 +57,10 @@ const Register = () => {
           {!registerStep.imgUrl && !registerStep.isAgree && (
             <RegisterForm registerStep={registerStep} />
           )}
-          {registerStep.imgUrl && <RegisterProfileImage />}
-          {registerStep.isAgree && (
-            <>
-              <Title>약관에 동의해주세요.</Title>
-              {/* <Terms formData={formData} setFormData={setFormData} /> */}
-            </>
+          {!registerStep.isAgree && registerStep.imgUrl && (
+            <RegisterProfileImage />
           )}
+          {registerStep.isAgree && <Terms />}
           {/* {formData.isAgree && <p>회원가입 완료</p>} */}
           <ButtonContainer>
             <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
@@ -81,10 +78,6 @@ export default Register;
 const From = styled.form`
   margin-bottom: 72px;
   padding: 28px 20px;
-`;
-
-const Title = styled.h1`
-  ${({ theme }) => theme.fonts.headline_01}
 `;
 
 const ButtonContainer = styled.div`
