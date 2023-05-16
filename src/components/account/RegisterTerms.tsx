@@ -28,7 +28,7 @@ type TermsAgreementField =
   | 'termsAgreement.marketing';
 
 const RegisterTerms = () => {
-  const { register } = useFormContext<RegisterSchema>();
+  const { register, setValue } = useFormContext<RegisterSchema>();
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreement>({
     all: false,
@@ -63,6 +63,15 @@ const RegisterTerms = () => {
           privacy: false,
           marketing: false,
         });
+        setValue(
+          'termsAgreement',
+          {
+            service: false,
+            privacy: false,
+            marketing: false,
+          },
+          { shouldValidate: true },
+        );
       } else {
         setAgreedToTerms({
           all: true,
@@ -70,6 +79,15 @@ const RegisterTerms = () => {
           privacy: true,
           marketing: true,
         });
+        setValue(
+          'termsAgreement',
+          {
+            service: true,
+            privacy: true,
+            marketing: true,
+          },
+          { shouldValidate: true },
+        );
       }
     }
     if (id === 'service') {
