@@ -22,8 +22,13 @@ interface TermsAgreement {
   [key: string]: boolean;
 }
 
+type TermsAgreementField =
+  | 'termsAgreement.service'
+  | 'termsAgreement.privacy'
+  | 'termsAgreement.marketing';
+
 const Terms = () => {
-  const { setValue } = useFormContext<RegisterSchema>();
+  const { register } = useFormContext<RegisterSchema>();
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreement>({
     all: false,
@@ -100,13 +105,17 @@ const Terms = () => {
       <CheckboxList>
         {TERMS_AND_CONDITIONS.map((term) => {
           const { id, title, required } = term;
+          const fieldName = `termsAgreement.${id}` as TermsAgreementField;
           return (
             <li key={`terms-and-conditions-${id}`}>
               <CheckboxInput
                 id={id}
                 type="checkbox"
                 checked={agreedToTerms[id]}
-                onChange={handleOnToggleCheckbox}
+                {...register(fieldName, {
+                  required: !!required,
+                  onChange: handleOnToggleCheckbox,
+                })}
               />
               <CheckboxLabel htmlFor={id}>
                 {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}

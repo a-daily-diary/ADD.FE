@@ -4,7 +4,11 @@ export interface RegisterSchema {
   password: string;
   passwordCheck: string;
   imgUrl: string;
-  isAgree: boolean;
+  termsAgreement: {
+    service: boolean;
+    privacy: boolean;
+    marketing: boolean;
+  };
 }
 
 export type RegisterRequest = Record<string, string>;
@@ -19,5 +23,5 @@ export interface RegisterStep {
   password: boolean;
   passwordCheck: boolean;
   imgUrl: boolean;
-  isAgree: boolean;
+  termsAgreement: boolean;
 }

@@ -22,7 +22,7 @@ const Register = () => {
     password: false,
     passwordCheck: false,
     imgUrl: false,
-    isAgree: false,
+    termsAgreement: false,
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -44,7 +44,7 @@ const Register = () => {
       });
     if (registerStep.imgUrl) {
       setRegisterStep((state) => {
-        return { ...state, isAgree: true };
+        return { ...state, termsAgreement: true };
       });
     }
   };
@@ -54,14 +54,14 @@ const Register = () => {
       <Seo title="회원가입 | a daily diary" />
       <FormProvider {...methods}>
         <From onSubmit={handleSubmit(onSubmit)}>
-          {!registerStep.imgUrl && !registerStep.isAgree && (
+          {!registerStep.imgUrl && !registerStep.termsAgreement && (
             <RegisterForm registerStep={registerStep} />
           )}
-          {!registerStep.isAgree && registerStep.imgUrl && (
+          {!registerStep.termsAgreement && registerStep.imgUrl && (
             <RegisterProfileImage />
           )}
-          {registerStep.isAgree && <Terms />}
-          {/* {formData.isAgree && <p>회원가입 완료</p>} */}
+          {registerStep.termsAgreement && <Terms />}
+          {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
           <ButtonContainer>
             <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
               다음
