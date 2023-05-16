@@ -27,7 +27,7 @@ type TermsAgreementField =
   | 'termsAgreement.privacy'
   | 'termsAgreement.marketing';
 
-const Terms = () => {
+const RegisterTerms = () => {
   const { register } = useFormContext<RegisterSchema>();
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreement>({
@@ -130,7 +130,7 @@ const Terms = () => {
   );
 };
 
-export default Terms;
+export default RegisterTerms;
 
 const Title = styled.h1`
   margin-bottom: 36px;

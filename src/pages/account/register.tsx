@@ -5,7 +5,7 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import type { RegisterStep } from 'types/Register';
 import RegisterForm from 'components/account/RegisterForm';
 import RegisterProfileImage from 'components/account/RegisterProfileImage';
-import Terms from 'components/account/Terms';
+import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 
@@ -60,7 +60,7 @@ const Register = () => {
           {!registerStep.termsAgreement && registerStep.imgUrl && (
             <RegisterProfileImage />
           )}
-          {registerStep.termsAgreement && <Terms />}
+          {registerStep.termsAgreement && <RegisterTerms />}
           {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
           <ButtonContainer>
             <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
