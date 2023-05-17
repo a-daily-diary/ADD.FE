@@ -6,6 +6,7 @@ import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { RegisterSchema } from 'types/Register';
 import SelectImageIcon from 'assets/icons/select_image.svg';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { SVGVerticalAlignStyle } from 'styles/SVGVerticalAlignStyle';
 import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
 
 const RegisterProfileImage = () => {
@@ -150,13 +151,13 @@ const ImageFileInput = styled.input`
 `;
 
 const ImageButton = styled.button<{ isActive: boolean }>`
+  ${SVGVerticalAlignStyle}
   overflow: hidden;
   padding: 1px;
   border: 2px solid
     ${({ theme, isActive }) =>
       isActive ? theme.colors.primary_00 : 'transparent'};
   border-radius: 50%;
-  font-size: 0;
   transition: border 0.2s;
   aspect-ratio: 1;
 `;
