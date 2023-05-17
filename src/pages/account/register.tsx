@@ -5,7 +5,7 @@ import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import type { RegisterStep } from 'types/Register';
 import RegisterForm from 'components/account/RegisterForm';
 import RegisterProfileImage from 'components/account/RegisterProfileImage';
-import Terms from 'components/account/Terms';
+import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 
@@ -22,7 +22,7 @@ const Register = () => {
     password: false,
     passwordCheck: false,
     imgUrl: false,
-    isAgree: false,
+    termsAgreement: false,
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -44,7 +44,7 @@ const Register = () => {
       });
     if (registerStep.imgUrl) {
       setRegisterStep((state) => {
-        return { ...state, isAgree: true };
+        return { ...state, termsAgreement: true };
       });
     }
   };
@@ -54,17 +54,14 @@ const Register = () => {
       <Seo title="회원가입 | a daily diary" />
       <FormProvider {...methods}>
         <From onSubmit={handleSubmit(onSubmit)}>
-          {!registerStep.imgUrl && !registerStep.isAgree && (
+          {!registerStep.imgUrl && !registerStep.termsAgreement && (
             <RegisterForm registerStep={registerStep} />
           )}
-          {registerStep.imgUrl && <RegisterProfileImage />}
-          {registerStep.isAgree && (
-            <>
-              <Title>약관에 동의해주세요.</Title>
-              {/* <Terms formData={formData} setFormData={setFormData} /> */}
-            </>
+          {!registerStep.termsAgreement && registerStep.imgUrl && (
+            <RegisterProfileImage />
           )}
-          {/* {formData.isAgree && <p>회원가입 완료</p>} */}
+          {registerStep.termsAgreement && <RegisterTerms />}
+          {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
           <ButtonContainer>
             <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
               다음
@@ -81,10 +78,6 @@ export default Register;
 const From = styled.form`
   margin-bottom: 72px;
   padding: 28px 20px;
-`;
-
-const Title = styled.h1`
-  ${({ theme }) => theme.fonts.headline_01}
 `;
 
 const ButtonContainer = styled.div`
