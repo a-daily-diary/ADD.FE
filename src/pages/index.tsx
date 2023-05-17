@@ -7,9 +7,7 @@ import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
 import Layout from 'components/layouts/Layout';
 import Navbar from 'components/layouts/Navbar';
-import Header from 'components/layouts/header/Header';
-import HeaderLeft from 'components/layouts/header/HeaderLeft';
-import HeaderRight from 'components/layouts/header/HeaderRight';
+import { Header, HeaderLeft, HeaderRight } from 'components/layouts/header';
 
 const Home: NextPageWithLayout = () => {
   return (
@@ -35,8 +33,8 @@ Home.getLayout = function getLayout(page: ReactElement) {
     <Layout>
       <Seo title={'a daily diary'} />
       <Header>
-        <HeaderLeft menu="로고" />
-        <HeaderRight menu="검색" />
+        <HeaderLeft type="로고" />
+        <HeaderRight type="검색" />
       </Header>
       {page}
       <Navbar />

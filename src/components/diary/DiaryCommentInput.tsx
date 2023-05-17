@@ -7,6 +7,7 @@ import SendAvtiveIcon from 'assets/icons/send_active.svg';
 import SendIcon from 'assets/icons/send_inactive.svg';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
+import { SVGVerticalAlignStyle } from 'styles/SVGVerticalAlignStyle';
 import textareaAutosize from 'utils/TestareaAutosize';
 
 interface DiaryCommentInputProps {
@@ -110,5 +111,5 @@ const CommentTextarea = styled.textarea`
 `;
 
 const CommentSendButton = styled.button`
-  font-size: 0;
+  ${SVGVerticalAlignStyle}
 `;

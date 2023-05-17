@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import type { NextPageWithLayout } from 'pages/_app';
+import type { ReactElement } from 'react';
 import type { SubmitHandler, FieldValues } from 'react-hook-form';
 import type { RegisterStep } from 'types/Register';
 import RegisterForm from 'components/account/RegisterForm';
@@ -8,8 +10,10 @@ import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
+import Layout from 'components/layouts/Layout';
+import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
 
-const Register = () => {
+const Register: NextPageWithLayout = () => {
   const methods = useForm({ mode: 'onChange' });
   const {
     handleSubmit,
@@ -50,33 +54,43 @@ const Register = () => {
   };
 
   return (
-    <>
-      <Seo title="회원가입 | a daily diary" />
-      <FormProvider {...methods}>
-        <From onSubmit={handleSubmit(onSubmit)}>
-          {!registerStep.imgUrl && !registerStep.termsAgreement && (
-            <RegisterForm registerStep={registerStep} />
-          )}
-          {!registerStep.termsAgreement && registerStep.imgUrl && (
-            <RegisterProfileImage />
-          )}
-          {registerStep.termsAgreement && <RegisterTerms />}
-          {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
-          <ButtonContainer>
-            <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
-              다음
-            </Button>
-          </ButtonContainer>
-        </From>
-      </FormProvider>
-    </>
+    <FormProvider {...methods}>
+      <From onSubmit={handleSubmit(onSubmit)}>
+        {!registerStep.imgUrl && !registerStep.termsAgreement && (
+          <RegisterForm registerStep={registerStep} />
+        )}
+        {!registerStep.termsAgreement && registerStep.imgUrl && (
+          <RegisterProfileImage />
+        )}
+        {registerStep.termsAgreement && <RegisterTerms />}
+        {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
+        <ButtonContainer>
+          <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
+            다음
+          </Button>
+        </ButtonContainer>
+      </From>
+    </FormProvider>
+  );
+};
+
+Register.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout>
+      <Seo title={'회원가입 | a daily diary'} />
+      <Header>
+        <HeaderLeft type="이전" />
+        <HeaderTitle title={'회원가입'} position={'left'} />
+      </Header>
+      {page}
+    </Layout>
   );
 };
 
 export default Register;
 
 const From = styled.form`
-  margin-bottom: 72px;
+  margin: 54px 0 62px;
   padding: 28px 20px;
 `;
 
