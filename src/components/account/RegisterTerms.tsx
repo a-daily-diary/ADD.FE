@@ -5,6 +5,7 @@ import type { ChangeEventHandler } from 'react';
 import type { RegisterSchema } from 'types/Register';
 import CheckedOffIcon from 'assets/icons/checkbox_off.svg';
 import CheckedOnIcon from 'assets/icons/checkbox_on.svg';
+import { FadeInAnimationStyle } from 'styles';
 
 // 이용 약관 동의 목록
 // 소셜 로그인/회원가입 적용 시 제 3자 개인정보 활용 동의 필요
@@ -108,7 +109,7 @@ const RegisterTerms = () => {
   };
 
   return (
-    <section>
+    <Section>
       <Title>약관에 동의해주세요.</Title>
       <CheckboxInput
         id="all"
@@ -144,11 +145,15 @@ const RegisterTerms = () => {
           );
         })}
       </CheckboxList>
-    </section>
+    </Section>
   );
 };
 
 export default RegisterTerms;
+
+const Section = styled.section`
+  ${FadeInAnimationStyle}
+`;
 
 const Title = styled.h1`
   margin-bottom: 36px;

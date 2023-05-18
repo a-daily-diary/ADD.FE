@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import MoreIcon from 'assets/icons/more.svg';
 import SearchIcon from 'assets/icons/search.svg';
-import { SVGVerticalAlignStyle } from 'styles/SVGVerticalAlignStyle';
+import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderRightProps {
   type: '더보기' | '검색' | '등록';

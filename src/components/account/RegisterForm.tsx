@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import axios, { isAxiosError } from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import type {
   RegisterResponse,
@@ -9,8 +9,6 @@ import type {
   RegisterRequest,
 } from 'types/Register';
 import type { ErrorResponse, SuccessResponse } from 'types/Response';
-import HideIcon from 'assets/icons/hide_pw.svg';
-import ShowIcon from 'assets/icons/show_pw.svg';
 import FormInput from 'components/account/FormInput';
 import {
   ERROR_MESSAGE,
@@ -26,18 +24,13 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const {
     register,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors },
     setError,
   } = useFormContext<RegisterSchema>();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
   ).length;
-
-  const handleOnTogglePassword = () => {
-    setShowPassword((state) => !state);
-  };
 
   // TODO : lodash 설치 후 username input이 변경될 때 중복확인하는 코드로 수정
   const handleOnBlurUsername = async () => {
@@ -122,7 +115,6 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
             },
             onBlur: handleOnBlurEmail,
           })}
-          name="email"
           type="text"
           placeholder="이메일"
           label="이메일"
@@ -150,7 +142,6 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
                 ERROR_MESSAGE.username.invalidPattern,
               onBlur: handleOnBlurUsername,
             })}
-            name="username"
             type="text"
             placeholder="닉네임"
             label="닉네임"
@@ -159,76 +150,50 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
           />
         )}
         {registerStep.password && registerStepValues > 2 && (
-          <InputPasswordContainer>
-            <FormInput
-              register={register('password', {
-                required: ERROR_MESSAGE.password.required,
-                minLength: {
-                  value: VALID_VALUE.password.min,
-                  message: ERROR_MESSAGE.password.length,
-                },
-                maxLength: {
-                  value: VALID_VALUE.password.max,
-                  message: ERROR_MESSAGE.password.length,
-                },
-                pattern: {
-                  value: VALID_VALUE.password.pattern,
-                  message: ERROR_MESSAGE.password.pattern,
-                },
-                validate: (value) =>
-                  !INVALID_VALUE.password.test(value) ||
-                  ERROR_MESSAGE.username.invalidPattern,
-              })}
-              name="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="비밀번호"
-              label="비밀번호"
-              errors={errors.password}
-              isShowLabel={registerStepValues > 3}
-            />
-            <PasswordButton
-              type="button"
-              onClick={handleOnTogglePassword}
-              isError={
-                errors.password?.message !== undefined &&
-                errors.password?.message?.length > 0
-              }
-            >
-              {showPassword ? <ShowIcon /> : <HideIcon />}
-            </PasswordButton>
-          </InputPasswordContainer>
+          <FormInput
+            register={register('password', {
+              required: ERROR_MESSAGE.password.required,
+              minLength: {
+                value: VALID_VALUE.password.min,
+                message: ERROR_MESSAGE.password.length,
+              },
+              maxLength: {
+                value: VALID_VALUE.password.max,
+                message: ERROR_MESSAGE.password.length,
+              },
+              pattern: {
+                value: VALID_VALUE.password.pattern,
+                message: ERROR_MESSAGE.password.pattern,
+              },
+              validate: (value) =>
+                !INVALID_VALUE.password.test(value) ||
+                ERROR_MESSAGE.username.invalidPattern,
+            })}
+            type={'password'}
+            placeholder="비밀번호"
+            label="비밀번호"
+            errors={errors.password}
+            isShowLabel={registerStepValues > 3}
+          />
         )}
         {registerStep.passwordCheck && registerStepValues > 3 && (
-          <InputPasswordContainer>
-            <FormInput
-              register={register('passwordCheck', {
-                required: ERROR_MESSAGE.passwordCheck.required,
-                validate: {
-                  matchesPreviousPassword: (value) => {
-                    const { password } = getValues();
-                    return (
-                      password === value || ERROR_MESSAGE.passwordCheck.pattern
-                    );
-                  },
+          <FormInput
+            register={register('passwordCheck', {
+              required: ERROR_MESSAGE.passwordCheck.required,
+              validate: {
+                matchesPreviousPassword: (value) => {
+                  const { password } = getValues();
+                  return (
+                    password === value || ERROR_MESSAGE.passwordCheck.pattern
+                  );
                 },
-              })}
-              name="passwordCheck"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="비밀번호 확인"
-              label="비밀번호 확인"
-              errors={errors.passwordCheck}
-            />
-            <PasswordButton
-              type="button"
-              onClick={handleOnTogglePassword}
-              isError={
-                errors.passwordCheck?.message !== undefined &&
-                errors.passwordCheck?.message?.length > 0
-              }
-            >
-              {showPassword ? <ShowIcon /> : <HideIcon />}
-            </PasswordButton>
-          </InputPasswordContainer>
+              },
+            })}
+            type={'password'}
+            placeholder="비밀번호 확인"
+            label="비밀번호 확인"
+            errors={errors.passwordCheck}
+          />
         )}
       </FormInputContainer>
     </section>
@@ -255,15 +220,4 @@ const FormInputContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
   gap: 36px;
-`;
-
-const InputPasswordContainer = styled.div`
-  position: relative;
-`;
-
-const PasswordButton = styled.button<{ isError: boolean }>`
-  position: absolute;
-  bottom: ${({ isError }) =>
-    isError && isError !== undefined ? '23px' : '6px'};
-  right: 0;
 `;
