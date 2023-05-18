@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import BackIcon from 'assets/icons/back.svg';
 import CloseIcon from 'assets/icons/close.svg';
 import LogoIcon from 'assets/icons/logo.svg';
-import { SVGVerticalAlignStyle } from 'styles/SVGVerticalAlignStyle';
+import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderLeftProps {
   type: '로고' | '이전' | '닫기';
