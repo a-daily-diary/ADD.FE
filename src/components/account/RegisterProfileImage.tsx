@@ -6,8 +6,11 @@ import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { RegisterSchema } from 'types/Register';
 import SelectImageIcon from 'assets/icons/select_image.svg';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
-import { SVGVerticalAlignStyle } from 'styles/SVGVerticalAlignStyle';
-import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
+import {
+  FadeInAnimationStyle,
+  SVGVerticalAlignStyle,
+  ScreenReaderOnly,
+} from 'styles';
 
 const RegisterProfileImage = () => {
   const { register, setValue } = useFormContext<RegisterSchema>();
@@ -45,7 +48,7 @@ const RegisterProfileImage = () => {
   };
 
   return (
-    <section>
+    <Section>
       <TitleContainer>
         <Title>프로필 사진을 등록해주세요.</Title>
         <DescriptionText>
@@ -95,11 +98,15 @@ const RegisterProfileImage = () => {
           })}
         </>
       </ImageFileContainer>
-    </section>
+    </Section>
   );
 };
 
 export default RegisterProfileImage;
+
+const Section = styled.section`
+  ${FadeInAnimationStyle}
+`;
 
 const TitleContainer = styled.div`
   margin-bottom: 48px;

@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import type { ErrorOption, UseFormRegisterReturn } from 'react-hook-form';
 import HideIcon from 'assets/icons/hide_pw.svg';
 import ShowIcon from 'assets/icons/show_pw.svg';
+import { FadeInAnimationStyle } from 'styles';
 
 interface FormInputProps extends ComponentProps<'input'> {
   register: UseFormRegisterReturn;
@@ -33,7 +34,7 @@ const FormInput = ({
   };
 
   return (
-    <div>
+    <InputContainer>
       {isShowLabel && <Label htmlFor={name}>{label}</Label>}
       <InputBox>
         <Input
@@ -50,11 +51,15 @@ const FormInput = ({
         )}
       </InputBox>
       <ErrorText>{errors?.message}</ErrorText>
-    </div>
+    </InputContainer>
   );
 };
 
 export default FormInput;
+
+const InputContainer = styled.div`
+  ${FadeInAnimationStyle}
+`;
 
 const Label = styled.label`
   ${({ theme }) => theme.fonts.caption_02};
