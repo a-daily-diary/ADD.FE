@@ -11,7 +11,8 @@ export interface RegisterSchema {
   };
 }
 
-export type RegisterRequest = Record<string, string>;
+// email, username 중복체크 확인 요청 타입
+export type DuplicationCheckRequest = Record<string, string>;
 
 export interface RegisterResponse {
   message: string;
