@@ -1,10 +1,18 @@
 import styled from '@emotion/styled';
+import axios, { isAxiosError } from 'axios';
+
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
-import type { SubmitHandler, FieldValues } from 'react-hook-form';
-import type { RegisterStep } from 'types/Register';
+import type { SubmitHandler } from 'react-hook-form';
+import type {
+  RegisterRequest,
+  RegisterResponse,
+  RegisterStep,
+} from 'types/Register';
+import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import CompleteRegister from 'components/account/CompleteRegister';
 import RegisterForm from 'components/account/RegisterForm';
 import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import RegisterTerms from 'components/account/RegisterTerms';
@@ -14,7 +22,7 @@ import Layout from 'components/layouts/Layout';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
 
 const Register: NextPageWithLayout = () => {
-  const methods = useForm({ mode: 'onChange' });
+  const methods = useForm<RegisterRequest>({ mode: 'onChange' });
   const {
     handleSubmit,
     formState: { isValid },
@@ -27,9 +35,10 @@ const Register: NextPageWithLayout = () => {
     passwordCheck: false,
     imgUrl: false,
     termsAgreement: false,
+    welcomeMessage: false,
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
     if (registerStep.email)
       setRegisterStep((state) => {
         return { ...state, username: true };
@@ -51,26 +60,58 @@ const Register: NextPageWithLayout = () => {
         return { ...state, termsAgreement: true };
       });
     }
+
+    if (registerStep.termsAgreement) {
+      try {
+        const { email, username, password, imgUrl } = data;
+
+        await axios
+          .post<RegisterRequest, SuccessResponse<RegisterResponse>>(
+            'http://34.168.182.31:5000/users',
+            {
+              email,
+              username,
+              password,
+              imgUrl,
+              isAgree: true, // TODO: API에서 데이터 구조 수정 필요
+            },
+          )
+          .then(() => {
+            setRegisterStep((state) => {
+              return { ...state, welcomeMessage: true };
+            });
+          });
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          console.log(error);
+          alert(error.response?.data.message);
+        }
+      }
+    }
   };
 
   return (
-    <FormProvider {...methods}>
-      <From onSubmit={handleSubmit(onSubmit)}>
-        {!registerStep.imgUrl && !registerStep.termsAgreement && (
-          <RegisterForm registerStep={registerStep} />
-        )}
-        {!registerStep.termsAgreement && registerStep.imgUrl && (
-          <RegisterProfileImage />
-        )}
-        {registerStep.termsAgreement && <RegisterTerms />}
-        {/* {formData.termsAgreement && <p>회원가입 완료</p>} */}
-        <ButtonContainer>
-          <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
-            다음
-          </Button>
-        </ButtonContainer>
-      </From>
-    </FormProvider>
+    <>
+      {!registerStep.welcomeMessage && (
+        <FormProvider {...methods}>
+          <From onSubmit={handleSubmit(onSubmit)}>
+            {!registerStep.imgUrl && !registerStep.termsAgreement && (
+              <RegisterForm registerStep={registerStep} />
+            )}
+            {!registerStep.termsAgreement && registerStep.imgUrl && (
+              <RegisterProfileImage />
+            )}
+            {registerStep.termsAgreement && <RegisterTerms />}
+            <ButtonContainer>
+              <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
+                다음
+              </Button>
+            </ButtonContainer>
+          </From>
+        </FormProvider>
+      )}
+      {registerStep.welcomeMessage && <CompleteRegister />}
+    </>
   );
 };
 
