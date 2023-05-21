@@ -11,13 +11,35 @@ export interface RegisterSchema {
   };
 }
 
-// email, username 중복체크 확인 요청 타입
-export type DuplicationCheckRequest = Record<string, string>;
+/*
+ * Request Data Types
+ */
 
+// 이메일/유저이름 중복 체크
+export type DuplicationCheckRequest = Record<string, string>;
+// 유저 이미지 업로드
+export interface UploadImageRequest {
+  image: FormData;
+}
+
+/*
+ * Response Data Types
+ */
+
+// 유저 이미지 업로드
+export interface UploadImageResponse {
+  data: { imgUrl: string };
+}
+// 이메일/유저이름 중복 체크, 회원가입
 export interface RegisterResponse {
   message: string;
 }
 
+/*
+ * Other Types
+ */
+
+// 회원가입 단계별 UI를 위한 타입
 export interface RegisterStep {
   email: boolean;
   username: boolean;
@@ -25,11 +47,4 @@ export interface RegisterStep {
   passwordCheck: boolean;
   imgUrl: boolean;
   termsAgreement: boolean;
-}
-
-export interface UploadImageResponse {
-  data: { imgUrl: string };
-}
-export interface UploadImageRequest {
-  image: FormData;
 }
