@@ -25,3 +25,10 @@ export interface RegisterStep {
   imgUrl: boolean;
   termsAgreement: boolean;
 }
+
+export interface UploadImageResponse {
+  data: { imgUrl: string };
+}
+export interface UploadImageRequest {
+  image: FormData;
+}

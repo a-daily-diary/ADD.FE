@@ -1,9 +1,15 @@
 import styled from '@emotion/styled';
+import axios, { isAxiosError } from 'axios';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
-import type { RegisterSchema } from 'types/Register';
+import type {
+  RegisterSchema,
+  UploadImageRequest,
+  UploadImageResponse,
+} from 'types/Register';
+import type { ErrorResponse, SuccessResponse } from 'types/Response';
 import SelectImageIcon from 'assets/icons/select_image.svg';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import {
@@ -13,24 +19,37 @@ import {
 } from 'styles';
 
 const RegisterProfileImage = () => {
-  const { register, setValue } = useFormContext<RegisterSchema>();
+  const { setValue } = useFormContext<RegisterSchema>();
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
 
   useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(previewImage);
-    };
-  }, [previewImage]);
+    setValue('imgUrl', previewImage);
+  }, [previewImage, setValue]);
 
-  const handleImageFile: ChangeEventHandler = (e) => {
-    const { files } = e.target as HTMLInputElement;
-
+  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
+    e,
+  ) => {
+    const { files } = e.target;
     if (files !== null) {
-      const imageUrl = URL.createObjectURL(files[0]);
-      setPreviewImage(imageUrl);
+      try {
+        const imageFormData = new FormData();
+        imageFormData.append('image', files[0]);
+        const { data } = await axios.post<
+          UploadImageRequest,
+          SuccessResponse<UploadImageResponse>
+        >('http://34.168.182.31:5000/users/upload', imageFormData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        setPreviewImage(data.data.imgUrl);
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          console.log(error);
+        }
+      }
     }
   };
 
@@ -40,9 +59,6 @@ const RegisterProfileImage = () => {
     imageRef.current.forEach((element, index) => {
       if (element === e.target) {
         setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
-        setValue('imgUrl', DEFAULT_PROFILE_IMAGES[index].url, {
-          shouldValidate: true,
-        });
       }
     });
   };
@@ -69,12 +85,10 @@ const RegisterProfileImage = () => {
           <SelectImageIcon />
         </ImageFileLabel>
         <ImageFileInput
-          {...register('imgUrl', {
-            onChange: handleImageFile,
-          })}
           type="file"
           id="selectImageFile"
           accept="image/*"
+          onChange={handleOnChangeImageFile}
         />
         <>
           {DEFAULT_PROFILE_IMAGES.map((image, index) => {
