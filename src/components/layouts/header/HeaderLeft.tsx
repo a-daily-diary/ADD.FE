@@ -3,51 +3,47 @@ import { useRouter } from 'next/router';
 import BackIcon from 'assets/icons/back.svg';
 import CloseIcon from 'assets/icons/close.svg';
 import LogoIcon from 'assets/icons/logo.svg';
+import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderLeftProps {
-  menu: '로고' | '이전' | '닫기';
+  type: '로고' | '이전' | '닫기';
   onClick?: () => void;
 }
 
-const HeaderLeft = ({ menu, onClick }: HeaderLeftProps) => {
+export const HeaderLeft = ({ type, onClick }: HeaderLeftProps) => {
   const router = useRouter();
 
   return (
-    <HeaderLeftLayout>
-      {menu === '로고' && (
-        <LeftButton
+    <>
+      {type === '로고' && (
+        <Button
+          type="button"
           onClick={() => {
             router.reload();
           }}
         >
           <LogoIcon />
-        </LeftButton>
+        </Button>
       )}
-      {menu === '이전' && (
-        <LeftButton
+      {type === '이전' && (
+        <Button
+          type="button"
           onClick={() => {
             router.back();
           }}
         >
           <BackIcon />
-        </LeftButton>
+        </Button>
       )}
-      {menu === '닫기' && (
-        <LeftButton onClick={onClick}>
+      {type === '닫기' && (
+        <Button type="button" onClick={onClick}>
           <CloseIcon />
-        </LeftButton>
+        </Button>
       )}
-    </HeaderLeftLayout>
+    </>
   );
 };
 
-export default HeaderLeft;
-
-const HeaderLeftLayout = styled.div`
-  display: flex;
-  justify-content: flex-start;
-`;
-
-const LeftButton = styled.button`
-  display: flex;
+const Button = styled.button`
+  ${SVGVerticalAlignStyle}
 `;

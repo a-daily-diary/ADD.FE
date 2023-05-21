@@ -1,19 +1,18 @@
 import styled from '@emotion/styled';
 import type { ReactNode } from 'react';
 
-export interface HeaderProps {
-  children?: ReactNode;
+interface HeaderProps {
+  children: ReactNode;
 }
 
-const Header = ({ children }: HeaderProps) => {
+export const Header = ({ children }: HeaderProps) => {
   return <HeaderLayout>{children}</HeaderLayout>;
 };
-
-export default Header;
 
 const HeaderLayout = styled.header`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   right: 0;

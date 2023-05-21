@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import DiaryComment from './DiaryComment';
-import { ScreenReaderOnly } from 'styles/ScreenReaderStyle';
+import { ScreenReaderOnly } from 'styles';
 
 // TODO: 타입 디렉토리에 분리하기
 interface CommentProps {

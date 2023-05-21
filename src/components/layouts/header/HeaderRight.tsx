@@ -3,44 +3,49 @@ import Link from 'next/link';
 
 import MoreIcon from 'assets/icons/more.svg';
 import SearchIcon from 'assets/icons/search.svg';
+import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderRightProps {
-  menu: '더보기' | '검색' | '등록';
+  type: '더보기' | '검색' | '등록';
   onClick?: () => void;
 }
 
-const HeaderRight = ({ menu, onClick }: HeaderRightProps) => {
+export const HeaderRight = ({ type, onClick }: HeaderRightProps) => {
   return (
-    <HeaderRightLayout>
-      {menu === '더보기' && (
-        <button onClick={onClick}>
+    <>
+      {type === '더보기' && (
+        <MoreButton type="button" onClick={onClick}>
           <StyledMoreIcon />
-        </button>
+        </MoreButton>
       )}
-      {menu === '검색' && (
-        <Link href="/search">
+      {type === '검색' && (
+        <SearchLink href="/search">
           <SearchIcon />
-        </Link>
+        </SearchLink>
       )}
-      {menu === '등록' && <TextButton onClick={onClick}>등록</TextButton>}
-    </HeaderRightLayout>
+      {type === '등록' && (
+        <TextButton type="button" onClick={onClick}>
+          등록
+        </TextButton>
+      )}
+    </>
   );
 };
 
-export default HeaderRight;
-
-const HeaderRightLayout = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-`;
-
-const TextButton = styled.button`
-  color: ${({ theme }) => theme.colors.gray_04};
-  ${({ theme }) => theme.fonts.body_05}
+const MoreButton = styled.button`
+  ${SVGVerticalAlignStyle}
 `;
 
 const StyledMoreIcon = styled(MoreIcon)`
   width: 24px;
   height: 24px;
+`;
+
+const SearchLink = styled(Link)`
+  ${SVGVerticalAlignStyle}
+`;
+
+const TextButton = styled.button`
+  color: ${({ theme }) => theme.colors.gray_04};
+  ${({ theme }) => theme.fonts.body_05}
 `;
