@@ -6,7 +6,7 @@ import type {
   RegisterResponse,
   RegisterSchema,
   RegisterStep,
-  RegisterRequest,
+  DuplicationCheckRequest,
 } from 'types/Register';
 import type { ErrorResponse, SuccessResponse } from 'types/Response';
 import FormInput from 'components/account/FormInput';
@@ -36,12 +36,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurUsername = async () => {
     try {
       const { username } = getValues();
-      await axios.post<SuccessResponse<RegisterResponse>, RegisterRequest>(
-        'http://34.168.182.31:5000/users/username-check',
-        {
-          username,
-        },
-      );
+      await axios.post<
+        DuplicationCheckRequest,
+        SuccessResponse<RegisterResponse>
+      >('http://34.168.182.31:5000/users/username-check', {
+        username,
+      });
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
@@ -57,12 +57,12 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurEmail = async () => {
     try {
       const { email } = getValues();
-      await axios.post<SuccessResponse<RegisterResponse>, RegisterRequest>(
-        'http://34.168.182.31:5000/users/email-check',
-        {
-          email,
-        },
-      );
+      await axios.post<
+        DuplicationCheckRequest,
+        SuccessResponse<RegisterResponse>
+      >('http://34.168.182.31:5000/users/email-check', {
+        email,
+      });
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
