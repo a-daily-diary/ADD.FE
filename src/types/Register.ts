@@ -21,6 +21,14 @@ export type DuplicationCheckRequest = Record<string, string>;
 export interface UploadImageRequest {
   image: FormData;
 }
+// 회원가입
+export interface RegisterRequest {
+  email: string;
+  username: string;
+  password: string;
+  imgUrl: string;
+  isAgree: boolean;
+}
 
 /*
  * Response Data Types
@@ -47,4 +55,5 @@ export interface RegisterStep {
   passwordCheck: boolean;
   imgUrl: boolean;
   termsAgreement: boolean;
+  welcomeMessage: boolean;
 }
