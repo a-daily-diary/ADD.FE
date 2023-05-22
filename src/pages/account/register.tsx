@@ -20,6 +20,7 @@ import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 import Layout from 'components/layouts/Layout';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
+import { errorResponseMessage } from 'utils/ErrorResponseMessage';
 
 const Register: NextPageWithLayout = () => {
   const methods = useForm<RegisterRequest>({ mode: 'onChange' });
@@ -84,7 +85,7 @@ const Register: NextPageWithLayout = () => {
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
           console.log(error);
-          alert(error.response?.data.message);
+          alert(errorResponseMessage(error.response?.data.message));
         }
       }
     }
