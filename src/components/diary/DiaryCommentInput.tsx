@@ -8,7 +8,7 @@ import SendIcon from 'assets/icons/send_inactive.svg';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
 import { SVGVerticalAlignStyle } from 'styles';
-import textareaAutosize from 'utils/TestareaAutosize';
+import { textareaAutosize } from 'utils';
 
 interface DiaryCommentInputProps {
   content: string;

@@ -15,6 +15,7 @@ import {
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
+import { errorResponseMessage } from 'utils';
 
 interface RegisterProps {
   registerStep: RegisterStep;
@@ -46,8 +47,8 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
         setError('username', {
-          type: 'pattern',
-          message: error.response?.data.message[0],
+          type: 'exist',
+          message: errorResponseMessage(error.response?.data.message),
         });
       }
     }
@@ -67,8 +68,8 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
       if (isAxiosError<ErrorResponse>(error)) {
         console.log(error);
         setError('email', {
-          type: 'pattern',
-          message: error.response?.data.message[0],
+          type: 'exist',
+          message: errorResponseMessage(error.response?.data.message),
         });
       }
     }
