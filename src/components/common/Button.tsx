@@ -4,6 +4,7 @@ import type { Theme } from '@emotion/react';
 import type { ReactNode } from 'react';
 
 interface ButtonProps {
+  type: 'button' | 'submit';
   pattern: 'box' | 'round';
   size: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'active' | 'highlight' | 'line';
@@ -15,6 +16,7 @@ interface ButtonProps {
 }
 
 const Button = ({
+  type,
   pattern,
   size,
   variant,
@@ -25,6 +27,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <ButtonLayout
+      type={type}
       pattern={pattern}
       size={size}
       variant={variant}

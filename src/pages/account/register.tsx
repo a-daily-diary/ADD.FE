@@ -104,7 +104,13 @@ const Register: NextPageWithLayout = () => {
             )}
             {registerStep.termsAgreement && <RegisterTerms />}
             <ButtonContainer>
-              <Button disabled={!isValid} pattern="box" size="lg" fullWidth>
+              <Button
+                type="submit"
+                disabled={!isValid}
+                pattern="box"
+                size="lg"
+                fullWidth
+              >
                 다음
               </Button>
             </ButtonContainer>
