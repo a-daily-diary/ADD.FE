@@ -15,7 +15,7 @@ import {
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
-import { errorResponseMessage } from 'utils/ErrorResponseMessage';
+import { errorResponseMessage } from 'utils';
 
 interface RegisterProps {
   registerStep: RegisterStep;

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import MoreIcon from 'assets/icons/more.svg';
-import { timeFormat, dateFormat } from 'utils/Formatter';
+import { timeFormat, dateFormat } from 'utils';
 
 interface CommentProps {
   comment: {

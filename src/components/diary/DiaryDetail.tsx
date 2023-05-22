@@ -6,7 +6,7 @@ import CommentIcon from 'assets/icons/comment.svg';
 import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
 import ResponsiveImage from 'components/common/ResponsiveImage';
-import { dateFormat, timeFormat } from 'utils/Formatter';
+import { dateFormat, timeFormat } from 'utils';
 
 interface DiaryDetailProps {
   id: number;

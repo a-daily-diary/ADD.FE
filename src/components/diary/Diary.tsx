@@ -8,7 +8,7 @@ import HeartIcon from 'assets/icons/heart.svg';
 import OnHeartIcon from 'assets/icons/heart_on.svg';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import { EllipsisStyle } from 'styles';
-import { dateFormat, timeFormat } from 'utils/Formatter';
+import { dateFormat, timeFormat } from 'utils';
 
 interface DiaryProps {
   id: number;

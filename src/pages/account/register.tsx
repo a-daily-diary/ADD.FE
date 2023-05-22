@@ -20,7 +20,7 @@ import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 import Layout from 'components/layouts/Layout';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
-import { errorResponseMessage } from 'utils/ErrorResponseMessage';
+import { errorResponseMessage } from 'utils';
 
 const Register: NextPageWithLayout = () => {
   const methods = useForm<RegisterRequest>({ mode: 'onChange' });
