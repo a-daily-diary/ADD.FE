@@ -26,6 +26,7 @@ const CompleteRegister = () => {
       {/* TODO: 페이지 이동 논의 필요(로그인 or 홈) */}
       <ButtonContainer>
         <Button
+          type="button"
           pattern="box"
           size="lg"
           fullWidth

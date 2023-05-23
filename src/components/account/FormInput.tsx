@@ -50,7 +50,10 @@ const FormInput = ({
           </PasswordButton>
         )}
       </InputBox>
-      <ErrorText>{errors?.message}</ErrorText>
+      {/* NOTE: errors갸  undefined가 아니고, 빈 객체가 아닌 경우 에러 메시지를 보여줍니다. */}
+      {errors !== undefined && Object.keys(errors).length !== 0 && (
+        <ErrorText>{errors.message}</ErrorText>
+      )}
     </InputContainer>
   );
 };
@@ -95,6 +98,7 @@ const ErrorText = styled.p`
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.error};
   ${({ theme }) => theme.fonts.body_09};
+  ${FadeInAnimationStyle}
 `;
 
 const PasswordButton = styled.button`
