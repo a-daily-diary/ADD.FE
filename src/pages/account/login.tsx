@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
+import axios, { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
-import type { LoginForm } from 'types/Login';
+import type { SubmitHandler } from 'react-hook-form';
+import type { LoginForm, LoginRequest, LoginResponse } from 'types/Login';
+import type { ErrorResponse, SuccessResponse } from 'types/Response';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
 import {
@@ -10,17 +13,50 @@ import {
   VALID_VALUE,
   INVALID_VALUE,
 } from 'constants/validation';
+import { errorResponseMessage } from 'utils';
 
 const Login: NextPage = () => {
   const router = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isValid },
   } = useForm<LoginForm>({ mode: 'onChange' });
 
-  const onSubmit = () => {
-    console.log('onSubmit');
+  const onSubmit: SubmitHandler<LoginForm> = async (data) => {
+    const { email, password } = data;
+    try {
+      const {
+        data: {
+          data: { token },
+        },
+      } = await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
+        'http://34.168.182.31:5000/users/login',
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+
+      console.log(token);
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        console.log(error);
+        setError('email', {
+          type: 'exist',
+        });
+        setError('password', {
+          type: 'exist',
+          message: errorResponseMessage(error.response?.data.message),
+        });
+      }
+    }
   };
 
   return (
