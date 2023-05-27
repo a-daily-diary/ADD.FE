@@ -1,8 +1,10 @@
+import axios, { isAxiosError } from 'axios';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import type { NextAuthOptions } from 'next-auth';
-import type { LoginResponse } from 'types/Login';
-import type { SuccessResponse } from 'types/Response';
+import type { LoginRequest, LoginResponse } from 'types/Login';
+import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import { errorResponseMessage } from 'utils';
 
 export const authOption: NextAuthOptions = {
   session: {
@@ -19,20 +21,32 @@ export const authOption: NextAuthOptions = {
       },
       // 로그인 인증
       async authorize(credentials, _req) {
-        const res = await fetch('http://34.168.182.31:5000/users/login', {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const { email, password } = credentials as LoginRequest;
 
-        const { data } = (await res.json()) as SuccessResponse<LoginResponse>;
-
-        if (res.ok && data.user !== null) {
-          return data.user;
+        try {
+          const {
+            data: {
+              data: { user },
+            },
+          } = await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
+            'http://34.168.182.31:5000/users/login',
+            {
+              email,
+              password,
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          );
+          return user;
+        } catch (error) {
+          if (isAxiosError<ErrorResponse>(error)) {
+            throw new Error(errorResponseMessage(error.response?.data.message));
+          }
+          return null;
         }
-        return null;
       },
     }),
   ],
