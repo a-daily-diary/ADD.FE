@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import axios, { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
-import type { LoginForm, LoginRequest, LoginResponse } from 'types/Login';
-import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import type { LoginForm } from 'types/Login';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
 import {
@@ -13,7 +12,6 @@ import {
   VALID_VALUE,
   INVALID_VALUE,
 } from 'constants/validation';
-import { errorResponseMessage } from 'utils';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -27,35 +25,24 @@ const Login: NextPage = () => {
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const { email, password } = data;
     try {
-      const {
-        data: {
-          data: { token },
-        },
-      } = await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
-        'http://34.168.182.31:5000/users/login',
-        {
-          email,
-          password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
+      const response = await signIn('credentials', {
+        email,
+        password,
+        callbackUrl: 'http://localhost:3000', // TODO: 이전 pathname 확인하여 로그인 성공 후 이 전 페이지로 라우팅 처리하기
+      });
 
-      console.log(token);
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        console.log(error);
+      if (response?.ok === false && response?.error !== null) {
         setError('email', {
           type: 'exist',
         });
         setError('password', {
           type: 'exist',
-          message: errorResponseMessage(error.response?.data.message),
+          message: response?.error,
         });
       }
+    } catch (error) {
+      // TODO: 예기치 못한 에러 임의로 처리, 수정 필요
+      alert('로그인에 실패하였습니다. 관리자에게 문의해주세요.');
     }
   };
 
