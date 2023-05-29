@@ -1,10 +1,11 @@
-import axios, { isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import type { NextAuthOptions } from 'next-auth';
-import type { LoginRequest, LoginResponse } from 'types/Login';
-import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import type { LoginRequest } from 'types/Login';
+import type { ErrorResponse } from 'types/Response';
 import { errorResponseMessage } from 'utils';
+import * as api from 'api'
 
 export const authOption: NextAuthOptions = {
   session: {
@@ -28,18 +29,7 @@ export const authOption: NextAuthOptions = {
             data: {
               data: { user },
             },
-          } = await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
-            'http://34.168.182.31:5000/users/login',
-            {
-              email,
-              password,
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            },
-          );
+          } = await api.login({email, password })
           return user;
         } catch (error) {
           if (isAxiosError<ErrorResponse>(error)) {
