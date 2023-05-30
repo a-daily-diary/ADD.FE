@@ -17,8 +17,7 @@ import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
-import Layout from 'components/layouts/Layout';
-import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
+import { Layout, HeaderTitle, Header, HeaderLeft } from 'components/layouts';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPageWithLayout = () => {
