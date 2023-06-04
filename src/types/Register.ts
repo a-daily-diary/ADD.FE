@@ -1,4 +1,4 @@
-export interface RegisterSchema {
+export interface RegisterForm {
   email: string;
   username: string;
   password: string;
@@ -16,11 +16,11 @@ export interface RegisterSchema {
  */
 
 // 이메일/유저이름 중복 체크
-export type DuplicationCheckRequest = Record<string, string>;
+export type ExistsRequest = Record<string, string>;
+
 // 유저 이미지 업로드
-export interface UploadImageRequest {
-  image: FormData;
-}
+export type UploadImageRequest = FormData;
+
 // 회원가입
 export interface RegisterRequest {
   email: string;
@@ -36,7 +36,7 @@ export interface RegisterRequest {
 
 // 유저 이미지 업로드
 export interface UploadImageResponse {
-  data: { imgUrl: string };
+  imgUrl: string;
 }
 // 이메일/유저이름 중복 체크, 회원가입
 export interface RegisterResponse {

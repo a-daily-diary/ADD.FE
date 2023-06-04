@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
-import type { RegisterSchema } from 'types/Register';
+import type { RegisterForm } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
 import SelectImageIcon from 'assets/icons/select_image.svg';
@@ -16,7 +16,7 @@ import {
 } from 'styles';
 
 const RegisterProfileImage = () => {
-  const { setValue } = useFormContext<RegisterSchema>();
+  const { setValue } = useFormContext<RegisterForm>();
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,

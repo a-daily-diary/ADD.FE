@@ -9,7 +9,7 @@ import type { RegisterRequest, RegisterStep } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
 import CompleteRegister from 'components/account/CompleteRegister';
-import RegisterForm from 'components/account/RegisterForm';
+import RegisterInformation from 'components/account/RegisterInformation';
 import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
@@ -83,7 +83,7 @@ const Register: NextPageWithLayout = () => {
         <FormProvider {...methods}>
           <From onSubmit={handleSubmit(onSubmit)}>
             {!registerStep.imgUrl && !registerStep.termsAgreement && (
-              <RegisterForm registerStep={registerStep} />
+              <RegisterInformation registerStep={registerStep} />
             )}
             {!registerStep.termsAgreement && registerStep.imgUrl && (
               <RegisterProfileImage />
