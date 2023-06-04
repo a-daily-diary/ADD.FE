@@ -1,15 +1,12 @@
 import styled from '@emotion/styled';
-import axios, { isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
-import type {
-  RegisterSchema,
-  UploadImageRequest,
-  UploadImageResponse,
-} from 'types/Register';
-import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import type { RegisterSchema } from 'types/Register';
+import type { ErrorResponse } from 'types/Response';
+import * as api from 'api';
 import SelectImageIcon from 'assets/icons/select_image.svg';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import {
@@ -37,12 +34,8 @@ const RegisterProfileImage = () => {
       try {
         const imageFormData = new FormData();
         imageFormData.append('image', files[0]);
-        const { data } = await axios.post<
-          UploadImageRequest,
-          SuccessResponse<UploadImageResponse>
-        >('http://34.168.182.31:5000/users/upload', imageFormData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+
+        const { data } = await api.uploadUserImage(imageFormData);
 
         setPreviewImage(data.data.imgUrl);
       } catch (error) {

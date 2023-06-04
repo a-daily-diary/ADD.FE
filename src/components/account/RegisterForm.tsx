@@ -1,14 +1,10 @@
 import styled from '@emotion/styled';
-import axios, { isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type {
-  RegisterResponse,
-  RegisterSchema,
-  RegisterStep,
-  DuplicationCheckRequest,
-} from 'types/Register';
-import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import type { RegisterSchema, RegisterStep } from 'types/Register';
+import type { ErrorResponse } from 'types/Response';
+import * as api from 'api';
 import FormInput from 'components/account/FormInput';
 import {
   ERROR_MESSAGE,
@@ -37,15 +33,9 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurUsername = async () => {
     try {
       const { username } = getValues();
-      await axios.post<
-        DuplicationCheckRequest,
-        SuccessResponse<RegisterResponse>
-      >('http://34.168.182.31:5000/users/username-check', {
-        username,
-      });
+      await api.usernameExists(username);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
-        console.log(error);
         setError('username', {
           type: 'exist',
           message: errorResponseMessage(error.response?.data.message),
@@ -58,15 +48,9 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurEmail = async () => {
     try {
       const { email } = getValues();
-      await axios.post<
-        DuplicationCheckRequest,
-        SuccessResponse<RegisterResponse>
-      >('http://34.168.182.31:5000/users/email-check', {
-        email,
-      });
+      await api.emailExists(email);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
-        console.log(error);
         setError('email', {
           type: 'exist',
           message: errorResponseMessage(error.response?.data.message),

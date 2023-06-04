@@ -1,17 +1,13 @@
 import styled from '@emotion/styled';
-import axios, { isAxiosError } from 'axios';
-
+import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import type {
-  RegisterRequest,
-  RegisterResponse,
-  RegisterStep,
-} from 'types/Register';
-import type { ErrorResponse, SuccessResponse } from 'types/Response';
+import type { RegisterRequest, RegisterStep } from 'types/Register';
+import type { ErrorResponse } from 'types/Response';
+import * as api from 'api';
 import CompleteRegister from 'components/account/CompleteRegister';
 import RegisterForm from 'components/account/RegisterForm';
 import RegisterProfileImage from 'components/account/RegisterProfileImage';
@@ -64,19 +60,10 @@ const Register: NextPageWithLayout = () => {
 
     if (registerStep.termsAgreement) {
       try {
-        const { email, username, password, imgUrl } = data;
+        const { email, username, password, imgUrl, isAgree } = data;
 
-        await axios
-          .post<RegisterRequest, SuccessResponse<RegisterResponse>>(
-            'http://34.168.182.31:5000/users',
-            {
-              email,
-              username,
-              password,
-              imgUrl,
-              isAgree: true, // TODO: API에서 데이터 구조 수정 필요
-            },
-          )
+        await api
+          .register({ email, username, password, imgUrl, isAgree })
           .then(() => {
             setRegisterStep((state) => {
               return { ...state, welcomeMessage: true };
@@ -84,7 +71,6 @@ const Register: NextPageWithLayout = () => {
           });
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
           alert(errorResponseMessage(error.response?.data.message));
         }
       }
