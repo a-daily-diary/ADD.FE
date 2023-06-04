@@ -1,6 +1,6 @@
 import type { LoginRequest, LoginResponse } from 'types/Login';
 import type {
-  DuplicationCheckRequest,
+  ExistsRequest,
   RegisterRequest,
   RegisterResponse,
 } from 'types/Register';
@@ -15,7 +15,7 @@ export const register = async ({
   imgUrl,
   isAgree,
 }: RegisterRequest) => {
-  return await axios.post<RegisterRequest, SuccessResponse<RegisterResponse>>(
+  return await axios.post<SuccessResponse<RegisterResponse>>(
     API_PATH.users.register,
     {
       email,
@@ -27,26 +27,26 @@ export const register = async ({
   );
 };
 
-export const emailExists = async (email: string) => {
-  return await axios.post<
-    DuplicationCheckRequest,
-    SuccessResponse<RegisterResponse>
-  >(API_PATH.users.emailExists, {
-    email,
-  });
+export const emailExists = async ({ email }: ExistsRequest) => {
+  return await axios.post<SuccessResponse<RegisterResponse>>(
+    API_PATH.users.emailExists,
+    {
+      email,
+    },
+  );
 };
 
-export const usernameExists = async (username: string) => {
-  return await axios.post<
-    DuplicationCheckRequest,
-    SuccessResponse<RegisterResponse>
-  >(API_PATH.users.usernameExists, {
-    username,
-  });
+export const usernameExists = async ({ username }: ExistsRequest) => {
+  return await axios.post<SuccessResponse<RegisterResponse>>(
+    API_PATH.users.usernameExists,
+    {
+      username,
+    },
+  );
 };
 
 export const login = async ({ email, password }: LoginRequest) => {
-  return await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
+  return await axios.post<SuccessResponse<LoginResponse>>(
     API_PATH.users.login,
     { email, password },
   );

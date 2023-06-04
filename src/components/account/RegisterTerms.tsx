@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
-import type { RegisterSchema } from 'types/Register';
+import type { RegisterForm } from 'types/Register';
 import CheckedOffIcon from 'assets/icons/checkbox_off.svg';
 import CheckedOnIcon from 'assets/icons/checkbox_on.svg';
 import { FadeInAnimationStyle } from 'styles';
@@ -29,7 +29,7 @@ type TermsAgreementField =
   | 'termsAgreement.marketing';
 
 const RegisterTerms = () => {
-  const { register, setValue } = useFormContext<RegisterSchema>();
+  const { register, setValue } = useFormContext<RegisterForm>();
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreement>({
     all: false,
