@@ -5,6 +5,7 @@ import type {
   RegisterResponse,
 } from 'types/Register';
 import type { SuccessResponse } from 'types/Response';
+import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 
 export const register = async ({
@@ -15,7 +16,7 @@ export const register = async ({
   isAgree,
 }: RegisterRequest) => {
   return await axios.post<RegisterRequest, SuccessResponse<RegisterResponse>>(
-    '/users',
+    API_PATH.users.register,
     {
       email,
       username,
@@ -30,7 +31,7 @@ export const emailExists = async (email: string) => {
   return await axios.post<
     DuplicationCheckRequest,
     SuccessResponse<RegisterResponse>
-  >('/users/email-check', {
+  >(API_PATH.users.emailExists, {
     email,
   });
 };
@@ -39,14 +40,14 @@ export const usernameExists = async (username: string) => {
   return await axios.post<
     DuplicationCheckRequest,
     SuccessResponse<RegisterResponse>
-  >('/users/username-check', {
+  >(API_PATH.users.usernameExists, {
     username,
   });
 };
 
 export const login = async ({ email, password }: LoginRequest) => {
   return await axios.post<LoginRequest, SuccessResponse<LoginResponse>>(
-    '/users/login',
+    API_PATH.users.login,
     { email, password },
   );
 };
