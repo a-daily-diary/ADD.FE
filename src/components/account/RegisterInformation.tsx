@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { RegisterSchema, RegisterStep } from 'types/Register';
+import type { RegisterStep, RegisterForm } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
 import FormInput from 'components/account/FormInput';
@@ -17,13 +17,13 @@ interface RegisterProps {
   registerStep: RegisterStep;
 }
 
-const RegisterForm = ({ registerStep }: RegisterProps) => {
+const RegisterInformation = ({ registerStep }: RegisterProps) => {
   const {
     register,
     getValues,
     formState: { errors },
     setError,
-  } = useFormContext<RegisterSchema>();
+  } = useFormContext<RegisterForm>();
 
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
@@ -33,7 +33,7 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurUsername = async () => {
     try {
       const { username } = getValues();
-      await api.usernameExists(username);
+      await api.usernameExists({ username });
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         setError('username', {
@@ -48,7 +48,7 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   const handleOnBlurEmail = async () => {
     try {
       const { email } = getValues();
-      await api.emailExists(email);
+      await api.emailExists({ email });
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         setError('email', {
@@ -185,7 +185,7 @@ const RegisterForm = ({ registerStep }: RegisterProps) => {
   );
 };
 
-export default RegisterForm;
+export default RegisterInformation;
 
 const TitleContainer = styled.div`
   margin-bottom: 40px;
