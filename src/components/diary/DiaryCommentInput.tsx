@@ -93,20 +93,11 @@ const CommentForm = styled.form`
 
 const CommentTextarea = styled.textarea`
   max-height: 79px;
-  padding: 0;
-  border: 0;
-  background-color: transparent;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_07};
-  resize: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_02};
-    ${({ theme }) => theme.fonts.body_07};
-  }
-
-  &:focus {
-    outline: 0;
   }
 `;
 
