@@ -1,4 +1,5 @@
 import { Global, ThemeProvider } from '@emotion/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import type { NextPage } from 'next';
@@ -23,16 +24,19 @@ export default function App({
   pageProps,
 }: AppPropsWithLayout<{ session: Session }>) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const queryClient = new QueryClient();
 
   return (
-    <SessionProvider session={pageProps.session}>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <ThemeProvider theme={theme}>
-        <Global styles={GlobalStyle} />
-        {getLayout(<Component {...pageProps} />)}
-      </ThemeProvider>
-    </SessionProvider>
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider session={pageProps.session}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <Global styles={GlobalStyle} />
+          {getLayout(<Component {...pageProps} />)}
+        </ThemeProvider>
+      </SessionProvider>
+    </QueryClientProvider>
   );
 }
