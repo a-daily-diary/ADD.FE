@@ -23,16 +23,15 @@ const CompleteRegister = () => {
           랜덤 매칭을 통해 영어 실력을 키워보세요.
         </WelcomeText>
       </WelcomeContainer>
-      {/* TODO: 페이지 이동 논의 필요(로그인 or 홈) */}
       <ButtonContainer>
         <Button
           type="button"
           pattern="box"
           size="lg"
           fullWidth
-          onClick={async () => await router.replace('/')}
+          onClick={async () => await router.replace('/account/login')}
         >
-          홈으로 이동
+          로그인하기
         </Button>
       </ButtonContainer>
     </Section>
