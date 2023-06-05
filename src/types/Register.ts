@@ -1,3 +1,5 @@
+import type { TermsAgreementId } from './TermsAgreement';
+
 export interface RegisterForm {
   email: string;
   username: string;
@@ -27,7 +29,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   imgUrl: string;
-  isAgree: boolean;
+  termsAgreementIdList: TermsAgreementId[];
 }
 
 /*

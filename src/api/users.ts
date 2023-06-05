@@ -13,7 +13,7 @@ export const register = async ({
   username,
   password,
   imgUrl,
-  isAgree,
+  termsAgreementIdList,
 }: RegisterRequest) => {
   return await axios.post<SuccessResponse<RegisterResponse>>(
     API_PATH.users.register,
@@ -22,7 +22,7 @@ export const register = async ({
       username,
       password,
       imgUrl,
-      isAgree: true, // TODO: API에서 데이터 구조 수정 필요
+      termsAgreementIdList,
     },
   );
 };
