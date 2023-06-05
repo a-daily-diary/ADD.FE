@@ -1,7 +1,13 @@
 import { Global, ThemeProvider } from '@emotion/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
+import { useState } from 'react';
+import type { DehydratedState } from '@tanstack/react-query';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { Session } from 'next-auth';
@@ -16,6 +22,7 @@ type AppPropsWithLayout<P> = AppProps<P> & {
   Component: NextPageWithLayout;
   pageProps: P & {
     session?: Session;
+    dehydratedState: DehydratedState;
   };
 };
 
@@ -24,19 +31,23 @@ export default function App({
   pageProps,
 }: AppPropsWithLayout<{ session: Session }>) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider session={pageProps.session}>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-        </Head>
-        <ThemeProvider theme={theme}>
-          <Global styles={GlobalStyle} />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </SessionProvider>
-    </QueryClientProvider>
+    <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <SessionProvider session={pageProps.session}>
+            <ThemeProvider theme={theme}>
+              <Global styles={GlobalStyle} />
+              {getLayout(<Component {...pageProps} />)}
+            </ThemeProvider>
+          </SessionProvider>
+        </Hydrate>
+      </QueryClientProvider>
+    </>
   );
 }

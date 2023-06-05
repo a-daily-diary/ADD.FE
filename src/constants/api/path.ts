@@ -11,4 +11,7 @@ export const API_PATH = {
     index: '/diaries',
     image: '/diaries/upload-image',
   },
+  terms: {
+    index: '/terms-agreements',
+  },
 } as const;

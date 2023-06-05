@@ -1,26 +1,19 @@
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/Register';
+import * as api from 'api';
 import CheckedOffIcon from 'assets/icons/checkbox_off.svg';
 import CheckedOnIcon from 'assets/icons/checkbox_on.svg';
 import { FadeInAnimationStyle } from 'styles';
 
-// 이용 약관 동의 목록
-// 소셜 로그인/회원가입 적용 시 제 3자 개인정보 활용 동의 필요
-const TERMS_AND_CONDITIONS = [
-  { id: 'service', title: '서비스 이용약관', required: true },
-  { id: 'privacy', title: '개인정보 수집 및 이용 동의', required: true },
-  { id: 'marketing', title: '마케팅 활용 동의', required: false },
-];
-
-interface TermsAgreement {
+interface TermsAgreementState {
   all: boolean;
   service: boolean;
   privacy: boolean;
   marketing: boolean;
-  [key: string]: boolean;
 }
 
 type TermsAgreementField =
@@ -29,13 +22,18 @@ type TermsAgreementField =
   | 'termsAgreement.marketing';
 
 const RegisterTerms = () => {
+  const { data: termsAgreement } = useQuery(
+    ['terms-agreement'],
+    api.getTermsAgreement,
+  );
+
   const { register, setValue } = useFormContext<RegisterForm>();
 
-  const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreement>({
-    all: false,
-    service: false,
-    privacy: false,
-    marketing: false,
+  const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreementState>({
+    all: true,
+    service: true,
+    privacy: true,
+    marketing: true,
   });
 
   useEffect(() => {
@@ -122,8 +120,8 @@ const RegisterTerms = () => {
         약관 전체 동의하기
       </CheckboxLabel>
       <CheckboxList>
-        {TERMS_AND_CONDITIONS.map((term) => {
-          const { id, title, required } = term;
+        {termsAgreement?.map((term) => {
+          const { id, title, isRequired } = term;
           const fieldName = `termsAgreement.${id}` as TermsAgreementField;
           return (
             <li key={`terms-and-conditions-${id}`}>
@@ -132,13 +130,13 @@ const RegisterTerms = () => {
                 type="checkbox"
                 checked={agreedToTerms[id]}
                 {...register(fieldName, {
-                  required: !!required,
+                  required: !!isRequired,
                   onChange: handleOnToggleCheckbox,
                 })}
               />
               <CheckboxLabel htmlFor={id}>
                 {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}
-                {title} {required ? '(필수)' : '(선택)'}
+                {title}
               </CheckboxLabel>
               {/* TODO: 각 이용 약관 모달 형식으로 보여주기 */}
             </li>

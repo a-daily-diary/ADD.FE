@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import type { GetStaticProps } from 'next';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import type { RegisterRequest, RegisterStep } from 'types/Register';
+import type { RegisterForm, RegisterStep } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
+import type { TermsAgreementId } from 'types/TermsAgreement';
 import * as api from 'api';
 import CompleteRegister from 'components/account/CompleteRegister';
 import RegisterInformation from 'components/account/RegisterInformation';
@@ -19,7 +22,7 @@ import { HeaderTitle, Header, HeaderLeft } from 'components/layouts/header';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPageWithLayout = () => {
-  const methods = useForm<RegisterRequest>({ mode: 'onChange' });
+  const methods = useForm<RegisterForm>({ mode: 'onChange' });
   const {
     handleSubmit,
     formState: { isValid },
@@ -35,7 +38,7 @@ const Register: NextPageWithLayout = () => {
     welcomeMessage: false,
   });
 
-  const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     if (registerStep.email)
       setRegisterStep((state) => {
         return { ...state, username: true };
@@ -60,10 +63,20 @@ const Register: NextPageWithLayout = () => {
 
     if (registerStep.termsAgreement) {
       try {
-        const { email, username, password, imgUrl, isAgree } = data;
+        const { email, username, password, imgUrl, termsAgreement } = data;
+        // NOTE: 동의한 약관 객체를 약관 ID 문자열 배열로 변환
+        const termsAgreementIdList = Object.entries(termsAgreement)
+          .filter(([_, value]) => value)
+          .map(([id, _]) => id) as TermsAgreementId[];
 
         await api
-          .register({ email, username, password, imgUrl, isAgree })
+          .register({
+            email,
+            username,
+            password,
+            imgUrl,
+            termsAgreementIdList,
+          })
           .then(() => {
             setRegisterStep((state) => {
               return { ...state, welcomeMessage: true };
@@ -119,6 +132,13 @@ Register.getLayout = function getLayout(page: ReactElement) {
       {page}
     </Layout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(['terms-agreement'], api.getTermsAgreement);
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 
 export default Register;
