@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import BackIcon from 'assets/icons/back.svg';
-import CloseIcon from 'assets/icons/close.svg';
-import LogoIcon from 'assets/icons/logo.svg';
+import { LogoIcon, BackIcon, CloseIcon } from 'assets/icons';
 import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderLeftProps {

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
-import ReplyIcon from 'assets/icons/reply.svg';
+import { WriteCommentIcon } from 'assets/icons';
 import DiaryCommentInput from 'components/diary/DiaryCommentInput';
 import DiaryComments from 'components/diary/DiaryComments';
 import { COMMENT_LIST_MOCK_DATA } from 'mocks/CommentList';
@@ -26,7 +26,7 @@ const DiaryCommentsContainer = () => {
     <DiaryCommentSection>
       <DiaryComments comments={comments} />
       <WriteCommentLabel htmlFor="diaryCommentTextarea">
-        <ReplyIcon />
+        <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>
       </WriteCommentLabel>
       <DiaryCommentInput />

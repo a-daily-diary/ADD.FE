@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import MoreIcon from 'assets/icons/more.svg';
+import { MoreIcon } from 'assets/icons';
 import { timeFormat, dateFormat } from 'utils';
 
 interface CommentProps {

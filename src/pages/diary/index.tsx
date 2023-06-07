@@ -9,11 +9,13 @@ import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
-import DeleteIcon from 'assets/icons/delete.svg';
-import LockIcon from 'assets/icons/lock.svg';
-import PhotoActiveIcon from 'assets/icons/photo_active.svg';
-import PhotoInactiveIcon from 'assets/icons/photo_inactive.svg';
-import UnLockIcon from 'assets/icons/unlock.svg';
+import {
+  PhotoInactiveIcon,
+  PhotoActiveIcon,
+  UnlockIcon,
+  LockIcon,
+  DeleteIcon,
+} from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import {
@@ -133,7 +135,7 @@ const WriteDiary: NextPageWithLayout = () => {
           <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
             {watchIsPublic ? (
               <>
-                <UnLockIcon />
+                <UnlockIcon />
                 공개
               </>
             ) : (

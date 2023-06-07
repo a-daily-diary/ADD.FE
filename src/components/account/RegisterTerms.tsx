@@ -5,8 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/Register';
 import * as api from 'api';
-import CheckedOffIcon from 'assets/icons/checkbox_off.svg';
-import CheckedOnIcon from 'assets/icons/checkbox_on.svg';
+import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { FadeInAnimationStyle } from 'styles';
 
 interface TermsAgreementState {
