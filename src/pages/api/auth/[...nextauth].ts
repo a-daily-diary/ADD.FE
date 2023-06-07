@@ -4,10 +4,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import type { NextAuthOptions } from 'next-auth';
 import type { LoginRequest } from 'types/Login';
 import type { ErrorResponse } from 'types/Response';
+import * as api from 'api';
 import { errorResponseMessage } from 'utils';
-import * as api from 'api'
 
-export const authOption: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -27,10 +27,10 @@ export const authOption: NextAuthOptions = {
         try {
           const {
             data: {
-              data: { user },
+              data: { user, token },
             },
-          } = await api.login({email, password })
-          return user;
+          } = await api.login({ email, password });
+          return { ...user, accessToken: token };
         } catch (error) {
           if (isAxiosError<ErrorResponse>(error)) {
             throw new Error(errorResponseMessage(error.response?.data.message));
@@ -43,7 +43,7 @@ export const authOption: NextAuthOptions = {
   callbacks: {
     async jwt({ token, account, user }) {
       // Oauth로 로그인할 경우 account 객체가 인수로 전달됨, 추후 수정 필요
-      if (account != null) {
+      if (account?.access_token !== undefined) {
         // !== 연산자 사용시 사용자 정보가 제대로 넘어오지 않음
         token.accessToken = account.access_token;
         // token.id = profile.id; // profile 필요할 경우 추가
@@ -53,9 +53,10 @@ export const authOption: NextAuthOptions = {
     },
     async session({ session, token }) {
       // jwt의 반환값 token으로 받음
-      const { email, id, imgUrl, isAdmin, username } = token;
+      const { email, id, imgUrl, isAdmin, username, accessToken } = token;
       // session.user에 token의 로그인 한 사용자 정보 전달
-      session.user = { email, id, username, imgUrl, isAdmin };
+      session.user = { email, id, username, imgUrl, isAdmin, accessToken };
+      // session.accessToken = accessToken;
 
       return await Promise.resolve(session);
     },
@@ -70,4 +71,4 @@ export const authOption: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-export default NextAuth(authOption);
+export default NextAuth(authOptions);

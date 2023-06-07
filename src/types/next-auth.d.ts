@@ -8,9 +8,11 @@ declare module 'next-auth' {
     username: string;
     imgUrl: string;
     isAdmin: boolean;
+    accessToken: string;
   }
   interface Session {
     user: User;
+    accessToken: string;
   }
 }
 
@@ -21,5 +23,6 @@ declare module 'next-auth/jwt' {
     username: string;
     imgUrl: string;
     isAdmin: boolean;
+    accessToken: string;
   }
 }
