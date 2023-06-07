@@ -1,11 +1,14 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement, ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
+import type { ErrorResponse } from 'types/Response';
+import * as api from 'api';
 import DeleteIcon from 'assets/icons/delete.svg';
 import LockIcon from 'assets/icons/lock.svg';
 import PhotoActiveIcon from 'assets/icons/photo_active.svg';
@@ -21,11 +24,10 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { ScreenReaderOnly } from 'styles';
-import { dateFormat, textareaAutosize } from 'utils';
+import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
 const WriteDiary: NextPageWithLayout = () => {
   const today = dateFormat(new Date().toISOString()) as string;
-  const [previewImage, setPreviewImage] = useState<string>('');
   const router = useRouter();
   const {
     register,
@@ -38,10 +40,34 @@ const WriteDiary: NextPageWithLayout = () => {
     defaultValues: { isPublic: true },
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
+
+  const [previewImage, setPreviewImage] = useState<string>('');
   const isPhotoActive = previewImage.length > 0;
 
-  const onSubmit: SubmitHandler<DiaryForm> = (data) => {
-    console.log(data);
+  useEffect(() => {
+    return () => {
+      URL.revokeObjectURL(previewImage);
+    };
+  }, [previewImage]);
+
+  const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
+    try {
+      const { title, content, imgUrl, isPublic } = data;
+      const {
+        data: { diary },
+      } = await api.writeDiary({
+        title,
+        content,
+        imgUrl,
+        isPublic,
+      });
+      // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
+      await router.replace(`/diary/${diary.id}`);
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
+      }
+    }
   };
 
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
