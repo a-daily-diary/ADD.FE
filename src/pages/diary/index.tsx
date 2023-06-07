@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { NextPageWithLayout } from 'pages/_app';
-import type { FormEventHandler, ReactElement, ChangeEventHandler } from 'react';
+import type { ReactElement, ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import DeleteIcon from 'assets/icons/delete.svg';
@@ -42,11 +42,6 @@ const WriteDiary: NextPageWithLayout = () => {
 
   const onSubmit: SubmitHandler<DiaryForm> = (data) => {
     console.log(data);
-  };
-
-  const handleTextarea: FormEventHandler<HTMLTextAreaElement> = (e) => {
-    const element = e.target as HTMLTextAreaElement;
-    textareaAutosize(element);
   };
 
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -120,7 +115,7 @@ const WriteDiary: NextPageWithLayout = () => {
             rows={1}
             {...register('title', {
               required: true,
-              onChange: handleTextarea,
+              onChange: textareaAutosize,
             })}
           />
           {isPhotoActive && (
@@ -147,7 +142,7 @@ const WriteDiary: NextPageWithLayout = () => {
             rows={1}
             {...register('content', {
               required: true,
-              onChange: handleTextarea,
+              onChange: textareaAutosize,
             })}
           />
         </ContentContainer>
@@ -263,6 +258,3 @@ const ContentTextarea = styled.textarea`
     color: ${({ theme }) => theme.colors.gray_04};
   }
 `;
-function useRef<T>(arg0: never[]) {
-  throw new Error('Function not implemented.');
-}
