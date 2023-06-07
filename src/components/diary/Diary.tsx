@@ -1,11 +1,13 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import BookmarkIcon from 'assets/icons/bookmark.svg';
-import OnBookmarkIcon from 'assets/icons/bookmark_on.svg';
-import CommentIcon from 'assets/icons/comment.svg';
-import HeartIcon from 'assets/icons/heart.svg';
-import OnHeartIcon from 'assets/icons/heart_on.svg';
+import {
+  BookmarkOffIcon,
+  BookmarkOnIcon,
+  CommentIcon,
+  HeartOnIcon,
+  HeartOffIcon,
+} from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
@@ -67,7 +69,7 @@ const Diary = ({
       <IconContainer>
         <IconInnerContainer>
           <FavoriteButton type="button">
-            {isFavorite ? <OnHeartIcon /> : <HeartIcon />}
+            {isFavorite ? <HeartOnIcon /> : <HeartOffIcon />}
             {favoriteCount}
           </FavoriteButton>
           {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
@@ -80,7 +82,7 @@ const Diary = ({
           </CommentLink>
         </IconInnerContainer>
         <button type="button">
-          {isBookmark ? <OnBookmarkIcon /> : <BookmarkIcon />}
+          {isBookmark ? <BookmarkOnIcon /> : <BookmarkOffIcon />}
         </button>
       </IconContainer>
     </Container>

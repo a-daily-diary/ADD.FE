@@ -2,9 +2,7 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { FormEventHandler } from 'react';
-import SendAvtiveIcon from 'assets/icons/send_active.svg';
-import SendIcon from 'assets/icons/send_inactive.svg';
+import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
 import { SVGVerticalAlignStyle } from 'styles';
@@ -58,7 +56,7 @@ const DiaryCommentInput = () => {
           })}
         />
         <CommentSendButton type="submit">
-          {isActiveSendButton ? <SendAvtiveIcon /> : <SendIcon />}
+          {isActiveSendButton ? <SendActiveIcon /> : <SendInactiveIcon />}
         </CommentSendButton>
       </CommentForm>
     </CommentInputContainer>

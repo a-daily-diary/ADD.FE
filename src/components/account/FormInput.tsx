@@ -2,8 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import type { ComponentProps } from 'react';
 import type { ErrorOption, UseFormRegisterReturn } from 'react-hook-form';
-import HideIcon from 'assets/icons/hide_pw.svg';
-import ShowIcon from 'assets/icons/show_pw.svg';
+import { HideIcon, ShowIcon } from 'assets/icons';
 import { FadeInAnimationStyle } from 'styles';
 
 interface FormInputProps extends ComponentProps<'input'> {

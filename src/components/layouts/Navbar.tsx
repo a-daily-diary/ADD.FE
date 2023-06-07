@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import HomeIcon from 'assets/icons/home.svg';
-import MachingIcon from 'assets/icons/matching.svg';
-import ProfileIcon from 'assets/icons/profile.svg';
-import WriteIcon from 'assets/icons/write.svg';
+import {
+  HomeIcon,
+  MatchingIcon,
+  ProfileIcon,
+  WriteDiaryIcon,
+} from 'assets/icons';
 
 const NAVIGATION_LIST = [
   {
@@ -15,12 +17,12 @@ const NAVIGATION_LIST = [
   {
     label: '랜덤매칭',
     href: '/matching',
-    icon: <MachingIcon />,
+    icon: <MatchingIcon />,
   },
   {
     label: '일기작성',
     href: '/diary',
-    icon: <WriteIcon />,
+    icon: <WriteDiaryIcon />,
   },
   {
     label: '프로필',

@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-
-import MoreIcon from 'assets/icons/more.svg';
-import SearchIcon from 'assets/icons/search.svg';
+import { MoreIcon, SearchIcon } from 'assets/icons';
 import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderRightStyleProps {

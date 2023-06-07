@@ -7,7 +7,7 @@ import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
-import SelectImageIcon from 'assets/icons/select_image.svg';
+import { ImagePickerIcon } from 'assets/icons';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import {
   FadeInAnimationStyle,
@@ -75,7 +75,7 @@ const RegisterProfileImage = () => {
       </PreviewImageContainer>
       <ImageFileContainer>
         <ImageFileLabel htmlFor="selectImageFile">
-          <SelectImageIcon />
+          <ImagePickerIcon />
         </ImageFileLabel>
         <ImageFileInput
           type="file"

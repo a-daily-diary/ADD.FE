@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRef, useState } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement } from 'react';
-import SeetingIcon from 'assets/icons/setting.svg';
+import { SettingIcon } from 'assets/icons';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
 import { Layout, Navbar } from 'components/layouts';
@@ -25,7 +25,7 @@ const Profile: NextPageWithLayout = () => {
     <>
       <UserInfoContainer>
         <SettingLink href={'/setting'}>
-          <SeetingIcon />
+          <SettingIcon />
         </SettingLink>
         <UserProfileImage />
         <UserName>userid1234</UserName>
