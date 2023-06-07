@@ -61,7 +61,20 @@ const GlobalStyle = css`
   }
 
   textarea {
+    overflow: hidden; /* 스크롤 바 숨기기 위해 적용 */
+    padding: 0;
+    border: 0;
+    background-color: transparent;
     font: inherit;
+    resize: none;
+
+    &::placeholder {
+      font: inherit;
+    }
+
+    &:focus {
+      outline: 0;
+    }
   }
 
   input {

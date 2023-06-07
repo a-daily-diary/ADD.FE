@@ -5,9 +5,13 @@ import type { ReactElement } from 'react';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
-import Layout from 'components/layouts/Layout';
-import Navbar from 'components/layouts/Navbar';
-import { Header, HeaderLeft, HeaderRight } from 'components/layouts/header';
+import {
+  Header,
+  HeaderLeft,
+  HeaderRight,
+  Layout,
+  Navbar,
+} from 'components/layouts';
 
 const Home: NextPageWithLayout = () => {
   return (

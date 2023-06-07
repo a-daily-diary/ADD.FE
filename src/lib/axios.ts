@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 import type { AxiosRequestConfig } from 'axios';
 
 const options: AxiosRequestConfig = {
@@ -10,5 +11,14 @@ const options: AxiosRequestConfig = {
 };
 
 const client = axios.create(options);
+
+client.interceptors.request.use(async (request) => {
+  const session = await getSession();
+
+  if (session != null)
+    request.headers.Authorization = `Bearer ${session.user.accessToken}`;
+
+  return request;
+});
 
 export default client;

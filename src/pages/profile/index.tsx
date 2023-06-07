@@ -6,8 +6,7 @@ import type { ReactElement } from 'react';
 import SeetingIcon from 'assets/icons/setting.svg';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
-import Layout from 'components/layouts/Layout';
-import Navbar from 'components/layouts/Navbar';
+import { Layout, Navbar } from 'components/layouts';
 import Empty from 'components/profile/Empty';
 import useTabIndicator from 'hooks/useTabIndicator';
 

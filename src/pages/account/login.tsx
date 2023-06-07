@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
@@ -15,7 +15,6 @@ import {
 
 const Login: NextPage = () => {
   const router = useRouter();
-  const { status } = useSession();
   const {
     register,
     handleSubmit,
@@ -41,14 +40,14 @@ const Login: NextPage = () => {
           message: response?.error,
         });
       }
+      if (response?.ok === true) {
+        await router.replace('/');
+      }
     } catch (error) {
       // TODO: 예기치 못한 에러 임의로 처리, 수정 필요
       alert('로그인에 실패하였습니다. 관리자에게 문의해주세요.');
     }
   };
-
-  // TODO: 로그인 완료 후 라우팅 되면서 로딩 UI 보여주기 및 라우팅 처리 고도화
-  if (status === 'authenticated') void router.replace('/');
 
   return (
     <Section>

@@ -19,7 +19,7 @@ const NAVIGATION_LIST = [
   },
   {
     label: '일기작성',
-    href: '/write',
+    href: '/diary',
     icon: <WriteIcon />,
   },
   {

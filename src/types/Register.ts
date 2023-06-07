@@ -20,9 +20,6 @@ export interface RegisterForm {
 // 이메일/유저이름 중복 체크
 export type ExistsRequest = Record<string, string>;
 
-// 유저 이미지 업로드
-export type UploadImageRequest = FormData;
-
 // 회원가입
 export interface RegisterRequest {
   email: string;
@@ -36,10 +33,6 @@ export interface RegisterRequest {
  * Response Data Types
  */
 
-// 유저 이미지 업로드
-export interface UploadImageResponse {
-  imgUrl: string;
-}
 // 이메일/유저이름 중복 체크, 회원가입
 export interface RegisterResponse {
   message: string;

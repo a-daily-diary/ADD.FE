@@ -26,13 +26,8 @@ const DiaryCommentInput = () => {
   const { content: contentValue } = getValues();
   const { content: contentError } = errors;
 
+  // TODO: react-hook-form 연결하기
   const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
-
-  const handleTextarea: FormEventHandler<HTMLTextAreaElement> = (e) => {
-    const element = e.target as HTMLTextAreaElement;
-    textareaAutosize(element);
-    setIsActiveSendButton(element.value.trim().length > 0);
-  };
 
   useEffect(() => {
     if (contentError?.type === 'maxLength') {
@@ -59,7 +54,7 @@ const DiaryCommentInput = () => {
               value: VALID_VALUE.commentMaxLength,
               message: ERROR_MESSAGE.commentMaxLength,
             },
-            onChange: handleTextarea,
+            onChange: textareaAutosize,
           })}
         />
         <CommentSendButton type="submit">
@@ -93,20 +88,11 @@ const CommentForm = styled.form`
 
 const CommentTextarea = styled.textarea`
   max-height: 79px;
-  padding: 0;
-  border: 0;
-  background-color: transparent;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_07};
-  resize: none;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_02};
-    ${({ theme }) => theme.fonts.body_07};
-  }
-
-  &:focus {
-    outline: 0;
   }
 `;
 
