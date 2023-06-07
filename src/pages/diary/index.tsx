@@ -23,6 +23,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
+import { DIARY_MESSAGE } from 'constants/diary';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
@@ -50,6 +51,19 @@ const WriteDiary: NextPageWithLayout = () => {
     };
   }, [previewImage]);
 
+  // TODO: 일기작성 페이지 벗어났을 때 동작하는 코드 수정 필요
+  const handleConfirmMessage = () => {
+    if (confirm(DIARY_MESSAGE.popstate)) return true;
+    return false;
+  };
+
+  useEffect(() => {
+    router.beforePopState(() => handleConfirmMessage());
+    return () => {
+      router.beforePopState(() => true);
+    };
+  }, []);
+
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
     try {
       const { title, content, imgUrl, isPublic } = data;
@@ -61,6 +75,7 @@ const WriteDiary: NextPageWithLayout = () => {
         imgUrl,
         isPublic,
       });
+
       // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
       await router.replace(`/diary/${diary.id}`);
     } catch (error) {
