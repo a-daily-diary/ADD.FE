@@ -157,6 +157,7 @@ const WriteDiary: NextPageWithLayout = () => {
             {...register('title', {
               required: true,
               onChange: textareaAutosize,
+              setValueAs: (value: string) => value.trim(),
             })}
           />
           {isPhotoActive && (
@@ -184,6 +185,7 @@ const WriteDiary: NextPageWithLayout = () => {
             {...register('content', {
               required: true,
               onChange: textareaAutosize,
+              setValueAs: (value: string) => value.trim(),
             })}
           />
         </ContentContainer>
