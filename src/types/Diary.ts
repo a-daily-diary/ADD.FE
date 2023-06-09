@@ -33,8 +33,10 @@ export interface DiaryDetail {
   id: string;
   title: string;
   content: string;
-  imgUrl?: string;
+  imgUrl: string | null;
   isPublic: boolean;
+  isBookmark: boolean;
+  isFavorite: boolean;
   favoriteCount: number;
   commentCount: number;
   createdAt: string;
