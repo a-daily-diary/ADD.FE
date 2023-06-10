@@ -175,13 +175,7 @@ const WriteDiary: NextPageWithLayout = () => {
           />
           {isPhotoActive && (
             <PreviewImageContainer>
-              <ResponsiveImage
-                src={previewImage}
-                alt={watchTitle}
-                width={100}
-                height={100}
-                aspectRatio={'auto'}
-              />
+              <ResponsiveImage src={previewImage} alt={watchTitle} />
               <CancelImageButton
                 type="button"
                 aria-label="사진 선택 취소"
