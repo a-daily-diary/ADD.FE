@@ -13,7 +13,7 @@ import {
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import { dateFormat, timeFormat } from 'utils';
 
-const DiaryDetail = () => {
+const DiaryContainer = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading } = useQuery(
@@ -35,26 +35,27 @@ const DiaryDetail = () => {
     isBookmark,
     isFavorite,
   } = data;
+
   return (
     <Container>
+      <AuthorContainer>
+        {author.imgUrl !== null && (
+          // TODO
+          // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
+          // 2. 프로필 이미지 컴포넌트 분리
+          <AuthorImageContainer>
+            <Image
+              src={author.imgUrl}
+              alt={author.username}
+              width={28}
+              height={28}
+            />
+          </AuthorImageContainer>
+        )}
+        <UsernameText>{author.username}</UsernameText>
+        <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
+      </AuthorContainer>
       <ContentContainer>
-        <AuthorContainer>
-          {author.imgUrl !== null && (
-            // TODO
-            // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
-            // 2. 프로필 이미지 컴포넌트 분리
-            <AuthorImageContainer>
-              <Image
-                src={author.imgUrl}
-                alt={author.username}
-                width={28}
-                height={28}
-              />
-            </AuthorImageContainer>
-          )}
-          <UsernameText>{author.username}</UsernameText>
-          <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
-        </AuthorContainer>
         <Title>{title}</Title>
         {/* NOTE: 잘못된 이미지 데이터로 인해 문제 해결 후 주석 해제 */}
         {/* {imgUrl !== null && (
@@ -92,14 +93,14 @@ const DiaryDetail = () => {
   );
 };
 
-export default DiaryDetail;
+export default DiaryContainer;
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const ContentContainer = styled.div`
-  padding: 18px 20px 20px;
+  padding: 6px 20px 20px;
 `;
 
 const AuthorContainer = styled.div`
@@ -107,7 +108,7 @@ const AuthorContainer = styled.div`
   grid-template-columns: 28px auto auto;
   gap: 8px;
   align-items: center;
-  margin-bottom: 24px;
+  padding: 18px 20px;
 `;
 
 const AuthorImageContainer = styled.div`

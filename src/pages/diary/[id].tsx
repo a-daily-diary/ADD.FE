@@ -1,12 +1,10 @@
-import DiaryDetail from 'components/diary/DiaryDetail';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
+import DiaryContainer from 'containers/diary/DiaryContainer';
 
 const DiaryDetailPage = () => {
   return (
     <>
-      <section>
-        <DiaryDetail />
-      </section>
+      <DiaryContainer />
       <DiaryCommentsContainer />
     </>
   );
