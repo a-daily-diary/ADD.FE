@@ -21,8 +21,6 @@ const Home: NextPageWithLayout = () => {
           <ResponsiveImage
             src="/images/main/banner/go_to_write.png"
             alt="오늘 영어 일기 쓰러가기"
-            width={640}
-            height={132}
             aspectRatio={640 / 132}
           />
         </Link>

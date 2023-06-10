@@ -2,51 +2,38 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface ResponsiveImageStyleProps {
-  aspectRatio: number | 'auto';
+  aspectRatio?: number | 'auto';
 }
 
 interface ResponsiveImageProps extends ResponsiveImageStyleProps {
   src: string;
   alt: string;
-  width: number;
-  height: number;
   quality?: number;
 }
 
 const ResponsiveImage = ({
   src,
   alt,
-  width,
-  height,
   quality,
-  aspectRatio,
+  aspectRatio = 'auto',
 }: ResponsiveImageProps) => {
   return (
     <ImageContainer aspectRatio={aspectRatio}>
-      <StyledImage
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        quality={quality ?? 100}
-        priority
-      />
+      <StyledImage src={src} alt={alt} quality={quality ?? 100} fill priority />
     </ImageContainer>
   );
 };
 
 export default ResponsiveImage;
 
-const ImageContainer = styled.div<ResponsiveImageStyleProps>`
-  overflow: hidden;
-  display: flex;
-  place-content: center;
-  width: 100%;
-  aspect-ratio: ${({ aspectRatio }) => aspectRatio};
+const StyledImage = styled(Image)`
+  position: relative !important;
+  height: unset !important;
+  object-fit: cover;
 `;
 
-const StyledImage = styled(Image)`
-  width: 100%;
-  height: auto;
-  object-fit: cover;
+const ImageContainer = styled.div<ResponsiveImageStyleProps>`
+  ${StyledImage} {
+    aspect-ratio: ${({ aspectRatio }) => aspectRatio};
+  }
 `;

@@ -49,13 +49,7 @@ const Diary = ({
         {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
         <ContentLink href={`/diary/${id - 1}`}>{content}</ContentLink>
         {imgUrl !== null && (
-          <ResponsiveImage
-            src={imgUrl}
-            alt={title}
-            width={320}
-            height={160}
-            aspectRatio={2 / 1}
-          />
+          <ResponsiveImage src={imgUrl} alt={title} aspectRatio={2 / 1} />
         )}
         <DateContainer>
           <span>

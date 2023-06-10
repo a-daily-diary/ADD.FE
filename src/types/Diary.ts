@@ -3,7 +3,7 @@ import type { User } from 'next-auth';
 export interface DiaryForm {
   title: string;
   content: string;
-  imgUrl?: string;
+  imgUrl: string | null;
   isPublic: boolean;
 }
 

@@ -63,9 +63,6 @@ const DiaryContainer = () => {
             <ResponsiveImage
               src={imgUrl}
               alt={title}
-              width={320}
-              height={160}
-              aspectRatio={'auto'}
             />
           </ImageContainer>
         )} */}

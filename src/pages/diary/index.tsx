@@ -40,18 +40,12 @@ const WriteDiary: NextPageWithLayout = () => {
     formState: { isValid },
   } = useForm<DiaryForm>({
     mode: 'onChange',
-    defaultValues: { isPublic: true },
+    defaultValues: { imgUrl: null, isPublic: true },
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
   const [previewImage, setPreviewImage] = useState<string>('');
   const isPhotoActive = previewImage.length > 0;
-
-  useEffect(() => {
-    return () => {
-      URL.revokeObjectURL(previewImage);
-    };
-  }, [previewImage]);
 
   // TODO: 일기작성 페이지 벗어났을 때 동작하는 코드 수정 필요
   const handleConfirmMessage = () => {
@@ -65,6 +59,37 @@ const WriteDiary: NextPageWithLayout = () => {
       router.beforePopState(() => true);
     };
   }, []);
+
+  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
+    e,
+  ) => {
+    const { files } = e.target;
+    if (files !== null) {
+      try {
+        const imageFormData = new FormData();
+        imageFormData.append('image', files[0]);
+
+        const {
+          data: {
+            data: { imgUrl },
+          },
+        } = await api.uploadDiaryImage(imageFormData);
+
+        setPreviewImage(imgUrl);
+        setValue('imgUrl', imgUrl);
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          // TODO: 이미지 업로드 시 에러 처리
+          console.log(error);
+        }
+      }
+    }
+  };
+
+  const handleCancelImage = () => {
+    setPreviewImage('');
+    setValue('imgUrl', null);
+  };
 
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
     try {
@@ -87,23 +112,11 @@ const WriteDiary: NextPageWithLayout = () => {
     }
   };
 
-  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { files } = e.target;
-    if (files !== null) {
-      const imageUrl = URL.createObjectURL(files[0]);
-      setPreviewImage(imageUrl);
-    }
-  };
-
-  const handleCancelImage = () => {
-    setPreviewImage('');
-    setValue('imgUrl', undefined);
-  };
-
   return (
     <Section>
       <Title>일기 작성</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
         <Header>
           <HeaderLeft
             type="닫기"
@@ -128,9 +141,7 @@ const WriteDiary: NextPageWithLayout = () => {
             type="file"
             id="selectImageFile"
             accept="image/*"
-            {...register('imgUrl', {
-              onChange: handleOnChangeImageFile,
-            })}
+            onChange={handleOnChangeImageFile}
           />
           <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
             {watchIsPublic ? (
@@ -164,13 +175,7 @@ const WriteDiary: NextPageWithLayout = () => {
           />
           {isPhotoActive && (
             <PreviewImageContainer>
-              <ResponsiveImage
-                src={previewImage}
-                alt={watchTitle}
-                width={100}
-                height={100}
-                aspectRatio={'auto'}
-              />
+              <ResponsiveImage src={previewImage} alt={watchTitle} />
               <CancelImageButton
                 type="button"
                 aria-label="사진 선택 취소"
