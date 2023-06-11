@@ -33,6 +33,8 @@ const StyledImage = styled(Image)`
 `;
 
 const ImageContainer = styled.div<ResponsiveImageStyleProps>`
+  position: relative;
+
   ${StyledImage} {
     aspect-ratio: ${({ aspectRatio }) => aspectRatio};
   }
