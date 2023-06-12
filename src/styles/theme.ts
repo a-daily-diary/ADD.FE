@@ -3,7 +3,7 @@ import { Montserrat } from '@next/font/google';
 import localFont from '@next/font/local';
 import type { SerializedStyles, Theme } from '@emotion/react';
 import type { NextFont } from '@next/font/dist/types';
-import colors from 'constants/colors';
+import { colors } from 'constants/styles';
 
 const pretendard = localFont({
   src: [

@@ -7,6 +7,7 @@ import {
   ProfileIcon,
   WriteDiaryIcon,
 } from 'assets/icons';
+import { Z_INDEX } from 'constants/styles';
 
 const NAVIGATION_LIST = [
   {
@@ -63,6 +64,7 @@ const Navigation = styled.nav`
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: ${Z_INDEX.navigation};
   border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   background-color: ${({ theme }) => theme.colors.white};
 `;
