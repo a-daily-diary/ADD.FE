@@ -1,4 +1,4 @@
-const colors = Object.freeze({
+export const colors = {
   // Primary scale
   primary_00: '#00c73c',
   primary_01: '#80e39e',
@@ -20,6 +20,4 @@ const colors = Object.freeze({
   white: '#ffffff',
   error: '#f84d4d',
   pink: '#ff89d7',
-});
-
-export default colors;
+} as const;
