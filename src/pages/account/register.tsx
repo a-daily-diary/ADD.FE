@@ -18,6 +18,7 @@ import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 import { Layout, HeaderTitle, Header, HeaderLeft } from 'components/layouts';
+import { Z_INDEX } from 'constants/styles';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPageWithLayout = () => {
@@ -152,5 +153,6 @@ const ButtonContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: ${Z_INDEX.dialog};
   padding: 12px 20px;
 `;

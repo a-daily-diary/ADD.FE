@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
+import { Z_INDEX } from 'constants/styles';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
 import { SVGVerticalAlignStyle } from 'styles';
@@ -70,6 +71,7 @@ const CommentInputContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
+  z-index: ${Z_INDEX.dialog};
   padding: 10px 20px 8px;
   border-top: 1px solid ${({ theme }) => theme.colors.gray_06};
   background-color: ${({ theme }) => theme.colors.white};
