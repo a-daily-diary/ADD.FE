@@ -7,6 +7,7 @@ import CheckedOnIcon from './checkbox_on.svg';
 import CloseIcon from './close.svg';
 import CommentIcon from './comment.svg';
 import DeleteIcon from './delete.svg';
+import EditIcon from './edit.svg';
 import HeartOffIcon from './heart_off.svg';
 import HeartOnIcon from './heart_on.svg';
 import HideIcon from './hide_pw.svg';
@@ -20,12 +21,14 @@ import PhotoActiveIcon from './photo_active.svg';
 import PhotoInactiveIcon from './photo_inactive.svg';
 import ProfileIcon from './profile.svg';
 import QuestionIcon from './question.svg';
+import ReportIcon from './report.svg';
 import SearchIcon from './search.svg';
 import SendActiveIcon from './send_active.svg';
 import SendInactiveIcon from './send_inactive.svg';
 import SettingIcon from './setting.svg';
 import ShowIcon from './show_pw.svg';
 import TemplateIcon from './template.svg';
+import TrashIcon from './trash.svg';
 import UnlockIcon from './unlock.svg';
 import WriteCommentIcon from './write_comment.svg';
 import WriteDiaryIcon from './write_diary.svg';
@@ -33,10 +36,14 @@ import WriteDiaryIcon from './write_diary.svg';
 export {
   ArrowRightIcon,
   BackIcon,
+  BookmarkOffIcon,
+  BookmarkOnIcon,
+  CommentIcon,
   CloseIcon,
   CheckedOffIcon,
   CheckedOnIcon,
   DeleteIcon,
+  EditIcon,
   HideIcon,
   ShowIcon,
   MoreIcon,
@@ -47,14 +54,12 @@ export {
   SettingIcon,
   HomeIcon,
   MatchingIcon,
-  WriteDiaryIcon,
   ProfileIcon,
-  BookmarkOffIcon,
-  BookmarkOnIcon,
-  CommentIcon,
   HeartOffIcon,
   HeartOnIcon,
   WriteCommentIcon,
+  WriteDiaryIcon,
+  ReportIcon,
   SendActiveIcon,
   SendInactiveIcon,
   LockIcon,
@@ -62,4 +67,5 @@ export {
   PhotoActiveIcon,
   PhotoInactiveIcon,
   TemplateIcon,
+  TrashIcon,
 };
