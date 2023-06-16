@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import type { ForwardedRef } from 'react';
 import { MoreIcon, SearchIcon } from 'assets/icons';
 import { SVGVerticalAlignStyle } from 'styles';
 
@@ -9,14 +10,20 @@ interface HeaderRightStyleProps {
 
 interface HeaderRightProps extends HeaderRightStyleProps {
   type: '더보기' | '검색' | '등록';
+  buttonRef?: ForwardedRef<HTMLButtonElement>;
   onClick?: () => void;
 }
 
-export const HeaderRight = ({ type, onClick, disabled }: HeaderRightProps) => {
+export const HeaderRight = ({
+  type,
+  buttonRef,
+  onClick,
+  disabled,
+}: HeaderRightProps) => {
   return (
     <>
       {type === '더보기' && (
-        <MoreButton type="button" onClick={onClick}>
+        <MoreButton type="button" onClick={onClick} ref={buttonRef}>
           <StyledMoreIcon />
         </MoreButton>
       )}

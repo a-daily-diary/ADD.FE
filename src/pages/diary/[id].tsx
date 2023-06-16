@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useState, type ReactElement } from 'react';
+import { useRef, useState, useEffect, type ReactElement } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
 import { EditIcon, TrashIcon } from 'assets/icons';
 import FloatingMenu from 'components/common/FloatingMenu';
@@ -12,12 +12,29 @@ import DiaryContainer from 'containers/diary/DiaryContainer';
 const DiaryDetailPage: NextPageWithLayout = () => {
   const router = useRouter();
   const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
+  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showFloatingMenu]);
+
+  const handleClickOutside = (e: globalThis.MouseEvent) => {
+    const { target } = e;
+    if (target === null || toggleButtonRef.current === null) return;
+    if (!toggleButtonRef.current.contains(target as HTMLElement)) {
+      setShowFloatingMenu(false);
+    }
+  };
 
   return (
     <Section>
       <Header>
         <HeaderLeft type="이전" />
         <HeaderRight
+          buttonRef={toggleButtonRef}
           type="더보기"
           onClick={() => {
             setShowFloatingMenu((state) => !state);
@@ -29,7 +46,7 @@ const DiaryDetailPage: NextPageWithLayout = () => {
               {
                 icon: <EditIcon />,
                 label: '수정하기',
-                onClick: async () => await router.push(`/diary`),
+                onClick: async () => await router.push(`/diary`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
               },
               {
                 icon: <TrashIcon />,
