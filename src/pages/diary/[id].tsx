@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useRef, useState, useEffect, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 import type { NextPageWithLayout } from 'pages/_app';
 import { EditIcon, TrashIcon } from 'assets/icons';
 import FloatingMenu from 'components/common/FloatingMenu';
@@ -8,39 +8,24 @@ import Seo from 'components/common/Seo';
 import { Layout, Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
 import DiaryContainer from 'containers/diary/DiaryContainer';
+import useClickOutside from 'hooks/useClickOutside';
 
 const DiaryDetailPage: NextPageWithLayout = () => {
   const router = useRouter();
-  const [showFloatingMenu, setShowFloatingMenu] = useState<boolean>(false);
-  const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, [showFloatingMenu]);
-
-  const handleClickOutside = (e: globalThis.MouseEvent) => {
-    const { target } = e;
-    if (target === null || toggleButtonRef.current === null) return;
-    if (!toggleButtonRef.current.contains(target as HTMLElement)) {
-      setShowFloatingMenu(false);
-    }
-  };
+  const { ref, isVisible, setIsVisible } = useClickOutside();
 
   return (
     <Section>
       <Header>
         <HeaderLeft type="이전" />
         <HeaderRight
-          buttonRef={toggleButtonRef}
+          buttonRef={ref}
           type="더보기"
           onClick={() => {
-            setShowFloatingMenu((state) => !state);
+            setIsVisible((state) => !state);
           }}
         />
-        {showFloatingMenu && (
+        {isVisible && (
           <FloatingMenu
             items={[
               {
