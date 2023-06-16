@@ -11,3 +11,11 @@ export interface SuccessResponse<T> {
   success: true;
   data: T;
 }
+
+/*
+ * Common Response Data Types
+ */
+
+export interface OnlyMessageResponse {
+  message: string;
+}

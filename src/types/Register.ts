@@ -30,15 +30,6 @@ export interface RegisterRequest {
 }
 
 /*
- * Response Data Types
- */
-
-// 이메일/유저이름 중복 체크, 회원가입
-export interface RegisterResponse {
-  message: string;
-}
-
-/*
  * Other Types
  */
 
