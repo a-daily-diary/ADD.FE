@@ -51,7 +51,8 @@ const DiaryDetailPage: NextPageWithLayout = () => {
               {
                 icon: <EditIcon />,
                 label: '수정하기',
-                onClick: async () => await router.push(`/diary`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                onClick: async () =>
+                  await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
               },
               {
                 icon: <TrashIcon />,
