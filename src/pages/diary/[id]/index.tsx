@@ -11,7 +11,7 @@ import Seo from 'components/common/Seo';
 import { Layout, Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
 import DiaryContainer from 'containers/diary/DiaryContainer';
-import useClickOutside from 'hooks/useClickOutside';
+import { useClickOutside } from 'hooks';
 import { errorResponseMessage } from 'utils';
 
 const DiaryDetailPage: NextPageWithLayout = () => {
