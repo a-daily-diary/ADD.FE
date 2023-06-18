@@ -1,12 +1,12 @@
 import router from 'next/router';
 import { useEffect } from 'react';
 
-interface useBeforeLeaveProps {
+interface UseBeforeLeaveProps {
   message: string;
   path: string;
 }
 
-const useBeforeLeave = ({ message, path }: useBeforeLeaveProps) => {
+const useBeforeLeave = ({ message, path }: UseBeforeLeaveProps) => {
   const handleConfirm = () => {
     window.history.pushState(null, '', path);
     if (confirm(message)) return true;
