@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement, ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -30,23 +32,35 @@ import { useBeforeLeave } from 'hooks';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
-const WriteDiary: NextPageWithLayout = () => {
-  const today = dateFormat(new Date().toISOString()) as string;
+const EditDiary: NextPageWithLayout = () => {
   const router = useRouter();
+  const { id } = router.query;
+  const { data, isLoading } = useQuery(
+    ['diary-detail', id],
+    async () => await api.getDiaryDetail(id as string),
+  );
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
     formState: { isValid },
-  } = useForm<DiaryForm>({
-    mode: 'onChange',
-    defaultValues: { imgUrl: null, isPublic: true },
-  });
+  } = useForm<DiaryForm>({ mode: 'onChange' });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
-  const [previewImage, setPreviewImage] = useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string>(
+    data?.imgUrl == null ? '' : data?.imgUrl,
+  );
   const isPhotoActive = previewImage.length > 0;
+
+  useEffect(() => {
+    if (data === undefined) return;
+    setValue('title', data.title, { shouldValidate: true });
+    setValue('content', data.content, { shouldValidate: true });
+    setValue('imgUrl', data.imgUrl, { shouldValidate: true });
+    setValue('isPublic', data.isPublic, { shouldValidate: true });
+  }, [data]);
 
   useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
@@ -84,17 +98,17 @@ const WriteDiary: NextPageWithLayout = () => {
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
     try {
       const { title, content, imgUrl, isPublic } = data;
-      const {
-        data: { diary },
-      } = await api.writeDiary({
-        title,
-        content,
-        imgUrl,
-        isPublic,
-      });
+      await api.editDiaryDetail(
+        {
+          title,
+          content,
+          imgUrl,
+          isPublic,
+        },
+        id as string,
+      );
 
-      // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
-      await router.replace(`/diary/${diary.id}`);
+      await router.replace(`/diary/${id as string}`);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         alert(errorResponseMessage(error.response?.data.message));
@@ -102,9 +116,14 @@ const WriteDiary: NextPageWithLayout = () => {
     }
   };
 
+  if (data === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
+  const createdAtDate = dateFormat(data?.createdAt) as string;
+
   return (
     <Section>
-      <Title>일기 작성</Title>
+      <Title>일기 편집</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
         <Header>
@@ -114,7 +133,7 @@ const WriteDiary: NextPageWithLayout = () => {
               router.back();
             }}
           />
-          <HeaderTitle title={today} fontWeight={700} />
+          <HeaderTitle title={createdAtDate} fontWeight={700} />
           <HeaderRight type="등록" disabled={!isValid} />
         </Header>
         <FormHeader>
@@ -191,16 +210,27 @@ const WriteDiary: NextPageWithLayout = () => {
   );
 };
 
-WriteDiary.getLayout = function getLayout(page: ReactElement) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(
+    ['diary-detail', id],
+    async () => await api.getDiaryDetail(id as string),
+  );
+
+  return { props: { dehydratedState: dehydrate(queryClient) } };
+};
+
+EditDiary.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
-      <Seo title="일기 작성 | a daily diary" />
+      <Seo title="일기 편집 | a daily diary" />
       {page}
     </Layout>
   );
 };
 
-export default WriteDiary;
+export default EditDiary;
 
 const Section = styled.section`
   margin-top: 54px;

@@ -8,7 +8,7 @@ import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
 import { Layout, Navbar } from 'components/layouts';
 import Empty from 'components/profile/Empty';
-import useTabIndicator from 'hooks/useTabIndicator';
+import { useTabIndicator } from 'hooks';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },

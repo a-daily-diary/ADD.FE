@@ -11,7 +11,7 @@ import Seo from 'components/common/Seo';
 import { Layout, Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
 import DiaryContainer from 'containers/diary/DiaryContainer';
-import useClickOutside from 'hooks/useClickOutside';
+import { useClickOutside } from 'hooks';
 import { errorResponseMessage } from 'utils';
 
 const DiaryDetailPage: NextPageWithLayout = () => {
@@ -51,7 +51,8 @@ const DiaryDetailPage: NextPageWithLayout = () => {
               {
                 icon: <EditIcon />,
                 label: '수정하기',
-                onClick: async () => await router.push(`/diary`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                onClick: async () =>
+                  await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
               },
               {
                 icon: <TrashIcon />,

@@ -6,12 +6,12 @@ interface IndicatorProps {
   offsetLeft: number;
 }
 
-interface useTabIndicatorProps {
+interface UseTabIndicatorProps {
   tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
   activeIndex: number;
 }
 
-const useTabIndicator = ({ tabsRef, activeIndex }: useTabIndicatorProps) => {
+const useTabIndicator = ({ tabsRef, activeIndex }: UseTabIndicatorProps) => {
   const [indicator, setIndicator] = useState<IndicatorProps>({
     width: 0,
     offsetLeft: 0,
