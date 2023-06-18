@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ReactElement, ChangeEventHandler } from 'react';
@@ -26,6 +26,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
+import { useBeforeLeave } from 'hooks';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
@@ -47,18 +48,7 @@ const WriteDiary: NextPageWithLayout = () => {
   const [previewImage, setPreviewImage] = useState<string>('');
   const isPhotoActive = previewImage.length > 0;
 
-  // TODO: 일기작성 페이지 벗어났을 때 동작하는 코드 수정 필요
-  const handleConfirmMessage = () => {
-    if (confirm(DIARY_MESSAGE.popstate)) return true;
-    return false;
-  };
-
-  useEffect(() => {
-    router.beforePopState(() => handleConfirmMessage());
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, []);
+  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
     e,

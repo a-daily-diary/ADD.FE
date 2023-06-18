@@ -28,6 +28,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
+import { useBeforeLeave } from 'hooks';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
@@ -61,19 +62,7 @@ const EditDiary: NextPageWithLayout = () => {
     setValue('isPublic', data.isPublic, { shouldValidate: true });
   }, [data]);
 
-  // TODO: 일기작성 페이지 벗어났을 때 동작하는 코드 수정 필요
-  // 커스텀 훅으로 생성하는 것이 좋을 것 같음
-  const handleConfirmMessage = () => {
-    if (confirm(DIARY_MESSAGE.popstate)) return true;
-    return false;
-  };
-
-  useEffect(() => {
-    router.beforePopState(() => handleConfirmMessage());
-    return () => {
-      router.beforePopState(() => true);
-    };
-  }, []);
+  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
     e,
