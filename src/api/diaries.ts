@@ -1,3 +1,4 @@
+import type { AxiosRequestConfig } from 'axios';
 import type { DiaryRequest, DiaryResponse, DiaryDetail } from 'types/Diary';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
 import { API_PATH } from 'constants/api/path';
@@ -21,11 +22,15 @@ export const writeDiary = async ({
   return diaryData;
 };
 
-export const getDiaryDetail = async (id: string) => {
+export const getDiaryDetail = async (
+  id: string,
+  config?: AxiosRequestConfig,
+) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<DiaryDetail>>(
     `${API_PATH.diaries.index}/${id}`,
+    config,
   );
   return data;
 };
