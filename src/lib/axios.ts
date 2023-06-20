@@ -12,13 +12,17 @@ const options: AxiosRequestConfig = {
 
 const client = axios.create(options);
 
-client.interceptors.request.use(async (request) => {
-  const session = await getSession();
+client.interceptors.request.use(
+  async (config) => {
+    const session = await getSession();
 
-  if (session != null)
-    request.headers.Authorization = `Bearer ${session.user.accessToken}`;
+    if (session !== null) {
+      config.headers.Authorization = `Bearer ${session.user.accessToken}`;
+    }
 
-  return request;
-});
+    return config;
+  },
+  async (error) => await Promise.reject(error),
+);
 
 export default client;
