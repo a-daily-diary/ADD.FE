@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { GetServerSideProps } from 'next';
@@ -29,6 +30,7 @@ import {
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
 import { useBeforeLeave } from 'hooks';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
@@ -211,13 +213,29 @@ const EditDiary: NextPageWithLayout = () => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
+  const { req, res, query } = context;
+  const { id } = query;
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session === null) {
+    return {
+      redirect: {
+        destination: '/account/login',
+        permanent: false,
+      },
+    };
+  }
+
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     ['diary-detail', id],
-    async () => await api.getDiaryDetail(id as string),
+    async () =>
+      await api.getDiaryDetail(id as string, {
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+      }),
   );
-
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 

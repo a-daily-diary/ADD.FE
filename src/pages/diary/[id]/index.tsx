@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { getServerSession } from 'next-auth';
 import { type ReactElement } from 'react';
+import type { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from 'pages/_app';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
@@ -12,6 +15,7 @@ import { Layout, Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
 import DiaryContainer from 'containers/diary/DiaryContainer';
 import { useClickOutside } from 'hooks';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { errorResponseMessage } from 'utils';
 
 const DiaryDetailPage: NextPageWithLayout = () => {
@@ -67,6 +71,33 @@ const DiaryDetailPage: NextPageWithLayout = () => {
       <DiaryCommentsContainer />
     </Section>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res, query } = context;
+  const { id } = query;
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session === null) {
+    return {
+      redirect: {
+        destination: '/account/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery(
+    ['diary-detail', id],
+    async () =>
+      await api.getDiaryDetail(id as string, {
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+        },
+      }),
+  );
+  return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 
 DiaryDetailPage.getLayout = (page: ReactElement) => {
