@@ -34,10 +34,10 @@ Home.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
       <Seo title={'a daily diary'} />
-      <Header>
-        <HeaderLeft type="로고" />
-        <HeaderRight type="검색" />
-      </Header>
+      <Header
+        left={<HeaderLeft type="로고" />}
+        right={<HeaderRight type="검색" />}
+      />
       {page}
       <Navbar />
     </Layout>
