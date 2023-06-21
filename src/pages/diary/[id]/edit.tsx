@@ -128,16 +128,18 @@ const EditDiary: NextPageWithLayout = () => {
       <Title>일기 편집</Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
-        <Header>
-          <HeaderLeft
-            type="닫기"
-            onClick={() => {
-              router.back();
-            }}
-          />
-          <HeaderTitle title={createdAtDate} fontWeight={700} />
-          <HeaderRight type="등록" disabled={!isValid} />
-        </Header>
+        <Header
+          left={
+            <HeaderLeft
+              type="닫기"
+              onClick={() => {
+                router.back();
+              }}
+            />
+          }
+          title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
+          right={<HeaderRight type="등록" disabled={!isValid} />}
+        />
         <FormHeader>
           {/* TODO: 일기 템플릿 추가 */}
           <ImageFileLabel

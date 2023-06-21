@@ -3,11 +3,19 @@ import type { ReactNode } from 'react';
 import { Z_INDEX } from 'constants/styles';
 
 interface HeaderProps {
-  children: ReactNode;
+  left: ReactNode;
+  title?: ReactNode;
+  right?: ReactNode;
 }
 
-export const Header = ({ children }: HeaderProps) => {
-  return <HeaderLayout>{children}</HeaderLayout>;
+export const Header = ({ left, title, right }: HeaderProps) => {
+  return (
+    <HeaderLayout>
+      {left}
+      {title}
+      {right}
+    </HeaderLayout>
+  );
 };
 
 const HeaderLayout = styled.header`

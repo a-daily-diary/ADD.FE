@@ -125,10 +125,10 @@ Register.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
       <Seo title={'회원가입 | a daily diary'} />
-      <Header>
-        <HeaderLeft type="이전" />
-        <HeaderTitle title={'회원가입'} position={'left'} />
-      </Header>
+      <Header
+        left={<HeaderLeft type="이전" />}
+        title={<HeaderTitle title={'회원가입'} position={'left'} />}
+      />
       {page}
     </Layout>
   );
