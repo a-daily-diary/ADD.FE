@@ -1,12 +1,10 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import type { NextPageWithLayout } from 'pages/_app';
-import type { ReactElement } from 'react';
+import type { NextPage } from 'next';
 import { SettingIcon } from 'assets/icons';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
-import { Layout, Navbar } from 'components/layouts';
 import Empty from 'components/profile/Empty';
 import { useTabIndicator } from 'hooks';
 
@@ -16,13 +14,14 @@ const PROFILE_TAB_LIST = [
   { id: 'bookmarks', title: '북마크', content: null },
 ];
 
-const Profile: NextPageWithLayout = () => {
+const Profile: NextPage = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
   const indicator = useTabIndicator({ tabsRef, activeIndex });
 
   return (
     <>
+      <Seo title="프로필 | a daily diary" />
       <UserInfoContainer>
         <SettingLink href={'/setting'}>
           <SettingIcon />
@@ -67,16 +66,6 @@ const Profile: NextPageWithLayout = () => {
         </article>
       </section>
     </>
-  );
-};
-
-Profile.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <Seo title="프로필 | a daily diary" />
-      {page}
-      <Navbar />
-    </Layout>
   );
 };
 

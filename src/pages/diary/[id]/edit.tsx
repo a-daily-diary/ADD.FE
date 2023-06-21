@@ -5,9 +5,8 @@ import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'pages/_app';
-import type { ReactElement, ChangeEventHandler } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
@@ -22,7 +21,6 @@ import {
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import {
-  Layout,
   Header,
   HeaderLeft,
   HeaderRight,
@@ -34,7 +32,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
-const EditDiary: NextPageWithLayout = () => {
+const EditDiary: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading } = useQuery(
@@ -124,93 +122,96 @@ const EditDiary: NextPageWithLayout = () => {
   const createdAtDate = dateFormat(data?.createdAt) as string;
 
   return (
-    <Section>
-      <Title>일기 편집</Title>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
-        <Header
-          left={
-            <HeaderLeft
-              type="닫기"
-              onClick={() => {
-                router.back();
-              }}
+    <>
+      <Seo title="일기 편집 | a daily diary" />
+      <Section>
+        <Title>일기 편집</Title>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
+          <Header
+            left={
+              <HeaderLeft
+                type="닫기"
+                onClick={() => {
+                  router.back();
+                }}
+              />
+            }
+            title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
+            right={<HeaderRight type="등록" disabled={!isValid} />}
+          />
+          <FormHeader>
+            {/* TODO: 일기 템플릿 추가 */}
+            <ImageFileLabel
+              htmlFor="selectImageFile"
+              isPhotoActive={!isPhotoActive}
+            >
+              {isPhotoActive ? <PhotoInactiveIcon /> : <PhotoActiveIcon />}
+              사진 추가
+              <PhotoText isPhotoActive={!isPhotoActive}>(1장)</PhotoText>
+            </ImageFileLabel>
+            <ImageFileInput
+              type="file"
+              id="selectImageFile"
+              accept="image/*"
+              onChange={handleOnChangeImageFile}
             />
-          }
-          title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
-          right={<HeaderRight type="등록" disabled={!isValid} />}
-        />
-        <FormHeader>
-          {/* TODO: 일기 템플릿 추가 */}
-          <ImageFileLabel
-            htmlFor="selectImageFile"
-            isPhotoActive={!isPhotoActive}
-          >
-            {isPhotoActive ? <PhotoInactiveIcon /> : <PhotoActiveIcon />}
-            사진 추가
-            <PhotoText isPhotoActive={!isPhotoActive}>(1장)</PhotoText>
-          </ImageFileLabel>
-          <ImageFileInput
-            type="file"
-            id="selectImageFile"
-            accept="image/*"
-            onChange={handleOnChangeImageFile}
-          />
-          <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
-            {watchIsPublic ? (
-              <>
-                <UnlockIcon />
-                공개
-              </>
-            ) : (
-              <>
-                <LockIcon />
-                비공개
-              </>
+            <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
+              {watchIsPublic ? (
+                <>
+                  <UnlockIcon />
+                  공개
+                </>
+              ) : (
+                <>
+                  <LockIcon />
+                  비공개
+                </>
+              )}
+            </PublicLabel>
+            <PublicCheckbox
+              id="isPublic"
+              type="checkbox"
+              {...register('isPublic')}
+            />
+          </FormHeader>
+          <ContentContainer>
+            <TitleTextarea
+              id="title"
+              placeholder="일기 제목을 작성해주세요."
+              rows={1}
+              {...register('title', {
+                required: true,
+                onChange: textareaAutosize,
+                setValueAs: (value: string) => value.trim(),
+              })}
+            />
+            {isPhotoActive && (
+              <PreviewImageContainer>
+                <ResponsiveImage src={previewImage} alt={watchTitle} />
+                <CancelImageButton
+                  type="button"
+                  aria-label="사진 선택 취소"
+                  onClick={handleCancelImage}
+                >
+                  <DeleteIcon />
+                </CancelImageButton>
+              </PreviewImageContainer>
             )}
-          </PublicLabel>
-          <PublicCheckbox
-            id="isPublic"
-            type="checkbox"
-            {...register('isPublic')}
-          />
-        </FormHeader>
-        <ContentContainer>
-          <TitleTextarea
-            id="title"
-            placeholder="일기 제목을 작성해주세요."
-            rows={1}
-            {...register('title', {
-              required: true,
-              onChange: textareaAutosize,
-              setValueAs: (value: string) => value.trim(),
-            })}
-          />
-          {isPhotoActive && (
-            <PreviewImageContainer>
-              <ResponsiveImage src={previewImage} alt={watchTitle} />
-              <CancelImageButton
-                type="button"
-                aria-label="사진 선택 취소"
-                onClick={handleCancelImage}
-              >
-                <DeleteIcon />
-              </CancelImageButton>
-            </PreviewImageContainer>
-          )}
-          <ContentTextarea
-            id="content"
-            placeholder="일기 내용을 작성해주세요."
-            rows={1}
-            {...register('content', {
-              required: true,
-              onChange: textareaAutosize,
-              setValueAs: (value: string) => value.trim(),
-            })}
-          />
-        </ContentContainer>
-      </form>
-    </Section>
+            <ContentTextarea
+              id="content"
+              placeholder="일기 내용을 작성해주세요."
+              rows={1}
+              {...register('content', {
+                required: true,
+                onChange: textareaAutosize,
+                setValueAs: (value: string) => value.trim(),
+              })}
+            />
+          </ContentContainer>
+        </form>
+      </Section>
+    </>
   );
 };
 
@@ -239,15 +240,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }),
   );
   return { props: { dehydratedState: dehydrate(queryClient) } };
-};
-
-EditDiary.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <Seo title="일기 편집 | a daily diary" />
-      {page}
-    </Layout>
-  );
 };
 
 export default EditDiary;

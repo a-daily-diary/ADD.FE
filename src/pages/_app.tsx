@@ -7,30 +7,11 @@ import {
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { useState } from 'react';
-import type { DehydratedState } from '@tanstack/react-query';
-import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import type { Session } from 'next-auth';
-import type { ReactElement, ReactNode } from 'react';
+import { Layout } from 'components/layouts';
 import { theme, GlobalStyle } from 'styles';
 
-export type NextPageWithLayout<P = Record<string, unknown>> = NextPage<P> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-type AppPropsWithLayout<P> = AppProps<P> & {
-  Component: NextPageWithLayout;
-  pageProps: P & {
-    session?: Session;
-    dehydratedState: DehydratedState;
-  };
-};
-
-export default function App({
-  Component,
-  pageProps,
-}: AppPropsWithLayout<{ session: Session }>) {
-  const getLayout = Component.getLayout ?? ((page) => page);
+export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(new QueryClient());
 
   return (
@@ -43,7 +24,9 @@ export default function App({
           <SessionProvider session={pageProps.session}>
             <ThemeProvider theme={theme}>
               <Global styles={GlobalStyle} />
-              {getLayout(<Component {...pageProps} />)}
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
             </ThemeProvider>
           </SessionProvider>
         </Hydrate>

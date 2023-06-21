@@ -1,21 +1,19 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import type { NextPageWithLayout } from './_app';
-import type { ReactElement } from 'react';
+import type { NextPage } from 'next';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
-import {
-  Header,
-  HeaderLeft,
-  HeaderRight,
-  Layout,
-  Navbar,
-} from 'components/layouts';
+import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 
-const Home: NextPageWithLayout = () => {
+const Home: NextPage = () => {
   return (
     <>
+      <Seo title={'a daily diary'} />
+      <Header
+        left={<HeaderLeft type="로고" />}
+        right={<HeaderRight type="검색" />}
+      />
       <BannerContainer>
         <Link href={'/write'}>
           <ResponsiveImage
@@ -30,22 +28,9 @@ const Home: NextPageWithLayout = () => {
   );
 };
 
-Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <Seo title={'a daily diary'} />
-      <Header
-        left={<HeaderLeft type="로고" />}
-        right={<HeaderRight type="검색" />}
-      />
-      {page}
-      <Navbar />
-    </Layout>
-  );
-};
-
 export default Home;
 
 const BannerContainer = styled.div`
+  margin-top: 54px;
   padding: 12px 20px 0;
 `;
