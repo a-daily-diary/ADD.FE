@@ -39,37 +39,42 @@ const DiaryDetailPage: NextPageWithLayout = () => {
   };
 
   return (
-    <Section>
-      <Header>
-        <HeaderLeft type="이전" />
-        <HeaderRight
-          buttonRef={ref}
-          type="더보기"
-          onClick={() => {
-            setIsVisible((state) => !state);
-          }}
-        />
-        {isVisible && (
-          <FloatingMenu
-            items={[
-              {
-                icon: <EditIcon />,
-                label: '수정하기',
-                onClick: async () =>
-                  await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
-              },
-              {
-                icon: <TrashIcon />,
-                label: '삭제하기',
-                onClick: handleDeleteDiary,
-              },
-            ]}
+    <>
+      <Seo title={'a daily diary'} />
+      <Header
+        left={<HeaderLeft type="이전" />}
+        right={
+          <HeaderRight
+            buttonRef={ref}
+            type="더보기"
+            onClick={() => {
+              setIsVisible((state) => !state);
+            }}
           />
-        )}
-      </Header>
-      <DiaryContainer />
-      <DiaryCommentsContainer />
-    </Section>
+        }
+      />
+      {isVisible && (
+        <FloatingMenu
+          items={[
+            {
+              icon: <EditIcon />,
+              label: '수정하기',
+              onClick: async () =>
+                await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+            },
+            {
+              icon: <TrashIcon />,
+              label: '삭제하기',
+              onClick: handleDeleteDiary,
+            },
+          ]}
+        />
+      )}
+      <Section>
+        <DiaryContainer />
+        <DiaryCommentsContainer />
+      </Section>
+    </>
   );
 };
 
@@ -101,12 +106,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 DiaryDetailPage.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      <Seo title={'a daily diary'} />
-      {page}
-    </Layout>
-  );
+  return <Layout>{page}</Layout>;
 };
 
 export default DiaryDetailPage;

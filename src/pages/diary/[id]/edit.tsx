@@ -124,93 +124,96 @@ const EditDiary: NextPageWithLayout = () => {
   const createdAtDate = dateFormat(data?.createdAt) as string;
 
   return (
-    <Section>
-      <Title>일기 편집</Title>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
-        <Header
-          left={
-            <HeaderLeft
-              type="닫기"
-              onClick={() => {
-                router.back();
-              }}
+    <>
+      <Seo title="일기 편집 | a daily diary" />
+      <Section>
+        <Title>일기 편집</Title>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* NOTE: 등록 버튼을 사용하기 위해 form 요소 내에 Header가 존재함 */}
+          <Header
+            left={
+              <HeaderLeft
+                type="닫기"
+                onClick={() => {
+                  router.back();
+                }}
+              />
+            }
+            title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
+            right={<HeaderRight type="등록" disabled={!isValid} />}
+          />
+          <FormHeader>
+            {/* TODO: 일기 템플릿 추가 */}
+            <ImageFileLabel
+              htmlFor="selectImageFile"
+              isPhotoActive={!isPhotoActive}
+            >
+              {isPhotoActive ? <PhotoInactiveIcon /> : <PhotoActiveIcon />}
+              사진 추가
+              <PhotoText isPhotoActive={!isPhotoActive}>(1장)</PhotoText>
+            </ImageFileLabel>
+            <ImageFileInput
+              type="file"
+              id="selectImageFile"
+              accept="image/*"
+              onChange={handleOnChangeImageFile}
             />
-          }
-          title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
-          right={<HeaderRight type="등록" disabled={!isValid} />}
-        />
-        <FormHeader>
-          {/* TODO: 일기 템플릿 추가 */}
-          <ImageFileLabel
-            htmlFor="selectImageFile"
-            isPhotoActive={!isPhotoActive}
-          >
-            {isPhotoActive ? <PhotoInactiveIcon /> : <PhotoActiveIcon />}
-            사진 추가
-            <PhotoText isPhotoActive={!isPhotoActive}>(1장)</PhotoText>
-          </ImageFileLabel>
-          <ImageFileInput
-            type="file"
-            id="selectImageFile"
-            accept="image/*"
-            onChange={handleOnChangeImageFile}
-          />
-          <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
-            {watchIsPublic ? (
-              <>
-                <UnlockIcon />
-                공개
-              </>
-            ) : (
-              <>
-                <LockIcon />
-                비공개
-              </>
+            <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
+              {watchIsPublic ? (
+                <>
+                  <UnlockIcon />
+                  공개
+                </>
+              ) : (
+                <>
+                  <LockIcon />
+                  비공개
+                </>
+              )}
+            </PublicLabel>
+            <PublicCheckbox
+              id="isPublic"
+              type="checkbox"
+              {...register('isPublic')}
+            />
+          </FormHeader>
+          <ContentContainer>
+            <TitleTextarea
+              id="title"
+              placeholder="일기 제목을 작성해주세요."
+              rows={1}
+              {...register('title', {
+                required: true,
+                onChange: textareaAutosize,
+                setValueAs: (value: string) => value.trim(),
+              })}
+            />
+            {isPhotoActive && (
+              <PreviewImageContainer>
+                <ResponsiveImage src={previewImage} alt={watchTitle} />
+                <CancelImageButton
+                  type="button"
+                  aria-label="사진 선택 취소"
+                  onClick={handleCancelImage}
+                >
+                  <DeleteIcon />
+                </CancelImageButton>
+              </PreviewImageContainer>
             )}
-          </PublicLabel>
-          <PublicCheckbox
-            id="isPublic"
-            type="checkbox"
-            {...register('isPublic')}
-          />
-        </FormHeader>
-        <ContentContainer>
-          <TitleTextarea
-            id="title"
-            placeholder="일기 제목을 작성해주세요."
-            rows={1}
-            {...register('title', {
-              required: true,
-              onChange: textareaAutosize,
-              setValueAs: (value: string) => value.trim(),
-            })}
-          />
-          {isPhotoActive && (
-            <PreviewImageContainer>
-              <ResponsiveImage src={previewImage} alt={watchTitle} />
-              <CancelImageButton
-                type="button"
-                aria-label="사진 선택 취소"
-                onClick={handleCancelImage}
-              >
-                <DeleteIcon />
-              </CancelImageButton>
-            </PreviewImageContainer>
-          )}
-          <ContentTextarea
-            id="content"
-            placeholder="일기 내용을 작성해주세요."
-            rows={1}
-            {...register('content', {
-              required: true,
-              onChange: textareaAutosize,
-              setValueAs: (value: string) => value.trim(),
-            })}
-          />
-        </ContentContainer>
-      </form>
-    </Section>
+            <ContentTextarea
+              id="content"
+              placeholder="일기 내용을 작성해주세요."
+              rows={1}
+              {...register('content', {
+                required: true,
+                onChange: textareaAutosize,
+                setValueAs: (value: string) => value.trim(),
+              })}
+            />
+          </ContentContainer>
+        </form>
+      </Section>
+    </>
   );
 };
 
@@ -242,12 +245,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 EditDiary.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      <Seo title="일기 편집 | a daily diary" />
-      {page}
-    </Layout>
-  );
+  return <Layout>{page}</Layout>;
 };
 
 export default EditDiary;

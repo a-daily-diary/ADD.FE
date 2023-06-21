@@ -16,6 +16,11 @@ import {
 const Home: NextPageWithLayout = () => {
   return (
     <>
+      <Seo title={'a daily diary'} />
+      <Header
+        left={<HeaderLeft type="로고" />}
+        right={<HeaderRight type="검색" />}
+      />
       <BannerContainer>
         <Link href={'/write'}>
           <ResponsiveImage
@@ -33,11 +38,6 @@ const Home: NextPageWithLayout = () => {
 Home.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
-      <Seo title={'a daily diary'} />
-      <Header
-        left={<HeaderLeft type="로고" />}
-        right={<HeaderRight type="검색" />}
-      />
       {page}
       <Navbar />
     </Layout>
@@ -47,5 +47,6 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home;
 
 const BannerContainer = styled.div`
+  margin-top: 54px;
   padding: 12px 20px 0;
 `;

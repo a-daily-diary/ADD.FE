@@ -23,6 +23,7 @@ const Profile: NextPageWithLayout = () => {
 
   return (
     <>
+      <Seo title="프로필 | a daily diary" />
       <UserInfoContainer>
         <SettingLink href={'/setting'}>
           <SettingIcon />
@@ -73,7 +74,6 @@ const Profile: NextPageWithLayout = () => {
 Profile.getLayout = function getLayout(page: ReactElement) {
   return (
     <Layout>
-      <Seo title="프로필 | a daily diary" />
       {page}
       <Navbar />
     </Layout>
