@@ -5,9 +5,8 @@ import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'pages/_app';
-import type { ReactElement, ChangeEventHandler } from 'react';
+import type { GetServerSideProps, NextPage } from 'next';
+import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
@@ -22,7 +21,6 @@ import {
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import {
-  Layout,
   Header,
   HeaderLeft,
   HeaderRight,
@@ -34,7 +32,7 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
-const EditDiary: NextPageWithLayout = () => {
+const EditDiary: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading } = useQuery(
@@ -242,10 +240,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }),
   );
   return { props: { dehydratedState: dehydrate(queryClient) } };
-};
-
-EditDiary.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
 };
 
 export default EditDiary;

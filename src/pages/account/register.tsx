@@ -3,9 +3,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import type { GetStaticProps } from 'next';
-import type { NextPageWithLayout } from 'pages/_app';
-import type { ReactElement } from 'react';
+import type { GetStaticProps, NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
 import type { RegisterForm, RegisterStep } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
@@ -17,11 +15,11 @@ import RegisterProfileImage from 'components/account/RegisterProfileImage';
 import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
-import { Layout, HeaderTitle, Header, HeaderLeft } from 'components/layouts';
+import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
 import { Z_INDEX } from 'constants/styles';
 import { errorResponseMessage } from 'utils';
 
-const Register: NextPageWithLayout = () => {
+const Register: NextPage = () => {
   const methods = useForm<RegisterForm>({ mode: 'onChange' });
   const {
     handleSubmit,
@@ -124,10 +122,6 @@ const Register: NextPageWithLayout = () => {
       {registerStep.welcomeMessage && <CompleteRegister />}
     </>
   );
-};
-
-Register.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
 };
 
 export const getStaticProps: GetStaticProps = async () => {

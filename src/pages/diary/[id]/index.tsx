@@ -3,22 +3,20 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
-import { type ReactElement } from 'react';
-import type { GetServerSideProps } from 'next';
-import type { NextPageWithLayout } from 'pages/_app';
+import type { GetServerSideProps, NextPage } from 'next';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
 import { EditIcon, TrashIcon } from 'assets/icons';
 import FloatingMenu from 'components/common/FloatingMenu';
 import Seo from 'components/common/Seo';
-import { Layout, Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import DiaryCommentsContainer from 'containers/diary/DiaryCommentsContainer';
 import DiaryContainer from 'containers/diary/DiaryContainer';
 import { useClickOutside } from 'hooks';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { errorResponseMessage } from 'utils';
 
-const DiaryDetailPage: NextPageWithLayout = () => {
+const DiaryDetailPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { ref, isVisible, setIsVisible } = useClickOutside();
@@ -103,10 +101,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }),
   );
   return { props: { dehydratedState: dehydrate(queryClient) } };
-};
-
-DiaryDetailPage.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>;
 };
 
 export default DiaryDetailPage;

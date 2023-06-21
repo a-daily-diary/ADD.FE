@@ -1,19 +1,12 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import type { NextPageWithLayout } from './_app';
-import type { ReactElement } from 'react';
+import type { NextPage } from 'next';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import DiaryList from 'components/diary/DiaryList';
-import {
-  Header,
-  HeaderLeft,
-  HeaderRight,
-  Layout,
-  Navbar,
-} from 'components/layouts';
+import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 
-const Home: NextPageWithLayout = () => {
+const Home: NextPage = () => {
   return (
     <>
       <Seo title={'a daily diary'} />
@@ -32,15 +25,6 @@ const Home: NextPageWithLayout = () => {
       </BannerContainer>
       <DiaryList />
     </>
-  );
-};
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <Layout>
-      {page}
-      <Navbar />
-    </Layout>
   );
 };
 

@@ -3,8 +3,8 @@ import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { NextPageWithLayout } from 'pages/_app';
-import type { ReactElement, ChangeEventHandler } from 'react';
+import type { NextPage } from 'next';
+import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
@@ -19,7 +19,6 @@ import {
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import {
-  Layout,
   Header,
   HeaderLeft,
   HeaderRight,
@@ -30,7 +29,7 @@ import { useBeforeLeave } from 'hooks';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
-const WriteDiary: NextPageWithLayout = () => {
+const WriteDiary: NextPage = () => {
   const today = dateFormat(new Date().toISOString()) as string;
   const router = useRouter();
   const {
@@ -194,10 +193,6 @@ const WriteDiary: NextPageWithLayout = () => {
       </Section>
     </>
   );
-};
-
-WriteDiary.getLayout = function getLayout(page: ReactElement) {
-  return <Layout>{page}</Layout>;
 };
 
 export default WriteDiary;
