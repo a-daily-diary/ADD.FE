@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
@@ -20,17 +20,15 @@ const DiaryCommentInput = () => {
     setValue,
     getValues,
     setFocus,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<DiaryCommentInputProps>({ mode: 'onChange' });
   const { content: contentValue } = getValues();
   const { content: contentError } = errors;
 
-  // TODO: react-hook-form 연결하기
-  const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
-
   useEffect(() => {
     if (contentError?.type === 'maxLength') {
       setValue('content', contentValue.slice(0, VALID_VALUE.commentMaxLength));
+      // TODO: 모달로 수정하기
       alert(contentError.message);
     }
   }, [contentError]);
@@ -42,13 +40,14 @@ const DiaryCommentInput = () => {
   }, [setFocus]);
 
   return (
-    <CommentInputContainer>
-      <CommentForm>
-        <CommentTextarea
+    <Container>
+      <Form>
+        <Textarea
           id="diaryCommentTextarea"
           placeholder="댓글을 입력해주세요."
           rows={1}
           {...register('content', {
+            required: true,
             maxLength: {
               value: VALID_VALUE.commentMaxLength,
               message: ERROR_MESSAGE.commentMaxLength,
@@ -56,17 +55,17 @@ const DiaryCommentInput = () => {
             onChange: textareaAutosize,
           })}
         />
-        <CommentSendButton type="submit">
-          {isActiveSendButton ? <SendActiveIcon /> : <SendInactiveIcon />}
-        </CommentSendButton>
-      </CommentForm>
-    </CommentInputContainer>
+        <SubmitButton type="submit" disabled={!isValid}>
+          {isValid ? <SendActiveIcon /> : <SendInactiveIcon />}
+        </SubmitButton>
+      </Form>
+    </Container>
   );
 };
 
 export default DiaryCommentInput;
 
-const CommentInputContainer = styled.div`
+const Container = styled.div`
   position: fixed;
   right: 0;
   bottom: 0;
@@ -77,25 +76,27 @@ const CommentInputContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const CommentForm = styled.form`
+const Form = styled.form`
   display: grid;
   grid-template-columns: auto 20px;
   align-items: center;
+  gap: 8px;
   padding: 7px 12px 7px 14px;
-  border-radius: 34px;
+  border-radius: 17px;
   background-color: ${({ theme }) => theme.colors.bg_01};
 `;
 
-const CommentTextarea = styled.textarea`
+const Textarea = styled.textarea`
   max-height: 79px;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_07};
+  word-break: keep-all;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_02};
   }
 `;
 
-const CommentSendButton = styled.button`
+const SubmitButton = styled.button`
   ${SVGVerticalAlignStyle}
 `;
