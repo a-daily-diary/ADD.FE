@@ -7,8 +7,8 @@ import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
-import DiaryList from 'components/diary/DiaryList';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { DiariesContainer } from 'containers/diary';
 
 const Home: NextPage = () => {
   return (
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
           />
         </Link>
       </BannerContainer>
-      <DiaryList />
+      <DiariesContainer />
     </>
   );
 };

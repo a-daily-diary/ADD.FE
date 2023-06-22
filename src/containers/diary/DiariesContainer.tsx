@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { useQuery } from '@tanstack/react-query';
-import Diary from './Diary';
+import Diary from '../../components/diary/Diary';
 import * as api from 'api';
 
-const DiaryList = () => {
+const DiariesContainer = () => {
   const { data, isLoading } = useQuery(
     ['diaries'],
     async () => await api.getDiaries(),
@@ -14,18 +14,16 @@ const DiaryList = () => {
 
   const { diaries } = data;
   return (
-    <section>
-      <List>
-        {diaries.map((diary) => {
-          const { id } = diary;
-          return <Diary key={`diary-list-${id}`} {...diary} />;
-        })}
-      </List>
-    </section>
+    <List>
+      {diaries.map((diary) => {
+        const { id } = diary;
+        return <Diary key={`diary-list-${id}`} {...diary} />;
+      })}
+    </List>
   );
 };
 
-export default DiaryList;
+export default DiariesContainer;
 
 const List = styled.ul`
   display: grid;
