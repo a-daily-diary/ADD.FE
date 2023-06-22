@@ -43,3 +43,10 @@ export interface DiaryDetail {
   updatedAt: string;
   author: User;
 }
+
+// 일기 리스트
+export interface Diaries {
+  diaries: DiaryDetail[];
+  totalCount: number;
+  totalPage: number;
+}
