@@ -1,30 +1,25 @@
 import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import * as api from 'api';
 import { WriteCommentIcon } from 'assets/icons';
 import DiaryCommentInput from 'components/diary/DiaryCommentInput';
 import DiaryComments from 'components/diary/DiaryComments';
-import { COMMENT_LIST_MOCK_DATA } from 'mocks/CommentList';
 
-// TODO: 타입 디렉토리에 분리하기
-interface CommentProps {
-  id: number;
-  authorUsername: string;
-  authorThumbnailUrl: string;
-  content: string;
-  createdAt: string;
-  modifiedAt: string;
+interface DiaryCommentsContainerProps {
+  diaryId: string;
 }
 
-const DiaryCommentsContainer = () => {
-  const [comments, setComments] = useState<CommentProps[]>([]);
+const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
+  const { data } = useQuery(
+    ['comments', diaryId],
+    async () => await api.getComments(diaryId),
+  );
 
-  useEffect(() => {
-    setComments(COMMENT_LIST_MOCK_DATA);
-  }, []);
+  if (data === undefined) return <div />;
 
   return (
     <DiaryCommentSection>
-      <DiaryComments comments={comments} />
+      <DiaryComments {...data} />
       <WriteCommentLabel htmlFor="diaryCommentTextarea">
         <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>

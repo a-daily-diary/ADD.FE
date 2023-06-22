@@ -1,35 +1,20 @@
 import styled from '@emotion/styled';
 import DiaryComment from './DiaryComment';
+import type { Comments } from 'types/Comment';
 import { ScreenReaderOnly } from 'styles';
 
-// TODO: 타입 디렉토리에 분리하기
-interface CommentProps {
-  id: number;
-  authorUsername: string;
-  authorThumbnailUrl: string;
-  content: string;
-  createdAt: string;
-  modifiedAt: string;
-}
-
-interface CommentsProps {
-  comments: CommentProps[];
-}
-
-const DiaryComments = ({ comments }: CommentsProps) => {
-  const commentsCount = comments.length;
-
+const DiaryComments = ({ comments, totalCount }: Comments) => {
   return (
     <>
-      {commentsCount > 0 ? (
+      {totalCount > 0 ? (
         <>
-          <CommentTitle>{commentsCount}개의 댓글</CommentTitle>
+          <CommentTitle>{totalCount}개의 댓글</CommentTitle>
           <ul>
             {comments.map((comment) => {
               return (
                 <DiaryComment
                   key={`diary-comment-${comment.id}`}
-                  comment={comment}
+                  {...comment}
                 />
               );
             })}

@@ -1,39 +1,22 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import type { Comment } from 'types/Comment';
 import { MoreIcon } from 'assets/icons';
 import { timeFormat, dateFormat } from 'utils';
 
-interface CommentProps {
-  comment: {
-    id: number;
-    authorUsername: string;
-    authorThumbnailUrl: string;
-    content: string;
-    createdAt: string;
-    modifiedAt: string;
-  };
-}
-
-const DiaryComment = ({ comment }: CommentProps) => {
-  const { authorUsername, authorThumbnailUrl, content, createdAt } = comment;
-
+const DiaryComment = ({ id, createdAt, comment, commenter }: Comment) => {
   return (
     <CommentItem>
       <CommentHead>
-        {authorThumbnailUrl !== null && (
-          // TODO
-          // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
-          // 2. 프로필 이미지 컴포넌트 분리
-          <ProfileImageBox>
-            <Image
-              src={authorThumbnailUrl}
-              alt={authorUsername}
-              width={20}
-              height={20}
-            />
-          </ProfileImageBox>
-        )}
-        <UsernameSpan>{authorUsername}</UsernameSpan>
+        <ProfileImageBox>
+          <Image
+            src={commenter.imgUrl}
+            alt={commenter.username}
+            width={20}
+            height={20}
+          />
+        </ProfileImageBox>
+        <UsernameSpan>{commenter.username}</UsernameSpan>
         <CreatedAtSpan>
           {timeFormat(createdAt) !== null
             ? timeFormat(createdAt)
@@ -43,7 +26,7 @@ const DiaryComment = ({ comment }: CommentProps) => {
           <StyledMoreIcon />
         </MoreButton>
       </CommentHead>
-      <CommentContent>{content}</CommentContent>
+      <CommentContent>{comment}</CommentContent>
     </CommentItem>
   );
 };
@@ -56,7 +39,7 @@ const CommentItem = styled.li`
 
   &:focus-within {
     /* TODO: color constant에 추가하기 */
-    background-color: #f5fdf7;
+    background-color: ${({ theme }) => theme.colors.primary_04};
   }
 
   &::after {
