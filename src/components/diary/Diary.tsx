@@ -67,11 +67,11 @@ const Container = styled.li`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.article`
   padding: 20px;
 `;
 
-const Title = styled.h3`
+const Title = styled.h2`
   ${({ theme }) => theme.fonts.headline_03}
 `;
 
