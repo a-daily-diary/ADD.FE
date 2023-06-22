@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import * as api from 'api';
+import type { DiaryDetail } from 'types/Diary';
 import {
   BookmarkOffIcon,
   BookmarkOnIcon,
@@ -13,34 +11,22 @@ import {
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import { dateFormat, timeFormat } from 'utils';
 
-const DiaryContainer = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const { data, isLoading } = useQuery(
-    ['diary-detail', id],
-    async () => await api.getDiaryDetail(id as string),
-  );
-
-  if (data === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
-
-  const {
-    title,
-    content,
-    imgUrl,
-    favoriteCount,
-    commentCount,
-    createdAt,
-    author,
-    isBookmark,
-    isFavorite,
-  } = data;
-
+const DiaryContainer = ({
+  title,
+  content,
+  imgUrl,
+  favoriteCount,
+  commentCount,
+  createdAt,
+  author,
+  isBookmark,
+  isFavorite,
+}: DiaryDetail) => {
   return (
     <Container>
       <AuthorContainer>
         {author.imgUrl !== null && (
-          // TODO
+          // TODO:
           // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
           // 2. 프로필 이미지 컴포넌트 분리
           <AuthorImageContainer>
@@ -57,15 +43,11 @@ const DiaryContainer = () => {
       </AuthorContainer>
       <ContentContainer>
         <Title>{title}</Title>
-        {/* NOTE: 잘못된 이미지 데이터로 인해 문제 해결 후 주석 해제 */}
-        {/* {imgUrl !== null && (
+        {imgUrl !== null && (
           <ImageContainer>
-            <ResponsiveImage
-              src={imgUrl}
-              alt={title}
-            />
+            <ResponsiveImage src={imgUrl} alt={title} />
           </ImageContainer>
-        )} */}
+        )}
         <Content>{content}</Content>
         {timeFormat(createdAt) !== null && (
           <TimeContainer>{timeFormat(createdAt)}</TimeContainer>

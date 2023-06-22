@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
-import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import type { ErrorResponse } from 'types/Response';
 import * as api from 'api';
-import { EditIcon, TrashIcon } from 'assets/icons';
+import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import FloatingMenu from 'components/common/FloatingMenu';
 import Seo from 'components/common/Seo';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
@@ -19,6 +20,11 @@ const DiaryDetailPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { ref, isVisible, setIsVisible } = useClickOutside();
+  const { data, isLoading } = useQuery(
+    ['diary-detail', id],
+    async () => await api.getDiaryDetail(id as string),
+  );
+  const { data: session } = useSession();
 
   const handleDeleteDiary = async () => {
     if (confirm('삭제하시겠습니까?')) {
@@ -35,9 +41,15 @@ const DiaryDetailPage: NextPage = () => {
     }
   };
 
+  if (data === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
+  const { author, title } = data;
+  const isAuthor = author.id === session?.user.id;
+
   return (
     <>
-      <Seo title={'a daily diary'} />
+      <Seo title={`${title} | a daily diary`} />
       <Header
         left={<HeaderLeft type="이전" />}
         right={
@@ -52,23 +64,35 @@ const DiaryDetailPage: NextPage = () => {
       />
       {isVisible && (
         <FloatingMenu
-          items={[
-            {
-              icon: <EditIcon />,
-              label: '수정하기',
-              onClick: async () =>
-                await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
-            },
-            {
-              icon: <TrashIcon />,
-              label: '삭제하기',
-              onClick: handleDeleteDiary,
-            },
-          ]}
+          items={
+            isAuthor
+              ? [
+                  {
+                    icon: <EditIcon />,
+                    label: '수정하기',
+                    onClick: async () =>
+                      await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                  },
+                  {
+                    icon: <TrashIcon />,
+                    label: '삭제하기',
+                    onClick: handleDeleteDiary,
+                  },
+                ]
+              : [
+                  {
+                    icon: <ReportIcon />,
+                    label: '신고하기',
+                    onClick: () => {
+                      confirm('신고하시겠습니까?');
+                    }, // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                  },
+                ]
+          }
         />
       )}
       <Section>
-        <DiaryContainer />
+        <DiaryContainer {...data} />
         <DiaryCommentsContainer />
       </Section>
     </>
