@@ -44,12 +44,12 @@ const DiaryDetailPage: NextPage = () => {
   if (data === undefined) return <div />;
   if (isLoading) return <div>Loading</div>;
 
-  const { author } = data;
+  const { author, title } = data;
   const isAuthor = author.id === session?.user.id;
 
   return (
     <>
-      <Seo title={'a daily diary'} />
+      <Seo title={`${title} | a daily diary`} />
       <Header
         left={<HeaderLeft type="이전" />}
         right={
