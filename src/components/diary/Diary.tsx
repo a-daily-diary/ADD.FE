@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import type { DiaryDetail } from 'types/Diary';
 import {
   BookmarkOffIcon,
   BookmarkOnIcon,
@@ -12,20 +13,6 @@ import ResponsiveImage from 'components/common/ResponsiveImage';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
 
-interface DiaryProps {
-  id: number;
-  title: string;
-  content: string;
-  imgUrl: string | null;
-  commentCount: number;
-  favoriteCount: number;
-  isFavorite: boolean;
-  isBookmark: boolean;
-  createdAt: string;
-  modifiedAt: string;
-  authorUsername: string;
-}
-
 const Diary = ({
   id,
   title,
@@ -36,24 +23,19 @@ const Diary = ({
   isFavorite,
   isBookmark,
   createdAt,
-  authorUsername,
-}: DiaryProps) => {
-  // 목데이터의 작성자 아이디 값의 길이가 길어어 20자리까지 자름
-  // API 연결 후 삭제할 코드
-  const username = authorUsername.slice(0, 20);
-
+  author,
+}: DiaryDetail) => {
   return (
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
-        <ContentLink href={`/diary/${id - 1}`}>{content}</ContentLink>
+        <ContentLink href={`/diary/${id}`}>{content}</ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage src={imgUrl} alt={title} aspectRatio={2 / 1} />
         )}
         <DateContainer>
           <span>
-            <span>{username}</span>
+            <span>{author.username}</span>
             <span>・</span>
             <span>{dateFormat(createdAt)}</span>
           </span>
@@ -66,11 +48,7 @@ const Diary = ({
             {isFavorite ? <HeartOnIcon /> : <HeartOffIcon />}
             {favoriteCount}
           </FavoriteButton>
-          {/* TODO: 현재 목데이터 index와 id 값이 달라 임의로 (id - 1)를 적용하여 해결 */}
-          <CommentLink
-            href={`/diary/${id - 1}?focus=comment`}
-            as={`/diary/${id - 1}`}
-          >
+          <CommentLink href={`/diary/${id}?focus=comment`} as={`/diary/${id}`}>
             <CommentIcon />
             {commentCount}
           </CommentLink>

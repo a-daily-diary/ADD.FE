@@ -1,22 +1,33 @@
 import styled from '@emotion/styled';
+import { useQuery } from '@tanstack/react-query';
 import Diary from './Diary';
-import { DIARY_LIST_MOCK_DATA } from 'mocks/DiaryList';
+import * as api from 'api';
 
 const DiaryList = () => {
+  const { data, isLoading } = useQuery(
+    ['diaries'],
+    async () => await api.getDiaries(),
+  );
+
+  if (data === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
+  const { diaries } = data;
   return (
     <section>
-      <Container>
-        {DIARY_LIST_MOCK_DATA.map((diary) => {
-          return <Diary key={`diary-list-${diary.id}`} {...diary} />;
+      <List>
+        {diaries.map((diary) => {
+          const { id } = diary;
+          return <Diary key={`diary-list-${id}`} {...diary} />;
         })}
-      </Container>
+      </List>
     </section>
   );
 };
 
 export default DiaryList;
 
-const Container = styled.ul`
+const List = styled.ul`
   display: grid;
   gap: 6px;
   background-color: ${({ theme }) => theme.colors.gray_06};
