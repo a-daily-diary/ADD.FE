@@ -26,7 +26,7 @@ const DiaryContainer = ({
     <Container>
       <AuthorContainer>
         {author.imgUrl !== null && (
-          // TODO
+          // TODO:
           // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
           // 2. 프로필 이미지 컴포넌트 분리
           <AuthorImageContainer>
@@ -43,12 +43,11 @@ const DiaryContainer = ({
       </AuthorContainer>
       <ContentContainer>
         <Title>{title}</Title>
-        {/* NOTE: 잘못된 이미지 데이터로 인해 문제 해결 후 주석 해제 */}
-        {/* {imgUrl !== null && (
+        {imgUrl !== null && (
           <ImageContainer>
             <ResponsiveImage src={imgUrl} alt={title} />
           </ImageContainer>
-        )} */}
+        )}
         <Content>{content}</Content>
         {timeFormat(createdAt) !== null && (
           <TimeContainer>{timeFormat(createdAt)}</TimeContainer>
