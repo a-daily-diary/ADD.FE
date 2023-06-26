@@ -25,7 +25,7 @@ const FloatingMenu = ({ items }: FloatingMenuProps) => {
 export default FloatingMenu;
 
 const List = styled.ul`
-  position: fixed;
+  position: absolute;
   top: 40px;
   right: 20px;
   z-index: ${Z_INDEX.dialog};

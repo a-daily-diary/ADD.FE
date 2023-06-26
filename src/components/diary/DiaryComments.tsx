@@ -3,7 +3,13 @@ import DiaryComment from './DiaryComment';
 import type { Comments } from 'types/Comment';
 import { ScreenReaderOnly } from 'styles';
 
-const DiaryComments = ({ comments, totalCount }: Comments) => {
+interface DiaryCommentsProps {
+  diaryComments: Comments;
+  diaryId: string;
+}
+
+const DiaryComments = ({ diaryComments, diaryId }: DiaryCommentsProps) => {
+  const { comments, totalCount } = diaryComments;
   return (
     <>
       {totalCount > 0 ? (
@@ -14,7 +20,8 @@ const DiaryComments = ({ comments, totalCount }: Comments) => {
               return (
                 <DiaryComment
                   key={`diary-comment-${comment.id}`}
-                  {...comment}
+                  diaryComment={comment}
+                  diaryId={diaryId}
                 />
               );
             })}

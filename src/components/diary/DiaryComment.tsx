@@ -1,33 +1,93 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/Comment';
-import { MoreIcon } from 'assets/icons';
-import { timeFormat, dateFormat } from 'utils';
+import type { ErrorResponse } from 'types/Response';
+import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
+import FloatingMenu from 'components/common/FloatingMenu';
+import { useClickOutside } from 'hooks';
+import { useDeleteComment } from 'hooks/services';
+import { timeFormat, dateFormat, errorResponseMessage } from 'utils';
 
-const DiaryComment = ({ id, createdAt, comment, commenter }: Comment) => {
+interface DiaryCommentProps {
+  diaryComment: Comment;
+  diaryId: string;
+}
+
+const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
+  const { data: session } = useSession();
+  const { ref, isVisible, setIsVisible } = useClickOutside();
+  const deleteCommentMutation = useDeleteComment(diaryId);
+
+  const { id: commentId, createdAt, comment, commenter } = diaryComment;
+  const isCommenter = commenter.id === session?.user.id;
+
+  const handleDeleteComment = () => {
+    if (confirm('삭제하시겠습니까?')) {
+      try {
+        deleteCommentMutation({ diaryId, commentId });
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          alert(errorResponseMessage(error.response?.data.message));
+        }
+      }
+    }
+  };
   return (
-    <CommentItem>
-      <CommentHead>
-        <ProfileImageBox>
-          <Image
-            src={commenter.imgUrl}
-            alt={commenter.username}
-            width={20}
-            height={20}
+    <>
+      <CommentItem>
+        <CommentHead>
+          <ProfileImageBox>
+            <Image
+              src={commenter.imgUrl}
+              alt={commenter.username}
+              width={20}
+              height={20}
+            />
+          </ProfileImageBox>
+          <UsernameSpan>{commenter.username}</UsernameSpan>
+          <CreatedAtSpan>
+            {timeFormat(createdAt) !== null
+              ? timeFormat(createdAt)
+              : dateFormat(createdAt)}
+          </CreatedAtSpan>
+          <MoreButton
+            type="button"
+            ref={ref}
+            onClick={() => {
+              setIsVisible((state) => !state);
+            }}
+          >
+            <StyledMoreIcon />
+          </MoreButton>
+        </CommentHead>
+        <CommentContent>{comment}</CommentContent>
+        {isVisible && (
+          <FloatingMenu
+            items={
+              isCommenter
+                ? [
+                    {
+                      icon: <TrashIcon />,
+                      label: '삭제하기',
+                      onClick: handleDeleteComment,
+                    },
+                  ]
+                : [
+                    {
+                      icon: <ReportIcon />,
+                      label: '신고하기',
+                      onClick: () => {
+                        confirm('신고하시겠습니까?');
+                      },
+                    },
+                  ]
+            }
           />
-        </ProfileImageBox>
-        <UsernameSpan>{commenter.username}</UsernameSpan>
-        <CreatedAtSpan>
-          {timeFormat(createdAt) !== null
-            ? timeFormat(createdAt)
-            : dateFormat(createdAt)}
-        </CreatedAtSpan>
-        <MoreButton type="button">
-          <StyledMoreIcon />
-        </MoreButton>
-      </CommentHead>
-      <CommentContent>{comment}</CommentContent>
-    </CommentItem>
+        )}
+      </CommentItem>
+    </>
   );
 };
 

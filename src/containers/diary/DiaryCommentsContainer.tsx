@@ -19,7 +19,7 @@ const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
 
   return (
     <DiaryCommentSection>
-      <DiaryComments {...data} />
+      <DiaryComments diaryComments={data} diaryId={diaryId} />
       <WriteCommentLabel htmlFor="diaryCommentTextarea">
         <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>
