@@ -10,7 +10,7 @@ import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
-import { useWriteComment } from 'hooks/services/mutations/useWriteComment';
+import { useWriteComment } from 'hooks/services';
 import { SVGVerticalAlignStyle } from 'styles';
 import { errorResponseMessage, textareaAutosize } from 'utils';
 

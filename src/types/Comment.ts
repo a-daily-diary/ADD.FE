@@ -13,6 +13,12 @@ export interface CommentRequest extends CommentForm {
   diaryId: string;
 }
 
+// 댓글 삭제
+export interface DeleteCommentRequest {
+  diaryId: string;
+  commentId: string;
+}
+
 /*
  * Response Data Types
  */
