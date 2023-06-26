@@ -1,5 +1,28 @@
 import type { User } from 'next-auth';
 
+export interface CommentForm {
+  comment: string;
+}
+
+/*
+ * Request Data Types
+ */
+
+// 댓글 작성
+export interface CommentRequest extends CommentForm {
+  diaryId: string;
+}
+
+/*
+ * Response Data Types
+ */
+
+// 댓글 작성
+export interface CommentResponse {
+  comment: Comment;
+  // TODO: badge 추가 예정
+}
+
 /*
  * Other Types
  */
