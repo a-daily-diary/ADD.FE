@@ -1,52 +1,72 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import type { CommentForm } from 'types/Comment';
+import type { ErrorResponse } from 'types/Response';
 import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
+import { useWriteComment } from 'hooks/services/mutations/useWriteComment';
 import { SVGVerticalAlignStyle } from 'styles';
-import { textareaAutosize } from 'utils';
+import { errorResponseMessage, textareaAutosize } from 'utils';
 
 interface DiaryCommentInputProps {
-  content: string;
+  diaryId: string;
 }
 
-const DiaryCommentInput = () => {
+const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
   const router = useRouter();
   const {
     register,
     setValue,
     getValues,
     setFocus,
+    reset,
+    handleSubmit,
     formState: { errors, isValid },
-  } = useForm<DiaryCommentInputProps>({ mode: 'onChange' });
-  const { content: contentValue } = getValues();
-  const { content: contentError } = errors;
+  } = useForm<CommentForm>({ mode: 'onChange' });
+  const { comment: commentValue } = getValues();
+  const { comment: commentError } = errors;
+  const writeCommentMutation = useWriteComment(diaryId);
 
   useEffect(() => {
-    if (contentError?.type === 'maxLength') {
-      setValue('content', contentValue.slice(0, VALID_VALUE.commentMaxLength));
+    if (commentError?.type === 'maxLength') {
+      setValue('comment', commentValue.slice(0, VALID_VALUE.commentMaxLength));
       // TODO: 모달로 수정하기
-      alert(contentError.message);
+      alert(commentError.message);
     }
-  }, [contentError]);
+  }, [commentError]);
 
   useEffect(() => {
     if (router.query.focus === 'comment') {
-      setFocus('content');
+      setFocus('comment');
     }
   }, [setFocus]);
 
+  const onSubmit: SubmitHandler<CommentForm> = (data) => {
+    const { comment } = data;
+    try {
+      writeCommentMutation({ diaryId, comment });
+      reset();
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
+      }
+    }
+  };
+
   return (
     <Container>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Textarea
           id="diaryCommentTextarea"
           placeholder="댓글을 입력해주세요."
           rows={1}
-          {...register('content', {
+          {...register('comment', {
             required: true,
             maxLength: {
               value: VALID_VALUE.commentMaxLength,

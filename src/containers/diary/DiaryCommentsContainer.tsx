@@ -24,7 +24,7 @@ const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
         <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>
       </WriteCommentLabel>
-      <DiaryCommentInput />
+      <DiaryCommentInput diaryId={diaryId} />
     </DiaryCommentSection>
   );
 };
