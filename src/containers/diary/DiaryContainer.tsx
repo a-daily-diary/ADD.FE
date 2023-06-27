@@ -9,9 +9,11 @@ import {
   HeartOnIcon,
 } from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
+import { useHandleFavorite } from 'hooks/common';
 import { dateFormat, timeFormat } from 'utils';
 
 const DiaryContainer = ({
+  id,
   title,
   content,
   imgUrl,
@@ -22,22 +24,22 @@ const DiaryContainer = ({
   isBookmark,
   isFavorite,
 }: DiaryDetail) => {
+  const handleFavorite = useHandleFavorite({ isFavorite, id });
+
   return (
     <Container>
       <AuthorContainer>
-        {author.imgUrl !== null && (
-          // TODO:
-          // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
-          // 2. 프로필 이미지 컴포넌트 분리
-          <AuthorImageContainer>
-            <Image
-              src={author.imgUrl}
-              alt={author.username}
-              width={28}
-              height={28}
-            />
-          </AuthorImageContainer>
-        )}
+        {/* TODO:
+        1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
+        2. 프로필 이미지 컴포넌트 분리 */}
+        <AuthorImageContainer>
+          <Image
+            src={author.imgUrl}
+            alt={author.username}
+            width={28}
+            height={28}
+          />
+        </AuthorImageContainer>
         <UsernameText>{author.username}</UsernameText>
         <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
       </AuthorContainer>
@@ -55,7 +57,7 @@ const DiaryContainer = ({
       </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
-          <IconButton type="button">
+          <IconButton type="button" onClick={handleFavorite}>
             {isFavorite ? <HeartOnIcon /> : <HeartOffIcon />}
             {favoriteCount}
           </IconButton>
