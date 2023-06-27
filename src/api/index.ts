@@ -4,3 +4,4 @@ export * from './termsAgreements';
 export * from './diaries';
 export * from './comments';
 export * from './favorite';
+export * from './bookmark';
