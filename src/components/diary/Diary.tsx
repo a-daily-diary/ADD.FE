@@ -10,6 +10,7 @@ import {
   HeartOffIcon,
 } from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
+import { useHandleFavorite } from 'hooks/common';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
 
@@ -25,6 +26,8 @@ const Diary = ({
   createdAt,
   author,
 }: DiaryDetail) => {
+  const handleFavorite = useHandleFavorite({ isFavorite, id });
+
   return (
     <Container>
       <ContentContainer>
@@ -44,7 +47,7 @@ const Diary = ({
       </ContentContainer>
       <IconContainer>
         <IconInnerContainer>
-          <FavoriteButton type="button">
+          <FavoriteButton type="button" onClick={handleFavorite}>
             {isFavorite ? <HeartOnIcon /> : <HeartOffIcon />}
             {favoriteCount}
           </FavoriteButton>
