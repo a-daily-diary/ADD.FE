@@ -10,7 +10,7 @@ import {
   HeartOffIcon,
 } from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
-import { useHandleFavorite } from 'hooks/common';
+import { useHandleFavorite, useHandleBookmark } from 'hooks/common';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
 
@@ -27,6 +27,7 @@ const Diary = ({
   author,
 }: DiaryDetail) => {
   const handleFavorite = useHandleFavorite({ isFavorite, id });
+  const handleBookmark = useHandleBookmark({ isBookmark, id });
 
   return (
     <Container>
@@ -56,7 +57,7 @@ const Diary = ({
             {commentCount}
           </CommentLink>
         </IconInnerContainer>
-        <button type="button">
+        <button type="button" onClick={handleBookmark}>
           {isBookmark ? <BookmarkOnIcon /> : <BookmarkOffIcon />}
         </button>
       </IconContainer>
