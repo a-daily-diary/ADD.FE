@@ -13,6 +13,7 @@ export const useWriteComment = (diaryId: string) => {
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries(['comments', diaryId]);
+        await queryClient.invalidateQueries(['diary-detail', diaryId]);
       },
     },
   );
