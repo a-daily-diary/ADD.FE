@@ -1,50 +1,93 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import Image from 'next/image';
-import { MoreIcon } from 'assets/icons';
-import { timeFormat, dateFormat } from 'utils';
+import { useSession } from 'next-auth/react';
+import type { Comment } from 'types/Comment';
+import type { ErrorResponse } from 'types/Response';
+import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
+import FloatingMenu from 'components/common/FloatingMenu';
+import { useClickOutside } from 'hooks';
+import { useDeleteComment } from 'hooks/services';
+import { timeFormat, dateFormat, errorResponseMessage } from 'utils';
 
-interface CommentProps {
-  comment: {
-    id: number;
-    authorUsername: string;
-    authorThumbnailUrl: string;
-    content: string;
-    createdAt: string;
-    modifiedAt: string;
-  };
+interface DiaryCommentProps {
+  diaryComment: Comment;
+  diaryId: string;
 }
 
-const DiaryComment = ({ comment }: CommentProps) => {
-  const { authorUsername, authorThumbnailUrl, content, createdAt } = comment;
+const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
+  const { data: session } = useSession();
+  const { ref, isVisible, setIsVisible } = useClickOutside();
+  const deleteCommentMutation = useDeleteComment(diaryId);
 
+  const { id: commentId, createdAt, comment, commenter } = diaryComment;
+  const isCommenter = commenter.id === session?.user.id;
+
+  const handleDeleteComment = () => {
+    if (confirm('삭제하시겠습니까?')) {
+      try {
+        deleteCommentMutation({ diaryId, commentId });
+      } catch (error) {
+        if (isAxiosError<ErrorResponse>(error)) {
+          alert(errorResponseMessage(error.response?.data.message));
+        }
+      }
+    }
+  };
   return (
-    <CommentItem>
-      <CommentHead>
-        {authorThumbnailUrl !== null && (
-          // TODO
-          // 1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
-          // 2. 프로필 이미지 컴포넌트 분리
+    <>
+      <CommentItem>
+        <CommentHead>
           <ProfileImageBox>
             <Image
-              src={authorThumbnailUrl}
-              alt={authorUsername}
+              src={commenter.imgUrl}
+              alt={commenter.username}
               width={20}
               height={20}
             />
           </ProfileImageBox>
+          <UsernameSpan>{commenter.username}</UsernameSpan>
+          <CreatedAtSpan>
+            {timeFormat(createdAt) !== null
+              ? timeFormat(createdAt)
+              : dateFormat(createdAt)}
+          </CreatedAtSpan>
+          <MoreButton
+            type="button"
+            ref={ref}
+            onClick={() => {
+              setIsVisible((state) => !state);
+            }}
+          >
+            <StyledMoreIcon />
+          </MoreButton>
+        </CommentHead>
+        <CommentContent>{comment}</CommentContent>
+        {isVisible && (
+          <FloatingMenu
+            items={
+              isCommenter
+                ? [
+                    {
+                      icon: <TrashIcon />,
+                      label: '삭제하기',
+                      onClick: handleDeleteComment,
+                    },
+                  ]
+                : [
+                    {
+                      icon: <ReportIcon />,
+                      label: '신고하기',
+                      onClick: () => {
+                        confirm('신고하시겠습니까?');
+                      },
+                    },
+                  ]
+            }
+          />
         )}
-        <UsernameSpan>{authorUsername}</UsernameSpan>
-        <CreatedAtSpan>
-          {timeFormat(createdAt) !== null
-            ? timeFormat(createdAt)
-            : dateFormat(createdAt)}
-        </CreatedAtSpan>
-        <MoreButton type="button">
-          <StyledMoreIcon />
-        </MoreButton>
-      </CommentHead>
-      <CommentContent>{content}</CommentContent>
-    </CommentItem>
+      </CommentItem>
+    </>
   );
 };
 
@@ -56,7 +99,7 @@ const CommentItem = styled.li`
 
   &:focus-within {
     /* TODO: color constant에 추가하기 */
-    background-color: #f5fdf7;
+    background-color: ${({ theme }) => theme.colors.primary_04};
   }
 
   &::after {

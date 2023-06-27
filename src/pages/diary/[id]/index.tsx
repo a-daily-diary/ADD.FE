@@ -93,7 +93,7 @@ const DiaryDetailPage: NextPage = () => {
       )}
       <Section>
         <DiaryContainer {...data} />
-        <DiaryCommentsContainer />
+        <DiaryCommentsContainer diaryId={id as string} />
       </Section>
     </>
   );
@@ -112,16 +112,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${session.user.accessToken}`,
+    },
+  };
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     ['diary-detail', id],
-    async () =>
-      await api.getDiaryDetail(id as string, {
-        headers: {
-          Authorization: `Bearer ${session.user.accessToken}`,
-        },
-      }),
+    async () => await api.getDiaryDetail(id as string, headers),
+  );
+  await queryClient.prefetchQuery(
+    ['comments', id],
+    async () => await api.getComments(id as string, headers),
   );
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };

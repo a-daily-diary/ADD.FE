@@ -1,54 +1,73 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import type { CommentForm } from 'types/Comment';
+import type { ErrorResponse } from 'types/Response';
 import { SendActiveIcon, SendInactiveIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
 import { ERROR_MESSAGE } from 'constants/validation/Message';
 import { VALID_VALUE } from 'constants/validation/Value';
+import { useWriteComment } from 'hooks/services';
 import { SVGVerticalAlignStyle } from 'styles';
-import { textareaAutosize } from 'utils';
+import { errorResponseMessage, textareaAutosize } from 'utils';
 
 interface DiaryCommentInputProps {
-  content: string;
+  diaryId: string;
 }
 
-const DiaryCommentInput = () => {
+const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
   const router = useRouter();
   const {
     register,
     setValue,
     getValues,
     setFocus,
-    formState: { errors },
-  } = useForm<DiaryCommentInputProps>({ mode: 'onChange' });
-  const { content: contentValue } = getValues();
-  const { content: contentError } = errors;
-
-  // TODO: react-hook-form 연결하기
-  const [isActiveSendButton, setIsActiveSendButton] = useState<boolean>(false);
+    reset,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<CommentForm>({ mode: 'onChange' });
+  const { comment: commentValue } = getValues();
+  const { comment: commentError } = errors;
+  const writeCommentMutation = useWriteComment(diaryId);
 
   useEffect(() => {
-    if (contentError?.type === 'maxLength') {
-      setValue('content', contentValue.slice(0, VALID_VALUE.commentMaxLength));
-      alert(contentError.message);
+    if (commentError?.type === 'maxLength') {
+      setValue('comment', commentValue.slice(0, VALID_VALUE.commentMaxLength));
+      // TODO: 모달로 수정하기
+      alert(commentError.message);
     }
-  }, [contentError]);
+  }, [commentError]);
 
   useEffect(() => {
     if (router.query.focus === 'comment') {
-      setFocus('content');
+      setFocus('comment');
     }
   }, [setFocus]);
 
+  const onSubmit: SubmitHandler<CommentForm> = (data) => {
+    const { comment } = data;
+    try {
+      writeCommentMutation({ diaryId, comment });
+      reset();
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
+      }
+    }
+  };
+
   return (
-    <CommentInputContainer>
-      <CommentForm>
-        <CommentTextarea
+    <Container>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Textarea
           id="diaryCommentTextarea"
           placeholder="댓글을 입력해주세요."
           rows={1}
-          {...register('content', {
+          {...register('comment', {
+            required: true,
             maxLength: {
               value: VALID_VALUE.commentMaxLength,
               message: ERROR_MESSAGE.commentMaxLength,
@@ -56,17 +75,17 @@ const DiaryCommentInput = () => {
             onChange: textareaAutosize,
           })}
         />
-        <CommentSendButton type="submit">
-          {isActiveSendButton ? <SendActiveIcon /> : <SendInactiveIcon />}
-        </CommentSendButton>
-      </CommentForm>
-    </CommentInputContainer>
+        <SubmitButton type="submit" disabled={!isValid}>
+          {isValid ? <SendActiveIcon /> : <SendInactiveIcon />}
+        </SubmitButton>
+      </Form>
+    </Container>
   );
 };
 
 export default DiaryCommentInput;
 
-const CommentInputContainer = styled.div`
+const Container = styled.div`
   position: fixed;
   right: 0;
   bottom: 0;
@@ -77,25 +96,27 @@ const CommentInputContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
-const CommentForm = styled.form`
+const Form = styled.form`
   display: grid;
   grid-template-columns: auto 20px;
   align-items: center;
+  gap: 8px;
   padding: 7px 12px 7px 14px;
-  border-radius: 34px;
+  border-radius: 17px;
   background-color: ${({ theme }) => theme.colors.bg_01};
 `;
 
-const CommentTextarea = styled.textarea`
+const Textarea = styled.textarea`
   max-height: 79px;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_07};
+  word-break: keep-all;
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_02};
   }
 `;
 
-const CommentSendButton = styled.button`
+const SubmitButton = styled.button`
   ${SVGVerticalAlignStyle}
 `;
