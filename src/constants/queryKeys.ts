@@ -1,9 +1,9 @@
 export const queryKeys = {
   badges: 'badges',
   bookmark: 'bookmark',
-  comment: 'comment',
+  comments: 'comments',
   diaries: 'diaries',
   favorite: 'favorite',
-  terms: 'terms-agreements',
+  termsAgreements: 'terms-agreements',
   users: 'users',
 } as const;

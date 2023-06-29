@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/Register';
-import * as api from 'api';
 import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
+import { useTermsAgreements } from 'hooks/services';
 import { FadeInAnimationStyle } from 'styles';
 
 interface TermsAgreementState {
@@ -21,11 +20,7 @@ type TermsAgreementField =
   | 'termsAgreement.marketing';
 
 const RegisterTerms = () => {
-  const { data: termsAgreement } = useQuery(
-    ['terms-agreement'],
-    api.getTermsAgreement,
-  );
-
+  const { termsAgreementsData } = useTermsAgreements();
   const { register, setValue } = useFormContext<RegisterForm>();
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreementState>({
@@ -119,7 +114,7 @@ const RegisterTerms = () => {
         약관 전체 동의하기
       </CheckboxLabel>
       <CheckboxList>
-        {termsAgreement?.map((term) => {
+        {termsAgreementsData?.map((term) => {
           const { id, title, isRequired } = term;
           const fieldName = `termsAgreement.${id}` as TermsAgreementField;
           return (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
@@ -27,7 +27,9 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
+import { queryKeys } from 'constants/queryKeys';
 import { useBeforeLeave } from 'hooks';
+import { useDiary } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
@@ -35,21 +37,18 @@ import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 const EditDiary: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data, isLoading } = useQuery(
-    ['diary-detail', id],
-    async () => await api.getDiaryDetail(id as string),
-  );
+  const { diaryData, isLoading } = useDiary(id as string);
 
   useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
   useEffect(() => {
     setFocus('content');
-  }, [data]);
+  }, [diaryData]);
 
-  if (data === undefined) return <div />;
+  if (diaryData === undefined) return <div />;
   if (isLoading) return <div>Loading</div>;
 
-  const { title, content, imgUrl, isPublic, createdAt } = data;
+  const { title, content, imgUrl, isPublic, createdAt } = diaryData;
 
   const [previewImage, setPreviewImage] = useState<string>(
     imgUrl == null ? '' : imgUrl,
@@ -201,7 +200,7 @@ const EditDiary: NextPage = () => {
             />
             {isPhotoActive && (
               <PreviewImageContainer>
-                <ResponsiveImage src={previewImage} alt={watchTitle} />
+                <ResponsiveImage src={previewImage} alt={watchTitle ?? title} />
                 <CancelImageButton
                   type="button"
                   aria-label="사진 선택 취소"
@@ -245,7 +244,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
-    ['diary-detail', id],
+    [queryKeys.diaries, id],
     async () =>
       await api.getDiaryDetail(id as string, {
         headers: {

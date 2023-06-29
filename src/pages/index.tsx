@@ -8,6 +8,7 @@ import * as api from 'api';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { queryKeys } from 'constants/queryKeys';
 import { DiariesContainer } from 'containers/diary';
 
 const Home: NextPage = () => {
@@ -47,7 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
-    ['diaries'],
+    [queryKeys.diaries],
     async () =>
       await api.getDiaries({
         headers: {
