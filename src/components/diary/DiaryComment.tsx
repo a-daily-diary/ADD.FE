@@ -65,6 +65,7 @@ const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
         <CommentContent>{comment}</CommentContent>
         {isVisible && (
           <FloatingMenu
+            position="absolute"
             items={
               isCommenter
                 ? [
@@ -98,7 +99,6 @@ const CommentItem = styled.li`
   padding: 12px 20px 16px;
 
   &:focus-within {
-    /* TODO: color constant에 추가하기 */
     background-color: ${({ theme }) => theme.colors.primary_04};
   }
 

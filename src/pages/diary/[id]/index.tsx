@@ -64,6 +64,7 @@ const DiaryDetailPage: NextPage = () => {
       />
       {isVisible && (
         <FloatingMenu
+          position="fixed"
           items={
             isAuthor
               ? [
@@ -71,7 +72,7 @@ const DiaryDetailPage: NextPage = () => {
                     icon: <EditIcon />,
                     label: '수정하기',
                     onClick: async () =>
-                      await router.push(`/diary/${id as string}/edit`), // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                      await router.push(`/diary/${id as string}/edit`),
                   },
                   {
                     icon: <TrashIcon />,
@@ -85,7 +86,7 @@ const DiaryDetailPage: NextPage = () => {
                     label: '신고하기',
                     onClick: () => {
                       confirm('신고하시겠습니까?');
-                    }, // TODO: 일기 수정하기 페이지 생성 후 라우터 수정
+                    },
                   },
                 ]
           }
