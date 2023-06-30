@@ -83,6 +83,7 @@ const ContentLink = styled(Link)`
   ${EllipsisStyle}
   ${({ theme }) => theme.fonts.body_06}
   margin: 4px 0 6px;
+  white-space: pre-wrap;
   cursor: default;
 `;
 

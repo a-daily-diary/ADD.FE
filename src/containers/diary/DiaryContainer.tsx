@@ -120,8 +120,9 @@ const ImageContainer = styled.div`
 `;
 
 const Content = styled.p`
-  ${({ theme }) => theme.fonts.body_06}
   margin-top: 4px;
+  ${({ theme }) => theme.fonts.body_06}
+  white-space: pre-wrap;
 `;
 
 const TimeContainer = styled.div`
