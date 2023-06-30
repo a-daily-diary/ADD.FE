@@ -9,7 +9,7 @@ interface HeaderRightStyleProps {
 }
 
 interface HeaderRightProps extends HeaderRightStyleProps {
-  type: '더보기' | '검색' | '등록';
+  type: '더보기' | '검색' | '등록' | '수정';
   buttonRef?: ForwardedRef<HTMLButtonElement>;
   onClick?: () => void;
 }
@@ -32,9 +32,9 @@ export const HeaderRight = ({
           <SearchIcon />
         </SearchLink>
       )}
-      {type === '등록' && (
+      {(type === '등록' || type === '수정') && (
         <TextButton type="submit" onClick={onClick} disabled={disabled}>
-          등록
+          {type}
         </TextButton>
       )}
     </>

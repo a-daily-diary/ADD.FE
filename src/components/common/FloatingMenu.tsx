@@ -3,13 +3,16 @@ import FloatingMenuButton from './FloatingMenuButton';
 import type { FloatingMenuButtonProps } from './FloatingMenuButton';
 import { Z_INDEX } from 'constants/styles';
 
-interface FloatingMenuProps {
+interface FloatingMenuStyleProps {
+  position: 'absolute' | 'fixed';
+}
+interface FloatingMenuProps extends FloatingMenuStyleProps {
   items: FloatingMenuButtonProps[];
 }
 
-const FloatingMenu = ({ items }: FloatingMenuProps) => {
+const FloatingMenu = ({ items, position }: FloatingMenuProps) => {
   return (
-    <List>
+    <List position={position}>
       {items.map((item, index) => {
         const { label, icon, onClick } = item;
         return (
@@ -24,8 +27,8 @@ const FloatingMenu = ({ items }: FloatingMenuProps) => {
 
 export default FloatingMenu;
 
-const List = styled.ul`
-  position: absolute;
+const List = styled.ul<FloatingMenuStyleProps>`
+  position: ${({ position }) => position};
   top: 40px;
   right: 20px;
   z-index: ${Z_INDEX.dialog};

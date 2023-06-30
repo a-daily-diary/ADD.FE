@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { GetServerSideProps, NextPage } from 'next';
-import type { ChangeEventHandler } from 'react';
+import type { ChangeEventHandler, FocusEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
@@ -40,29 +40,40 @@ const EditDiary: NextPage = () => {
     async () => await api.getDiaryDetail(id as string),
   );
 
+  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
+
+  useEffect(() => {
+    setFocus('content');
+  }, [data]);
+
+  if (data === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
+  const { title, content, imgUrl, isPublic, createdAt } = data;
+
+  const [previewImage, setPreviewImage] = useState<string>(
+    imgUrl == null ? '' : imgUrl,
+  );
+  const isPhotoActive = previewImage.length > 0;
+  const createdAtDate = dateFormat(createdAt) as string;
+
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    setFocus,
     formState: { isValid },
-  } = useForm<DiaryForm>({ mode: 'onChange' });
+  } = useForm<DiaryForm>({
+    mode: 'onChange',
+    defaultValues: {
+      title,
+      content,
+      imgUrl,
+      isPublic,
+    },
+  });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
-
-  const [previewImage, setPreviewImage] = useState<string>(
-    data?.imgUrl == null ? '' : data?.imgUrl,
-  );
-  const isPhotoActive = previewImage.length > 0;
-
-  useEffect(() => {
-    if (data === undefined) return;
-    setValue('title', data.title, { shouldValidate: true });
-    setValue('content', data.content, { shouldValidate: true });
-    setValue('imgUrl', data.imgUrl, { shouldValidate: true });
-    setValue('isPublic', data.isPublic, { shouldValidate: true });
-  }, [data]);
-
-  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
     e,
@@ -95,6 +106,13 @@ const EditDiary: NextPage = () => {
     setValue('imgUrl', null);
   };
 
+  const handleOnFocusTextarea: FocusEventHandler<HTMLTextAreaElement> = (e) => {
+    const { target } = e;
+    setTimeout(() => {
+      target.style.height = `${target.scrollHeight}px`;
+    }, 0);
+  };
+
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
     try {
       const { title, content, imgUrl, isPublic } = data;
@@ -116,11 +134,6 @@ const EditDiary: NextPage = () => {
     }
   };
 
-  if (data === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
-
-  const createdAtDate = dateFormat(data?.createdAt) as string;
-
   return (
     <>
       <Seo title="일기 편집 | a daily diary" />
@@ -138,7 +151,7 @@ const EditDiary: NextPage = () => {
               />
             }
             title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
-            right={<HeaderRight type="등록" disabled={!isValid} />}
+            right={<HeaderRight type="수정" disabled={!isValid} />}
           />
           <FormHeader>
             {/* TODO: 일기 템플릿 추가 */}
@@ -207,6 +220,7 @@ const EditDiary: NextPage = () => {
                 onChange: textareaAutosize,
                 setValueAs: (value: string) => value.trim(),
               })}
+              onFocus={handleOnFocusTextarea}
             />
           </ContentContainer>
         </form>
@@ -334,7 +348,7 @@ const CancelImageButton = styled.button`
 
 const ContentTextarea = styled.textarea`
   margin-top: 16px;
-  ${({ theme }) => theme.fonts.body_04}
+  ${({ theme }) => theme.fonts.body_04};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.gray_04};
