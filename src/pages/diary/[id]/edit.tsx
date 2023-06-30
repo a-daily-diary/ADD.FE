@@ -151,7 +151,7 @@ const EditDiary: NextPage = () => {
               />
             }
             title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
-            right={<HeaderRight type="등록" disabled={!isValid} />}
+            right={<HeaderRight type="수정" disabled={!isValid} />}
           />
           <FormHeader>
             {/* TODO: 일기 템플릿 추가 */}
