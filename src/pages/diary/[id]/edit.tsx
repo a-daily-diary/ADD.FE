@@ -3,10 +3,10 @@ import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { GetServerSideProps, NextPage } from 'next';
-import type { ChangeEventHandler } from 'react';
+import type { ChangeEventHandler, FocusEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
@@ -42,6 +42,10 @@ const EditDiary: NextPage = () => {
 
   useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
+  useEffect(() => {
+    setFocus('content');
+  }, [data]);
+
   if (data === undefined) return <div />;
   if (isLoading) return <div>Loading</div>;
 
@@ -58,6 +62,7 @@ const EditDiary: NextPage = () => {
     handleSubmit,
     watch,
     setValue,
+    setFocus,
     formState: { isValid },
   } = useForm<DiaryForm>({
     mode: 'onChange',
@@ -99,6 +104,13 @@ const EditDiary: NextPage = () => {
   const handleCancelImage = () => {
     setPreviewImage('');
     setValue('imgUrl', null);
+  };
+
+  const handleOnFocusTextarea: FocusEventHandler<HTMLTextAreaElement> = (e) => {
+    const { target } = e;
+    setTimeout(() => {
+      target.style.height = `${target.scrollHeight}px`;
+    }, 0);
   };
 
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
@@ -208,6 +220,7 @@ const EditDiary: NextPage = () => {
                 onChange: textareaAutosize,
                 setValueAs: (value: string) => value.trim(),
               })}
+              onFocus={handleOnFocusTextarea}
             />
           </ContentContainer>
         </form>
