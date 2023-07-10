@@ -4,6 +4,8 @@ import type {
   DiaryResponse,
   DiaryDetail,
   Diaries,
+  EditDiaryRequest,
+  DeleteDiaryRequest,
 } from 'types/Diary';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
 import { API_PATH } from 'constants/api/path';
@@ -50,10 +52,13 @@ export const getDiaryDetail = async (
   return data;
 };
 
-export const editDiaryDetail = async (
-  { title, content, imgUrl, isPublic }: DiaryRequest,
-  id: string,
-) => {
+export const editDiaryDetail = async ({
+  title,
+  content,
+  imgUrl,
+  isPublic,
+  id,
+}: EditDiaryRequest) => {
   const { data: diaryData } = await axios.put<SuccessResponse<DiaryResponse>>(
     `${API_PATH.diaries.index}/${id}`,
     {
@@ -67,7 +72,7 @@ export const editDiaryDetail = async (
   return diaryData;
 };
 
-export const deleteDiaryDetail = async (id: string) => {
+export const deleteDiaryDetail = async ({ id }: DeleteDiaryRequest) => {
   const {
     data: {
       data: { message },

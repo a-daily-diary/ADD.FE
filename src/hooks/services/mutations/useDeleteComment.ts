@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { DeleteCommentRequest } from 'types/Comment';
 import * as api from 'api';
+import { queryKeys } from 'constants/queryKeys';
 
 export const useDeleteComment = (diaryId: string) => {
   const queryClient = useQueryClient();
@@ -12,8 +13,8 @@ export const useDeleteComment = (diaryId: string) => {
       }),
     {
       onSuccess: async () => {
-        await queryClient.invalidateQueries(['comments', diaryId]);
-        await queryClient.invalidateQueries(['diary-detail', diaryId]);
+        await queryClient.invalidateQueries([queryKeys.comments, diaryId]);
+        await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
       },
     },
   );

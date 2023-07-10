@@ -1,15 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import type { DeleteDiaryRequest } from 'types/Diary';
 import * as api from 'api';
 import { queryKeys } from 'constants/queryKeys';
 
-export const useCancelFavoriteDiary = (diaryId: string) => {
+export const useDeleteDiary = ({ id }: DeleteDiaryRequest) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    async () => await api.cancelFavoriteDiary(diaryId),
+    async ({ id }: DeleteDiaryRequest) => {
+      await api.deleteDiaryDetail({ id });
+    },
     {
       onSuccess: async () => {
         await queryClient.invalidateQueries([queryKeys.diaries]);
-        await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
+        await queryClient.invalidateQueries([queryKeys.diaries, id]);
       },
     },
   );

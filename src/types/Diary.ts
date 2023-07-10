@@ -15,9 +15,12 @@ export interface DiaryForm {
 export type DiaryRequest = DiaryForm;
 
 // 다이어리 편집
-export interface EditDiaryRequest extends DiaryRequest {
-  diaryId: string;
-}
+export type EditDiaryRequest = Pick<
+  DiaryDetail,
+  'id' | 'title' | 'content' | 'imgUrl' | 'isPublic'
+>;
+
+export type DeleteDiaryRequest = Pick<DiaryDetail, 'id'>;
 
 /*
  * Response Data Types

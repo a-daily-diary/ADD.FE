@@ -15,21 +15,25 @@ import { queryKeys } from 'constants/queryKeys';
 import { DiaryCommentsContainer, DiaryContainer } from 'containers/diary';
 import { useClickOutside } from 'hooks';
 import { useDiary } from 'hooks/services';
+import { useDeleteDiary } from 'hooks/services/mutations/useDeleteDiary';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { errorResponseMessage } from 'utils';
 
 const DiaryDetailPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { ref, isVisible, setIsVisible } = useClickOutside();
-  const { diaryData, isLoading } = useDiary(id as string);
   const { data: session } = useSession();
 
-  const handleDeleteDiary = async () => {
+  const { diaryData, isLoading } = useDiary(id as string);
+
+  const { ref, isVisible, setIsVisible } = useClickOutside();
+
+  const deleteDiaryMutation = useDeleteDiary({ id: id as string });
+
+  const handleDeleteDiary = () => {
     if (confirm('삭제하시겠습니까?')) {
       try {
-        const message = await api.deleteDiaryDetail(id as string);
-        alert(message);
+        deleteDiaryMutation({ id: id as string });
         // TODO: 일기 삭제 후 라우팅 처리 수정
         router.back();
       } catch (error) {

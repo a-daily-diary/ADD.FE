@@ -8,7 +8,6 @@ import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/Diary';
 import type { ErrorResponse } from 'types/Response';
-import * as api from 'api';
 import {
   PhotoInactiveIcon,
   PhotoActiveIcon,
@@ -26,12 +25,18 @@ import {
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
 import { useBeforeLeave } from 'hooks';
+import { useWriteDiary } from 'hooks/services';
+import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
 const WriteDiary: NextPage = () => {
   const today = dateFormat(new Date().toISOString()) as string;
   const router = useRouter();
+
+  const [previewImage, setPreviewImage] = useState<string>('');
+  const isPhotoActive = previewImage.length > 0;
+
   const {
     register,
     handleSubmit,
@@ -44,28 +49,25 @@ const WriteDiary: NextPage = () => {
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
-  const [previewImage, setPreviewImage] = useState<string>('');
-  const isPhotoActive = previewImage.length > 0;
-
   useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
 
-  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
-    e,
-  ) => {
+  const writeDiaryMutation = useWriteDiary();
+  const imageUploadMutation = useImageUpload({
+    path: 'diaries',
+    onSuccess: (imgUrl: string) => {
+      setPreviewImage(imgUrl);
+      setValue('imgUrl', imgUrl);
+    },
+  });
+
+  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
       try {
         const imageFormData = new FormData();
         imageFormData.append('image', files[0]);
 
-        const {
-          data: {
-            data: { imgUrl },
-          },
-        } = await api.uploadImage({ path: 'diaries', imageFormData });
-
-        setPreviewImage(imgUrl);
-        setValue('imgUrl', imgUrl);
+        imageUploadMutation(imageFormData);
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
           // TODO: 이미지 업로드 시 에러 처리
@@ -125,7 +127,7 @@ const WriteDiary: NextPage = () => {
               type="file"
               id="selectImageFile"
               accept="image/*"
-              onChange={handleOnChangeImageFile}
+              onChange={handleImageFile}
             />
             <PublicLabel htmlFor="isPublic" isPublic={watchIsPublic}>
               {watchIsPublic ? (

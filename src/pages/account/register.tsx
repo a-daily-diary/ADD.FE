@@ -16,7 +16,9 @@ import RegisterTerms from 'components/account/RegisterTerms';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
+import { queryKeys } from 'constants/queryKeys';
 import { Z_INDEX } from 'constants/styles';
+import { useRegisterUser } from 'hooks/services';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPage = () => {
@@ -36,7 +38,15 @@ const Register: NextPage = () => {
     welcomeMessage: false,
   });
 
-  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
+  const registerMutation = useRegisterUser({
+    onSuccess: () => {
+      setRegisterStep((state) => {
+        return { ...state, welcomeMessage: true };
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<RegisterForm> = (data) => {
     if (registerStep.email)
       setRegisterStep((state) => {
         return { ...state, username: true };
@@ -67,19 +77,13 @@ const Register: NextPage = () => {
           .filter(([_, value]) => value)
           .map(([id, _]) => id) as TermsAgreementId[];
 
-        await api
-          .register({
-            email,
-            username,
-            password,
-            imgUrl,
-            termsAgreementIdList,
-          })
-          .then(() => {
-            setRegisterStep((state) => {
-              return { ...state, welcomeMessage: true };
-            });
-          });
+        registerMutation({
+          email,
+          username,
+          password,
+          imgUrl,
+          termsAgreementIdList,
+        });
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
           alert(errorResponseMessage(error.response?.data.message));
@@ -126,7 +130,10 @@ const Register: NextPage = () => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['terms-agreement'], api.getTermsAgreement);
+  await queryClient.prefetchQuery(
+    [queryKeys.termsAgreements],
+    api.getTermsAgreement,
+  );
 
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };

@@ -1,12 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as api from 'api';
+import { queryKeys } from 'constants/queryKeys';
 
 export const useFavoriteDiary = (diaryId: string) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(async () => await api.favoriteDiary(diaryId), {
     onSuccess: async () => {
-      await queryClient.invalidateQueries(['diaries']);
-      await queryClient.invalidateQueries(['diary-detail', diaryId]);
+      await queryClient.invalidateQueries([queryKeys.diaries]);
+      await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
     },
   });
 

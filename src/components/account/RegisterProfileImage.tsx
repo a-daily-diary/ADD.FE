@@ -6,9 +6,9 @@ import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/Register';
 import type { ErrorResponse } from 'types/Response';
-import * as api from 'api';
 import { ImagePickerIcon } from 'assets/icons';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import {
   FadeInAnimationStyle,
   SVGVerticalAlignStyle,
@@ -16,31 +16,32 @@ import {
 } from 'styles';
 
 const RegisterProfileImage = () => {
-  const { setValue } = useFormContext<RegisterForm>();
-  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
+  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
+
+  const { setValue } = useFormContext<RegisterForm>();
+
+  const imageUploadMutation = useImageUpload({
+    path: 'users',
+    onSuccess: (imgUrl: string) => {
+      setPreviewImage(imgUrl);
+    },
+  });
 
   useEffect(() => {
     setValue('imgUrl', previewImage);
   }, [previewImage, setValue]);
 
-  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
-    e,
-  ) => {
+  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
       try {
         const imageFormData = new FormData();
         imageFormData.append('image', files[0]);
 
-        const { data } = await api.uploadImage({
-          path: 'users',
-          imageFormData,
-        });
-
-        setPreviewImage(data.data.imgUrl);
+        imageUploadMutation(imageFormData);
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
           console.log(error);
@@ -49,7 +50,7 @@ const RegisterProfileImage = () => {
     }
   };
 
-  const handleOnClickProfileImage: MouseEventHandler<HTMLButtonElement> = (
+  const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
     e,
   ) => {
     imageRef.current.forEach((element, index) => {
@@ -84,7 +85,7 @@ const RegisterProfileImage = () => {
           type="file"
           id="selectImageFile"
           accept="image/*"
-          onChange={handleOnChangeImageFile}
+          onChange={handleImageFile}
         />
         <>
           {DEFAULT_PROFILE_IMAGES.map((image, index) => {
@@ -93,7 +94,7 @@ const RegisterProfileImage = () => {
               <ImageButton
                 key={`default-images-${id}`}
                 type="button"
-                onClick={handleOnClickProfileImage}
+                onClick={handleDefaultProfileImage}
                 isActive={url === previewImage}
               >
                 <Image

@@ -30,31 +30,25 @@ import { DIARY_MESSAGE } from 'constants/diary';
 import { queryKeys } from 'constants/queryKeys';
 import { useBeforeLeave } from 'hooks';
 import { useDiary } from 'hooks/services';
+import { useEditDiary } from 'hooks/services/mutations/useEditDiary';
+import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
 const EditDiary: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const {
+    query: { id },
+    asPath,
+  } = router;
+
   const { diaryData, isLoading } = useDiary(id as string);
 
-  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
-
-  useEffect(() => {
-    setFocus('content');
-  }, [diaryData]);
-
-  if (diaryData === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
-
-  const { title, content, imgUrl, isPublic, createdAt } = diaryData;
-
   const [previewImage, setPreviewImage] = useState<string>(
-    imgUrl == null ? '' : imgUrl,
+    diaryData?.imgUrl == null ? '' : diaryData?.imgUrl,
   );
   const isPhotoActive = previewImage.length > 0;
-  const createdAtDate = dateFormat(createdAt) as string;
 
   const {
     register,
@@ -66,31 +60,37 @@ const EditDiary: NextPage = () => {
   } = useForm<DiaryForm>({
     mode: 'onChange',
     defaultValues: {
-      title,
-      content,
-      imgUrl,
-      isPublic,
+      title: diaryData?.title,
+      content: diaryData?.content,
+      imgUrl: diaryData?.imgUrl,
+      isPublic: diaryData?.isPublic,
     },
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
-  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = async (
-    e,
-  ) => {
+  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: asPath });
+
+  const editDiaryMutation = useEditDiary(id as string);
+  const imageUploadMutation = useImageUpload({
+    path: 'diaries',
+    onSuccess: (imgUrl: string) => {
+      setPreviewImage(imgUrl);
+      setValue('imgUrl', imgUrl);
+    },
+  });
+
+  useEffect(() => {
+    setFocus('content');
+  }, [setFocus]);
+
+  const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
       try {
         const imageFormData = new FormData();
         imageFormData.append('image', files[0]);
 
-        const {
-          data: {
-            data: { imgUrl },
-          },
-        } = await api.uploadImage({ path: 'diaries', imageFormData });
-
-        setPreviewImage(imgUrl);
-        setValue('imgUrl', imgUrl);
+        imageUploadMutation(imageFormData);
       } catch (error) {
         if (isAxiosError<ErrorResponse>(error)) {
           // TODO: 이미지 업로드 시 에러 처리
@@ -115,15 +115,13 @@ const EditDiary: NextPage = () => {
   const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
     try {
       const { title, content, imgUrl, isPublic } = data;
-      await api.editDiaryDetail(
-        {
-          title,
-          content,
-          imgUrl,
-          isPublic,
-        },
-        id as string,
-      );
+      editDiaryMutation({
+        title,
+        content,
+        imgUrl,
+        isPublic,
+        id: id as string,
+      });
 
       await router.replace(`/diary/${id as string}`);
     } catch (error) {
@@ -132,6 +130,13 @@ const EditDiary: NextPage = () => {
       }
     }
   };
+
+  if (diaryData === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
+  const { title, createdAt } = diaryData;
+
+  const createdAtDate = dateFormat(createdAt) as string;
 
   return (
     <>
