@@ -1,18 +1,14 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
 import Diary from '../../components/diary/Diary';
-import * as api from 'api';
+import { useDiaries } from 'hooks/services';
 
 const DiariesContainer = () => {
-  const { data, isLoading } = useQuery(
-    ['diaries'],
-    async () => await api.getDiaries(),
-  );
+  const { diariesData, isLoading } = useDiaries();
 
-  if (data === undefined) return <div />;
+  if (diariesData === undefined) return <div />;
   if (isLoading) return <div>Loading</div>;
 
-  const { diaries } = data;
+  const { diaries } = diariesData;
   return (
     <List>
       {diaries.map((diary) => {

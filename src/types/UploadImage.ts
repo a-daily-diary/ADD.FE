@@ -3,7 +3,10 @@
  */
 
 // 유저 이미지 업로드
-export type UploadImageRequest = FormData;
+export interface UploadImageRequest {
+  path: 'users' | 'diaries';
+  imageFormData: FormData;
+}
 
 /*
  * Response Data Types

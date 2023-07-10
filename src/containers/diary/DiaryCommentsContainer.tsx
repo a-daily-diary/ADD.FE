@@ -1,25 +1,21 @@
 import styled from '@emotion/styled';
-import { useQuery } from '@tanstack/react-query';
-import * as api from 'api';
 import { WriteCommentIcon } from 'assets/icons';
 import DiaryCommentInput from 'components/diary/DiaryCommentInput';
 import DiaryComments from 'components/diary/DiaryComments';
+import { useComments } from 'hooks/services';
 
 interface DiaryCommentsContainerProps {
   diaryId: string;
 }
 
 const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
-  const { data } = useQuery(
-    ['comments', diaryId],
-    async () => await api.getComments(diaryId),
-  );
+  const { commentsData } = useComments(diaryId);
 
-  if (data === undefined) return <div />;
+  if (commentsData === undefined) return <div />;
 
   return (
     <DiaryCommentSection>
-      <DiaryComments diaryComments={data} diaryId={diaryId} />
+      <DiaryComments diaryComments={commentsData} diaryId={diaryId} />
       <WriteCommentLabel htmlFor="diaryCommentTextarea">
         <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>
