@@ -62,7 +62,7 @@ const WriteDiary: NextPage = () => {
           data: {
             data: { imgUrl },
           },
-        } = await api.uploadDiaryImage(imageFormData);
+        } = await api.uploadImage({ path: 'diaries', imageFormData });
 
         setPreviewImage(imgUrl);
         setValue('imgUrl', imgUrl);
@@ -80,20 +80,11 @@ const WriteDiary: NextPage = () => {
     setValue('imgUrl', null);
   };
 
-  const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
+  const onSubmit: SubmitHandler<DiaryForm> = (data) => {
     try {
       const { title, content, imgUrl, isPublic } = data;
-      const {
-        data: { diary },
-      } = await api.writeDiary({
-        title,
-        content,
-        imgUrl,
-        isPublic,
-      });
-
+      writeDiaryMutation({ title, content, imgUrl, isPublic });
       // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
-      await router.replace(`/diary/${diary.id}`);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         alert(errorResponseMessage(error.response?.data.message));

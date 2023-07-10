@@ -14,6 +14,11 @@ export interface DiaryForm {
 // 다이어리 작성
 export type DiaryRequest = DiaryForm;
 
+// 다이어리 편집
+export interface EditDiaryRequest extends DiaryRequest {
+  diaryId: string;
+}
+
 /*
  * Response Data Types
  */

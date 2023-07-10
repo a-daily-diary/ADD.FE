@@ -87,7 +87,7 @@ const EditDiary: NextPage = () => {
           data: {
             data: { imgUrl },
           },
-        } = await api.uploadDiaryImage(imageFormData);
+        } = await api.uploadImage({ path: 'diaries', imageFormData });
 
         setPreviewImage(imgUrl);
         setValue('imgUrl', imgUrl);

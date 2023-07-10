@@ -35,7 +35,10 @@ const RegisterProfileImage = () => {
         const imageFormData = new FormData();
         imageFormData.append('image', files[0]);
 
-        const { data } = await api.uploadUserImage(imageFormData);
+        const { data } = await api.uploadImage({
+          path: 'users',
+          imageFormData,
+        });
 
         setPreviewImage(data.data.imgUrl);
       } catch (error) {
