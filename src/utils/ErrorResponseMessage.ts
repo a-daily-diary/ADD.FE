@@ -1,4 +1,4 @@
-import type { ErrorMessage } from 'types/Response';
+import type { ErrorMessage } from 'types/response';
 
 // NOTE: error message가 배열인 경우 메시지 배열의 첫 번째를 반환, 문자열일 경우 메시지 자체를 반환
 export const errorResponseMessage = (errorResponse: ErrorMessage) => {

@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
-import type { LoginForm } from 'types/Login';
+import type { LoginForm } from 'types/login';
 import FormInput from 'components/account/FormInput';
 import Button from 'components/common/Button';
 import {

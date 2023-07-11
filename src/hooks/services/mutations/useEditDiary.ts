@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { EditDiaryRequest } from 'types/Diary';
+import type { EditDiaryRequest } from 'types/diary';
 import * as api from 'api';
 import { queryKeys } from 'constants/queryKeys';
 

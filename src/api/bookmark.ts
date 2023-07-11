@@ -1,4 +1,4 @@
-import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
+import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 

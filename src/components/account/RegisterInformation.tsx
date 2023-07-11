@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { RegisterStep, RegisterForm } from 'types/Register';
-import type { ErrorResponse } from 'types/Response';
+import type { RegisterStep, RegisterForm } from 'types/register';
+import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import FormInput from 'components/account/FormInput';
 import {

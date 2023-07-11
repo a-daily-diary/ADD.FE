@@ -6,8 +6,8 @@ import type {
   Diaries,
   EditDiaryRequest,
   DeleteDiaryRequest,
-} from 'types/Diary';
-import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
+} from 'types/diary';
+import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 

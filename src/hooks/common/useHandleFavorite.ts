@@ -1,6 +1,6 @@
 import { useFavoriteDiary, useCancelFavoriteDiary } from '../services';
 import type { MouseEventHandler } from 'react';
-import type { DiaryDetail } from 'types/Diary';
+import type { DiaryDetail } from 'types/diary';
 
 export const useHandleFavorite = ({
   isFavorite,

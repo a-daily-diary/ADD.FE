@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import type { DiaryDetail } from 'types/Diary';
+import type { DiaryDetail } from 'types/diary';
 import {
   BookmarkOffIcon,
   BookmarkOnIcon,

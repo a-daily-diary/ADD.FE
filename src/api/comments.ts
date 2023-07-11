@@ -4,8 +4,8 @@ import type {
   CommentResponse,
   Comments,
   DeleteCommentRequest,
-} from 'types/Comment';
-import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
+} from 'types/comment';
+import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 

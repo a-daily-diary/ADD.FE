@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import type { DiaryForm } from 'types/Diary';
-import type { ErrorResponse } from 'types/Response';
+import type { DiaryForm } from 'types/diary';
+import type { ErrorResponse } from 'types/response';
 import {
   PhotoInactiveIcon,
   PhotoActiveIcon,

@@ -2,8 +2,8 @@ import { isAxiosError } from 'axios';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import type { NextAuthOptions } from 'next-auth';
-import type { LoginRequest } from 'types/Login';
-import type { ErrorResponse } from 'types/Response';
+import type { LoginRequest } from 'types/login';
+import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { errorResponseMessage } from 'utils';
 

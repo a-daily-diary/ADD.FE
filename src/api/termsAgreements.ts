@@ -1,5 +1,5 @@
-import type { SuccessResponse } from 'types/Response';
-import type { TermsAgreementResponse } from 'types/TermsAgreement';
+import type { SuccessResponse } from 'types/response';
+import type { TermsAgreementResponse } from 'types/termsAgreement';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 
