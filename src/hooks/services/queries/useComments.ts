@@ -5,7 +5,7 @@ import { queryKeys } from 'constants/queryKeys';
 export const useComments = (diaryId: string) => {
   const { data: commentsData, isLoading } = useQuery(
     [queryKeys.comments, diaryId],
-    async () => await api.getComments(diaryId),
+    async () => await api.getComments({ diaryId }),
   );
   return { commentsData, isLoading };
 };

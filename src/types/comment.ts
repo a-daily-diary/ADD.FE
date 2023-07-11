@@ -1,50 +1,43 @@
+import type { DiaryDetail } from './diary';
+import type { AxiosRequestConfig } from 'axios';
 import type { User } from 'next-auth';
 
-export interface CommentForm {
-  comment: string;
-}
-
-/*
- * Request Data Types
- */
-
-// 댓글 작성
-export interface CommentRequest extends CommentForm {
-  diaryId: string;
-}
-
-// 댓글 삭제
-export interface DeleteCommentRequest {
-  diaryId: string;
-  commentId: string;
-}
-
-/*
- * Response Data Types
- */
-
-// 댓글 작성
-export interface CommentResponse {
-  comment: Comment;
-  // TODO: badge 추가 예정
-}
-
-/*
- * Other Types
- */
-
-// 댓글
 export interface Comment {
   id: string;
   createdAt: string;
   updatedAt: string;
   comment: string;
   commenter: User;
+  diary: DiaryDetail;
 }
 
-// 댓글 리스트
 export interface Comments {
   comments: Comment[];
   totalCount: number;
   totalPage: number;
+}
+
+export type CommentForm = Pick<Comment, 'comment'>;
+
+/* Request */
+
+export interface GetCommentRequest {
+  diaryId: Pick<DiaryDetail, 'id'>['id'];
+  config?: AxiosRequestConfig;
+}
+
+export interface WriteCommentRequest extends CommentForm {
+  diaryId: Pick<DiaryDetail, 'id'>['id'];
+}
+
+export interface DeleteCommentRequest {
+  diaryId: Pick<DiaryDetail, 'id'>['id'];
+  commentId: Pick<Comment, 'id'>['id'];
+}
+
+/* Response */
+
+export interface WriteCommentResponse {
+  comment: Comment;
+  // TODO: badge 추가
 }
