@@ -51,8 +51,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     [queryKeys.diaries],
     async () =>
       await api.getDiaries({
-        headers: {
-          Authorization: `Bearer ${session.user.accessToken}`,
+        config: {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
         },
       }),
   );

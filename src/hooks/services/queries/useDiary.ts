@@ -5,7 +5,7 @@ import { queryKeys } from 'constants/queryKeys';
 export const useDiary = (id: string) => {
   const { data: diaryData, isLoading } = useQuery(
     [queryKeys.diaries, id],
-    async () => await api.getDiaryDetail(id),
+    async () => await api.getDiaryDetail({ id }),
   );
   return { diaryData, isLoading };
 };

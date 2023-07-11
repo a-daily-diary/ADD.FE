@@ -125,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     [queryKeys.diaries, id],
-    async () => await api.getDiaryDetail(id as string, headers),
+    async () => await api.getDiaryDetail({ id: id as string, config: headers }),
   );
   await queryClient.prefetchQuery(
     [queryKeys.comments, id],

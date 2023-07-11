@@ -1,42 +1,6 @@
+import type { AxiosRequestConfig } from 'axios';
 import type { User } from 'next-auth';
 
-export interface DiaryForm {
-  title: string;
-  content: string;
-  imgUrl: string | null;
-  isPublic: boolean;
-}
-
-/*
- * Request Data Types
- */
-
-// 다이어리 작성
-export type DiaryRequest = DiaryForm;
-
-// 다이어리 편집
-export type EditDiaryRequest = Pick<
-  DiaryDetail,
-  'id' | 'title' | 'content' | 'imgUrl' | 'isPublic'
->;
-
-export type DeleteDiaryRequest = Pick<DiaryDetail, 'id'>;
-
-/*
- * Response Data Types
- */
-
-// 다이어리 작성
-export interface DiaryResponse {
-  diary: DiaryDetail;
-  // TODO: badge 추가 예정
-}
-
-/*
- * Other Types
- */
-
-// 일기 상세
 export interface DiaryDetail {
   id: string;
   title: string;
@@ -52,9 +16,43 @@ export interface DiaryDetail {
   author: User;
 }
 
-// 일기 리스트
 export interface Diaries {
   diaries: DiaryDetail[];
   totalCount: number;
   totalPage: number;
+}
+
+export type DiaryForm = Pick<
+  DiaryDetail,
+  'title' | 'content' | 'imgUrl' | 'isPublic'
+>;
+
+/* Request */
+
+export interface GetDiariesRequest {
+  config?: AxiosRequestConfig;
+}
+
+export interface GetDiaryRequest {
+  id: Pick<DiaryDetail, 'id'>['id'];
+  config?: AxiosRequestConfig;
+}
+
+export type WriteDiaryRequest = Pick<
+  DiaryDetail,
+  'title' | 'content' | 'imgUrl' | 'isPublic'
+>;
+
+export type EditDiaryRequest = Pick<
+  DiaryDetail,
+  'id' | 'title' | 'content' | 'imgUrl' | 'isPublic'
+>;
+
+export type DeleteDiaryRequest = Pick<DiaryDetail, 'id'>;
+
+/* Response */
+
+export interface WriteDiaryResponse {
+  diary: DiaryDetail;
+  // TODO: badge 추가 예정
 }
