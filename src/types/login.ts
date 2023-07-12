@@ -1,27 +1,17 @@
-export interface LoginForm {
+import type { User } from 'next-auth';
+
+export type LoginForm = LoginRequest;
+
+/* Request */
+
+export interface LoginRequest {
   email: string;
   password: string;
 }
 
-/*
- * Request Data Types
- */
+/* Response */
 
-// 로그인
-export type LoginRequest = LoginForm;
-
-/*
- * Response Data Types
- */
-
-// 로그인
 export interface LoginResponse {
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    username: string;
-    imgUrl: string;
-    isAdmin: boolean; // TODO: API에서 데이터 구조 수정 필요
-  };
+  token: Pick<User, 'accessToken'>['accessToken'];
+  user: Omit<User, 'accessToken'>;
 }

@@ -1,26 +1,16 @@
-import type { TermsAgreementId } from './TermsAgreement';
+import type { TermsAgreementId } from './termsAgreement';
 
-export interface RegisterForm {
-  email: string;
-  username: string;
-  password: string;
+export type RegisterForm = Omit<RegisterRequest, 'termsAgreementIdList'> & {
   passwordCheck: string;
-  imgUrl: string;
   termsAgreement: {
-    service: boolean;
-    privacy: boolean;
-    marketing: boolean;
+    [key in TermsAgreementId]: boolean;
   };
-}
+};
 
-/*
- * Request Data Types
- */
+/* Request */
 
-// 이메일/유저이름 중복 체크
 export type ExistsRequest = Record<string, string>;
 
-// 회원가입
 export interface RegisterRequest {
   email: string;
   username: string;
@@ -29,11 +19,8 @@ export interface RegisterRequest {
   termsAgreementIdList: TermsAgreementId[];
 }
 
-/*
- * Other Types
- */
+/* Other */
 
-// 회원가입 단계별 UI를 위한 타입
 export interface RegisterStep {
   email: boolean;
   username: boolean;
