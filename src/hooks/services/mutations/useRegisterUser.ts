@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { RegisterRequest } from 'types/Register';
+import type { RegisterRequest } from 'types/register';
 import * as api from 'api';
 
 interface UseRegisterUserProps {

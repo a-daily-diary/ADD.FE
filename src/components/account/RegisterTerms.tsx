@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
-import type { RegisterForm } from 'types/Register';
+import type { RegisterForm } from 'types/register';
 import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { useTermsAgreements } from 'hooks/services';
 import { FadeInAnimationStyle } from 'styles';

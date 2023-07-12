@@ -1,3 +1,5 @@
+export type ErrorMessage = string | string[] | undefined;
+
 export interface ErrorResponse {
   error: string;
   message: ErrorMessage;
@@ -5,16 +7,12 @@ export interface ErrorResponse {
   success: false;
 }
 
-export type ErrorMessage = string | string[] | undefined;
-
 export interface SuccessResponse<T> {
   success: true;
   data: T;
 }
 
-/*
- * Common Response Data Types
- */
+/* Common */
 
 export interface OnlyMessageResponse {
   message: string;

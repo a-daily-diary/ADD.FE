@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
-import type { ErrorResponse } from 'types/Response';
+import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import FloatingMenu from 'components/common/FloatingMenu';
@@ -125,11 +125,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(
     [queryKeys.diaries, id],
-    async () => await api.getDiaryDetail(id as string, headers),
+    async () => await api.getDiaryDetail({ id: id as string, config: headers }),
   );
   await queryClient.prefetchQuery(
     [queryKeys.comments, id],
-    async () => await api.getComments(id as string, headers),
+    async () =>
+      await api.getComments({ diaryId: id as string, config: headers }),
   );
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };

@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import type { DiaryDetail } from 'types/Diary';
+import type { DiaryDetail } from 'types/diary';
 import {
   BookmarkOffIcon,
   BookmarkOnIcon,

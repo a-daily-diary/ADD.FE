@@ -1,8 +1,8 @@
-import type { SuccessResponse } from 'types/Response';
+import type { SuccessResponse } from 'types/response';
 import type {
   UploadImageRequest,
   UploadImageResponse,
-} from 'types/UploadImage';
+} from 'types/uploadImage';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 

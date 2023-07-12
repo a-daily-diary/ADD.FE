@@ -1,6 +1,6 @@
-import type { LoginRequest, LoginResponse } from 'types/Login';
-import type { ExistsRequest, RegisterRequest } from 'types/Register';
-import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
+import type { LoginRequest, LoginResponse } from 'types/login';
+import type { ExistsRequest, RegisterRequest } from 'types/register';
+import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import DiaryComment from './DiaryComment';
-import type { Comments } from 'types/Comment';
+import type { Comments } from 'types/comment';
 import { ScreenReaderOnly } from 'styles';
 
 interface DiaryCommentsProps {

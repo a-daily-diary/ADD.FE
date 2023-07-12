@@ -1,12 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CommentRequest } from 'types/Comment';
+import type { WriteCommentRequest } from 'types/comment';
 import * as api from 'api';
 import { queryKeys } from 'constants/queryKeys';
 
 export const useWriteComment = (diaryId: string) => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    async ({ diaryId, comment }: CommentRequest) =>
+    async ({ diaryId, comment }: WriteCommentRequest) =>
       await api.writeComment({
         diaryId,
         comment,

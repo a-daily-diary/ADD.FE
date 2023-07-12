@@ -1,3 +1,5 @@
+export type TermsAgreementId = 'service' | 'privacy' | 'marketing';
+
 export interface TermsAgreement {
   id: TermsAgreementId;
   title: string;
@@ -5,11 +7,6 @@ export interface TermsAgreement {
   isRequired: boolean;
 }
 
-export type TermsAgreementId = 'service' | 'privacy' | 'marketing';
+/* Response */
 
-/*
- * Response Data Types
- */
-
-// 회원가입 약관
 export type TermsAgreementResponse = TermsAgreement[];

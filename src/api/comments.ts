@@ -1,18 +1,15 @@
-import type { AxiosRequestConfig } from 'axios';
 import type {
-  CommentRequest,
-  CommentResponse,
+  WriteCommentRequest,
+  WriteCommentResponse,
   Comments,
   DeleteCommentRequest,
-} from 'types/Comment';
-import type { OnlyMessageResponse, SuccessResponse } from 'types/Response';
+  GetCommentRequest,
+} from 'types/comment';
+import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/api/path';
 import axios from 'lib/axios';
 
-export const getComments = async (
-  diaryId: string,
-  config?: AxiosRequestConfig,
-) => {
+export const getComments = async ({ diaryId, config }: GetCommentRequest) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Comments>>(
@@ -22,10 +19,13 @@ export const getComments = async (
   return data;
 };
 
-export const writeComment = async ({ diaryId, comment }: CommentRequest) => {
+export const writeComment = async ({
+  diaryId,
+  comment,
+}: WriteCommentRequest) => {
   const {
     data: { data },
-  } = await axios.post<SuccessResponse<CommentResponse>>(
+  } = await axios.post<SuccessResponse<WriteCommentResponse>>(
     `${API_PATH.diaries.index}/${diaryId}/comment`,
     {
       diaryId,

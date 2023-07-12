@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import type { GetServerSideProps, NextPage } from 'next';
 import type { ChangeEventHandler, FocusEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import type { DiaryForm } from 'types/Diary';
-import type { ErrorResponse } from 'types/Response';
+import type { DiaryForm } from 'types/diary';
+import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import {
   PhotoInactiveIcon,

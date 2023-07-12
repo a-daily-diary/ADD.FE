@@ -1,18 +1,12 @@
-/*
- * Request Data Types
- */
+/* Request */
 
-// 유저 이미지 업로드
 export interface UploadImageRequest {
   path: 'users' | 'diaries';
   imageFormData: FormData;
 }
 
-/*
- * Response Data Types
- */
+/* Response */
 
-// 유저 이미지 업로드
 export interface UploadImageResponse {
   imgUrl: string;
 }
