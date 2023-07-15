@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const ADD_API = process.env.NEXT_PUBLIC_API_HOST;
+
 const nextConfig = {
   images: { // NOTE: images domains 설정이 최상위에 있어야 합니다.
     domains: [
@@ -23,6 +26,14 @@ const nextConfig = {
       use: ['@svgr/webpack'],
     });
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/v1/:path*',
+        destination: `${ADD_API}/:path*`,
+      },
+    ];
   },
 };
 
