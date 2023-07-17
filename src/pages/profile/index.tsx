@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
 import type { NextPage } from 'next';
 import { SettingIcon } from 'assets/icons';
 import Seo from 'components/common/Seo';
@@ -15,9 +14,7 @@ const PROFILE_TAB_LIST = [
 ];
 
 const Profile: NextPage = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
-  const indicator = useTabIndicator({ tabsRef, activeIndex });
+  const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
 
   return (
     <>
