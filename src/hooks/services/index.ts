@@ -12,3 +12,4 @@ export * from './queries/useDiaries';
 export * from './queries/useDiary';
 export * from './queries/useComments';
 export * from './queries/useTermsAgreements';
+export * from './queries/useProfile';
