@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { DiaryRequest } from 'types/diary';
+import type { WriteDiaryRequest } from 'types/diary';
 import * as api from 'api';
 import { queryKeys } from 'constants/queryKeys';
 
@@ -8,7 +8,7 @@ export const useWriteDiary = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    async ({ title, content, imgUrl, isPublic }: DiaryRequest) => {
+    async ({ title, content, imgUrl, isPublic }: WriteDiaryRequest) => {
       const {
         data: { diary },
       } = await api.writeDiary({

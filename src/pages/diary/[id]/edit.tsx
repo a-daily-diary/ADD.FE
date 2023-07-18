@@ -251,9 +251,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await queryClient.prefetchQuery(
     [queryKeys.diaries, id],
     async () =>
-      await api.getDiaryDetail(id as string, {
-        headers: {
-          Authorization: `Bearer ${session.user.accessToken}`,
+      await api.getDiaryDetail({
+        id: id as string,
+        config: {
+          headers: {
+            Authorization: `Bearer ${session.user.accessToken}`,
+          },
         },
       }),
   );
