@@ -9,6 +9,7 @@ import Tab from 'components/common/Tab';
 import Empty from 'components/profile/Empty';
 import { queryKeys } from 'constants/queryKeys';
 import { ProfileContainer } from 'containers/profile/ProfileContainer';
+import UserDiariesContainer from 'containers/users/UserDiariesContainer';
 import { useTabIndicator } from 'hooks';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -50,12 +51,9 @@ const Profile: NextPage = () => {
           })}
         </Tab>
         <article>
-          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' &&
-            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
-              <div>일기</div>
-            ) : (
-              <Empty text={'일기가 없습니다.'} />
-            ))}
+          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
+            <UserDiariesContainer username={session.user.username} />
+          )}
           {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' &&
             (PROFILE_TAB_LIST[activeIndex].content !== null ? (
               <div>북마크</div>
@@ -93,6 +91,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await queryClient.prefetchQuery([queryKeys.users, username], async () => {
     return await api.getProfileByUsername({ username, config: headers });
   });
+  await queryClient.prefetchQuery(
+    [queryKeys.diaries, username],
+    async () => await api.getDiariesByUsername({ username, config: headers }),
+  );
   return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
 
