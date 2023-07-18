@@ -12,6 +12,7 @@ import UserDiariesContainer from 'containers/users/UserDiariesContainer';
 import { useTabIndicator } from 'hooks';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { ScreenReaderOnly } from 'styles';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
@@ -63,10 +64,16 @@ const Profile: NextPage = () => {
         </Tab>
         <article>
           {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-            <UserDiariesContainer diariesData={userDiariesData} />
+            <>
+              <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
+              <UserDiariesContainer diariesData={userDiariesData} />
+            </>
           )}
           {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
-            <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+            <>
+              <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
+              <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+            </>
           )}
         </article>
       </section>
@@ -115,4 +122,8 @@ export default Profile;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ theme }) => theme.fonts.headline_04};
+`;
+
+const Title = styled.h2`
+  ${ScreenReaderOnly}
 `;
