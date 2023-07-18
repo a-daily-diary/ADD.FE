@@ -91,3 +91,16 @@ export const getDiariesByUsername = async ({
   );
   return data;
 };
+
+export const getBookmarkedDiariesByUsername = async ({
+  username,
+  config,
+}: GetDiariesRequest & { username: string }) => {
+  const {
+    data: { data },
+  } = await axios.get<SuccessResponse<Diaries>>(
+    `${API_PATH.diaries.bookmark}/${username}`,
+    config,
+  );
+  return data;
+};
