@@ -78,3 +78,16 @@ export const deleteDiaryDetail = async ({ id }: DeleteDiaryRequest) => {
   );
   return message;
 };
+
+export const getDiariesByUsername = async ({
+  username,
+  config,
+}: GetDiariesRequest & { username: string }) => {
+  const {
+    data: { data },
+  } = await axios.get<SuccessResponse<Diaries>>(
+    `${API_PATH.diaries.index}?username=${username}`,
+    config,
+  );
+  return data;
+};
