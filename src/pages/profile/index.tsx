@@ -6,17 +6,17 @@ import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
-import Empty from 'components/profile/Empty';
 import { queryKeys } from 'constants/queryKeys';
 import { ProfileContainer } from 'containers/profile/ProfileContainer';
 import UserDiariesContainer from 'containers/users/UserDiariesContainer';
 import { useTabIndicator } from 'hooks';
+import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
-  { id: 'diaries', title: '일기', content: null },
-  { id: 'bookmarks', title: '북마크', content: null },
+  { id: 'diaries', title: '일기' },
+  { id: 'bookmarks', title: '북마크' },
 ];
 
 const Profile: NextPage = () => {
@@ -25,6 +25,17 @@ const Profile: NextPage = () => {
   const { data: session } = useSession();
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
+
+  const { userDiariesData, isLoading: isUserDiariesLoading } = useUserDiaries(
+    session.user.username,
+  );
+  const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
+    useBookmarkedDiaries(session.user.username);
+
+  if (userDiariesData === undefined || bookmarkedDiariesData === undefined)
+    return <div />;
+  if (isUserDiariesLoading || isBookmarkedDiariesLoading)
+    return <div>Loading</div>;
 
   return (
     <>
@@ -52,14 +63,11 @@ const Profile: NextPage = () => {
         </Tab>
         <article>
           {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-            <UserDiariesContainer username={session.user.username} />
+            <UserDiariesContainer diariesData={userDiariesData} />
           )}
-          {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' &&
-            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
-              <div>북마크</div>
-            ) : (
-              <Empty text={'북마크가 없습니다.'} />
-            ))}
+          {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
+            <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+          )}
         </article>
       </section>
     </>
@@ -94,6 +102,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await queryClient.prefetchQuery(
     [queryKeys.diaries, username],
     async () => await api.getDiariesByUsername({ username, config: headers }),
+  );
+  await queryClient.prefetchQuery(
+    [queryKeys.diaries, username],
+    async () =>
+      await api.getBookmarkedDiariesByUsername({ username, config: headers }),
   );
   return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
