@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { LogoIcon, BackIcon, CloseIcon } from 'assets/icons';
+import { BackIcon, CloseIcon } from 'assets/icons';
 import { SVGVerticalAlignStyle } from 'styles';
 
 interface HeaderLeftProps {
@@ -20,7 +21,13 @@ export const HeaderLeft = ({ type, onClick }: HeaderLeftProps) => {
             router.reload();
           }}
         >
-          <LogoIcon />
+          <Image
+            src="/images/logo/logo_x2.png"
+            alt="a daily diary"
+            width={90}
+            height={24}
+            priority
+          />
         </Button>
       )}
       {type === '이전' && (
