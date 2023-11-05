@@ -117,8 +117,8 @@ const ButtonLayout = styled.button<ButtonProps>`
   ${variantStyles}
 
     &:disabled {
-    background: ${({ theme }) => theme.colors.bg_02};
-    color: ${({ theme }) => theme.colors.gray_00};
+    background: ${({ theme }) => theme.colors.gray_04};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
