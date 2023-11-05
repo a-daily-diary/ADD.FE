@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import {
   VALID_VALUE,
   INVALID_VALUE,
 } from 'constants/validation';
+import { ScreenReaderOnly } from 'styles';
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -51,6 +53,13 @@ const Login: NextPage = () => {
 
   return (
     <Section>
+      <LogoImage
+        src="/images/logo/logo_x2.png"
+        alt="a daily diary"
+        width={140}
+        height={35}
+        priority
+      />
       <Title>로그인</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
@@ -122,9 +131,13 @@ const Section = styled.section`
   padding: 86px 20px;
 `;
 
+const LogoImage = styled(Image)`
+  display: block;
+  margin: 0 auto 45px auto;
+`;
+
 const Title = styled.h1`
-  margin-bottom: 30px;
-  ${({ theme }) => theme.fonts.headline_01};
+  ${ScreenReaderOnly}
 `;
 
 const Form = styled.form`
