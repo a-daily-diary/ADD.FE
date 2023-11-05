@@ -7,7 +7,9 @@ interface DiaryCommentsContainerProps {
   diaryId: string;
 }
 
-const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
+export const DiaryCommentsContainer = ({
+  diaryId,
+}: DiaryCommentsContainerProps) => {
   const { commentsData } = useComments(diaryId);
 
   if (commentsData === undefined) return <div />;
@@ -23,8 +25,6 @@ const DiaryCommentsContainer = ({ diaryId }: DiaryCommentsContainerProps) => {
     </DiaryCommentSection>
   );
 };
-
-export default DiaryCommentsContainer;
 
 const DiaryCommentSection = styled.section`
   margin-bottom: 92px;

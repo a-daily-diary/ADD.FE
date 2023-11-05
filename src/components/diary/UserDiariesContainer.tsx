@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Diary from '../../components/diary/Diary';
+import Diary from './Diary';
 import type { Diaries } from 'types/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 
@@ -7,7 +7,9 @@ interface UserDiariesContainerProps {
   diariesData: Diaries;
 }
 
-const UserDiariesContainer = ({ diariesData }: UserDiariesContainerProps) => {
+export const UserDiariesContainer = ({
+  diariesData,
+}: UserDiariesContainerProps) => {
   const { diaries } = diariesData;
 
   // TODO: 북마크한 일기 리스트 조회 데이터 구조 변경 완료 후 수정
@@ -23,8 +25,6 @@ const UserDiariesContainer = ({ diariesData }: UserDiariesContainerProps) => {
     </List>
   );
 };
-
-export default UserDiariesContainer;
 
 const List = styled.ul`
   display: grid;

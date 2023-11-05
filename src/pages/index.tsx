@@ -7,9 +7,9 @@ import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import ResponsiveImage from 'components/common/ResponsiveImage';
 import Seo from 'components/common/Seo';
+import { DiariesContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
-import { DiariesContainer } from 'containers/diary';
 
 const Home: NextPage = () => {
   return (

@@ -12,7 +12,7 @@ import ResponsiveImage from 'components/common/ResponsiveImage';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
-const DiaryDetailContainer = ({
+export const DiaryDetailContainer = ({
   id,
   title,
   content,
@@ -78,8 +78,6 @@ const DiaryDetailContainer = ({
     </Container>
   );
 };
-
-export default DiaryDetailContainer;
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};

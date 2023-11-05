@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import Diary from '../../components/diary/Diary';
+import Diary from './Diary';
 import { useDiaries } from 'hooks/services';
 
-const DiariesContainer = () => {
+export const DiariesContainer = () => {
   const { diariesData, isLoading } = useDiaries();
 
   if (diariesData === undefined) return <div />;
@@ -18,8 +18,6 @@ const DiariesContainer = () => {
     </List>
   );
 };
-
-export default DiariesContainer;
 
 const List = styled.ul`
   display: grid;
