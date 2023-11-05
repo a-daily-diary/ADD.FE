@@ -11,7 +11,7 @@ interface ResponsiveImageProps extends ResponsiveImageStyleProps {
   quality?: number;
 }
 
-const ResponsiveImage = ({
+export const ResponsiveImage = ({
   src,
   alt,
   quality,
@@ -23,8 +23,6 @@ const ResponsiveImage = ({
     </ImageContainer>
   );
 };
-
-export default ResponsiveImage;
 
 const StyledImage = styled(Image)`
   position: relative !important;

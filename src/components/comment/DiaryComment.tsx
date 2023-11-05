@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/comment';
 import type { ErrorResponse } from 'types/response';
 import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
-import FloatingMenu from 'components/common/FloatingMenu';
+import { FloatingMenu } from 'components/common';
 import { useClickOutside } from 'hooks/common';
 import { useDeleteComment } from 'hooks/services';
 import { timeFormat, dateFormat, errorResponseMessage } from 'utils';

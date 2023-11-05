@@ -8,7 +8,7 @@ import {
   HeartOffIcon,
   HeartOnIcon,
 } from 'assets/icons';
-import ResponsiveImage from 'components/common/ResponsiveImage';
+import { ResponsiveImage } from 'components/common';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 

@@ -15,8 +15,8 @@ import {
   RegisterTerms,
   CompleteRegister,
 } from 'components/account';
-import Button from 'components/common/Button';
-import Seo from 'components/common/Seo';
+
+import { Button, Seo } from 'components/common';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
 import { Z_INDEX } from 'constants/styles';

@@ -15,8 +15,7 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import ResponsiveImage from 'components/common/ResponsiveImage';
-import Seo from 'components/common/Seo';
+import { ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
