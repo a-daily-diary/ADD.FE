@@ -25,7 +25,11 @@ const DiaryContainer = ({
   isFavorite,
 }: DiaryDetail) => {
   const handleFavorite = useHandleFavorite({ isFavorite, id });
-  const handleBookmark = useHandleBookmark({ isBookmark, id });
+  const handleBookmark = useHandleBookmark({
+    isBookmark,
+    id,
+    username: author.username,
+  });
 
   return (
     <Container>
