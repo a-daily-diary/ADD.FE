@@ -12,7 +12,7 @@ import FloatingMenu from 'components/common/FloatingMenu';
 import Seo from 'components/common/Seo';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
-import { DiaryCommentsContainer, DiaryContainer } from 'containers/diary';
+import { DiaryCommentsContainer, DiaryDetailContainer } from 'containers/diary';
 import { useClickOutside } from 'hooks/common';
 import { useDiary } from 'hooks/services';
 import { useDeleteDiary } from 'hooks/services/mutations/useDeleteDiary';
@@ -96,7 +96,7 @@ const DiaryDetailPage: NextPage = () => {
         />
       )}
       <Section>
-        <DiaryContainer {...diaryData} />
+        <DiaryDetailContainer {...diaryData} />
         <DiaryCommentsContainer diaryId={id as string} />
       </Section>
     </>

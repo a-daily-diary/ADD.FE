@@ -12,7 +12,7 @@ import ResponsiveImage from 'components/common/ResponsiveImage';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
-const DiaryContainer = ({
+const DiaryDetailContainer = ({
   id,
   title,
   content,
@@ -30,7 +30,7 @@ const DiaryContainer = ({
     id,
     username: author.username,
   });
-
+  console.log('object');
   return (
     <Container>
       <AuthorContainer>
@@ -79,7 +79,7 @@ const DiaryContainer = ({
   );
 };
 
-export default DiaryContainer;
+export default DiaryDetailContainer;
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
