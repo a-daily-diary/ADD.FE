@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-interface EmptyProps {
+interface EmptyDiaryProps {
   text: string;
 }
 
-const Empty = ({ text }: EmptyProps) => {
+const EmptyDiary = ({ text }: EmptyDiaryProps) => {
   return (
     <EmptyContainer>
       <Image
@@ -19,7 +19,7 @@ const Empty = ({ text }: EmptyProps) => {
   );
 };
 
-export default Empty;
+export default EmptyDiary;
 
 const EmptyContainer = styled.div`
   padding: 50px;

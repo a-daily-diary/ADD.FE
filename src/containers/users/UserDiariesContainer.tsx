@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Diary from '../../components/diary/Diary';
 import type { Diaries } from 'types/diary';
-import Empty from 'components/profile/Empty';
+import EmptyDiary from 'components/diary/EmptyDiary';
 
 interface UserDiariesContainerProps {
   diariesData: Diaries;
@@ -12,7 +12,7 @@ const UserDiariesContainer = ({ diariesData }: UserDiariesContainerProps) => {
 
   // TODO: 북마크한 일기 리스트 조회 데이터 구조 변경 완료 후 수정
   if (diaries === undefined || diaries.length === 0)
-    return <Empty text={'일기가 없습니다.'} />;
+    return <EmptyDiary text={'일기가 없습니다.'} />;
 
   return (
     <List>
