@@ -15,7 +15,7 @@ interface DiaryCommentProps {
   diaryId: string;
 }
 
-const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
+export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
   const { data: session } = useSession();
   const { ref, isVisible, setIsVisible } = useClickOutside();
   const deleteCommentMutation = useDeleteComment(diaryId);
@@ -91,8 +91,6 @@ const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
     </>
   );
 };
-
-export default DiaryComment;
 
 const CommentItem = styled.li`
   position: relative;
