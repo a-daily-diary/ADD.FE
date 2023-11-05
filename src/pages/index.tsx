@@ -10,8 +10,14 @@ import Seo from 'components/common/Seo';
 import { DiariesContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
+import { useDiaries } from 'hooks/services';
 
 const Home: NextPage = () => {
+  const { diariesData, isLoading } = useDiaries();
+
+  if (diariesData === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
   return (
     <>
       <Seo title={'a daily diary'} />
@@ -28,7 +34,7 @@ const Home: NextPage = () => {
           />
         </Link>
       </BannerContainer>
-      <DiariesContainer />
+      <DiariesContainer diariesData={diariesData} />
     </>
   );
 };

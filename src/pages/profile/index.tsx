@@ -6,7 +6,8 @@ import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
-import { UserDiariesContainer } from 'components/diary';
+import { DiariesContainer } from 'components/diary';
+import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/queryKeys';
 import { useTabIndicator } from 'hooks/common';
@@ -66,13 +67,19 @@ const Profile: NextPage = () => {
           {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
             <>
               <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
-              <UserDiariesContainer diariesData={userDiariesData} />
+              <DiariesContainer
+                diariesData={userDiariesData}
+                empty={<EmptyDiary text="일기가 없습니다." />}
+              />
             </>
           )}
           {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
             <>
               <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
-              <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+              <DiariesContainer
+                diariesData={bookmarkedDiariesData}
+                empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
+              />
             </>
           )}
         </article>
