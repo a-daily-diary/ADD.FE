@@ -16,7 +16,7 @@ interface ErrorStyleProps {
   isError: boolean;
 }
 
-const FormInput = ({
+export const FormInput = ({
   type,
   register,
   placeholder,
@@ -56,8 +56,6 @@ const FormInput = ({
     </InputContainer>
   );
 };
-
-export default FormInput;
 
 const InputContainer = styled.div`
   ${FadeInAnimationStyle}

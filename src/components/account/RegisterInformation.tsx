@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import type { RegisterStep, RegisterForm } from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
-import FormInput from 'components/account/FormInput';
+import { FormInput } from 'components/form';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
