@@ -1,18 +1,24 @@
 import styled from '@emotion/styled';
-import Diary from '../../components/diary/Diary';
+import Diary from './Diary';
+import type { ReactNode } from 'react';
 import type { Diaries } from 'types/diary';
-import Empty from 'components/profile/Empty';
 
-interface UserDiariesContainerProps {
+interface DiariesContainerProps {
   diariesData: Diaries;
+  empty?: ReactNode;
 }
 
-const UserDiariesContainer = ({ diariesData }: UserDiariesContainerProps) => {
+export const DiariesContainer = ({
+  diariesData,
+  empty,
+}: DiariesContainerProps) => {
   const { diaries } = diariesData;
 
   // TODO: 북마크한 일기 리스트 조회 데이터 구조 변경 완료 후 수정
-  if (diaries === undefined || diaries.length === 0)
-    return <Empty text={'일기가 없습니다.'} />;
+  // diaries의 값이 null일 경우가 있는지 확인
+  if (diaries === undefined || diaries.length === 0) {
+    return <>{empty}</>;
+  }
 
   return (
     <List>
@@ -23,8 +29,6 @@ const UserDiariesContainer = ({ diariesData }: UserDiariesContainerProps) => {
     </List>
   );
 };
-
-export default UserDiariesContainer;
 
 const List = styled.ul`
   display: grid;

@@ -1,4 +1,4 @@
-import { useFavoriteDiary, useCancelFavoriteDiary } from '../services';
+import { useFavoriteDiary, useCancelFavoriteDiary } from '..';
 import type { MouseEventHandler } from 'react';
 import type { DiaryDetail } from 'types/diary';
 

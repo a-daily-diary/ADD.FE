@@ -4,12 +4,12 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import Seo from 'components/common/Seo';
-import Tab from 'components/common/Tab';
+import { Seo, Tab } from 'components/common';
+import { DiariesContainer } from 'components/diary';
+import EmptyDiary from 'components/diary/EmptyDiary';
+import { ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/queryKeys';
-import { ProfileContainer } from 'containers/profile/ProfileContainer';
-import UserDiariesContainer from 'containers/users/UserDiariesContainer';
-import { useTabIndicator } from 'hooks';
+import { useTabIndicator } from 'hooks/common';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
@@ -66,13 +66,19 @@ const Profile: NextPage = () => {
           {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
             <>
               <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
-              <UserDiariesContainer diariesData={userDiariesData} />
+              <DiariesContainer
+                diariesData={userDiariesData}
+                empty={<EmptyDiary text="일기가 없습니다." />}
+              />
             </>
           )}
           {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
             <>
               <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
-              <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+              <DiariesContainer
+                diariesData={bookmarkedDiariesData}
+                empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
+              />
             </>
           )}
         </article>

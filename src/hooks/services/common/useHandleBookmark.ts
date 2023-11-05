@@ -1,4 +1,4 @@
-import { useBookmarkDiary, useCancelBookmarkDiary } from '../services';
+import { useBookmarkDiary, useCancelBookmarkDiary } from '..';
 import type { User } from 'next-auth';
 import type { MouseEventHandler } from 'react';
 import type { DiaryDetail } from 'types/diary';

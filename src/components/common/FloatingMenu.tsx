@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
-import FloatingMenuButton from './FloatingMenuButton';
-import type { FloatingMenuButtonProps } from './FloatingMenuButton';
+import {
+  FloatingMenuButton,
+  type FloatingMenuButtonProps,
+} from './FloatingMenuButton';
 import { Z_INDEX } from 'constants/styles';
 
 interface FloatingMenuStyleProps {
@@ -10,7 +12,7 @@ interface FloatingMenuProps extends FloatingMenuStyleProps {
   items: FloatingMenuButtonProps[];
 }
 
-const FloatingMenu = ({ items, position }: FloatingMenuProps) => {
+export const FloatingMenu = ({ items, position }: FloatingMenuProps) => {
   return (
     <List position={position}>
       {items.map((item, index) => {
@@ -24,8 +26,6 @@ const FloatingMenu = ({ items, position }: FloatingMenuProps) => {
     </List>
   );
 };
-
-export default FloatingMenu;
 
 const List = styled.ul<FloatingMenuStyleProps>`
   position: ${({ position }) => position};

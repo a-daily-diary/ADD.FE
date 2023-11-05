@@ -7,7 +7,7 @@ export interface FloatingMenuButtonProps {
   onClick: () => void;
 }
 
-const FloatingMenuButton = ({
+export const FloatingMenuButton = ({
   icon,
   label,
   onClick,
@@ -19,8 +19,6 @@ const FloatingMenuButton = ({
     </Button>
   );
 };
-
-export default FloatingMenuButton;
 
 const Button = styled.button`
   display: flex;

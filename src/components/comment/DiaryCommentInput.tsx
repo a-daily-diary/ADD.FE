@@ -18,7 +18,7 @@ interface DiaryCommentInputProps {
   diaryId: string;
 }
 
-const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
+export const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
   const router = useRouter();
   const {
     register,
@@ -82,8 +82,6 @@ const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
     </Container>
   );
 };
-
-export default DiaryCommentInput;
 
 const Container = styled.div`
   position: fixed;

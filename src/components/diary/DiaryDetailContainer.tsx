@@ -8,11 +8,11 @@ import {
   HeartOffIcon,
   HeartOnIcon,
 } from 'assets/icons';
-import ResponsiveImage from 'components/common/ResponsiveImage';
-import { useHandleFavorite, useHandleBookmark } from 'hooks/common';
+import { ResponsiveImage } from 'components/common';
+import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
-const DiaryContainer = ({
+export const DiaryDetailContainer = ({
   id,
   title,
   content,
@@ -25,8 +25,12 @@ const DiaryContainer = ({
   isFavorite,
 }: DiaryDetail) => {
   const handleFavorite = useHandleFavorite({ isFavorite, id });
-  const handleBookmark = useHandleBookmark({ isBookmark, id });
-
+  const handleBookmark = useHandleBookmark({
+    isBookmark,
+    id,
+    username: author.username,
+  });
+  console.log('object');
   return (
     <Container>
       <AuthorContainer>
@@ -74,8 +78,6 @@ const DiaryContainer = ({
     </Container>
   );
 };
-
-export default DiaryContainer;
 
 const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.white};

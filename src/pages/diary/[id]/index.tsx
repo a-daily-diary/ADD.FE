@@ -8,12 +8,12 @@ import type { GetServerSideProps, NextPage } from 'next';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
-import FloatingMenu from 'components/common/FloatingMenu';
-import Seo from 'components/common/Seo';
+import { DiaryCommentsContainer } from 'components/comment';
+import { FloatingMenu, Seo } from 'components/common';
+import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
-import { DiaryCommentsContainer, DiaryContainer } from 'containers/diary';
-import { useClickOutside } from 'hooks';
+import { useClickOutside } from 'hooks/common';
 import { useDiary } from 'hooks/services';
 import { useDeleteDiary } from 'hooks/services/mutations/useDeleteDiary';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -96,7 +96,7 @@ const DiaryDetailPage: NextPage = () => {
         />
       )}
       <Section>
-        <DiaryContainer {...diaryData} />
+        <DiaryDetailContainer {...diaryData} />
         <DiaryCommentsContainer diaryId={id as string} />
       </Section>
     </>

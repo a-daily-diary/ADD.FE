@@ -6,7 +6,7 @@ interface UseBeforeLeaveProps {
   path: string;
 }
 
-const useBeforeLeave = ({ message, path }: UseBeforeLeaveProps) => {
+export const useBeforeLeave = ({ message, path }: UseBeforeLeaveProps) => {
   const handleConfirm = () => {
     window.history.pushState(null, '', path);
     if (confirm(message)) return true;
@@ -28,5 +28,3 @@ const useBeforeLeave = ({ message, path }: UseBeforeLeaveProps) => {
     };
   }, [handleBeforeunload, handleConfirm]);
 };
-
-export default useBeforeLeave;

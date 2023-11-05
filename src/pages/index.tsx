@@ -5,13 +5,18 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import ResponsiveImage from 'components/common/ResponsiveImage';
-import Seo from 'components/common/Seo';
+import { ResponsiveImage, Seo } from 'components/common';
+import { DiariesContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
-import { DiariesContainer } from 'containers/diary';
+import { useDiaries } from 'hooks/services';
 
 const Home: NextPage = () => {
+  const { diariesData, isLoading } = useDiaries();
+
+  if (diariesData === undefined) return <div />;
+  if (isLoading) return <div>Loading</div>;
+
   return (
     <>
       <Seo title={'a daily diary'} />
@@ -28,7 +33,7 @@ const Home: NextPage = () => {
           />
         </Link>
       </BannerContainer>
-      <DiariesContainer />
+      <DiariesContainer diariesData={diariesData} />
     </>
   );
 };

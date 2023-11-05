@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import DiaryComment from './DiaryComment';
+import { DiaryComment } from './DiaryComment';
 import type { Comments } from 'types/comment';
 import { ScreenReaderOnly } from 'styles';
 
@@ -8,7 +8,10 @@ interface DiaryCommentsProps {
   diaryId: string;
 }
 
-const DiaryComments = ({ diaryComments, diaryId }: DiaryCommentsProps) => {
+export const DiaryComments = ({
+  diaryComments,
+  diaryId,
+}: DiaryCommentsProps) => {
   const { comments, totalCount } = diaryComments;
   return (
     <>
@@ -37,8 +40,6 @@ const DiaryComments = ({ diaryComments, diaryId }: DiaryCommentsProps) => {
     </>
   );
 };
-
-export default DiaryComments;
 
 const CommentTitle = styled.h3`
   ${ScreenReaderOnly}

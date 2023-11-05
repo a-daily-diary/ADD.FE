@@ -15,8 +15,7 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import ResponsiveImage from 'components/common/ResponsiveImage';
-import Seo from 'components/common/Seo';
+import { ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
@@ -24,7 +23,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
-import { useBeforeLeave } from 'hooks';
+import { useBeforeLeave } from 'hooks/common';
 import { useWriteDiary } from 'hooks/services';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import { ScreenReaderOnly } from 'styles';

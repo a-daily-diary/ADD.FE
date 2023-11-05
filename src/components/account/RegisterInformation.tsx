@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 import type { RegisterStep, RegisterForm } from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
-import FormInput from 'components/account/FormInput';
+import { FormInput } from 'components/form';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -17,7 +17,7 @@ interface RegisterProps {
   registerStep: RegisterStep;
 }
 
-const RegisterInformation = ({ registerStep }: RegisterProps) => {
+export const RegisterInformation = ({ registerStep }: RegisterProps) => {
   const {
     register,
     getValues,
@@ -184,8 +184,6 @@ const RegisterInformation = ({ registerStep }: RegisterProps) => {
     </section>
   );
 };
-
-export default RegisterInformation;
 
 const TitleContainer = styled.div`
   margin-bottom: 40px;

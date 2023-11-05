@@ -15,7 +15,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button = ({
+export const Button = ({
   type,
   pattern,
   size,
@@ -121,5 +121,3 @@ const ButtonLayout = styled.button<ButtonProps>`
     color: ${({ theme }) => theme.colors.white};
   }
 `;
-
-export default Button;

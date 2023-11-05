@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
 import type { LoginForm } from 'types/login';
-import FormInput from 'components/account/FormInput';
-import Button from 'components/common/Button';
+import { Button } from 'components/common';
+import { FormInput } from 'components/form';
 import {
   ERROR_MESSAGE,
   VALID_VALUE,

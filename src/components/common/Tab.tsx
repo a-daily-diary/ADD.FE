@@ -9,11 +9,9 @@ interface TabProps {
   };
 }
 
-const Tab = ({ children, indicator }: TabProps) => {
+export const Tab = ({ children, indicator }: TabProps) => {
   return <TabList indicator={indicator}>{children}</TabList>;
 };
-
-export default Tab;
 
 const TabList = styled.ul<{
   indicator: { width: number; offsetLeft: number };
