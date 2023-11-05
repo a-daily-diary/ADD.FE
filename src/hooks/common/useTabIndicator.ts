@@ -5,7 +5,7 @@ interface Indicator {
   offsetLeft: number;
 }
 
-const useTabIndicator = () => {
+export const useTabIndicator = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [indicator, setIndicator] = useState<Indicator>({
     width: 0,
@@ -32,5 +32,3 @@ const useTabIndicator = () => {
 
   return { tabsRef, indicator, activeIndex, setActiveIndex };
 };
-
-export default useTabIndicator;

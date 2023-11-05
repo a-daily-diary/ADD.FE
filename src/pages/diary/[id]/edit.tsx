@@ -28,7 +28,7 @@ import {
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
 import { queryKeys } from 'constants/queryKeys';
-import { useBeforeLeave } from 'hooks';
+import { useBeforeLeave } from 'hooks/common';
 import { useDiary } from 'hooks/services';
 import { useEditDiary } from 'hooks/services/mutations/useEditDiary';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';

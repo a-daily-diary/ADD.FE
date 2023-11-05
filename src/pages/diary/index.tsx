@@ -24,7 +24,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
-import { useBeforeLeave } from 'hooks';
+import { useBeforeLeave } from 'hooks/common';
 import { useWriteDiary } from 'hooks/services';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import { ScreenReaderOnly } from 'styles';

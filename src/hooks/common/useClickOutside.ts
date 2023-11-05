@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const useClickOutside = () => {
+export const useClickOutside = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const ref = useRef<HTMLButtonElement | null>(null);
 
@@ -20,5 +20,3 @@ const useClickOutside = () => {
   };
   return { ref, isVisible, setIsVisible };
 };
-
-export default useClickOutside;

@@ -9,7 +9,7 @@ import {
   HeartOnIcon,
 } from 'assets/icons';
 import ResponsiveImage from 'components/common/ResponsiveImage';
-import { useHandleFavorite, useHandleBookmark } from 'hooks/common';
+import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
 const DiaryContainer = ({

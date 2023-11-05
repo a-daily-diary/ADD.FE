@@ -9,7 +9,7 @@ import Tab from 'components/common/Tab';
 import { queryKeys } from 'constants/queryKeys';
 import { ProfileContainer } from 'containers/profile/ProfileContainer';
 import UserDiariesContainer from 'containers/users/UserDiariesContainer';
-import { useTabIndicator } from 'hooks';
+import { useTabIndicator } from 'hooks/common';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
