@@ -10,6 +10,7 @@ export const API_PATH = {
   diaries: {
     index: '/diaries',
     image: '/diaries/upload-image',
+    bookmark: '/diaries/bookmark',
   },
   terms: {
     index: '/terms-agreements',

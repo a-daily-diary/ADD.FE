@@ -1,21 +1,17 @@
-import { useEffect, useState } from 'react';
-import type { MutableRefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-interface IndicatorProps {
+interface Indicator {
   width: number;
   offsetLeft: number;
 }
 
-interface UseTabIndicatorProps {
-  tabsRef: MutableRefObject<Array<HTMLButtonElement | null>>;
-  activeIndex: number;
-}
-
-const useTabIndicator = ({ tabsRef, activeIndex }: UseTabIndicatorProps) => {
-  const [indicator, setIndicator] = useState<IndicatorProps>({
+const useTabIndicator = () => {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [indicator, setIndicator] = useState<Indicator>({
     width: 0,
     offsetLeft: 0,
   });
+  const tabsRef = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     const setIndicatorPosition = () => {
@@ -34,7 +30,7 @@ const useTabIndicator = ({ tabsRef, activeIndex }: UseTabIndicatorProps) => {
     };
   }, [activeIndex]);
 
-  return indicator;
+  return { tabsRef, indicator, activeIndex, setActiveIndex };
 };
 
 export default useTabIndicator;

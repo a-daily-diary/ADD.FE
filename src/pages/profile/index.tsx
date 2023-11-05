@@ -1,35 +1,47 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
-import { useRef, useState } from 'react';
-import type { NextPage } from 'next';
-import { SettingIcon } from 'assets/icons';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { getServerSession } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import type { GetServerSideProps, NextPage } from 'next';
+import * as api from 'api';
 import Seo from 'components/common/Seo';
 import Tab from 'components/common/Tab';
-import Empty from 'components/profile/Empty';
+import { queryKeys } from 'constants/queryKeys';
+import { ProfileContainer } from 'containers/profile/ProfileContainer';
+import UserDiariesContainer from 'containers/users/UserDiariesContainer';
 import { useTabIndicator } from 'hooks';
+import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { ScreenReaderOnly } from 'styles';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
-  { id: 'diaries', title: '일기', content: null },
-  { id: 'bookmarks', title: '북마크', content: null },
+  { id: 'diaries', title: '일기' },
+  { id: 'bookmarks', title: '북마크' },
 ];
 
 const Profile: NextPage = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
-  const indicator = useTabIndicator({ tabsRef, activeIndex });
+  const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
+
+  const { data: session } = useSession();
+
+  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
+
+  const { userDiariesData, isLoading: isUserDiariesLoading } = useUserDiaries(
+    session.user.username,
+  );
+  const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
+    useBookmarkedDiaries(session.user.username);
+
+  if (userDiariesData === undefined || bookmarkedDiariesData === undefined)
+    return <div />;
+  if (isUserDiariesLoading || isBookmarkedDiariesLoading)
+    return <div>Loading</div>;
 
   return (
     <>
       <Seo title="프로필 | a daily diary" />
-      <UserInfoContainer>
-        <SettingLink href={'/setting'}>
-          <SettingIcon />
-        </SettingLink>
-        <UserProfileImage />
-        <UserName>userid1234</UserName>
-        <ProfileEditLink href={'/profile/edit'}>프로필 수정</ProfileEditLink>
-      </UserInfoContainer>
+      <ProfileContainer username={session.user.username} />
       <section>
         <Tab indicator={indicator}>
           {PROFILE_TAB_LIST.map((tab, index) => {
@@ -51,61 +63,67 @@ const Profile: NextPage = () => {
           })}
         </Tab>
         <article>
-          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' &&
-            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
-              <div>일기</div>
-            ) : (
-              <Empty text={'일기가 없습니다.'} />
-            ))}
-          {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' &&
-            (PROFILE_TAB_LIST[activeIndex].content !== null ? (
-              <div>북마크</div>
-            ) : (
-              <Empty text={'북마크가 없습니다.'} />
-            ))}
+          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
+            <>
+              <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
+              <UserDiariesContainer diariesData={userDiariesData} />
+            </>
+          )}
+          {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
+            <>
+              <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
+              <UserDiariesContainer diariesData={bookmarkedDiariesData} />
+            </>
+          )}
         </article>
       </section>
     </>
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res } = context;
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session === null) {
+    return {
+      redirect: {
+        destination: '/account/login',
+        permanent: false,
+      },
+    };
+  }
+
+  const { username, accessToken } = session.user;
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery([queryKeys.users, username], async () => {
+    return await api.getProfileByUsername({ username, config: headers });
+  });
+  await queryClient.prefetchQuery(
+    [queryKeys.diaries, username],
+    async () => await api.getDiariesByUsername({ username, config: headers }),
+  );
+  await queryClient.prefetchQuery(
+    [queryKeys.diaries, username],
+    async () =>
+      await api.getBookmarkedDiariesByUsername({ username, config: headers }),
+  );
+  return { props: { dehydratedState: dehydrate(queryClient), session } };
+};
+
 export default Profile;
-
-const UserInfoContainer = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  padding: 32px 20px;
-  border-bottom: 12px solid ${({ theme }) => theme.colors.gray_06};
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-
-const SettingLink = styled(Link)`
-  position: absolute;
-  top: 32px;
-  right: 20px;
-`;
-
-const UserProfileImage = styled.div`
-  width: 92px;
-  height: 92px;
-  border-radius: 50%;
-  background-color: #d9d9d9;
-`;
-
-const UserName = styled.h2`
-  margin: 8px 0 6px;
-  ${({ theme }) => theme.fonts.headline_01};
-`;
-
-const ProfileEditLink = styled(Link)`
-  padding: 12px 20px;
-  border-radius: 120px;
-  background: #f4f4f4;
-  ${({ theme }) => theme.fonts.caption_01};
-`;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ theme }) => theme.fonts.headline_04};
+`;
+
+const Title = styled.h2`
+  ${ScreenReaderOnly}
 `;
