@@ -15,7 +15,7 @@ import {
   ScreenReaderOnly,
 } from 'styles';
 
-const RegisterProfileImage = () => {
+export const RegisterProfileImage = () => {
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
@@ -112,8 +112,6 @@ const RegisterProfileImage = () => {
     </Section>
   );
 };
-
-export default RegisterProfileImage;
 
 const Section = styled.section`
   ${FadeInAnimationStyle}

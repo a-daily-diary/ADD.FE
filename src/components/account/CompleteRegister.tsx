@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Button from 'components/common/Button';
 
-const CompleteRegister = () => {
+export const CompleteRegister = () => {
   const router = useRouter();
 
   return (
@@ -37,8 +37,6 @@ const CompleteRegister = () => {
     </Section>
   );
 };
-
-export default CompleteRegister;
 
 const Section = styled.section`
   display: grid;

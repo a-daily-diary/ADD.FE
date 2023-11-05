@@ -9,10 +9,12 @@ import type { RegisterForm, RegisterStep } from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import type { TermsAgreementId } from 'types/termsAgreement';
 import * as api from 'api';
-import CompleteRegister from 'components/account/CompleteRegister';
-import RegisterInformation from 'components/account/RegisterInformation';
-import RegisterProfileImage from 'components/account/RegisterProfileImage';
-import RegisterTerms from 'components/account/RegisterTerms';
+import {
+  RegisterInformation,
+  RegisterProfileImage,
+  RegisterTerms,
+  CompleteRegister,
+} from 'components/account';
 import Button from 'components/common/Button';
 import Seo from 'components/common/Seo';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';

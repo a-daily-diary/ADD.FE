@@ -17,7 +17,7 @@ interface RegisterProps {
   registerStep: RegisterStep;
 }
 
-const RegisterInformation = ({ registerStep }: RegisterProps) => {
+export const RegisterInformation = ({ registerStep }: RegisterProps) => {
   const {
     register,
     getValues,
@@ -184,8 +184,6 @@ const RegisterInformation = ({ registerStep }: RegisterProps) => {
     </section>
   );
 };
-
-export default RegisterInformation;
 
 const TitleContainer = styled.div`
   margin-bottom: 40px;

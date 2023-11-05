@@ -19,7 +19,7 @@ type TermsAgreementField =
   | 'termsAgreement.privacy'
   | 'termsAgreement.marketing';
 
-const RegisterTerms = () => {
+export const RegisterTerms = () => {
   const { termsAgreementsData } = useTermsAgreements();
   const { register, setValue } = useFormContext<RegisterForm>();
 
@@ -140,8 +140,6 @@ const RegisterTerms = () => {
     </Section>
   );
 };
-
-export default RegisterTerms;
 
 const Section = styled.section`
   ${FadeInAnimationStyle}
