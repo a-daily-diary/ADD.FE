@@ -1,4 +1,10 @@
+import type { RegisterRequest } from './register';
 import type { AxiosRequestConfig } from 'axios';
+
+export type EditProfileForm = Pick<
+  RegisterRequest,
+  'email' | 'username' | 'imgUrl'
+>;
 
 /* Request */
 
