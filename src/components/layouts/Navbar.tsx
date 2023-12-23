@@ -23,7 +23,7 @@ const NAVIGATION_LIST = [
   {
     label: '일기작성',
     href: '/diary',
-    icon: <WriteDiaryIcon />,
+    icon: <WriteDiaryIcon width={24} height={24} />,
   },
   {
     label: '프로필',

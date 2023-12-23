@@ -30,7 +30,7 @@ export const DiaryDetailContainer = ({
     id,
     username: author.username,
   });
-  console.log('object');
+
   return (
     <Container>
       <AuthorContainer>
