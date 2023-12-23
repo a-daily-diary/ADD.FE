@@ -7,3 +7,4 @@ export * from './useBookmarkDiary';
 export * from './useDeleteDiary';
 export * from './useWriteDiary';
 export * from './useRegisterUser';
+export * from './useEditProfile';
