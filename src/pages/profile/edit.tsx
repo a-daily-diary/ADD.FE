@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
-import type { ChangeEventHandler, MouseEventHandler } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import type { EditProfileForm } from 'types/profile';
 import type {
   ErrorResponse,
@@ -13,7 +14,6 @@ import type {
   SuccessResponse,
 } from 'types/response';
 import * as api from 'api';
-import { ImagePickerIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import { FormInput } from 'components/form';
 import {
@@ -22,24 +22,26 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { SelectProfileImage } from 'components/profile';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
-import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
-import { SVGVerticalAlignStyle, ScreenReaderOnly } from 'styles';
+import { useEditProfile } from 'hooks/services';
+import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
 const ProfileEditPage: NextPage = () => {
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session, update } = useSession();
   const {
     register,
     getValues,
     setValue,
     formState: { errors, isValid },
     setError,
+    handleSubmit,
   } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: {
@@ -52,47 +54,27 @@ const ProfileEditPage: NextPage = () => {
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
   const [previewImage, setPreviewImage] = useState<string>(getValues('imgUrl'));
-  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
 
-  const imageUploadMutation = useImageUpload({
-    path: 'users',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-    },
-  });
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
-
-  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { files } = e.target;
-    if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
-
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      }
-    }
-  };
-
-  const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
-    e,
-  ) => {
-    imageRef.current.forEach((element, index) => {
-      if (element === e.target) {
-        setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
-      }
-    });
-  };
+  const editProfileMutation = useEditProfile(session?.user.username as string);
 
   const handleDuplicateCheckUsername = async () => {
-    // TODO: 현재 사용중인 username과 동일한 경우 처리 필요
+    const { username } = getValues();
+    const currentUsername = session?.user.username;
+
+    if (currentUsername === username) {
+      const data = {
+        data: {
+          message: '현재 사용 중인 닉네임입니다.', // TODO: message 논의 필요
+        },
+        success: true as const,
+      };
+
+      setSuccessDuplicateCheckUsername(data);
+
+      return;
+    }
+
     try {
-      const { username } = getValues();
       const { data } = await api.usernameExists({ username });
 
       setSuccessDuplicateCheckUsername(data);
@@ -107,20 +89,45 @@ const ProfileEditPage: NextPage = () => {
     }
   };
 
+  const onSubmit: SubmitHandler<EditProfileForm> = async (data) => {
+    try {
+      const { username, imgUrl } = data;
+
+      editProfileMutation({ username, imgUrl });
+      void update({ username, imgUrl });
+
+      await router.replace('/profile');
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        // TODO: 에러 처리
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
     setValue('imgUrl', previewImage);
   }, [previewImage, setValue]);
+
+  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
   return (
     <>
       <Seo title="프로필 수정 | a daily diary" />
       <Section>
         <Title>프로필 수정</Title>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Header
             left={<HeaderLeft type="이전" />}
             title={<HeaderTitle title="프로필" />}
-            right={<HeaderRight type="저장" disabled={!isValid} />}
+            right={
+              <HeaderRight
+                type="저장"
+                disabled={
+                  !isValid || successDuplicateCheckUsername === undefined
+                }
+              />
+            }
           />
           <ProfileImage
             src={previewImage}
@@ -129,38 +136,10 @@ const ProfileEditPage: NextPage = () => {
             height={160}
             priority
           />
-          <ImageFileContainer>
-            <ImageFileLabel htmlFor="selectImageFile">
-              <ImagePickerIcon />
-            </ImageFileLabel>
-            <ImageFileInput
-              type="file"
-              id="selectImageFile"
-              accept="image/*"
-              onChange={handleImageFile}
-            />
-            <>
-              {DEFAULT_PROFILE_IMAGES.map((image, index) => {
-                const { id, url } = image;
-                return (
-                  <ImageButton
-                    key={`default-images-${id}`}
-                    type="button"
-                    onClick={handleDefaultProfileImage}
-                    isActive={url === previewImage}
-                  >
-                    <Image
-                      ref={(element) => (imageRef.current[index] = element)}
-                      src={url}
-                      alt={`기본 프로필 이미지 ${id}`}
-                      width={60}
-                      height={60}
-                    />
-                  </ImageButton>
-                );
-              })}
-            </>
-          </ImageFileContainer>
+          <SelectProfileImage
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
+          />
           <FormInputContainer>
             <FormInput
               register={register('email', { disabled: true })}
@@ -187,6 +166,9 @@ const ProfileEditPage: NextPage = () => {
                 validate: (value) =>
                   !INVALID_VALUE.username.test(value) ||
                   ERROR_MESSAGE.username.invalidPattern,
+                onChange: () => {
+                  setSuccessDuplicateCheckUsername(undefined);
+                },
               })}
               type="text"
               placeholder="닉네임"
@@ -198,6 +180,7 @@ const ProfileEditPage: NextPage = () => {
                 <DuplicateCheckButton
                   type="button"
                   onClick={handleDuplicateCheckUsername}
+                  disabled={!isValid}
                 >
                   중복확인
                 </DuplicateCheckButton>
@@ -229,47 +212,13 @@ const ProfileImage = styled(Image)`
   display: block;
   margin: 0 auto;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const FormInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-`;
-
-const ImageFileContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  width: fit-content;
-  margin: 12px auto 36px;
-`;
-
-const ImageFileLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.bg_02};
-  aspect-ratio: 1;
-  cursor: pointer;
-`;
-
-const ImageFileInput = styled.input`
-  ${ScreenReaderOnly}
-`;
-
-const ImageButton = styled.button<{ isActive: boolean }>`
-  ${SVGVerticalAlignStyle}
-  overflow: hidden;
-  padding: 1px;
-  border: 2px solid
-    ${({ theme, isActive }) =>
-      isActive ? theme.colors.primary_00 : 'transparent'};
-  border-radius: 50%;
-  transition: border 0.2s;
-  aspect-ratio: 1;
 `;
 
 const DuplicateCheckButton = styled.button`
@@ -281,4 +230,9 @@ const DuplicateCheckButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary_03};
   color: ${({ theme }) => theme.colors.primary_01};
   ${({ theme }) => theme.fonts.caption_01}
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.gray_04};
+    background-color: ${({ theme }) => theme.colors.gray_06};
+  }
 `;

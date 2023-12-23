@@ -12,3 +12,5 @@ export interface GetProfileByUsernameRequest {
   username: string;
   config?: AxiosRequestConfig;
 }
+
+export type EditProfileRequest = Pick<RegisterRequest, 'username' | 'imgUrl'>;
