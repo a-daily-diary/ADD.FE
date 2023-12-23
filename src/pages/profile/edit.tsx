@@ -53,9 +53,23 @@ const ProfileEditPage: NextPage = () => {
   const [previewImage, setPreviewImage] = useState<string>(getValues('imgUrl'));
 
   const handleDuplicateCheckUsername = async () => {
-    // TODO: 현재 사용중인 username과 동일한 경우 처리 필요
+    const { username } = getValues();
+    const currentUsername = session?.user.username;
+
+    if (currentUsername === username) {
+      const data = {
+        data: {
+          message: '현재 사용 중인 닉네임입니다.', // TODO: message 논의 필요
+        },
+        success: true as const,
+      };
+
+      setSuccessDuplicateCheckUsername(data);
+
+      return;
+    }
+
     try {
-      const { username } = getValues();
       const { data } = await api.usernameExists({ username });
 
       setSuccessDuplicateCheckUsername(data);
@@ -128,6 +142,9 @@ const ProfileEditPage: NextPage = () => {
                 validate: (value) =>
                   !INVALID_VALUE.username.test(value) ||
                   ERROR_MESSAGE.username.invalidPattern,
+                onChange: () => {
+                  setSuccessDuplicateCheckUsername(undefined);
+                },
               })}
               type="text"
               placeholder="닉네임"
