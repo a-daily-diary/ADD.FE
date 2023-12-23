@@ -106,6 +106,7 @@ const Input = styled.input<ErrorStyleProps>`
   }
 
   &:disabled {
+    border-color: transparent;
     background-color: ${({ theme }) => theme.colors.white};
   }
 `;

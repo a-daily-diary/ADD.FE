@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,17 +22,19 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { SelectProfileImage } from 'components/profile/SelectProfileImage';
+import { SelectProfileImage } from 'components/profile';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
+import { useEditProfile } from 'hooks/services';
 import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
 const ProfileEditPage: NextPage = () => {
-  const { data: session } = useSession();
+  const router = useRouter();
+  const { data: session, update } = useSession();
   const {
     register,
     getValues,
@@ -51,6 +54,8 @@ const ProfileEditPage: NextPage = () => {
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
   const [previewImage, setPreviewImage] = useState<string>(getValues('imgUrl'));
+
+  const editProfileMutation = useEditProfile(session?.user.username as string);
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
@@ -84,8 +89,20 @@ const ProfileEditPage: NextPage = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<EditProfileForm> = async (data) => {
+    try {
+      const { username, imgUrl } = data;
+
+      editProfileMutation({ username, imgUrl });
+      void update({ username, imgUrl });
+
+      await router.replace('/profile');
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        // TODO: 에러 처리
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -103,7 +120,14 @@ const ProfileEditPage: NextPage = () => {
           <Header
             left={<HeaderLeft type="이전" />}
             title={<HeaderTitle title="프로필" />}
-            right={<HeaderRight type="저장" disabled={!isValid} />}
+            right={
+              <HeaderRight
+                type="저장"
+                disabled={
+                  !isValid || successDuplicateCheckUsername === undefined
+                }
+              />
+            }
           />
           <ProfileImage
             src={previewImage}
@@ -156,6 +180,7 @@ const ProfileEditPage: NextPage = () => {
                 <DuplicateCheckButton
                   type="button"
                   onClick={handleDuplicateCheckUsername}
+                  disabled={!isValid}
                 >
                   중복확인
                 </DuplicateCheckButton>
@@ -205,4 +230,9 @@ const DuplicateCheckButton = styled.button`
   background-color: ${({ theme }) => theme.colors.primary_03};
   color: ${({ theme }) => theme.colors.primary_01};
   ${({ theme }) => theme.fonts.caption_01}
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.gray_04};
+    background-color: ${({ theme }) => theme.colors.gray_06};
+  }
 `;
