@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { NextPage } from 'next';
-import type { ChangeEventHandler, MouseEventHandler } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
 import type { EditProfileForm } from 'types/profile';
 import type {
   ErrorResponse,
@@ -13,7 +13,6 @@ import type {
   SuccessResponse,
 } from 'types/response';
 import * as api from 'api';
-import { ImagePickerIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import { FormInput } from 'components/form';
 import {
@@ -22,14 +21,13 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { SelectProfileImage } from 'components/profile/SelectProfileImage';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
-import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
-import { SVGVerticalAlignStyle, ScreenReaderOnly } from 'styles';
+import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
 const ProfileEditPage: NextPage = () => {
@@ -40,6 +38,7 @@ const ProfileEditPage: NextPage = () => {
     setValue,
     formState: { errors, isValid },
     setError,
+    handleSubmit,
   } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: {
@@ -52,42 +51,6 @@ const ProfileEditPage: NextPage = () => {
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
   const [previewImage, setPreviewImage] = useState<string>(getValues('imgUrl'));
-  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
-
-  const imageUploadMutation = useImageUpload({
-    path: 'users',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-    },
-  });
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
-
-  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { files } = e.target;
-    if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
-
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      }
-    }
-  };
-
-  const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
-    e,
-  ) => {
-    imageRef.current.forEach((element, index) => {
-      if (element === e.target) {
-        setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
-      }
-    });
-  };
 
   const handleDuplicateCheckUsername = async () => {
     // TODO: 현재 사용중인 username과 동일한 경우 처리 필요
@@ -107,16 +70,22 @@ const ProfileEditPage: NextPage = () => {
     }
   };
 
+  const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
+    console.log(data);
+  };
+
   useEffect(() => {
     setValue('imgUrl', previewImage);
   }, [previewImage, setValue]);
+
+  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
   return (
     <>
       <Seo title="프로필 수정 | a daily diary" />
       <Section>
         <Title>프로필 수정</Title>
-        <Form>
+        <Form onSubmit={handleSubmit(onSubmit)}>
           <Header
             left={<HeaderLeft type="이전" />}
             title={<HeaderTitle title="프로필" />}
@@ -129,38 +98,10 @@ const ProfileEditPage: NextPage = () => {
             height={160}
             priority
           />
-          <ImageFileContainer>
-            <ImageFileLabel htmlFor="selectImageFile">
-              <ImagePickerIcon />
-            </ImageFileLabel>
-            <ImageFileInput
-              type="file"
-              id="selectImageFile"
-              accept="image/*"
-              onChange={handleImageFile}
-            />
-            <>
-              {DEFAULT_PROFILE_IMAGES.map((image, index) => {
-                const { id, url } = image;
-                return (
-                  <ImageButton
-                    key={`default-images-${id}`}
-                    type="button"
-                    onClick={handleDefaultProfileImage}
-                    isActive={url === previewImage}
-                  >
-                    <Image
-                      ref={(element) => (imageRef.current[index] = element)}
-                      src={url}
-                      alt={`기본 프로필 이미지 ${id}`}
-                      width={60}
-                      height={60}
-                    />
-                  </ImageButton>
-                );
-              })}
-            </>
-          </ImageFileContainer>
+          <SelectProfileImage
+            previewImage={previewImage}
+            setPreviewImage={setPreviewImage}
+          />
           <FormInputContainer>
             <FormInput
               register={register('email', { disabled: true })}
@@ -229,47 +170,13 @@ const ProfileImage = styled(Image)`
   display: block;
   margin: 0 auto;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 const FormInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-`;
-
-const ImageFileContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  width: fit-content;
-  margin: 12px auto 36px;
-`;
-
-const ImageFileLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.bg_02};
-  aspect-ratio: 1;
-  cursor: pointer;
-`;
-
-const ImageFileInput = styled.input`
-  ${ScreenReaderOnly}
-`;
-
-const ImageButton = styled.button<{ isActive: boolean }>`
-  ${SVGVerticalAlignStyle}
-  overflow: hidden;
-  padding: 1px;
-  border: 2px solid
-    ${({ theme, isActive }) =>
-      isActive ? theme.colors.primary_00 : 'transparent'};
-  border-radius: 50%;
-  transition: border 0.2s;
-  aspect-ratio: 1;
 `;
 
 const DuplicateCheckButton = styled.button`
