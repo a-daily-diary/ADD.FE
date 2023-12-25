@@ -15,7 +15,7 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import { ResponsiveImage, Seo } from 'components/common';
+import { Modal, ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
@@ -23,17 +23,18 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { DIARY_MESSAGE } from 'constants/diary';
-import { useBeforeLeave } from 'hooks/common';
+import { useBeforeLeave, useModal } from 'hooks/common';
 import { useWriteDiary } from 'hooks/services';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
 const WriteDiary: NextPage = () => {
-  const today = dateFormat(new Date().toISOString()) as string;
   const router = useRouter();
 
   const [previewImage, setPreviewImage] = useState<string>('');
+
+  const today = dateFormat(new Date().toISOString()) as string;
   const isPhotoActive = previewImage.length > 0;
 
   const {
@@ -48,7 +49,13 @@ const WriteDiary: NextPage = () => {
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
-  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: router.asPath });
+  const {
+    isVisible: isVisibleBeforeLeave,
+    handleModal: handleBeforeLeaveModal,
+  } = useModal();
+  const { handleRouterBack } = useBeforeLeave({
+    beforeLeaveCallback: handleBeforeLeaveModal.open,
+  });
 
   const writeDiaryMutation = useWriteDiary();
   const imageUploadMutation = useImageUpload({
@@ -183,6 +190,13 @@ const WriteDiary: NextPage = () => {
           </ContentContainer>
         </form>
       </Section>
+      <Modal
+        isVisible={isVisibleBeforeLeave}
+        message={DIARY_MESSAGE.popstate}
+        confirmText="나가기"
+        onClose={handleBeforeLeaveModal.close}
+        onConfirm={handleRouterBack}
+      />
     </>
   );
 };
