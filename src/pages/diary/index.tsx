@@ -22,7 +22,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { DIARY_MESSAGE } from 'constants/diary';
+import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { useWriteDiary } from 'hooks/services';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
@@ -192,8 +192,8 @@ const WriteDiary: NextPage = () => {
       </Section>
       <Modal
         isVisible={isVisibleBeforeLeave}
-        message={DIARY_MESSAGE.popstate}
-        confirmText="나가기"
+        message={MODAL_MESSAGE.beforeLeave}
+        confirmText={MODAL_BUTTON.leave}
         onClose={handleBeforeLeaveModal.close}
         onConfirm={handleRouterBack}
       />
