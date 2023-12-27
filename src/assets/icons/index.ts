@@ -12,6 +12,10 @@ import HeartOffIcon from './heart_off.svg';
 import HeartOnIcon from './heart_on.svg';
 import HideIcon from './hide_pw.svg';
 import HomeIcon from './home.svg';
+import BlockIcon from './icon_block.svg';
+import DiseaseIcon from './icon_disease.svg';
+import EnIcon from './icon_en.svg';
+import PrivacyIcon from './icon_privacy.svg';
 import ImagePickerIcon from './image_picker.svg';
 import LockIcon from './lock.svg';
 import LogoIcon from './logo.svg';
@@ -68,4 +72,8 @@ export {
   PhotoInactiveIcon,
   TemplateIcon,
   TrashIcon,
+  BlockIcon,
+  DiseaseIcon,
+  EnIcon,
+  PrivacyIcon,
 };
