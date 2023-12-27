@@ -22,11 +22,11 @@ const HeaderLayout = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
+  /* position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  z-index: ${Z_INDEX.header};
+  z-index: ${Z_INDEX.header}; */
   height: 54px;
   padding: 0 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray_06};

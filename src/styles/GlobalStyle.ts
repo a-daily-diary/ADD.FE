@@ -16,6 +16,13 @@ const GlobalStyle = css`
     color: ${theme.colors.gray_00};
   }
 
+  html,
+  body,
+  #__next,
+  main {
+    height: 100%;
+  }
+
   html {
     /* 10px = 1rem */
     font-size: 62.5%;
