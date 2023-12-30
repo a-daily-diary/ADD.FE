@@ -1,30 +1,48 @@
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 interface UseBeforeLeaveProps {
-  message: string;
-  path: string;
+  beforeLeaveCallback: () => void;
 }
 
-export const useBeforeLeave = ({ message, path }: UseBeforeLeaveProps) => {
-  const handleConfirm = () => {
-    window.history.pushState(null, '', path);
-    if (confirm(message)) return true;
-    return false;
-  };
+export const useBeforeLeave = ({
+  beforeLeaveCallback,
+}: UseBeforeLeaveProps) => {
+  const router = useRouter();
 
   const handleBeforeunload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     return (e.returnValue = '');
   };
 
+  const handleBeforePopstate = (as: string) => {
+    if (router.asPath !== as) {
+      window.history.pushState(null, '', router.asPath);
+
+      void router.push(router.asPath);
+
+      beforeLeaveCallback();
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleRouterBack = () => {
+    router.beforePopState(() => true);
+    router.back();
+  };
+
   useEffect(() => {
     window.addEventListener('beforeunload', handleBeforeunload);
-    router.beforePopState(() => handleConfirm());
+    router.beforePopState(({ as }) => handleBeforePopstate(as));
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeunload);
       router.beforePopState(() => true);
     };
-  }, [handleBeforeunload, handleConfirm]);
+  }, [handleBeforeunload, handleBeforePopstate]);
+
+  return { handleRouterBack };
 };

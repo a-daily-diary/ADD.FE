@@ -18,16 +18,16 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import { ResponsiveImage, Seo } from 'components/common';
+import { Modal, ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { DIARY_MESSAGE } from 'constants/diary';
+import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/queryKeys';
-import { useBeforeLeave } from 'hooks/common';
+import { useBeforeLeave, useModal } from 'hooks/common';
 import { useDiary } from 'hooks/services';
 import { useEditDiary } from 'hooks/services/mutations/useEditDiary';
 import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
@@ -67,7 +67,13 @@ const EditDiary: NextPage = () => {
   });
   const { isPublic: watchIsPublic, title: watchTitle } = watch();
 
-  useBeforeLeave({ message: DIARY_MESSAGE.popstate, path: asPath });
+  const {
+    isVisible: isVisibleBeforeLeave,
+    handleModal: handleBeforeLeaveModal,
+  } = useModal();
+  const { handleRouterBack } = useBeforeLeave({
+    beforeLeaveCallback: handleBeforeLeaveModal.open,
+  });
 
   const editDiaryMutation = useEditDiary(id as string);
   const imageUploadMutation = useImageUpload({
@@ -228,6 +234,13 @@ const EditDiary: NextPage = () => {
           </ContentContainer>
         </form>
       </Section>
+      <Modal
+        isVisible={isVisibleBeforeLeave}
+        message={MODAL_MESSAGE.beforeLeave}
+        confirmText={MODAL_BUTTON.leave}
+        onClose={handleBeforeLeaveModal.close}
+        onConfirm={handleRouterBack}
+      />
     </>
   );
 };

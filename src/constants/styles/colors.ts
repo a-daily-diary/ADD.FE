@@ -18,6 +18,7 @@ export const colors = {
   bg_02: '#f4f4f4',
   // Other colors
   white: '#ffffff',
+  black: '#000000',
   error: '#f84d4d',
   pink: '#ff89d7',
 } as const;

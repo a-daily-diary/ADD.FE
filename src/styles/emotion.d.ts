@@ -22,6 +22,7 @@ declare module '@emotion/react' {
       bg_01: string;
       bg_02: string;
       white: string;
+      black: string;
       error: string;
       pink: string;
     };
