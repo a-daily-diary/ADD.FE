@@ -9,13 +9,13 @@ import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import { DiaryCommentsContainer } from 'components/comment';
-import { FloatingMenu, Seo } from 'components/common';
+import { FloatingMenu, Modal, Seo } from 'components/common';
 import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/queryKeys';
-import { useClickOutside } from 'hooks/common';
-import { useDiary } from 'hooks/services';
-import { useDeleteDiary } from 'hooks/services/mutations/useDeleteDiary';
+import { useClickOutside, useModal } from 'hooks/common';
+import { useDeleteDiary, useDiary } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { errorResponseMessage } from 'utils';
 
@@ -24,22 +24,21 @@ const DiaryDetailPage: NextPage = () => {
   const { id } = router.query;
   const { data: session } = useSession();
 
-  const { diaryData, isLoading } = useDiary(id as string);
-
+  const { isVisible: isVisibleDeleteModal, handleModal: handleDeleteModal } =
+    useModal();
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
+  const { diaryData, isLoading } = useDiary(id as string);
   const deleteDiaryMutation = useDeleteDiary({ id: id as string });
 
   const handleDeleteDiary = () => {
-    if (confirm('삭제하시겠습니까?')) {
-      try {
-        deleteDiaryMutation({ id: id as string });
-        // TODO: 일기 삭제 후 라우팅 처리 수정
-        router.back();
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          alert(errorResponseMessage(error.response?.data.message));
-        }
+    try {
+      deleteDiaryMutation({ id: id as string });
+      // TODO: 일기 삭제 후 라우팅 처리 수정
+      router.back();
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
       }
     }
   };
@@ -80,7 +79,7 @@ const DiaryDetailPage: NextPage = () => {
                   {
                     icon: <TrashIcon />,
                     label: '삭제하기',
-                    onClick: handleDeleteDiary,
+                    onClick: handleDeleteModal.open,
                   },
                 ]
               : [
@@ -88,7 +87,7 @@ const DiaryDetailPage: NextPage = () => {
                     icon: <ReportIcon />,
                     label: '신고하기',
                     onClick: () => {
-                      confirm('신고하시겠습니까?');
+                      confirm('신고하시겠습니까?'); // TODO: 신고하기 기능
                     },
                   },
                 ]
@@ -99,6 +98,13 @@ const DiaryDetailPage: NextPage = () => {
         <DiaryDetailContainer {...diaryData} />
         <DiaryCommentsContainer diaryId={id as string} />
       </Section>
+      <Modal
+        isVisible={isVisibleDeleteModal}
+        message={MODAL_MESSAGE.delete}
+        confirmText={MODAL_BUTTON.delete}
+        onClose={handleDeleteModal.close}
+        onConfirm={handleDeleteDiary}
+      />
     </>
   );
 };

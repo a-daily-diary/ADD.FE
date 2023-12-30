@@ -82,6 +82,7 @@ const Container = styled.div`
 
 const Message = styled.p`
   padding: 40px 32px;
+  text-align: center;
 `;
 
 const ButtonContainer = styled.div`

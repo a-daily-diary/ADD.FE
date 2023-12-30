@@ -11,7 +11,7 @@ import {
 import type { ErrorResponse } from 'types/response';
 import { ImagePickerIcon } from 'assets/icons';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
-import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
+import { useImageUpload } from 'hooks/services';
 import { ScreenReaderOnly, SVGVerticalAlignStyle } from 'styles';
 
 interface SelectProfileImageProps {
