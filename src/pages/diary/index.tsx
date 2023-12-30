@@ -24,8 +24,7 @@ import {
 } from 'components/layouts';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useBeforeLeave, useModal } from 'hooks/common';
-import { useWriteDiary } from 'hooks/services';
-import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
+import { useImageUpload, useWriteDiary } from 'hooks/services';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 

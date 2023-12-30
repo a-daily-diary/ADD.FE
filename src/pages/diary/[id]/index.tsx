@@ -15,8 +15,7 @@ import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/queryKeys';
 import { useClickOutside, useModal } from 'hooks/common';
-import { useDiary } from 'hooks/services';
-import { useDeleteDiary } from 'hooks/services/mutations/useDeleteDiary';
+import { useDeleteDiary, useDiary } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { errorResponseMessage } from 'utils';
 

@@ -28,9 +28,7 @@ import {
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/queryKeys';
 import { useBeforeLeave, useModal } from 'hooks/common';
-import { useDiary } from 'hooks/services';
-import { useEditDiary } from 'hooks/services/mutations/useEditDiary';
-import { useImageUpload } from 'hooks/services/mutations/useImageUpload';
+import { useDiary, useEditDiary, useImageUpload } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
@@ -39,7 +37,6 @@ const EditDiary: NextPage = () => {
   const router = useRouter();
   const {
     query: { id },
-    asPath,
   } = router;
 
   const { diaryData, isLoading } = useDiary(id as string);
