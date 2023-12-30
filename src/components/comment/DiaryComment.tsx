@@ -5,8 +5,9 @@ import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/comment';
 import type { ErrorResponse } from 'types/response';
 import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
-import { FloatingMenu } from 'components/common';
-import { useClickOutside } from 'hooks/common';
+import { FloatingMenu, Modal } from 'components/common';
+import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
+import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteComment } from 'hooks/services';
 import { timeFormat, dateFormat, errorResponseMessage } from 'utils';
 
@@ -17,20 +18,22 @@ interface DiaryCommentProps {
 
 export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
   const { data: session } = useSession();
+
+  const { isVisible: isVisibleDeleteModal, handleModal: handleDeleteModal } =
+    useModal();
   const { ref, isVisible, setIsVisible } = useClickOutside();
+
   const deleteCommentMutation = useDeleteComment(diaryId);
 
   const { id: commentId, createdAt, comment, commenter } = diaryComment;
   const isCommenter = commenter.id === session?.user.id;
 
   const handleDeleteComment = () => {
-    if (confirm('삭제하시겠습니까?')) {
-      try {
-        deleteCommentMutation({ diaryId, commentId });
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          alert(errorResponseMessage(error.response?.data.message));
-        }
+    try {
+      deleteCommentMutation({ diaryId, commentId });
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
       }
     }
   };
@@ -72,7 +75,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
                     {
                       icon: <TrashIcon />,
                       label: '삭제하기',
-                      onClick: handleDeleteComment,
+                      onClick: handleDeleteModal.open,
                     },
                   ]
                 : [
@@ -80,7 +83,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
                       icon: <ReportIcon />,
                       label: '신고하기',
                       onClick: () => {
-                        confirm('신고하시겠습니까?');
+                        confirm('신고하시겠습니까?'); // TODO: 신고하기 기능 추가
                       },
                     },
                   ]
@@ -88,6 +91,13 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
           />
         )}
       </CommentItem>
+      <Modal
+        isVisible={isVisibleDeleteModal}
+        message={MODAL_MESSAGE.delete}
+        confirmText={MODAL_BUTTON.delete}
+        onClose={handleDeleteModal.close}
+        onConfirm={handleDeleteComment}
+      />
     </>
   );
 };
