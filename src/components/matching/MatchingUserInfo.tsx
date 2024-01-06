@@ -8,7 +8,7 @@ import { ScreenReaderOnly } from 'styles';
 
 const MatchingUserInfo: NextPage = () => {
   return (
-    <MatchingUserInfoWrapper className="top-area">
+    <MatchingUserInfoWrapper>
       <SubTitle>사용자 프로필</SubTitle>
       <Image
         src="http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG"

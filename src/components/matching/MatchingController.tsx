@@ -8,7 +8,7 @@ import { ScreenReaderOnly } from 'styles';
 
 const MatchingController: NextPage = () => {
   return (
-    <MatchingControllerWrapper className="bottom-area">
+    <MatchingControllerWrapper>
       <SubTitle>통화 제어</SubTitle>
       <CircleButton type="button" backgroundColor={colors.bg_02}>
         <Tooltip>마이크를 켜주세요!</Tooltip>
