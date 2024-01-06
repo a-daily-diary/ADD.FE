@@ -25,6 +25,7 @@ declare module '@emotion/react' {
       black: string;
       error: string;
       pink: string;
+      red: string;
     };
     fonts: {
       headline_01: SerializedStyles;
