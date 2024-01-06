@@ -9,6 +9,7 @@ import type { NextPage } from 'next';
 import type { LoadingAnimationKey } from 'types/common';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
+import { PAGE_PATH } from 'constants/page';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const MatchingLoading: NextPage = () => {
   const cancelMatching = () => {
     setIsCancel(true);
     setTimeout(async () => {
-      await router.push('/matching');
+      await router.push(PAGE_PATH.matching);
     }, 2000);
   };
 
