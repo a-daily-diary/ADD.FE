@@ -68,7 +68,14 @@ const MatchingRule: NextPage = () => {
               </p>
             </li>
           </RuleList>
-          <Button type="button" pattern="round" size="xl">
+          <Button
+            type="button"
+            pattern="round"
+            size="xl"
+            onClick={async () => {
+              await router.push('/matching/loading');
+            }}
+          >
             랜덤매칭 시작
           </Button>
         </Article>
