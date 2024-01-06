@@ -4,8 +4,9 @@ import React from 'react';
 import type { NextPage } from 'next';
 
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
-import { Button, Seo } from 'components/common';
+import { Seo } from 'components/common';
 import MatchingUserInfo from 'components/matching/MatchingUserInfo';
+import RecommendTopic from 'components/matching/RecommendTopic';
 import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 
@@ -16,21 +17,7 @@ const MatchingPlaying: NextPage = () => {
       <Section>
         <Title>랜덤 매칭</Title>
         <MatchingUserInfo />
-        <MiddleArea className="middle-area">
-          <SubTitle>추천 대화</SubTitle>
-          <Card>
-            <RegularParagraph>추천하는 대화 주제</RegularParagraph>
-            <strong>Hobby</strong>
-            <span>취미</span>
-            <DivisionLine />
-            <BoldParagraph>What is your hobby?</BoldParagraph>
-            <SmallParagraph>취미가 무엇인가요?</SmallParagraph>
-          </Card>
-          {/* FIXME: 버튼 background color 변경 필요 */}
-          <Button type="button" pattern="round" size="md">
-            다음 질문
-          </Button>
-        </MiddleArea>
+        <RecommendTopic />
         <BottomArea className="bottom-area">
           <SubTitle>통화 제어</SubTitle>
           <CircleButton type="button" backgroundColor={colors.bg_02}>
@@ -61,47 +48,6 @@ const SubTitle = styled.h2`
 const Section = styled.section`
   text-align: center;
   padding: 0 20px;
-`;
-
-const MiddleArea = styled.article``;
-
-const Card = styled.div`
-  box-shadow: 0px 2px 10px 0px #00000024;
-  border-radius: 16px;
-  margin: 30px 0 12px;
-  padding: 28px 20px 23px;
-  strong {
-    font-size: 2.8rem;
-    font-weight: 700;
-    line-height: 34px;
-    color: ${({ theme }) => theme.colors.primary_00};
-    margin-right: 8px;
-  }
-  span {
-    ${({ theme }) => theme.fonts.body_06};
-    color: ${({ theme }) => theme.colors.gray_00};
-  }
-`;
-
-const BoldParagraph = styled.p`
-  ${({ theme }) => theme.fonts.headline_04};
-`;
-
-const RegularParagraph = styled.p`
-  ${({ theme }) => theme.fonts.body_06};
-  color: ${({ theme }) => theme.colors.gray_01};
-  margin-bottom: 4px;
-`;
-
-const SmallParagraph = styled.p`
-  ${({ theme }) => theme.fonts.body_09};
-  color: ${({ theme }) => theme.colors.gray_01};
-`;
-
-const DivisionLine = styled.div`
-  height: 1px;
-  background-color: ${({ theme }) => theme.colors.gray_06};
-  margin: 23px 0;
 `;
 
 const BottomArea = styled.article`
