@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import type { NextPage } from 'next';
 
+import type { LoadingAnimationKey } from 'types/common';
+import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 
 const MatchingLoading: NextPage = () => {
@@ -10,9 +12,9 @@ const MatchingLoading: NextPage = () => {
     <Section>
       <h1>랜덤 매칭 중입니다.</h1>
       <ImageWrapper>
-        <Circle size={220} opacity={0.2} />
-        <Circle size={180} opacity={0.4} />
-        <Circle size={140} opacity={1} />
+        <Circle size={220} opacity={0.2} animationKey="loading3" />
+        <Circle size={180} opacity={0.4} animationKey="loading2" />
+        <Circle size={140} opacity={1} animationKey="loading1" />
         <Image
           src={'/images/matching/matching.png'}
           alt="매칭 대기 중"
@@ -47,6 +49,7 @@ const ImageWrapper = styled.div`
 const Circle = styled.div<{
   size: number;
   opacity: number;
+  animationKey: LoadingAnimationKey;
 }>`
   position: absolute;
   top: 50%;
@@ -58,4 +61,5 @@ const Circle = styled.div<{
   opacity: ${(props) => props.opacity};
   border: 2px solid #aef4ae;
   border-radius: 100%;
+  animation: ${(props) => loadingAnimation[props.animationKey]} 2s ease infinite;
 `;
