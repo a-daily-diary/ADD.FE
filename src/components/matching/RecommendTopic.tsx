@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
-import type { NextPage } from 'next';
+import type { ComponentProps } from 'react';
 
 import { Button } from 'components/common';
 import { ScreenReaderOnly } from 'styles';
 
-const RecommendTopic: NextPage = () => {
+interface RecommendTopicProps extends ComponentProps<'article'> {}
+
+const RecommendTopic = ({ ...otherProps }: RecommendTopicProps) => {
   return (
-    <article>
+    <article {...otherProps}>
       <SubTitle>추천 대화</SubTitle>
       <Card>
         <RegularParagraph>추천하는 대화 주제</RegularParagraph>
@@ -35,7 +37,7 @@ const SubTitle = styled.h2`
 const Card = styled.div`
   box-shadow: 0px 2px 10px 0px #00000024;
   border-radius: 16px;
-  margin: 30px 0 12px;
+  margin-bottom: 12px;
   padding: 28px 20px 23px;
   strong {
     font-size: 2.8rem;

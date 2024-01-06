@@ -1,14 +1,17 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import type { NextPage } from 'next';
+
+import type { ComponentProps } from 'react';
 
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 
-const MatchingController: NextPage = () => {
+interface MatchingControllerProps extends ComponentProps<'article'> {}
+
+const MatchingController = ({ ...otherProps }: MatchingControllerProps) => {
   return (
-    <MatchingControllerWrapper>
+    <MatchingControllerWrapper {...otherProps}>
       <SubTitle>통화 제어</SubTitle>
       <CircleButton type="button" backgroundColor={colors.bg_02}>
         <Tooltip>마이크를 켜주세요!</Tooltip>
@@ -32,7 +35,6 @@ const SubTitle = styled.h2`
 const MatchingControllerWrapper = styled.article`
   display: flex;
   justify-content: space-around;
-  margin: 53px 0 30px;
 `;
 
 const CircleButton = styled.button<{
