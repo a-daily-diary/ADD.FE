@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
 import Image from 'next/image';
+import { useRouter } from 'next/router';
+
+import { useState } from 'react';
 import type { NextPage } from 'next';
 
 import type { LoadingAnimationKey } from 'types/common';
@@ -8,25 +11,56 @@ import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 
 const MatchingLoading: NextPage = () => {
+  const router = useRouter();
+
+  const [isCancel, setIsCancel] = useState(false);
+
+  const cancelMatching = () => {
+    setIsCancel(true);
+    setTimeout(async () => {
+      await router.push('/matching');
+    }, 2000);
+  };
+
   return (
     <Section>
-      <h1>랜덤 매칭 중입니다.</h1>
-      <ImageWrapper>
-        <Circle size={220} opacity={0.2} animationKey="loading3" />
-        <Circle size={180} opacity={0.4} animationKey="loading2" />
-        <Circle size={140} opacity={1} animationKey="loading1" />
+      <h1>
+        {isCancel ? '랜덤 매칭이 취소되었습니다.' : '랜덤 매칭 중입니다.'}
+      </h1>
+      {isCancel ? (
         <Image
-          src={'/images/matching/matching.png'}
-          alt="매칭 대기 중"
+          src={'/images/matching/matching_inactive.png'}
+          alt="매칭 취소"
           width={240}
           height={120}
           placeholder="blur"
-          blurDataURL={'/images/matching/matching.png'}
+          blurDataURL={'/images/matching/matching_inactive.png'}
         />
-      </ImageWrapper>
-      <Button type="button" pattern="round" size="xl">
-        랜덤매칭 취소
-      </Button>
+      ) : (
+        <>
+          <ImageWrapper>
+            <Circle size={220} opacity={0.2} animationKey="loading3" />
+            <Circle size={180} opacity={0.4} animationKey="loading2" />
+            <Circle size={140} opacity={1} animationKey="loading1" />
+            <Image
+              src={'/images/matching/matching.png'}
+              alt="매칭 대기 중"
+              width={240}
+              height={120}
+              placeholder="blur"
+              blurDataURL={'/images/matching/matching.png'}
+            />
+          </ImageWrapper>
+          <Button
+            type="button"
+            pattern="round"
+            size="xl"
+            onClick={cancelMatching}
+          >
+            랜덤매칭 취소
+          </Button>
+        </>
+      )}
     </Section>
   );
 };
