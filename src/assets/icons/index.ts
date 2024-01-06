@@ -15,6 +15,9 @@ import HomeIcon from './home.svg';
 import BlockIcon from './icon_block.svg';
 import DiseaseIcon from './icon_disease.svg';
 import EnIcon from './icon_en.svg';
+import EndCallIcon from './icon_end_of_call.svg';
+import MicrophoneOffIcon from './icon_microphone_off.svg';
+import MicrophoneOnIcon from './icon_microphone_on.svg';
 import PrivacyIcon from './icon_privacy.svg';
 import ImagePickerIcon from './image_picker.svg';
 import LockIcon from './lock.svg';
@@ -76,4 +79,7 @@ export {
   DiseaseIcon,
   EnIcon,
   PrivacyIcon,
+  EndCallIcon,
+  MicrophoneOffIcon,
+  MicrophoneOnIcon,
 };
