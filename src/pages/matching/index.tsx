@@ -15,7 +15,7 @@ const MatchingRule: NextPage = () => {
 
   return (
     <>
-      <Seo title="일기 작성 | a daily diary" />
+      <Seo title="랜덤 매칭 규칙 | a daily diary" />
       <Section>
         <Title>랜덤 매칭 규칙</Title>
         <Header
