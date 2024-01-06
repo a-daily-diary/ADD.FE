@@ -21,4 +21,5 @@ export const colors = {
   black: '#000000',
   error: '#f84d4d',
   pink: '#ff89d7',
+  red: '#ffeeee',
 } as const;
