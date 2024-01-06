@@ -7,6 +7,7 @@ import { EnIcon, BlockIcon, PrivacyIcon, DiseaseIcon } from 'assets/icons';
 
 import { Button, Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
+import { PAGE_PATH } from 'constants/page';
 import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 
@@ -15,18 +16,11 @@ const MatchingRule: NextPage = () => {
 
   return (
     <>
-      <Seo title="일기 작성 | a daily diary" />
+      <Seo title="랜덤 매칭 규칙 | a daily diary" />
       <Section>
         <Title>랜덤 매칭 규칙</Title>
         <Header
-          left={
-            <HeaderLeft
-              type="이전"
-              onClick={() => {
-                router.back();
-              }}
-            />
-          }
+          left={<HeaderLeft type="이전" />} // FIXME: 이전 버튼에 대해 클릭 이벤트 함수 props로 받을 수 있도록 셋팅
           title={<HeaderTitle title="랜덤 매칭" />}
           right={<div />}
         />
@@ -68,7 +62,14 @@ const MatchingRule: NextPage = () => {
               </p>
             </li>
           </RuleList>
-          <Button type="button" pattern="round" size="xl">
+          <Button
+            type="button"
+            pattern="round"
+            size="xl"
+            onClick={async () => {
+              await router.push(PAGE_PATH.matching_loading);
+            }}
+          >
             랜덤매칭 시작
           </Button>
         </Article>

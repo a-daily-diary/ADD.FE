@@ -7,27 +7,28 @@ import {
   ProfileIcon,
   WriteDiaryIcon,
 } from 'assets/icons';
+import { PAGE_PATH } from 'constants/page';
 import { Z_INDEX } from 'constants/styles';
 
 const NAVIGATION_LIST = [
   {
     label: '홈',
-    href: '/',
+    href: PAGE_PATH.main,
     icon: <HomeIcon />,
   },
   {
     label: '랜덤매칭',
-    href: '/matching',
+    href: PAGE_PATH.matching,
     icon: <MatchingIcon />,
   },
   {
     label: '일기작성',
-    href: '/diary',
+    href: PAGE_PATH.diary,
     icon: <WriteDiaryIcon width={24} height={24} />,
   },
   {
     label: '프로필',
-    href: '/profile',
+    href: PAGE_PATH.profile,
     icon: <ProfileIcon />,
   },
 ];
