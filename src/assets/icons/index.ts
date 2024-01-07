@@ -12,12 +12,16 @@ import HeartOffIcon from './heart_off.svg';
 import HeartOnIcon from './heart_on.svg';
 import HideIcon from './hide_pw.svg';
 import HomeIcon from './home.svg';
+import SurveyBadIcon from './icon_bad.svg';
 import BlockIcon from './icon_block.svg';
 import DiseaseIcon from './icon_disease.svg';
 import EnIcon from './icon_en.svg';
 import EndCallIcon from './icon_end_of_call.svg';
+import SurveyEngIcon from './icon_english.svg';
+import SurveyFunIcon from './icon_fun.svg';
 import MicrophoneOffIcon from './icon_microphone_off.svg';
 import MicrophoneOnIcon from './icon_microphone_on.svg';
+import SurveyNiceIcon from './icon_nice.svg';
 import PrivacyIcon from './icon_privacy.svg';
 import ImagePickerIcon from './image_picker.svg';
 import LoadingIcon from './loading.svg';
@@ -84,4 +88,8 @@ export {
   EndCallIcon,
   MicrophoneOffIcon,
   MicrophoneOnIcon,
+  SurveyBadIcon,
+  SurveyEngIcon,
+  SurveyFunIcon,
+  SurveyNiceIcon,
 };
