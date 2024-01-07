@@ -5,3 +5,4 @@ export * from './ResponsiveImage';
 export * from './Seo';
 export * from './Tab';
 export * from './Modal';
+export * from './Loading';
