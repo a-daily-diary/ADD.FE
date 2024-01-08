@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useRef, useState } from 'react';
+
+import type { FeedbackType } from 'types/matching';
 
 import {
   SurveyBadIcon,
@@ -13,6 +15,33 @@ import { colors } from 'constants/styles';
 import { ScreenReaderOnly, theme } from 'styles';
 
 const MatchingSurvey = () => {
+  const [feedbackTypeObj, setFeedbackTypeObj] = useState<
+    Record<FeedbackType, boolean>
+  >({
+    isNice: false,
+    isFluent: false,
+    isFun: false,
+    isBad: false,
+  });
+
+  const [feedbackMsg, setFeedbackMsg] = useState('');
+
+  const [isBan, setIsBan] = useState(false);
+
+  const onChangeCheckValue = (key: FeedbackType, checked: boolean) => {
+    setFeedbackTypeObj((prev) => {
+      return {
+        ...prev,
+        [key]: checked,
+      };
+    });
+  };
+
+  const { current: activeStyle } = useRef({
+    outline: `2px solid ${colors.primary_00}`,
+    borderRadius: '100%',
+  });
+
   return (
     <>
       <Seo title="랜덤 매칭 설문 | a daily diary" />
@@ -24,20 +53,44 @@ const MatchingSurvey = () => {
         </RegularParagraph04>
         <form>
           <Grid2Column>
-            <FeedbackTypeCheckbox>
-              <SurveyNiceIcon />
+            <FeedbackTypeCheckbox
+              checked={feedbackTypeObj.isNice}
+              onChange={(e) => {
+                onChangeCheckValue('isNice', e.target.checked);
+              }}
+            >
+              <SurveyNiceIcon
+                style={feedbackTypeObj.isNice ? activeStyle : {}}
+              />
               <RegularSpan>친절해요</RegularSpan>
             </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox>
-              <SurveyEngIcon />
+            <FeedbackTypeCheckbox
+              checked={feedbackTypeObj.isFluent}
+              onChange={(e) => {
+                onChangeCheckValue('isFluent', e.target.checked);
+              }}
+            >
+              <SurveyEngIcon
+                style={feedbackTypeObj.isFluent ? activeStyle : {}}
+              />
               <RegularSpan>영어를 잘해요</RegularSpan>
             </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox>
-              <SurveyFunIcon />
+            <FeedbackTypeCheckbox
+              checked={feedbackTypeObj.isFun}
+              onChange={(e) => {
+                onChangeCheckValue('isFun', e.target.checked);
+              }}
+            >
+              <SurveyFunIcon style={feedbackTypeObj.isFun ? activeStyle : {}} />
               <RegularSpan>재밌어요</RegularSpan>
             </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox>
-              <SurveyBadIcon />
+            <FeedbackTypeCheckbox
+              checked={feedbackTypeObj.isBad}
+              onChange={(e) => {
+                onChangeCheckValue('isBad', e.target.checked);
+              }}
+            >
+              <SurveyBadIcon style={feedbackTypeObj.isBad ? activeStyle : {}} />
               <RegularSpan>불쾌해요</RegularSpan>
             </FeedbackTypeCheckbox>
           </Grid2Column>
@@ -47,13 +100,29 @@ const MatchingSurvey = () => {
               <br />
               불쾌해요를 선택하셨다면 이유를 남겨주세요.
             </RegularParagraph07>
-            <TextArea placeholder="피드백을 남겨주세요." />
+            <TextArea
+              placeholder="피드백을 남겨주세요."
+              value={feedbackMsg}
+              onChange={(e) => {
+                setFeedbackMsg(e.target.value);
+              }}
+            />
           </div>
           <CheckBoxLabel>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={isBan}
+              onChange={(e) => {
+                setIsBan(e.target.checked);
+              }}
+            />
             <RegularSpan>이 사람이랑 전화하지 않을래요.</RegularSpan>
           </CheckBoxLabel>
-          <ButtonStyle type="submit" isActive={false}>
+          <ButtonStyle
+            type="submit"
+            isActive={feedbackMsg !== ''}
+            disabled={feedbackMsg === ''}
+          >
             피드백 작성 완료
           </ButtonStyle>
         </form>
