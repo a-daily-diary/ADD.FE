@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 
 import type { FeedbackType } from 'types/matching';
@@ -15,6 +16,8 @@ import { colors } from 'constants/styles';
 import { ScreenReaderOnly, theme } from 'styles';
 
 const MatchingSurvey = () => {
+  const router = useRouter();
+
   const [feedbackTypeObj, setFeedbackTypeObj] = useState<
     Record<FeedbackType, boolean>
   >({
@@ -37,6 +40,12 @@ const MatchingSurvey = () => {
     });
   };
 
+  const onSubmitFeedback = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    await router.push('/');
+  };
+
   const { current: activeStyle } = useRef({
     outline: `2px solid ${colors.primary_00}`,
     borderRadius: '100%',
@@ -51,7 +60,7 @@ const MatchingSurvey = () => {
         <RegularParagraph04 color={colors.gray_02}>
           남겨주신 피드백은 상대방에게 전달되지 않습니다.
         </RegularParagraph04>
-        <form>
+        <form onSubmit={onSubmitFeedback}>
           <Grid2Column>
             <FeedbackTypeCheckbox
               checked={feedbackTypeObj.isNice}
