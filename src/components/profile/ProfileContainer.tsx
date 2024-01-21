@@ -9,10 +9,9 @@ interface ProfileContainerProps {
 }
 
 export const ProfileContainer = ({ username }: ProfileContainerProps) => {
-  const { profileData, isLoading } = useProfile(username);
+  const { profileData } = useProfile(username);
 
   if (profileData === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
 
   return (
     <Container>
