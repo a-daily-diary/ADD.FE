@@ -1,55 +1,26 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import React, { useRef, useState } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
 
-import type { FeedbackType } from 'types/matching';
+import type { SubmitHandler } from 'react-hook-form';
+import type { MatchingFeedbackForm } from 'types/matching';
 
-import {
-  SurveyBadIcon,
-  SurveyEngIcon,
-  SurveyFunIcon,
-  SurveyNiceIcon,
-} from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { colors } from 'constants/styles';
-import { ScreenReaderOnly, theme } from 'styles';
+import { ScreenReaderOnly } from 'styles';
 
 const MatchingSurvey = () => {
   const router = useRouter();
 
-  const [feedbackTypeObj, setFeedbackTypeObj] = useState<
-    Record<FeedbackType, boolean>
-  >({
-    isNice: false,
-    isFluent: false,
-    isFun: false,
-    isBad: false,
-  });
+  const { register, handleSubmit } = useForm<MatchingFeedbackForm>();
 
-  const [feedbackMsg, setFeedbackMsg] = useState('');
-
-  const [isBan, setIsBan] = useState(false);
-
-  const onChangeCheckValue = (key: FeedbackType, checked: boolean) => {
-    setFeedbackTypeObj((prev) => {
-      return {
-        ...prev,
-        [key]: checked,
-      };
-    });
-  };
-
-  const onSubmitFeedback = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
+    console.log(data);
 
     await router.push('/');
   };
-
-  const { current: activeStyle } = useRef({
-    outline: `2px solid ${colors.primary_00}`,
-    borderRadius: '100%',
-  });
 
   return (
     <>
@@ -60,49 +31,8 @@ const MatchingSurvey = () => {
         <RegularParagraph04 color={colors.gray_02}>
           남겨주신 피드백은 상대방에게 전달되지 않습니다.
         </RegularParagraph04>
-        <form onSubmit={onSubmitFeedback}>
-          <Grid2Column>
-            <FeedbackTypeCheckbox
-              checked={feedbackTypeObj.isNice}
-              onChange={(e) => {
-                onChangeCheckValue('isNice', e.target.checked);
-              }}
-            >
-              <SurveyNiceIcon
-                style={feedbackTypeObj.isNice ? activeStyle : {}}
-              />
-              <RegularSpan>친절해요</RegularSpan>
-            </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox
-              checked={feedbackTypeObj.isFluent}
-              onChange={(e) => {
-                onChangeCheckValue('isFluent', e.target.checked);
-              }}
-            >
-              <SurveyEngIcon
-                style={feedbackTypeObj.isFluent ? activeStyle : {}}
-              />
-              <RegularSpan>영어를 잘해요</RegularSpan>
-            </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox
-              checked={feedbackTypeObj.isFun}
-              onChange={(e) => {
-                onChangeCheckValue('isFun', e.target.checked);
-              }}
-            >
-              <SurveyFunIcon style={feedbackTypeObj.isFun ? activeStyle : {}} />
-              <RegularSpan>재밌어요</RegularSpan>
-            </FeedbackTypeCheckbox>
-            <FeedbackTypeCheckbox
-              checked={feedbackTypeObj.isBad}
-              onChange={(e) => {
-                onChangeCheckValue('isBad', e.target.checked);
-              }}
-            >
-              <SurveyBadIcon style={feedbackTypeObj.isBad ? activeStyle : {}} />
-              <RegularSpan>불쾌해요</RegularSpan>
-            </FeedbackTypeCheckbox>
-          </Grid2Column>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FeedbackTypeCheckbox register={register} />
           <div>
             <RegularParagraph07>
               상대방에대한 피드백을 작성해주세요.
@@ -111,29 +41,17 @@ const MatchingSurvey = () => {
             </RegularParagraph07>
             <TextArea
               placeholder="피드백을 남겨주세요."
-              value={feedbackMsg}
-              onChange={(e) => {
-                setFeedbackMsg(e.target.value);
-              }}
+              {...register('feedbackMessage')}
             />
           </div>
           <CheckBoxLabel>
             <input
               type="checkbox"
-              checked={isBan}
-              onChange={(e) => {
-                setIsBan(e.target.checked);
-              }}
+              {...register('neverMatchingAgainThisUser')}
             />
             <RegularSpan>이 사람이랑 전화하지 않을래요.</RegularSpan>
           </CheckBoxLabel>
-          <ButtonStyle
-            type="submit"
-            isActive={feedbackMsg !== ''}
-            disabled={feedbackMsg === ''}
-          >
-            피드백 작성 완료
-          </ButtonStyle>
+          <ButtonStyle type="submit">피드백 작성 완료</ButtonStyle>
         </form>
       </Section>
     </>
@@ -150,20 +68,6 @@ const Section = styled.section`
 
 const Title = styled.h1`
   ${ScreenReaderOnly}
-`;
-
-const Grid2Column = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: space-evenly;
-  row-gap: 30px;
-  margin-bottom: 60px;
-  label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
 `;
 
 const BoldParagraph = styled.p`
@@ -207,13 +111,10 @@ const CheckBoxLabel = styled.label`
   }
 `;
 
-const ButtonStyle = styled.button<{
-  isActive: boolean;
-}>`
-  ${theme.fonts.button_02};
+const ButtonStyle = styled.button`
+  ${({ theme }) => theme.fonts.button_02};
   width: 100%;
-  background-color: ${({ isActive, theme }) =>
-    isActive ? theme.colors.primary_00 : theme.colors.gray_04};
+  background-color: ${({ theme }) => theme.colors.primary_00};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
   padding: 17px 0;

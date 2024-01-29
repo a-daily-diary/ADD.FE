@@ -1,2 +1,8 @@
-// feedbackType
-export type FeedbackType = 'isNice' | 'isFluent' | 'isFun' | 'isBad';
+export interface MatchingFeedbackForm {
+  isNiceMatcher: boolean;
+  isFluentMatcher: boolean;
+  isFunnyMatcher: boolean;
+  isBadMatcher: boolean;
+  feedbackMessage: string;
+  neverMatchingAgainThisUser: boolean;
+}
