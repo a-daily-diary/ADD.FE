@@ -14,22 +14,22 @@ const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
   return (
     <Grid2Column>
       <Label>
-        <input type="checkbox" {...register('isNiceMatcher')} />
+        <input type="checkbox" {...register('feedbackType.isNice')} />
         <NiceIcon />
         <RegularSpan>친절해요</RegularSpan>
       </Label>
       <Label>
-        <input type="checkbox" {...register('isFluentMatcher')} />
+        <input type="checkbox" {...register('feedbackType.isNice')} />
         <EngIcon />
         <RegularSpan>영어를 잘해요</RegularSpan>
       </Label>
       <Label>
-        <input type="checkbox" {...register('isFunnyMatcher')} />
+        <input type="checkbox" {...register('feedbackType.isFunny')} />
         <FunIcon />
         <RegularSpan>재밌어요</RegularSpan>
       </Label>
       <Label>
-        <input type="checkbox" {...register('isBadMatcher')} />
+        <input type="checkbox" {...register('feedbackType.isBad')} />
         <BadIcon />
         <RegularSpan>불쾌해요</RegularSpan>
       </Label>

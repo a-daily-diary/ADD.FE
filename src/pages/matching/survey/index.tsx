@@ -45,10 +45,7 @@ const MatchingSurvey = () => {
             />
           </div>
           <CheckBoxLabel>
-            <input
-              type="checkbox"
-              {...register('neverMatchingAgainThisUser')}
-            />
+            <input type="checkbox" {...register('neverMatchingAgain')} />
             <RegularSpan>이 사람이랑 전화하지 않을래요.</RegularSpan>
           </CheckBoxLabel>
           <ButtonStyle type="submit">피드백 작성 완료</ButtonStyle>

@@ -1,8 +1,12 @@
+interface FeedbackType {
+  isNice: boolean;
+  isFluent: boolean;
+  isFunny: boolean;
+  isBad: boolean;
+}
+
 export interface MatchingFeedbackForm {
-  isNiceMatcher: boolean;
-  isFluentMatcher: boolean;
-  isFunnyMatcher: boolean;
-  isBadMatcher: boolean;
+  feedbackType: FeedbackType;
   feedbackMessage: string;
-  neverMatchingAgainThisUser: boolean;
+  neverMatchingAgain: boolean;
 }
