@@ -3,12 +3,7 @@ import styled from '@emotion/styled';
 import type { UseFormRegister } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
 
-import {
-  SurveyBadIcon,
-  SurveyEngIcon,
-  SurveyFunIcon,
-  SurveyNiceIcon,
-} from 'assets/icons';
+import { BadIcon, EngIcon, FunIcon, NiceIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
 
 interface FeedbackTypeCheckboxProps {
@@ -20,22 +15,22 @@ const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
     <Grid2Column>
       <Label>
         <input type="checkbox" {...register('isNiceMatcher')} />
-        <SurveyNiceIcon />
+        <NiceIcon />
         <RegularSpan>친절해요</RegularSpan>
       </Label>
       <Label>
         <input type="checkbox" {...register('isFluentMatcher')} />
-        <SurveyEngIcon />
+        <EngIcon />
         <RegularSpan>영어를 잘해요</RegularSpan>
       </Label>
       <Label>
         <input type="checkbox" {...register('isFunnyMatcher')} />
-        <SurveyFunIcon />
+        <FunIcon />
         <RegularSpan>재밌어요</RegularSpan>
       </Label>
       <Label>
         <input type="checkbox" {...register('isBadMatcher')} />
-        <SurveyBadIcon />
+        <BadIcon />
         <RegularSpan>불쾌해요</RegularSpan>
       </Label>
     </Grid2Column>
