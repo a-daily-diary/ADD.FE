@@ -11,17 +11,15 @@ import { errorResponseMessage } from 'utils';
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 24 * 60 * 60, // NOTE: 24 hours
   },
   providers: [
-    // email, password를 이용한 인증 방식
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
         email: { type: 'text' },
         password: { type: 'password' },
       },
-      // 로그인 인증
       async authorize(credentials, _req) {
         const { email, password } = credentials as LoginRequest;
 
@@ -31,11 +29,13 @@ export const authOptions: NextAuthOptions = {
               data: { user, token },
             },
           } = await api.login({ email, password });
+
           return { ...user, accessToken: token };
         } catch (error) {
           if (isAxiosError<ErrorResponse>(error)) {
             throw new Error(errorResponseMessage(error.response?.data.message));
           }
+
           return null;
         }
       },
@@ -64,7 +64,6 @@ export const authOptions: NextAuthOptions = {
       const { email, id, imgUrl, isAdmin, username, accessToken } = token;
       // session.user에 token의 로그인 한 사용자 정보 전달
       session.user = { email, id, username, imgUrl, isAdmin, accessToken };
-      // session.accessToken = accessToken;
 
       return await Promise.resolve(session);
     },
@@ -73,7 +72,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    // 커스텀 로그인 페이지로 라우팅 처리
     signIn: '/account/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
