@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SettingIcon } from 'assets/icons';
+import { Loading } from 'components/common';
 import { useProfile } from 'hooks/services';
 
 interface ProfileContainerProps {
@@ -9,9 +10,9 @@ interface ProfileContainerProps {
 }
 
 export const ProfileContainer = ({ username }: ProfileContainerProps) => {
-  const { profileData } = useProfile(username);
+  const { profileData, isLoading } = useProfile(username);
 
-  if (profileData === undefined) return <div />;
+  if (profileData === undefined || isLoading) return <Loading />;
 
   return (
     <Container>

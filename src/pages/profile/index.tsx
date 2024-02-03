@@ -33,9 +33,14 @@ const Profile: NextPage = () => {
   const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
     useBookmarkedDiaries(session.user.username);
 
-  if (userDiariesData === undefined || bookmarkedDiariesData === undefined)
-    return <div />;
-  if (isUserDiariesLoading || isBookmarkedDiariesLoading) return <Loading />;
+  if (
+    userDiariesData === undefined ||
+    bookmarkedDiariesData === undefined ||
+    isUserDiariesLoading ||
+    isBookmarkedDiariesLoading
+  ) {
+    return <Loading />;
+  }
 
   return (
     <>

@@ -14,8 +14,7 @@ import { useDiaries } from 'hooks/services';
 const Home: NextPage = () => {
   const { diariesData, isLoading } = useDiaries();
 
-  if (diariesData === undefined) return <div />;
-  if (isLoading) return <Loading />;
+  if (diariesData === undefined || isLoading) return <Loading />;
 
   return (
     <>

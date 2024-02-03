@@ -43,8 +43,7 @@ const DiaryDetailPage: NextPage = () => {
     }
   };
 
-  if (diaryData === undefined) return <div />;
-  if (isLoading) return <Loading />;
+  if (diaryData === undefined || isLoading) return <Loading />;
 
   const { author, title } = diaryData;
   const isAuthor = author.id === session?.user.id;
