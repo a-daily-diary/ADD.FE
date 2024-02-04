@@ -4,7 +4,6 @@ import { isAxiosError } from 'axios';
 import { getServerSession } from 'next-auth';
 import type {
   GetServerSideProps,
-  GetServerSidePropsContext,
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
@@ -78,9 +77,7 @@ const YourProfile: NextPage<
   );
 };
 
-export const getServerSideProps = (async (
-  context: GetServerSidePropsContext,
-) => {
+export const getServerSideProps = (async (context) => {
   const { req, res, params } = context;
   const username = params?.username as string;
 
