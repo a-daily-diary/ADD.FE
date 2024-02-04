@@ -17,7 +17,6 @@ import { queryKeys } from 'constants/queryKeys';
 import { useTabIndicator } from 'hooks/common';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
-import { ScreenReaderOnly } from 'styles';
 
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
@@ -67,17 +66,13 @@ const YourProfile: NextPage<
             );
           })}
         </Tab>
-        <article>
-          {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-            <>
-              <Title>{PROFILE_TAB_LIST[activeIndex].title}</Title>
-              <DiariesContainer
-                diariesData={userDiariesData}
-                empty={<EmptyDiary text="일기가 없습니다." />}
-              />
-            </>
-          )}
-        </article>
+        {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
+          <DiariesContainer
+            title={PROFILE_TAB_LIST[activeIndex].title}
+            diariesData={userDiariesData}
+            empty={<EmptyDiary text="일기가 없습니다." />}
+          />
+        )}
       </section>
     </>
   );
@@ -142,8 +137,4 @@ export default YourProfile;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ theme }) => theme.fonts.headline_04};
-`;
-
-const Title = styled.h2`
-  ${ScreenReaderOnly}
 `;

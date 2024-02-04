@@ -2,13 +2,16 @@ import styled from '@emotion/styled';
 import Diary from './Diary';
 import type { ReactNode } from 'react';
 import type { Diaries } from 'types/diary';
+import { ScreenReaderOnly } from 'styles';
 
 interface DiariesContainerProps {
+  title: string;
   diariesData: Diaries;
   empty?: ReactNode;
 }
 
 export const DiariesContainer = ({
+  title,
   diariesData,
   empty,
 }: DiariesContainerProps) => {
@@ -21,14 +24,21 @@ export const DiariesContainer = ({
   }
 
   return (
-    <List>
-      {diaries.map((diary) => {
-        const { id } = diary;
-        return <Diary key={`diary-list-${id}`} {...diary} />;
-      })}
-    </List>
+    <article>
+      <Title>{title}</Title>
+      <List>
+        {diaries.map((diary) => {
+          const { id } = diary;
+          return <Diary key={`diary-list-${id}`} {...diary} />;
+        })}
+      </List>
+    </article>
   );
 };
+
+const Title = styled.h2`
+  ${ScreenReaderOnly}
+`;
 
 const List = styled.ul`
   display: grid;
