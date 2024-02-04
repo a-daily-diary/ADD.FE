@@ -7,6 +7,7 @@ import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import { ResponsiveImage, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
+import EmptyDiary from 'components/diary/EmptyDiary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
 import { useDiaries } from 'hooks/services';
@@ -33,7 +34,11 @@ const Home: NextPage = () => {
           />
         </Link>
       </BannerContainer>
-      <DiariesContainer diariesData={diariesData} />
+      <DiariesContainer
+        title="일기"
+        diariesData={diariesData}
+        empty={<EmptyDiary text="일기가 없습니다." />}
+      />
     </>
   );
 };
