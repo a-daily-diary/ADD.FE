@@ -20,7 +20,7 @@ const PROFILE_TAB_LIST = [
   { id: 'bookmarks', title: '북마크' },
 ];
 
-const Profile: NextPage = () => {
+const MyProfile: NextPage = () => {
   const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
 
   const { data: session } = useSession();
@@ -124,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
 
-export default Profile;
+export default MyProfile;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ theme }) => theme.fonts.headline_04};
