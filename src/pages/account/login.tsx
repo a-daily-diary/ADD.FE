@@ -109,6 +109,7 @@ const Login: NextPage = () => {
           로그인
         </Button>
       </Form>
+      <UnderlinedButton type="button">비밀번호를 잊으셨나요?</UnderlinedButton>
       <ButtonContainer>
         <Button
           type="button"
@@ -148,4 +149,15 @@ const Form = styled.form`
 
 const ButtonContainer = styled.div`
   margin-top: 8px;
+`;
+
+const UnderlinedButton = styled.button`
+  width: 100%;
+
+  ${({ theme }) => theme.fonts.body_06};
+  color: ${({ theme }) => theme.colors.gray_00};
+  text-decoration: underline;
+  text-align: center;
+
+  margin-top: 16px;
 `;
