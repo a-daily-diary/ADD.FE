@@ -109,7 +109,12 @@ const Login: NextPage = () => {
           로그인
         </Button>
       </Form>
-      <UnderlinedButton type="button">비밀번호를 잊으셨나요?</UnderlinedButton>
+      <UnderlinedButton
+        type="button"
+        onClick={async () => await router.push('/account/findPassword')}
+      >
+        비밀번호를 잊으셨나요?
+      </UnderlinedButton>
       <ButtonContainer>
         <Button
           type="button"
