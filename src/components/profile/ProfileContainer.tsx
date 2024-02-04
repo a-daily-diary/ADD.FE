@@ -6,9 +6,13 @@ import { useProfile } from 'hooks/services';
 
 interface ProfileContainerProps {
   username: string;
+  isMyProfile?: boolean;
 }
 
-export const ProfileContainer = ({ username }: ProfileContainerProps) => {
+export const ProfileContainer = ({
+  username,
+  isMyProfile = true,
+}: ProfileContainerProps) => {
   const { profileData, isLoading } = useProfile(username);
 
   if (profileData === undefined) return <div />;
@@ -16,9 +20,11 @@ export const ProfileContainer = ({ username }: ProfileContainerProps) => {
 
   return (
     <Container>
-      <SettingLink href={'/setting'}>
-        <SettingIcon />
-      </SettingLink>
+      {isMyProfile && (
+        <SettingLink href={'/setting'}>
+          <SettingIcon />
+        </SettingLink>
+      )}
       <ProfileImage
         src={profileData.imgUrl}
         alt={profileData.username}
@@ -27,7 +33,7 @@ export const ProfileContainer = ({ username }: ProfileContainerProps) => {
         priority
       />
       <UserName>{username}</UserName>
-      <EditLink href={'/profile/edit'}>프로필 수정</EditLink>
+      {isMyProfile && <EditLink href={'/profile/edit'}>프로필 수정</EditLink>}
     </Container>
   );
 };
@@ -60,6 +66,6 @@ const UserName = styled.h2`
 const EditLink = styled(Link)`
   padding: 12px 20px;
   border-radius: 120px;
-  background: #f4f4f4;
+  background: ${({ theme }) => theme.colors.bg_02};
   ${({ theme }) => theme.fonts.caption_01};
 `;
