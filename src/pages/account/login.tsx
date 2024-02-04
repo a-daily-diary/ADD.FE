@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -109,12 +110,9 @@ const Login: NextPage = () => {
           로그인
         </Button>
       </Form>
-      <UnderlinedButton
-        type="button"
-        onClick={async () => await router.push('/account/findPassword')}
-      >
+      <StyledLink href={'/account/findPassword'}>
         비밀번호를 잊으셨나요?
-      </UnderlinedButton>
+      </StyledLink>
       <ButtonContainer>
         <Button
           type="button"
@@ -156,13 +154,11 @@ const ButtonContainer = styled.div`
   margin-top: 8px;
 `;
 
-const UnderlinedButton = styled.button`
-  width: 100%;
+const StyledLink = styled(Link)`
+  margin-top: 16px;
+  display: block;
 
   ${({ theme }) => theme.fonts.body_06};
-  color: ${({ theme }) => theme.colors.gray_00};
   text-decoration: underline;
   text-align: center;
-
-  margin-top: 16px;
 `;
