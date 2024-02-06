@@ -7,6 +7,6 @@ interface FeedbackType {
 
 export interface MatchingFeedbackForm {
   feedbackType: FeedbackType;
-  feedbackMessage: string;
-  neverMatchingAgain: boolean;
+  message: string;
+  isBlockedMatching: boolean;
 }

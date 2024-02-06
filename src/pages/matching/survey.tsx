@@ -41,11 +41,11 @@ const MatchingSurvey = () => {
             </RegularParagraph07>
             <TextArea
               placeholder="피드백을 남겨주세요."
-              {...register('feedbackMessage')}
+              {...register('message')}
             />
           </div>
           <CheckBoxLabel>
-            <input type="checkbox" {...register('neverMatchingAgain')} />
+            <input type="checkbox" {...register('isBlockedMatching')} />
             <RegularSpan>이 사람이랑 전화하지 않을래요.</RegularSpan>
           </CheckBoxLabel>
           <ButtonStyle type="submit">피드백 작성 완료</ButtonStyle>
