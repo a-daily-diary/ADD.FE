@@ -9,7 +9,6 @@ import type { MatchingFeedbackForm } from 'types/matching';
 import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
-import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingSurvey = () => {
@@ -18,7 +17,7 @@ const MatchingSurvey = () => {
   const { control, register, handleSubmit } = useForm<MatchingFeedbackForm>();
 
   const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
-    console.log(data);
+    console.log(data); // FIXME: 실제 API 연동할 때 사용될 데이터 console.log 입니다.
 
     await router.push('/');
   };
@@ -34,28 +33,26 @@ const MatchingSurvey = () => {
       <Section>
         <Title>랜덤 매칭 설문</Title>
         <BoldParagraph>즐거운 통화하셨나요?</BoldParagraph>
-        <RegularParagraph04 color={colors.gray_02}>
+        <RegularParagraph04>
           남겨주신 피드백은 상대방에게 전달되지 않습니다.
         </RegularParagraph04>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FeedbackTypeCheckbox register={register} />
-          <div>
-            <RegularParagraph07>
-              상대방에대한 피드백을 작성해주세요.
-              <br />
-              불쾌해요를 선택하셨다면 이유를 남겨주세요.
-            </RegularParagraph07>
-            <TextArea
-              placeholder="피드백을 남겨주세요."
-              {...register('message')}
-            />
-          </div>
+          <RegularParagraph07>
+            상대방에대한 피드백을 작성해주세요.
+            <br />
+            불쾌해요를 선택하셨다면 이유를 남겨주세요.
+          </RegularParagraph07>
+          <TextArea
+            placeholder="피드백을 남겨주세요."
+            {...register('message')}
+          />
           <CheckBoxLabel>
             <input type="checkbox" {...register('isBlockedMatching')} />
             {isBlockedMatching ? <CheckedOnIcon /> : <CheckedOffIcon />}
             <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
-          <ButtonStyle type="submit">피드백 작성 완료</ButtonStyle>
+          <Button type="submit">피드백 작성 완료</Button>
         </form>
       </Section>
     </>
@@ -114,7 +111,7 @@ const CheckBoxLabel = styled.label`
   }
 `;
 
-const ButtonStyle = styled.button`
+const Button = styled.button`
   ${({ theme }) => theme.fonts.button_02};
   width: 100%;
   background-color: ${({ theme }) => theme.colors.primary_00};
