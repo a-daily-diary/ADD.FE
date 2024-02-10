@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -109,6 +110,9 @@ const Login: NextPage = () => {
           로그인
         </Button>
       </Form>
+      <StyledLink href={'/account/findPassword'}>
+        비밀번호를 잊으셨나요?
+      </StyledLink>
       <ButtonContainer>
         <Button
           type="button"
@@ -148,4 +152,13 @@ const Form = styled.form`
 
 const ButtonContainer = styled.div`
   margin-top: 8px;
+`;
+
+const StyledLink = styled(Link)`
+  margin-top: 16px;
+  display: block;
+
+  ${({ theme }) => theme.fonts.body_06};
+  text-decoration: underline;
+  text-align: center;
 `;
