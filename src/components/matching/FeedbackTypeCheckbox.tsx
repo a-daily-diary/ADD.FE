@@ -1,49 +1,66 @@
 import styled from '@emotion/styled';
+import { useRef } from 'react';
 
 import type { UseFormRegister } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
 
 import { BadIcon, EngIcon, FunIcon, NiceIcon } from 'assets/icons';
-import { colors } from 'constants/styles';
 
 interface FeedbackTypeCheckboxProps {
   register: UseFormRegister<MatchingFeedbackForm>;
 }
 
 const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
+  const { current: FEEDBACK } = useRef([
+    {
+      id: 'isNice',
+      icon: <NiceIcon />,
+      description: '친절해요',
+      hookFormProps: register('feedbackType.isNice'),
+    },
+    {
+      id: 'isFluent',
+      icon: <EngIcon />,
+      description: '영어를 잘해요',
+      hookFormProps: register('feedbackType.isFluent'),
+    },
+    {
+      id: 'isFunny',
+      icon: <FunIcon />,
+      description: '재밌어요',
+      hookFormProps: register('feedbackType.isFunny'),
+    },
+    {
+      id: 'isBad',
+      icon: <BadIcon />,
+      description: '불쾌해요',
+      hookFormProps: register('feedbackType.isBad'),
+    },
+  ]);
+
   return (
-    <Grid2Column>
-      <Label>
-        <input type="checkbox" {...register('feedbackType.isNice')} />
-        <NiceIcon />
-        <RegularSpan>친절해요</RegularSpan>
-      </Label>
-      <Label>
-        <input type="checkbox" {...register('feedbackType.isNice')} />
-        <EngIcon />
-        <RegularSpan>영어를 잘해요</RegularSpan>
-      </Label>
-      <Label>
-        <input type="checkbox" {...register('feedbackType.isFunny')} />
-        <FunIcon />
-        <RegularSpan>재밌어요</RegularSpan>
-      </Label>
-      <Label>
-        <input type="checkbox" {...register('feedbackType.isBad')} />
-        <BadIcon />
-        <RegularSpan>불쾌해요</RegularSpan>
-      </Label>
-    </Grid2Column>
+    <Container>
+      {FEEDBACK.map((feedback) => {
+        const { id, icon, description, hookFormProps } = feedback;
+        return (
+          <Label key={id}>
+            <input type="checkbox" {...hookFormProps} />
+            {icon}
+            <p>{description}</p>
+          </Label>
+        );
+      })}
+    </Container>
   );
 };
 
 export default FeedbackTypeCheckbox;
 
-const Grid2Column = styled.div`
+const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-content: space-evenly;
-  row-gap: 30px;
+  grid-template-columns: repeat(2, 100px);
+  justify-content: center;
+  gap: 40px 50px;
   margin-bottom: 60px;
 `;
 
@@ -52,16 +69,17 @@ const Label = styled.label`
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  ${({ theme }) => theme.fonts.body_04};
+  color: ${({ theme }) => theme.colors.gray_00};
   input {
     display: none;
     &:checked + svg {
-      outline: 2px solid ${colors.primary_00};
+      outline: 2px solid ${({ theme: { colors } }) => colors.primary_00};
       border-radius: 100%;
     }
+    &:checked + svg + p {
+      color: ${({ theme: { colors } }) => colors.primary_00};
+    }
   }
-`;
-
-const RegularSpan = styled.span`
-  ${({ theme }) => theme.fonts.body_04};
-  color: ${({ theme }) => theme.colors.gray_00};
 `;
