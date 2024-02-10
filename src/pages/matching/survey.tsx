@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import type { SubmitHandler } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
 
+import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { colors } from 'constants/styles';
@@ -14,13 +15,18 @@ import { ScreenReaderOnly } from 'styles';
 const MatchingSurvey = () => {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm<MatchingFeedbackForm>();
+  const { control, register, handleSubmit } = useForm<MatchingFeedbackForm>();
 
   const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
     console.log(data);
 
     await router.push('/');
   };
+
+  const isBlockedMatching = useWatch({
+    control,
+    name: 'isBlockedMatching',
+  });
 
   return (
     <>
@@ -46,7 +52,8 @@ const MatchingSurvey = () => {
           </div>
           <CheckBoxLabel>
             <input type="checkbox" {...register('isBlockedMatching')} />
-            <RegularSpan>이 사람이랑 전화하지 않을래요.</RegularSpan>
+            {isBlockedMatching ? <CheckedOnIcon /> : <CheckedOffIcon />}
+            <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
           <ButtonStyle type="submit">피드백 작성 완료</ButtonStyle>
         </form>
@@ -83,11 +90,6 @@ const RegularParagraph07 = styled.p`
   color: ${({ theme }) => theme.colors.gray_00};
 `;
 
-const RegularSpan = styled.span`
-  ${({ theme }) => theme.fonts.body_04};
-  color: ${({ theme }) => theme.colors.gray_00};
-`;
-
 const TextArea = styled.textarea`
   ${({ theme }) => theme.fonts.body_07};
   color: ${({ theme }) => theme.colors.gray_00};
@@ -101,10 +103,14 @@ const TextArea = styled.textarea`
 `;
 
 const CheckBoxLabel = styled.label`
-  float: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-top: 40px;
+  ${({ theme }) => theme.fonts.body_04};
+  color: ${({ theme }) => theme.colors.gray_00};
   input {
-    margin-right: 10px;
+    display: none;
   }
 `;
 
