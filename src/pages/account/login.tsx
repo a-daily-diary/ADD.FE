@@ -103,7 +103,7 @@ const Login: NextPage = () => {
         <Button
           type="submit"
           disabled={!isValid}
-          pattern="box"
+          shape="box"
           size="lg"
           fullWidth
         >
@@ -116,7 +116,7 @@ const Login: NextPage = () => {
       <ButtonContainer>
         <Button
           type="button"
-          pattern="box"
+          shape="box"
           size="lg"
           fullWidth
           variant="line"

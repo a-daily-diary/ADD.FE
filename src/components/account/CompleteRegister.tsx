@@ -26,7 +26,7 @@ export const CompleteRegister = () => {
       <ButtonContainer>
         <Button
           type="button"
-          pattern="box"
+          shape="box"
           size="lg"
           fullWidth
           onClick={async () => await router.replace('/account/login')}

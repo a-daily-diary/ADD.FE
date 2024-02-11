@@ -54,7 +54,7 @@ const MatchingLoading: NextPage = () => {
           </ImageWrapper>
           <Button
             type="button"
-            pattern="round"
+            shape="round"
             size="xl"
             onClick={cancelMatching}
           >

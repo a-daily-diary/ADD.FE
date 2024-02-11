@@ -4,7 +4,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import { theme } from 'styles';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  pattern: 'box' | 'round';
+  shape: 'box' | 'round';
   size: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'active' | 'highlight' | 'line';
   fullWidth?: boolean;
@@ -12,7 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = ({
-  pattern,
+  shape,
   size,
   variant,
   fullWidth,
@@ -21,7 +21,7 @@ export const Button = ({
 }: ButtonProps) => {
   return (
     <ButtonLayout
-      pattern={pattern}
+      shape={shape}
       size={size}
       variant={variant}
       fullWidth={fullWidth}
@@ -32,13 +32,13 @@ export const Button = ({
   );
 };
 
-const patternStyles = ({ pattern }: ButtonProps) => css`
-  ${pattern === 'box' &&
+const shapeStyles = ({ shape }: ButtonProps) => css`
+  ${shape === 'box' &&
   css`
     border-radius: 6px;
   `}
 
-  ${pattern === 'round' &&
+  ${shape === 'round' &&
   css`
     border-radius: 100px;
   `}
@@ -97,7 +97,7 @@ const ButtonLayout = styled.button<ButtonProps>`
   color: ${({ theme }) => theme.colors.white};
   user-select: none;
 
-  ${patternStyles}
+  ${shapeStyles}
   ${sizeStyles}
   ${variantStyles}
 

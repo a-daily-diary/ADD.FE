@@ -115,7 +115,7 @@ const Register: NextPage = () => {
               <Button
                 type="submit"
                 disabled={!isValid}
-                pattern="box"
+                shape="box"
                 size="lg"
                 fullWidth
               >

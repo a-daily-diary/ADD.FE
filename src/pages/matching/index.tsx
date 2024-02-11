@@ -64,7 +64,7 @@ const MatchingRule: NextPage = () => {
           </RuleList>
           <Button
             type="button"
-            pattern="round"
+            shape="round"
             size="xl"
             onClick={async () => {
               await router.push(PAGE_PATH.matching_loading);
