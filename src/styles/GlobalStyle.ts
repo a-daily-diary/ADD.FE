@@ -26,6 +26,11 @@ const GlobalStyle = css`
     font-size: 1.6rem;
   }
 
+  a,
+  button {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+
   a {
     color: inherit;
     text-decoration: none;
