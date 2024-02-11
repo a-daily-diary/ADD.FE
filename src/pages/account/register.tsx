@@ -112,15 +112,7 @@ const Register: NextPage = () => {
             )}
             {registerStep.termsAgreement && <RegisterTerms />}
             <ButtonContainer>
-              <Button
-                type="submit"
-                disabled={!isValid}
-                shape="box"
-                size="lg"
-                fullWidth
-              >
-                다음
-              </Button>
+              <Button type="submit" disabled={!isValid} fullWidth text="다음" />
             </ButtonContainer>
           </From>
         </FormProvider>

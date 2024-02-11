@@ -56,10 +56,10 @@ const MatchingLoading: NextPage = () => {
             type="button"
             shape="round"
             size="xl"
+            variant="disabled"
             onClick={cancelMatching}
-          >
-            랜덤매칭 취소
-          </Button>
+            text="랜덤매칭 취소"
+          />
         </>
       )}
     </Section>

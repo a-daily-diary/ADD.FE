@@ -36,12 +36,9 @@ const FindPassword: NextPage = () => {
             <Button
               type="submit"
               disabled={!isValid}
-              shape="box"
-              size="lg"
               fullWidth
-            >
-              재설정 링크보내기
-            </Button>
+              text="재설정 링크보내기"
+            />
           </ButtonContainer>
         </FormProvider>
       </ContentWrapper>

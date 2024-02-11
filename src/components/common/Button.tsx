@@ -1,108 +1,90 @@
 import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 import { theme } from 'styles';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  shape: 'box' | 'round';
-  size: 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'active' | 'highlight' | 'line';
   fullWidth?: boolean;
-  children: ReactNode;
+  shape?: 'box' | 'round';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  text: string;
+  variant?: 'active' | 'highlight' | 'line' | 'disabled';
 }
 
 export const Button = ({
-  shape,
-  size,
-  variant,
-  fullWidth,
-  children,
+  fullWidth = false,
+  shape = 'box',
+  size = 'lg',
+  text,
+  variant = 'active',
   ...props
 }: ButtonProps) => {
   return (
-    <ButtonLayout
-      shape={shape}
-      size={size}
-      variant={variant}
-      fullWidth={fullWidth}
+    <button
+      css={css`
+        width: ${fullWidth ? '100%' : 'fit-content'};
+        background-color: ${theme.colors.primary_00};
+        color: ${theme.colors.white};
+        user-select: none;
+
+        ${SHAPE_STYLES[shape]}
+        ${SIZE_STYLES[size]}
+        ${VARIANT_STYLES[variant]}
+
+        &:disabled {
+          ${VARIANT_STYLES.disabled}
+        }
+      `}
       {...props}
     >
-      {children}
-    </ButtonLayout>
+      {text}
+    </button>
   );
 };
 
-const shapeStyles = ({ shape }: ButtonProps) => css`
-  ${shape === 'box' &&
-  css`
+const SHAPE_STYLES = {
+  box: css`
     border-radius: 6px;
-  `}
-
-  ${shape === 'round' &&
-  css`
+  `,
+  round: css`
     border-radius: 100px;
-  `}
-`;
+  `,
+};
 
-const sizeStyles = ({ size }: ButtonProps) => css`
-  ${size === 'sm' &&
-  css`
+const SIZE_STYLES = {
+  sm: css`
     ${theme.fonts.button_01}
     padding: 8px 10px;
-  `}
-
-  ${size === 'md' &&
-  css`
+  `,
+  md: css`
     ${theme.fonts.button_01}
     padding: 12px 20px;
-  `}
-
-  ${size === 'lg' &&
-  css`
+  `,
+  lg: css`
     ${theme.fonts.button_02}
     padding: 17px 32px;
-  `}
-
-  ${size === 'xl' &&
-  css`
+  `,
+  xl: css`
     ${theme.fonts.button_03}
     padding: 20px 48px;
-  `}
-`;
+  `,
+};
 
-const variantStyles = ({ variant }: ButtonProps) => css`
-  ${variant === 'active' &&
-  css`
-    background: ${theme.colors.primary_00};
+const VARIANT_STYLES = {
+  active: css`
+    background-color: ${theme.colors.primary_00};
     color: ${theme.colors.white};
-  `}
-
-  ${variant === 'highlight' &&
-  css`
-    background: ${theme.colors.primary_03};
+  `,
+  highlight: css`
+    background-color: ${theme.colors.primary_03};
     color: ${theme.colors.primary_00};
-  `}
-
-  ${variant === 'line' &&
-  css`
-    background: ${theme.colors.white};
+  `,
+  line: css`
+    background-color: ${theme.colors.white};
     color: ${theme.colors.gray_00};
     border: 1px solid ${theme.colors.gray_05};
-  `}
-`;
-
-const ButtonLayout = styled.button<ButtonProps>`
-  width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
-  background: ${({ theme }) => theme.colors.primary_00};
-  color: ${({ theme }) => theme.colors.white};
-  user-select: none;
-
-  ${shapeStyles}
-  ${sizeStyles}
-  ${variantStyles}
-
-  &:disabled {
-    background: ${({ theme }) => theme.colors.gray_04};
-    color: ${({ theme }) => theme.colors.white};
-  }
-`;
+  `,
+  disabled: css`
+    background-color: ${theme.colors.gray_04};
+    color: ${theme.colors.white};
+  `,
+};

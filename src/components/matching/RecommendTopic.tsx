@@ -21,9 +21,7 @@ const RecommendTopic = ({ ...otherProps }: RecommendTopicProps) => {
         <SmallParagraph>취미가 무엇인가요?</SmallParagraph>
       </Card>
       {/* FIXME: 버튼 background color 변경 필요 */}
-      <Button type="button" shape="round" size="md">
-        다음 질문
-      </Button>
+      <Button type="button" shape="round" size="md" text="다음 질문" />
     </article>
   );
 };
