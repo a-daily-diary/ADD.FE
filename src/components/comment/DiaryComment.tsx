@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/comment';
 import type { ErrorResponse } from 'types/response';
@@ -46,7 +47,9 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
             src={commenter.imgUrl}
             username={commenter.username}
           />
-          <UsernameSpan>{commenter.username}</UsernameSpan>
+          <UsernameLink href={`/profile/${commenter.username}`}>
+            {commenter.username}
+          </UsernameLink>
           <CreatedAtSpan>
             {timeFormat(createdAt) !== null
               ? timeFormat(createdAt)
@@ -126,7 +129,7 @@ const CommentHead = styled.div`
   margin-bottom: 8px;
 `;
 
-const UsernameSpan = styled.span`
+const UsernameLink = styled(Link)`
   margin: 0 6px 0 8px;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_08};

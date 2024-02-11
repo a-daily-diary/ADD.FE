@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import type { DiaryDetail } from 'types/diary';
 import {
   BookmarkOffIcon,
@@ -39,7 +40,9 @@ export const DiaryDetailContainer = ({
           src={author.imgUrl}
           username={author.username}
         />
-        <UsernameText>{author.username}</UsernameText>
+        <UsernameLink href={`/profile/${author.username}`}>
+          {author.username}
+        </UsernameLink>
         <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
       </AuthorContainer>
       <ContentContainer>
@@ -89,7 +92,7 @@ const AuthorContainer = styled.div`
   padding: 18px 20px;
 `;
 
-const UsernameText = styled.span`
+const UsernameLink = styled(Link)`
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_05};
 `;
