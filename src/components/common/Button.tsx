@@ -1,39 +1,31 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import type { Theme } from '@emotion/react';
-import type { ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import { theme } from 'styles';
 
-interface ButtonProps {
-  type: 'button' | 'submit';
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   pattern: 'box' | 'round';
   size: 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'active' | 'highlight' | 'line';
   fullWidth?: boolean;
-  theme?: Theme;
-  onClick?: () => void;
   children: ReactNode;
-  disabled?: boolean;
 }
 
 export const Button = ({
-  type,
   pattern,
   size,
   variant,
   fullWidth,
-  onClick,
   children,
-  disabled,
+  ...props
 }: ButtonProps) => {
   return (
     <ButtonLayout
-      type={type}
       pattern={pattern}
       size={size}
       variant={variant}
       fullWidth={fullWidth}
-      onClick={onClick}
-      disabled={disabled}
+      {...props}
     >
       {children}
     </ButtonLayout>
@@ -52,50 +44,50 @@ const patternStyles = ({ pattern }: ButtonProps) => css`
   `}
 `;
 
-const sizeStyles = ({ size, theme }: ButtonProps) => css`
+const sizeStyles = ({ size }: ButtonProps) => css`
   ${size === 'sm' &&
   css`
-    ${theme?.fonts.button_01}
+    ${theme.fonts.button_01}
     padding: 8px 10px;
   `}
 
   ${size === 'md' &&
   css`
-    ${theme?.fonts.button_01}
+    ${theme.fonts.button_01}
     padding: 12px 20px;
   `}
 
   ${size === 'lg' &&
   css`
-    ${theme?.fonts.button_02}
+    ${theme.fonts.button_02}
     padding: 17px 32px;
   `}
 
   ${size === 'xl' &&
   css`
-    ${theme?.fonts.button_03}
+    ${theme.fonts.button_03}
     padding: 20px 48px;
   `}
 `;
 
-const variantStyles = ({ variant, theme }: ButtonProps) => css`
+const variantStyles = ({ variant }: ButtonProps) => css`
   ${variant === 'active' &&
   css`
-    background: ${theme?.colors.primary_00};
-    color: ${theme?.colors.white};
+    background: ${theme.colors.primary_00};
+    color: ${theme.colors.white};
   `}
 
   ${variant === 'highlight' &&
   css`
-    background: ${theme?.colors.primary_03};
-    color: ${theme?.colors.primary_00};
+    background: ${theme.colors.primary_03};
+    color: ${theme.colors.primary_00};
   `}
 
   ${variant === 'line' &&
   css`
-    background: ${theme?.colors.white};
-    color: ${theme?.colors.gray_00};
-    border: 1px solid ${theme?.colors.gray_05};
+    background: ${theme.colors.white};
+    color: ${theme.colors.gray_00};
+    border: 1px solid ${theme.colors.gray_05};
     box-sizing: border-box;
   `}
 `;
@@ -116,7 +108,7 @@ const ButtonLayout = styled.button<ButtonProps>`
   ${sizeStyles}
   ${variantStyles}
 
-    &:disabled {
+  &:disabled {
     background: ${({ theme }) => theme.colors.gray_04};
     color: ${({ theme }) => theme.colors.white};
   }
