@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { WriteCommentIcon } from 'assets/icons';
 import { DiaryCommentInput, DiaryComments } from 'components/comment';
+import { Loading } from 'components/common';
 import { useComments } from 'hooks/services';
 
 interface DiaryCommentsContainerProps {
@@ -10,9 +11,9 @@ interface DiaryCommentsContainerProps {
 export const DiaryCommentsContainer = ({
   diaryId,
 }: DiaryCommentsContainerProps) => {
-  const { commentsData } = useComments(diaryId);
+  const { commentsData, isLoading } = useComments(diaryId);
 
-  if (commentsData === undefined) return <div />;
+  if (commentsData === undefined || isLoading) return <Loading />;
 
   return (
     <DiaryCommentSection>

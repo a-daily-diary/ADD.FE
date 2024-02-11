@@ -20,6 +20,7 @@ import MicrophoneOffIcon from './icon_microphone_off.svg';
 import MicrophoneOnIcon from './icon_microphone_on.svg';
 import PrivacyIcon from './icon_privacy.svg';
 import ImagePickerIcon from './image_picker.svg';
+import LoadingIcon from './loading.svg';
 import LockIcon from './lock.svg';
 import LogoIcon from './logo.svg';
 import MatchingIcon from './matching.svg';
@@ -54,6 +55,7 @@ export {
   HideIcon,
   ShowIcon,
   MoreIcon,
+  LoadingIcon,
   LogoIcon,
   ImagePickerIcon,
   QuestionIcon,

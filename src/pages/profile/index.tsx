@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { Seo, Tab } from 'components/common';
+import { Loading, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
@@ -33,10 +33,14 @@ const Profile: NextPage = () => {
   const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
     useBookmarkedDiaries(session.user.username);
 
-  if (userDiariesData === undefined || bookmarkedDiariesData === undefined)
-    return <div />;
-  if (isUserDiariesLoading || isBookmarkedDiariesLoading)
-    return <div>Loading</div>;
+  if (
+    userDiariesData === undefined ||
+    bookmarkedDiariesData === undefined ||
+    isUserDiariesLoading ||
+    isBookmarkedDiariesLoading
+  ) {
+    return <Loading />;
+  }
 
   return (
     <>

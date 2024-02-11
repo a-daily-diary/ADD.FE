@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { ResponsiveImage, Seo } from 'components/common';
+import { Loading, ResponsiveImage, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { queryKeys } from 'constants/queryKeys';
@@ -14,8 +14,7 @@ import { useDiaries } from 'hooks/services';
 const Home: NextPage = () => {
   const { diariesData, isLoading } = useDiaries();
 
-  if (diariesData === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
+  if (diariesData === undefined || isLoading) return <Loading />;
 
   return (
     <>
