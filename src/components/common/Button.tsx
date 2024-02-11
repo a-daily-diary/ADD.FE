@@ -88,20 +88,13 @@ const variantStyles = ({ variant }: ButtonProps) => css`
     background: ${theme.colors.white};
     color: ${theme.colors.gray_00};
     border: 1px solid ${theme.colors.gray_05};
-    box-sizing: border-box;
   `}
 `;
 
 const ButtonLayout = styled.button<ButtonProps>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
   width: ${({ fullWidth }) => (fullWidth === true ? '100%' : 'fit-content')};
   background: ${({ theme }) => theme.colors.primary_00};
   color: ${({ theme }) => theme.colors.white};
-  text-align: center;
-  vertical-align: middle;
   user-select: none;
 
   ${patternStyles}
