@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import type { DiaryDetail } from 'types/diary';
 import {
   BookmarkOffIcon,
@@ -9,6 +8,7 @@ import {
   HeartOnIcon,
 } from 'assets/icons';
 import { ResponsiveImage } from 'components/common';
+import { ProfileImage } from 'components/profile';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
@@ -34,17 +34,11 @@ export const DiaryDetailContainer = ({
   return (
     <Container>
       <AuthorContainer>
-        {/* TODO:
-        1. 유저 프로필 이미지 클릭 시 해당 프로필로 이동
-        2. 프로필 이미지 컴포넌트 분리 */}
-        <AuthorImageContainer>
-          <Image
-            src={author.imgUrl}
-            alt={author.username}
-            width={28}
-            height={28}
-          />
-        </AuthorImageContainer>
+        <ProfileImage
+          size="md"
+          src={author.imgUrl}
+          username={author.username}
+        />
         <UsernameText>{author.username}</UsernameText>
         <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>
       </AuthorContainer>
@@ -93,13 +87,6 @@ const AuthorContainer = styled.div`
   gap: 8px;
   align-items: center;
   padding: 18px 20px;
-`;
-
-const AuthorImageContainer = styled.div`
-  overflow: hidden;
-  border-radius: 50%;
-  width: 28px;
-  aspect-ratio: 1;
 `;
 
 const UsernameText = styled.span`
