@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useFormContext } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import type { RegisterForm } from 'types/register';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
@@ -10,7 +10,10 @@ export const FindPasswordForm = () => {
    * @todo
    * RegisterForm 대신 PasswordFindForm 정의하여 사용
    */
-  const { register } = useFormContext<RegisterForm>();
+  const {
+    register,
+    formState: { isValid },
+  } = useForm<RegisterForm>({ mode: 'onChange' });
 
   return (
     <>
