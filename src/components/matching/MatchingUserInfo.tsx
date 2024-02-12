@@ -2,9 +2,12 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
 
+import { useTimer } from 'hooks/common/useTimer';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingUserInfo = () => {
+  const { minute, second } = useTimer();
+
   return (
     <Container>
       <SubTitle>사용자 프로필</SubTitle>
@@ -17,7 +20,9 @@ const MatchingUserInfo = () => {
         blurDataURL="http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG"
       />
       <strong>username</strong>
-      <span>04:23</span>
+      <span>
+        {minute}:{second}
+      </span>
     </Container>
   );
 };
