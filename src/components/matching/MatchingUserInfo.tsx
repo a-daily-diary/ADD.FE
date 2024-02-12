@@ -2,15 +2,11 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import React from 'react';
 
-import type { ComponentProps } from 'react';
-
 import { ScreenReaderOnly } from 'styles';
 
-interface MatchingUserInfoProps extends ComponentProps<'article'> {}
-
-const MatchingUserInfo = ({ ...otherProps }: MatchingUserInfoProps) => {
+const MatchingUserInfo = () => {
   return (
-    <MatchingUserInfoWrapper {...otherProps}>
+    <Container>
       <SubTitle>사용자 프로필</SubTitle>
       <Image
         src="http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG"
@@ -22,7 +18,7 @@ const MatchingUserInfo = ({ ...otherProps }: MatchingUserInfoProps) => {
       />
       <strong>username</strong>
       <span>04:23</span>
-    </MatchingUserInfoWrapper>
+    </Container>
   );
 };
 
@@ -32,10 +28,11 @@ const SubTitle = styled.h2`
   ${ScreenReaderOnly}
 `;
 
-const MatchingUserInfoWrapper = styled.article`
+const Container = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 48px;
   strong {
     ${({ theme }) => theme.fonts.headline_02}
     margin-top: 4px;

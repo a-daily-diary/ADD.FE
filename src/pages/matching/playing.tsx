@@ -15,9 +15,9 @@ const MatchingPlaying: NextPage = () => {
       <Seo title="랜덤 매칭 | a daily diary" />
       <Section>
         <Title>랜덤 매칭</Title>
-        <MatchingUserInfo style={{ marginTop: '48px' }} />
-        <RecommendTopic style={{ marginTop: '30px' }} />
-        <MatchingController style={{ margin: '53px 0 30px' }} />
+        <MatchingUserInfo />
+        <RecommendTopic />
+        <MatchingController />
       </Section>
     </>
   );

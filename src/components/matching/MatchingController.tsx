@@ -1,17 +1,13 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
-import type { ComponentProps } from 'react';
-
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 
-interface MatchingControllerProps extends ComponentProps<'article'> {}
-
-const MatchingController = ({ ...otherProps }: MatchingControllerProps) => {
+const MatchingController = () => {
   return (
-    <MatchingControllerWrapper {...otherProps}>
+    <Container>
       <SubTitle>통화 제어</SubTitle>
       <CircleButton type="button" backgroundColor={colors.bg_02}>
         <Tooltip>마이크를 켜주세요!</Tooltip>
@@ -22,7 +18,7 @@ const MatchingController = ({ ...otherProps }: MatchingControllerProps) => {
         <EndCallIcon />
         <span>통화 종료</span>
       </CircleButton>
-    </MatchingControllerWrapper>
+    </Container>
   );
 };
 
@@ -32,9 +28,10 @@ const SubTitle = styled.h2`
   ${ScreenReaderOnly}
 `;
 
-const MatchingControllerWrapper = styled.article`
+const Container = styled.article`
   display: flex;
   justify-content: space-around;
+  margin: 53px 0 30px;
 `;
 
 const CircleButton = styled.button<{
