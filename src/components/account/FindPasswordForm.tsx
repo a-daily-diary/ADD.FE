@@ -5,13 +5,14 @@ import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
 
-export const FindPasswordForm = () => {
+export const FindPasswordForm = ({ onSubmit }: { onSubmit: () => void }) => {
   /**
    * @todo
    * RegisterForm 대신 PasswordFindForm 정의하여 사용
    */
   const {
     register,
+    handleSubmit,
     formState: { isValid },
   } = useForm<RegisterForm>({ mode: 'onChange' });
 
@@ -23,7 +24,7 @@ export const FindPasswordForm = () => {
         <br />
         링크를 이메일로 보내드릴게요.
       </DescriptionText>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           register={register('email', {
             required: ERROR_MESSAGE.email.required,
