@@ -25,10 +25,10 @@ const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
       hookFormProps: register('feedbackType.isFluent'),
     },
     {
-      id: 'isFunny',
+      id: 'isFun',
       icon: <FunIcon />,
       description: '재밌어요',
-      hookFormProps: register('feedbackType.isFunny'),
+      hookFormProps: register('feedbackType.isFun'),
     },
     {
       id: 'isBad',

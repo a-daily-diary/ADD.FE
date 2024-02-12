@@ -1,7 +1,7 @@
 interface FeedbackType {
   isNice: boolean;
   isFluent: boolean;
-  isFunny: boolean;
+  isFun: boolean;
   isBad: boolean;
 }
 
