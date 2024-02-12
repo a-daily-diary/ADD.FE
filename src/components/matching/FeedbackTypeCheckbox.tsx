@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 
 import type { UseFormRegister } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
@@ -43,11 +43,13 @@ const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
       {FEEDBACK.map((feedback) => {
         const { id, icon, description, hookFormProps } = feedback;
         return (
-          <Label key={id}>
-            <input type="checkbox" {...hookFormProps} />
-            {icon}
-            <p>{description}</p>
-          </Label>
+          <Fragment key={id}>
+            <CheckBoxInput id={id} type="checkbox" {...hookFormProps} />
+            <CheckBoxLabel htmlFor={id}>
+              {icon}
+              {description}
+            </CheckBoxLabel>
+          </Fragment>
         );
       })}
     </Container>
@@ -64,22 +66,24 @@ const Container = styled.div`
   margin-bottom: 60px;
 `;
 
-const Label = styled.label`
+const CheckBoxInput = styled.input`
+  display: none;
+  &:checked + label {
+    ${({ theme }) => theme.fonts.headline_04};
+    color: ${({ theme }) => theme.colors.primary_00};
+  }
+  &:checked + label > svg {
+    outline: 2px solid ${({ theme }) => theme.colors.primary_00};
+    border-radius: 100%;
+  }
+`;
+
+const CheckBoxLabel = styled.label`
+  ${({ theme }) => theme.fonts.body_04};
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  ${({ theme }) => theme.fonts.body_04};
   color: ${({ theme }) => theme.colors.gray_00};
-  input {
-    display: none;
-    &:checked + svg {
-      outline: 2px solid ${({ theme: { colors } }) => colors.primary_00};
-      border-radius: 100%;
-    }
-    &:checked + svg + p {
-      color: ${({ theme: { colors } }) => colors.primary_00};
-    }
-  }
 `;
