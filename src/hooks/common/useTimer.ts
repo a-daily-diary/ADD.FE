@@ -13,7 +13,7 @@ export const useTimer = () => {
     };
   }, []);
 
-  const minute = Math.round(totalSecond / 60)
+  const minute = Math.floor(totalSecond / 60)
     .toString()
     .padStart(2, '0');
 
