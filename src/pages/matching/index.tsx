@@ -116,15 +116,11 @@ const RuleList = styled.ul`
 `;
 
 const ImageWrapper = styled.div`
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${colors.bg_02};
-  min-width: 60px;
+  width: 60px;
   height: 60px;
   border-radius: 20px;
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 `;
