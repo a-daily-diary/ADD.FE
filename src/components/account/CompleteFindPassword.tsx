@@ -11,7 +11,7 @@ export const CompleteFindPassword = () => {
       </DescriptionText>
       <ImageContainer>
         <Image
-          src={'/images/findPassword/send_email.png'}
+          src={'/images/findPassword/send_email_x2.png'}
           alt="환영합니다!"
           width={200}
           height={200}
