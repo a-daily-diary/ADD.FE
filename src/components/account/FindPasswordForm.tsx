@@ -5,7 +5,11 @@ import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
 
-export const FindPasswordForm = ({ onSubmit }: { onSubmit: () => void }) => {
+interface FindPasswordFormProps {
+  onSubmit: () => void;
+}
+
+export const FindPasswordForm = ({ onSubmit }: FindPasswordFormProps) => {
   /**
    * @todo
    * RegisterForm 대신 PasswordFindForm 정의하여 사용
