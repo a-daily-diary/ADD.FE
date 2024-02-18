@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
+import { NoLinkProfileImage } from './ProfileImage';
 import { SettingIcon } from 'assets/icons';
 import { Loading } from 'components/common';
 import { useProfile } from 'hooks/services';
@@ -25,12 +25,10 @@ export const ProfileContainer = ({
           <SettingIcon />
         </SettingLink>
       )}
-      <ProfileImage
+      <NoLinkProfileImage
+        size="lg"
         src={profileData.imgUrl}
-        alt={profileData.username}
-        width={92}
-        height={92}
-        priority
+        username={profileData.username}
       />
       <UserName>{username}</UserName>
       {isMyProfile && <EditLink href={'/profile/edit'}>프로필 수정</EditLink>}
@@ -52,10 +50,6 @@ const SettingLink = styled(Link)`
   position: absolute;
   top: 32px;
   right: 20px;
-`;
-
-const ProfileImage = styled(Image)`
-  border-radius: 50%;
 `;
 
 const UserName = styled.h2`

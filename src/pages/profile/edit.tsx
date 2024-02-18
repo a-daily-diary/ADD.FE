@@ -22,7 +22,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
-import { SelectProfileImage } from 'components/profile';
+import { NoLinkProfileImage, SelectProfileImage } from 'components/profile';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -129,12 +129,10 @@ const ProfileEditPage: NextPage = () => {
               />
             }
           />
-          <ProfileImage
+          <NoLinkProfileImage
+            size="xl"
             src={previewImage}
-            alt={session.user.username}
-            width={160}
-            height={160}
-            priority
+            username={session.user.username}
           />
           <SelectProfileImage
             previewImage={previewImage}
@@ -206,13 +204,6 @@ const Title = styled.h1`
 
 const Form = styled.form`
   padding: 28px 20px;
-`;
-
-const ProfileImage = styled(Image)`
-  display: block;
-  margin: 0 auto;
-  border-radius: 50%;
-  object-fit: cover;
 `;
 
 const FormInputContainer = styled.div`

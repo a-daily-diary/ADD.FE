@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
-import Image from 'next/image';
+import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/comment';
 import type { ErrorResponse } from 'types/response';
 import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import { FloatingMenu, Modal } from 'components/common';
+import { ProfileImage } from 'components/profile';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteComment } from 'hooks/services';
@@ -41,15 +42,14 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
     <>
       <CommentItem>
         <CommentHead>
-          <ProfileImageBox>
-            <Image
-              src={commenter.imgUrl}
-              alt={commenter.username}
-              width={20}
-              height={20}
-            />
-          </ProfileImageBox>
-          <UsernameSpan>{commenter.username}</UsernameSpan>
+          <ProfileImage
+            size="sm"
+            src={commenter.imgUrl}
+            username={commenter.username}
+          />
+          <UsernameLink href={`/profile/${commenter.username}`}>
+            {commenter.username}
+          </UsernameLink>
           <CreatedAtSpan>
             {timeFormat(createdAt) !== null
               ? timeFormat(createdAt)
@@ -129,15 +129,7 @@ const CommentHead = styled.div`
   margin-bottom: 8px;
 `;
 
-const ProfileImageBox = styled.div`
-  overflow: hidden;
-  border-radius: 50%;
-  width: 20px;
-  aspect-ratio: 1;
-  background-color: rgba(0, 0, 0, 0.2);
-`;
-
-const UsernameSpan = styled.span`
+const UsernameLink = styled(Link)`
   margin: 0 6px 0 8px;
   color: ${({ theme }) => theme.colors.gray_00};
   ${({ theme }) => theme.fonts.body_08};
