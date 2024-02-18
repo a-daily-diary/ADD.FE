@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
+import type { Dispatch, SetStateAction } from 'react';
 import type { RegisterForm } from 'types/register';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
 
 interface FindPasswordFormProps {
-  onSubmit: () => void;
+  setIsSubmitted: Dispatch<SetStateAction<boolean>>;
 }
 
-export const FindPasswordForm = ({ onSubmit }: FindPasswordFormProps) => {
+export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
   /**
    * @todo
    * RegisterForm 대신 PasswordFindForm 정의하여 사용
@@ -19,6 +20,14 @@ export const FindPasswordForm = ({ onSubmit }: FindPasswordFormProps) => {
     handleSubmit,
     formState: { isValid },
   } = useForm<RegisterForm>({ mode: 'onChange' });
+
+  /**
+   * @todo
+   * 서버로 이메일 전송 요청
+   */
+  const onSubmit = () => {
+    setIsSubmitted(true);
+  };
 
   return (
     <>

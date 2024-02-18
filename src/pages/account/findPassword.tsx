@@ -8,10 +8,6 @@ import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
 const FindPassword: NextPage = () => {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    setIsSubmitted(true);
-  };
-
   return (
     <>
       <Seo title={'비밀번호 찾기 | a daily diary'} />
@@ -23,7 +19,7 @@ const FindPassword: NextPage = () => {
         {isSubmitted ? (
           <CompleteFindPassword />
         ) : (
-          <FindPasswordForm onSubmit={handleSubmit} />
+          <FindPasswordForm setIsSubmitted={setIsSubmitted} />
         )}
       </ContentWrapper>
     </>
