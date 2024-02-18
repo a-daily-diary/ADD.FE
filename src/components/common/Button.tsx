@@ -22,8 +22,6 @@ export const Button = ({
     <button
       css={css`
         width: ${fullWidth ? '100%' : 'fit-content'};
-        background-color: ${theme.colors.primary_00};
-        color: ${theme.colors.white};
         user-select: none;
 
         ${SHAPE_STYLES[shape]}
