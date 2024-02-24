@@ -8,12 +8,12 @@ import type {
   NextPage,
 } from 'next';
 import * as api from 'api';
-import { Loading, Seo, Tab } from 'components/common';
+import { Loading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/queryKeys';
-import { useTabIndicator } from 'hooks/common';
+import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -27,8 +27,11 @@ const YourProfile: NextPage<
 > = ({ username }) => {
   const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
 
-  const { userDiariesData, isLoading, fetchNextPage } =
+  const { userDiariesData, isLoading, isError, fetchNextPage } =
     useUserDiaries(username);
+  const { setTargetRef } = useIntersectionObserver({
+    onIntersect: fetchNextPage,
+  });
 
   if (userDiariesData === undefined) return <Loading />;
 
@@ -56,11 +59,18 @@ const YourProfile: NextPage<
         })}
       </Tab>
       {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-        <DiariesContainer
-          title={PROFILE_TAB_LIST[activeIndex].title}
-          diariesData={userDiariesData}
-          empty={<EmptyDiary text="일기가 없습니다." />}
-        />
+        <>
+          <DiariesContainer
+            title={PROFILE_TAB_LIST[activeIndex].title}
+            diariesData={userDiariesData}
+            empty={<EmptyDiary text="일기가 없습니다." />}
+          />
+          <ObserverTarget
+            targetRef={setTargetRef}
+            isLoading={isLoading}
+            isError={isError}
+          />
+        </>
       )}
     </>
   );

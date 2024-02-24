@@ -4,12 +4,12 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { Loading, Seo, Tab } from 'components/common';
+import { Loading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/queryKeys';
-import { useTabIndicator } from 'hooks/common';
+import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -29,13 +29,22 @@ const MyProfile: NextPage = () => {
   const {
     userDiariesData,
     isLoading: isUserDiariesLoading,
+    isError: isUserDiariesError,
     fetchNextPage: fetchUserDiariesNextPage,
   } = useUserDiaries(session.user.username);
   const {
     bookmarkedDiariesData,
     isLoading: isBookmarkedDiariesLoading,
+    isError: isBookmarkedDiariesError,
     fetchNextPage: fetchBookmarkedDiariesNextPage,
   } = useBookmarkedDiaries(session.user.username);
+  const { setTargetRef: setUserDiariesTargetRef } = useIntersectionObserver({
+    onIntersect: fetchUserDiariesNextPage,
+  });
+  const { setTargetRef: setBookmarkedDiariesTargetRef } =
+    useIntersectionObserver({
+      onIntersect: fetchBookmarkedDiariesNextPage,
+    });
 
   if (userDiariesData === undefined || bookmarkedDiariesData === undefined) {
     return <Loading />;
@@ -65,18 +74,32 @@ const MyProfile: NextPage = () => {
         })}
       </Tab>
       {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-        <DiariesContainer
-          title={PROFILE_TAB_LIST[activeIndex].title}
-          diariesData={userDiariesData}
-          empty={<EmptyDiary text="일기가 없습니다." />}
-        />
+        <>
+          <DiariesContainer
+            title={PROFILE_TAB_LIST[activeIndex].title}
+            diariesData={userDiariesData}
+            empty={<EmptyDiary text="일기가 없습니다." />}
+          />
+          <ObserverTarget
+            targetRef={setUserDiariesTargetRef}
+            isLoading={isUserDiariesLoading}
+            isError={isUserDiariesError}
+          />
+        </>
       )}
       {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
-        <DiariesContainer
-          title={PROFILE_TAB_LIST[activeIndex].title}
-          diariesData={bookmarkedDiariesData}
-          empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
-        />
+        <>
+          <DiariesContainer
+            title={PROFILE_TAB_LIST[activeIndex].title}
+            diariesData={bookmarkedDiariesData}
+            empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
+          />
+          <ObserverTarget
+            targetRef={setBookmarkedDiariesTargetRef}
+            isLoading={isBookmarkedDiariesLoading}
+            isError={isBookmarkedDiariesError}
+          />
+        </>
       )}
     </>
   );

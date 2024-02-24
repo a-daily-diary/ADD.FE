@@ -3,14 +3,23 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import type { GetServerSideProps, NextPage } from 'next';
-import { Loading, ResponsiveImage, Seo } from 'components/common';
+import {
+  Loading,
+  ObserverTarget,
+  ResponsiveImage,
+  Seo,
+} from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 
 const Home: NextPage = () => {
-  const { diariesData, isLoading, fetchNextPage } = useDiaries();
+  const { diariesData, isLoading, isError, fetchNextPage } = useDiaries();
+  const { setTargetRef } = useIntersectionObserver({
+    onIntersect: fetchNextPage,
+  });
 
   if (diariesData === undefined) return <Loading />;
 
@@ -34,6 +43,11 @@ const Home: NextPage = () => {
         title="홈 일기 목록"
         diariesData={diariesData}
         empty={<EmptyDiary text="일기가 없습니다." />}
+      />
+      <ObserverTarget
+        targetRef={setTargetRef}
+        isLoading={isLoading}
+        isError={isError}
       />
     </>
   );
