@@ -20,6 +20,7 @@ export interface Diaries {
   diaries: DiaryDetail[];
   totalCount: number;
   totalPage: number;
+  nextPage: number | undefined;
 }
 
 export type DiaryForm = Pick<
@@ -31,6 +32,11 @@ export type DiaryForm = Pick<
 
 export interface GetDiariesRequest {
   config?: AxiosRequestConfig;
+  page: number;
+}
+
+export interface GetDiariesByUsernameRequest extends GetDiariesRequest {
+  username: string;
 }
 
 export interface GetDiaryRequest {

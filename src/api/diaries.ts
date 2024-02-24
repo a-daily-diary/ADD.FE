@@ -7,19 +7,64 @@ import type {
   DeleteDiaryRequest,
   GetDiariesRequest,
   GetDiaryRequest,
+  GetDiariesByUsernameRequest,
 } from 'types/diary';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH, PAGE_SIZE } from 'constants/api/path';
 import axios from 'lib/axios';
 
-export const getDiaries = async ({ config }: GetDiariesRequest) => {
+export const getDiaries = async ({ page, config }: GetDiariesRequest) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.index}`,
+    `${API_PATH.diaries.index}?skip=${PAGE_SIZE * page}&take=${PAGE_SIZE}`,
     config,
   );
-  return data;
+
+  const nextPage: number | undefined =
+    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+
+  return { ...data, nextPage };
+};
+
+export const getDiariesByUsername = async ({
+  page,
+  username,
+  config,
+}: GetDiariesByUsernameRequest) => {
+  const {
+    data: { data },
+  } = await axios.get<SuccessResponse<Diaries>>(
+    `${API_PATH.diaries.index}?username=${username}&skip=${
+      PAGE_SIZE * page
+    }&take=${PAGE_SIZE}`,
+    config,
+  );
+
+  const nextPage: number | undefined =
+    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+
+  return { ...data, nextPage };
+};
+
+export const getBookmarkedDiariesByUsername = async ({
+  page,
+  username,
+  config,
+}: GetDiariesByUsernameRequest) => {
+  const {
+    data: { data },
+  } = await axios.get<SuccessResponse<Diaries>>(
+    `${API_PATH.diaries.bookmark}/${username}?skip=${
+      PAGE_SIZE * page
+    }&take=${PAGE_SIZE}`,
+    config,
+  );
+
+  const nextPage: number | undefined =
+    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+
+  return { ...data, nextPage };
 };
 
 export const writeDiary = async ({
@@ -77,30 +122,4 @@ export const deleteDiaryDetail = async ({ id }: DeleteDiaryRequest) => {
     `${API_PATH.diaries.index}/${id}`,
   );
   return message;
-};
-
-export const getDiariesByUsername = async ({
-  username,
-  config,
-}: GetDiariesRequest & { username: string }) => {
-  const {
-    data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.index}?username=${username}`,
-    config,
-  );
-  return data;
-};
-
-export const getBookmarkedDiariesByUsername = async ({
-  username,
-  config,
-}: GetDiariesRequest & { username: string }) => {
-  const {
-    data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.bookmark}/${username}`,
-    config,
-  );
-  return data;
 };
