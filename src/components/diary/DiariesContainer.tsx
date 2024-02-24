@@ -16,8 +16,6 @@ export const DiariesContainer = ({
 }: DiariesContainerProps) => {
   const isEmptyDiaries = diariesData.length === 0;
 
-  // TODO: 북마크한 일기 리스트 조회 데이터 구조 변경 완료 후 수정
-  // diaries의 값이 null일 경우가 있는지 확인
   if (isEmptyDiaries) return empty;
 
   return (
