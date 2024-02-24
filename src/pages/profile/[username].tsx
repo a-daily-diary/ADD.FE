@@ -8,13 +8,13 @@ import type {
   NextPage,
 } from 'next';
 import * as api from 'api';
-import { Seo, Tab } from 'components/common';
+import { Loading, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/queryKeys';
 import { useTabIndicator } from 'hooks/common';
-import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
+import { useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 const PROFILE_TAB_LIST = [
@@ -27,52 +27,41 @@ const YourProfile: NextPage<
 > = ({ username }) => {
   const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
 
-  const { userDiariesData, isLoading: isUserDiariesLoading } =
+  const { userDiariesData, isLoading, fetchNextPage } =
     useUserDiaries(username);
-  const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
-    useBookmarkedDiaries(username);
 
-  // TODO: Loading 컴포넌트 적용
-  if (
-    userDiariesData === undefined ||
-    bookmarkedDiariesData === undefined ||
-    isUserDiariesLoading ||
-    isBookmarkedDiariesLoading
-  )
-    return <div>Loading</div>;
+  if (userDiariesData === undefined) return <Loading />;
 
   return (
     <>
       <Seo title="프로필 | a daily diary" />
       <ProfileContainer username={username} isMyProfile={false} />
-      <section>
-        <Tab indicator={indicator}>
-          {PROFILE_TAB_LIST.map((tab, index) => {
-            const { id, title } = tab;
-            return (
-              <li key={`tab-list-${id}`}>
-                <TabButton
-                  type="button"
-                  ref={(el) => (tabsRef.current[index] = el)}
-                  onClick={() => {
-                    setActiveIndex(index);
-                  }}
-                  active={activeIndex === index}
-                >
-                  {title}
-                </TabButton>
-              </li>
-            );
-          })}
-        </Tab>
-        {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-          <DiariesContainer
-            title={PROFILE_TAB_LIST[activeIndex].title}
-            diariesData={userDiariesData}
-            empty={<EmptyDiary text="일기가 없습니다." />}
-          />
-        )}
-      </section>
+      <Tab indicator={indicator}>
+        {PROFILE_TAB_LIST.map((tab, index) => {
+          const { id, title } = tab;
+          return (
+            <li key={`tab-list-${id}`}>
+              <TabButton
+                type="button"
+                ref={(el) => (tabsRef.current[index] = el)}
+                onClick={() => {
+                  setActiveIndex(index);
+                }}
+                active={activeIndex === index}
+              >
+                {title}
+              </TabButton>
+            </li>
+          );
+        })}
+      </Tab>
+      {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
+        <DiariesContainer
+          title={PROFILE_TAB_LIST[activeIndex].title}
+          diariesData={userDiariesData}
+          empty={<EmptyDiary text="일기가 없습니다." />}
+        />
+      )}
     </>
   );
 };
@@ -115,10 +104,6 @@ export const getServerSideProps = (async (context) => {
     await queryClient.fetchQuery([queryKeys.users, username], async () => {
       return await api.getProfileByUsername({ username, config: headers });
     });
-    await queryClient.fetchQuery(
-      [queryKeys.diaries, username],
-      async () => await api.getDiariesByUsername({ username, config: headers }),
-    );
   } catch (error) {
     if (isAxiosError(error)) {
       return {

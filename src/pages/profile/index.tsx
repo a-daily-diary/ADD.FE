@@ -26,18 +26,18 @@ const MyProfile: NextPage = () => {
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
-  const { userDiariesData, isLoading: isUserDiariesLoading } = useUserDiaries(
-    session.user.username,
-  );
-  const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
-    useBookmarkedDiaries(session.user.username);
+  const {
+    userDiariesData,
+    isLoading: isUserDiariesLoading,
+    fetchNextPage: fetchUserDiariesNextPage,
+  } = useUserDiaries(session.user.username);
+  const {
+    bookmarkedDiariesData,
+    isLoading: isBookmarkedDiariesLoading,
+    fetchNextPage: fetchBookmarkedDiariesNextPage,
+  } = useBookmarkedDiaries(session.user.username);
 
-  if (
-    userDiariesData === undefined ||
-    bookmarkedDiariesData === undefined ||
-    isUserDiariesLoading ||
-    isBookmarkedDiariesLoading
-  ) {
+  if (userDiariesData === undefined || bookmarkedDiariesData === undefined) {
     return <Loading />;
   }
 
@@ -45,41 +45,39 @@ const MyProfile: NextPage = () => {
     <>
       <Seo title="프로필 | a daily diary" />
       <ProfileContainer username={session.user.username} />
-      <section>
-        <Tab indicator={indicator}>
-          {PROFILE_TAB_LIST.map((tab, index) => {
-            const { id, title } = tab;
-            return (
-              <li key={`tab-list-${id}`}>
-                <TabButton
-                  type="button"
-                  ref={(el) => (tabsRef.current[index] = el)}
-                  onClick={() => {
-                    setActiveIndex(index);
-                  }}
-                  active={activeIndex === index}
-                >
-                  {title}
-                </TabButton>
-              </li>
-            );
-          })}
-        </Tab>
-        {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
-          <DiariesContainer
-            title={PROFILE_TAB_LIST[activeIndex].title}
-            diariesData={userDiariesData}
-            empty={<EmptyDiary text="일기가 없습니다." />}
-          />
-        )}
-        {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
-          <DiariesContainer
-            title={PROFILE_TAB_LIST[activeIndex].title}
-            diariesData={bookmarkedDiariesData}
-            empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
-          />
-        )}
-      </section>
+      <Tab indicator={indicator}>
+        {PROFILE_TAB_LIST.map((tab, index) => {
+          const { id, title } = tab;
+          return (
+            <li key={`tab-list-${id}`}>
+              <TabButton
+                type="button"
+                ref={(el) => (tabsRef.current[index] = el)}
+                onClick={() => {
+                  setActiveIndex(index);
+                }}
+                active={activeIndex === index}
+              >
+                {title}
+              </TabButton>
+            </li>
+          );
+        })}
+      </Tab>
+      {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
+        <DiariesContainer
+          title={PROFILE_TAB_LIST[activeIndex].title}
+          diariesData={userDiariesData}
+          empty={<EmptyDiary text="일기가 없습니다." />}
+        />
+      )}
+      {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
+        <DiariesContainer
+          title={PROFILE_TAB_LIST[activeIndex].title}
+          diariesData={bookmarkedDiariesData}
+          empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
+        />
+      )}
     </>
   );
 };
@@ -109,15 +107,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await queryClient.prefetchQuery([queryKeys.users, username], async () => {
     return await api.getProfileByUsername({ username, config: headers });
   });
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, username],
-    async () => await api.getDiariesByUsername({ username, config: headers }),
-  );
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, username],
-    async () =>
-      await api.getBookmarkedDiariesByUsername({ username, config: headers }),
-  );
   return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
 
