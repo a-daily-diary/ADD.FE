@@ -1,14 +1,14 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  backgroundColor?: string;
   icon: ReactNode;
+  backgroundColor?: string;
   size?: 'md' | 'lg';
 }
 
 export const IconButton = ({
-  backgroundColor = 'transparent',
   icon,
+  backgroundColor = 'transparent',
   size = 'lg',
   ...props
 }: IconButtonProps) => {
