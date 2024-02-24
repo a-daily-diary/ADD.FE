@@ -3,18 +3,18 @@ import type { ButtonHTMLAttributes } from 'react';
 import { theme } from 'styles';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  text: string;
   fullWidth?: boolean;
   shape?: 'box' | 'round';
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  text: string;
   variant?: 'active' | 'highlight' | 'line' | 'disabled';
 }
 
 export const Button = ({
+  text,
   fullWidth = false,
   shape = 'box',
   size = 'lg',
-  text,
   variant = 'active',
   ...props
 }: ButtonProps) => {
