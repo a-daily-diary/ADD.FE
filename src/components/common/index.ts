@@ -7,3 +7,4 @@ export * from './Seo';
 export * from './Tab';
 export * from './Modal';
 export * from './Loading';
+export * from './ObserverTarget';
