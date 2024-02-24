@@ -3,7 +3,7 @@ import * as api from 'api';
 import { queryKeys } from 'constants/queryKeys';
 
 export const useDiaries = () => {
-  const { data, isFetching, isFetchingNextPage, fetchNextPage } =
+  const { data, isFetching, isFetchingNextPage, isError, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [queryKeys.diaries],
       queryFn: async ({ pageParam = 0 }) =>
@@ -13,5 +13,5 @@ export const useDiaries = () => {
 
   const isLoading = isFetching && !isFetchingNextPage;
 
-  return { diariesData: data?.pages, isLoading, fetchNextPage };
+  return { diariesData: data?.pages, isLoading, isError, fetchNextPage };
 };
