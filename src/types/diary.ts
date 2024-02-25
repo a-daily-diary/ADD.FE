@@ -31,7 +31,7 @@ export type DiaryForm = Pick<
 /* Request */
 
 export interface GetDiariesRequest {
-  page: number;
+  currentPage: number;
 }
 
 export interface GetDiariesByUsernameRequest extends GetDiariesRequest {

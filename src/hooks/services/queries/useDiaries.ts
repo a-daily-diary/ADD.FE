@@ -6,8 +6,8 @@ export const useDiaries = () => {
   const { data, isFetching, isFetchingNextPage, isError, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [queryKeys.diaries],
-      queryFn: async ({ pageParam = 0 }) =>
-        await api.getDiaries({ page: pageParam as number }),
+      queryFn: async ({ pageParam = 1 }) =>
+        await api.getDiaries({ currentPage: pageParam as number }),
       getNextPageParam: (lastPage) => lastPage.nextPage,
     });
 

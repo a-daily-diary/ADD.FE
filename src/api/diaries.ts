@@ -13,60 +13,63 @@ import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH, PAGE_SIZE } from 'constants/api/path';
 import axios from 'lib/axios';
 
-export const getDiaries = async ({ page }: GetDiariesRequest) => {
+export const getDiaries = async ({ currentPage }: GetDiariesRequest) => {
+  const currentPageIndex = currentPage - 1;
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
     params: {
-      skip: PAGE_SIZE * page,
+      skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
     },
   });
 
   const nextPage: number | undefined =
-    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+    data.totalPage > currentPage ? currentPage + 1 : undefined;
 
   return { ...data, nextPage };
 };
 
 export const getDiariesByUsername = async ({
-  page,
+  currentPage,
   username,
 }: GetDiariesByUsernameRequest) => {
+  const currentPageIndex = currentPage - 1;
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
     params: {
       username,
-      skip: PAGE_SIZE * page,
+      skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
     },
   });
 
   const nextPage: number | undefined =
-    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+    data.totalPage > currentPage ? currentPage + 1 : undefined;
 
   return { ...data, nextPage };
 };
 
 export const getBookmarkedDiariesByUsername = async ({
-  page,
+  currentPage,
   username,
 }: GetDiariesByUsernameRequest) => {
+  const currentPageIndex = currentPage - 1;
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Diaries>>(
     `${API_PATH.diaries.bookmark}/${username}`,
     {
       params: {
-        skip: PAGE_SIZE * page,
+        skip: PAGE_SIZE * currentPageIndex,
         take: PAGE_SIZE,
       },
     },
   );
 
   const nextPage: number | undefined =
-    data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
+    data.totalPage > currentPage ? currentPage + 1 : undefined;
 
   return { ...data, nextPage };
 };

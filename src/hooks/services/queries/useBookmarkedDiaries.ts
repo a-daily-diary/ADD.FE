@@ -6,10 +6,10 @@ export const useBookmarkedDiaries = (username: string) => {
   const { data, isFetching, isFetchingNextPage, isError, fetchNextPage } =
     useInfiniteQuery({
       queryKey: [queryKeys.bookmark, username],
-      queryFn: async ({ pageParam = 0 }) =>
+      queryFn: async ({ pageParam = 1 }) =>
         await api.getBookmarkedDiariesByUsername({
           username,
-          page: pageParam as number,
+          currentPage: pageParam as number,
         }),
       getNextPageParam: (lastPage) => lastPage.nextPage,
     });
