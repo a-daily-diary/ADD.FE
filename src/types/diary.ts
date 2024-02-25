@@ -31,7 +31,6 @@ export type DiaryForm = Pick<
 /* Request */
 
 export interface GetDiariesRequest {
-  config?: AxiosRequestConfig;
   page: number;
 }
 
