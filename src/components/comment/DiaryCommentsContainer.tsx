@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { WriteCommentIcon } from 'assets/icons';
 import { DiaryCommentInput, DiaryComments } from 'components/comment';
-import { FullPageLoading } from 'components/common';
+import { FullPageLoading, ObserverTarget } from 'components/common';
+import { useIntersectionObserver } from 'hooks/common';
 import { useComments } from 'hooks/services';
 
 interface DiaryCommentsContainerProps {
@@ -11,13 +12,22 @@ interface DiaryCommentsContainerProps {
 export const DiaryCommentsContainer = ({
   diaryId,
 }: DiaryCommentsContainerProps) => {
-  const { commentsData, isLoading } = useComments(diaryId);
+  const { commentsData, isLoading, isError, fetchNextPage } =
+    useComments(diaryId);
+  const { setTargetRef } = useIntersectionObserver({
+    onIntersect: fetchNextPage,
+  });
 
   if (commentsData === undefined) return <FullPageLoading />;
 
   return (
     <DiaryCommentSection>
       <DiaryComments diaryComments={commentsData} diaryId={diaryId} />
+      <ObserverTarget
+        targetRef={setTargetRef}
+        isLoading={isLoading}
+        isError={isError}
+      />
       <WriteCommentLabel htmlFor="diaryCommentTextarea">
         <WriteCommentIcon />
         <WriteCommentSpan>댓글쓰기</WriteCommentSpan>
