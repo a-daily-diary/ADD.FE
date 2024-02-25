@@ -13,7 +13,7 @@ export const DiaryCommentsContainer = ({
 }: DiaryCommentsContainerProps) => {
   const { commentsData, isLoading } = useComments(diaryId);
 
-  if (commentsData === undefined || isLoading) return <FullPageLoading />;
+  if (commentsData === undefined) return <FullPageLoading />;
 
   return (
     <DiaryCommentSection>

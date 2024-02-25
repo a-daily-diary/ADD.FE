@@ -6,17 +6,27 @@ import type {
   GetCommentRequest,
 } from 'types/comment';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH, PAGE_SIZE } from 'constants/api/path';
 import axios from 'lib/axios';
 
-export const getComments = async ({ diaryId, config }: GetCommentRequest) => {
+export const getComments = async ({
+  diaryId,
+  page,
+  config,
+}: GetCommentRequest) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Comments>>(
-    `${API_PATH.diaries.index}/${diaryId}/comment`,
+    `${API_PATH.diaries.index}/${diaryId}/comment?skip=${
+      PAGE_SIZE * page
+    }&take=${PAGE_SIZE}`,
     config,
   );
-  return data;
+
+  const nextPage: number | undefined =
+    data.comments.length >= PAGE_SIZE ? page + 1 : undefined;
+
+  return { ...data, nextPage };
 };
 
 export const writeComment = async ({
