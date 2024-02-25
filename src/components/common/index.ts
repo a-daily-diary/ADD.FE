@@ -1,4 +1,5 @@
 export * from './Button';
+export * from './IconButton';
 export * from './FloatingMenu';
 export * from './FloatingMenuButton';
 export * from './ResponsiveImage';
