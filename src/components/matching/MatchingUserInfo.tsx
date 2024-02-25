@@ -5,7 +5,7 @@ import { useTimer } from 'hooks/common/useTimer';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingUserInfo = () => {
-  const { minute, second } = useTimer();
+  const { minutes, seconds } = useTimer();
 
   return (
     <Container>
@@ -20,7 +20,7 @@ const MatchingUserInfo = () => {
       />
       <strong>username</strong>
       <span>
-        {minute}:{second}
+        {minutes}:{seconds}
       </span>
     </Container>
   );

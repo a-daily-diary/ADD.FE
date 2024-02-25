@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
 export const useTimer = () => {
-  const [totalSecond, setTotalSecond] = useState<number>(0);
+  const [totalSeconds, setTotalSeconds] = useState<number>(0);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      setTotalSecond((previousSecond) => previousSecond + 1);
+      setTotalSeconds((previousSeconds) => previousSeconds + 1);
     }, 1000);
 
     return () => {
@@ -13,11 +13,11 @@ export const useTimer = () => {
     };
   }, []);
 
-  const minute = Math.floor(totalSecond / 60)
+  const minutes = Math.floor(totalSeconds / 60)
     .toString()
     .padStart(2, '0');
 
-  const second = (totalSecond % 60).toString().padStart(2, '0');
+  const seconds = (totalSeconds % 60).toString().padStart(2, '0');
 
-  return { minute, second };
+  return { minutes, seconds };
 };
