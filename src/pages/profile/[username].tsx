@@ -1,10 +1,14 @@
 import styled from '@emotion/styled';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import type { GetServerSideProps, NextPage } from 'next';
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from 'next';
 import * as api from 'api';
-import { Loading, Seo, Tab } from 'components/common';
+import { Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
@@ -16,35 +20,31 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 const PROFILE_TAB_LIST = [
   { id: 'activities', title: '활동' },
   { id: 'diaries', title: '일기' },
-  { id: 'bookmarks', title: '북마크' },
 ];
 
-const MyProfile: NextPage = () => {
+const YourProfile: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ username }) => {
   const { tabsRef, indicator, activeIndex, setActiveIndex } = useTabIndicator();
 
-  const { data: session } = useSession();
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
-
-  const { userDiariesData, isLoading: isUserDiariesLoading } = useUserDiaries(
-    session.user.username,
-  );
+  const { userDiariesData, isLoading: isUserDiariesLoading } =
+    useUserDiaries(username);
   const { bookmarkedDiariesData, isLoading: isBookmarkedDiariesLoading } =
-    useBookmarkedDiaries(session.user.username);
+    useBookmarkedDiaries(username);
 
+  // TODO: Loading 컴포넌트 적용
   if (
     userDiariesData === undefined ||
     bookmarkedDiariesData === undefined ||
     isUserDiariesLoading ||
     isBookmarkedDiariesLoading
-  ) {
-    return <Loading />;
-  }
+  )
+    return <div>Loading</div>;
 
   return (
     <>
       <Seo title="프로필 | a daily diary" />
-      <ProfileContainer username={session.user.username} />
+      <ProfileContainer username={username} isMyProfile={false} />
       <section>
         <Tab indicator={indicator}>
           {PROFILE_TAB_LIST.map((tab, index) => {
@@ -72,20 +72,15 @@ const MyProfile: NextPage = () => {
             empty={<EmptyDiary text="일기가 없습니다." />}
           />
         )}
-        {PROFILE_TAB_LIST[activeIndex].id === 'bookmarks' && (
-          <DiariesContainer
-            title={PROFILE_TAB_LIST[activeIndex].title}
-            diariesData={bookmarkedDiariesData}
-            empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
-          />
-        )}
       </section>
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
+export const getServerSideProps = (async (context) => {
+  const { req, res, params } = context;
+  const username = params?.username as string;
+
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
@@ -97,7 +92,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const { username, accessToken } = session.user;
+  const { accessToken, username: loggedInUsername } = session.user;
+
+  if (loggedInUsername === username) {
+    return {
+      redirect: {
+        destination: '/profile',
+        permanent: false,
+      },
+    };
+  }
 
   const headers = {
     headers: {
@@ -106,22 +110,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([queryKeys.users, username], async () => {
-    return await api.getProfileByUsername({ username, config: headers });
-  });
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, username],
-    async () => await api.getDiariesByUsername({ username, config: headers }),
-  );
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, username],
-    async () =>
-      await api.getBookmarkedDiariesByUsername({ username, config: headers }),
-  );
-  return { props: { dehydratedState: dehydrate(queryClient), session } };
-};
 
-export default MyProfile;
+  try {
+    await queryClient.fetchQuery([queryKeys.users, username], async () => {
+      return await api.getProfileByUsername({ username, config: headers });
+    });
+    await queryClient.fetchQuery(
+      [queryKeys.diaries, username],
+      async () => await api.getDiariesByUsername({ username, config: headers }),
+    );
+  } catch (error) {
+    if (isAxiosError(error)) {
+      return {
+        notFound: true,
+      };
+    }
+  }
+
+  return { props: { dehydratedState: dehydrate(queryClient), username } };
+}) satisfies GetServerSideProps;
+
+export default YourProfile;
 
 const TabButton = styled.button<{ active: boolean }>`
   ${({ theme }) => theme.fonts.headline_04};

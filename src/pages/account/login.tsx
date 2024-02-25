@@ -100,15 +100,7 @@ const Login: NextPage = () => {
           label="비밀번호"
           errors={errors.password}
         />
-        <Button
-          type="submit"
-          disabled={!isValid}
-          pattern="box"
-          size="lg"
-          fullWidth
-        >
-          로그인
-        </Button>
+        <Button type="submit" disabled={!isValid} fullWidth text="로그인" />
       </Form>
       <StyledLink href={'/account/findPassword'}>
         비밀번호를 잊으셨나요?
@@ -116,14 +108,11 @@ const Login: NextPage = () => {
       <ButtonContainer>
         <Button
           type="button"
-          pattern="box"
-          size="lg"
           fullWidth
           variant="line"
           onClick={async () => await router.push('/account/register')}
-        >
-          이메일로 가입하기
-        </Button>
+          text="이메일로 가입하기"
+        />
       </ButtonContainer>
     </Section>
   );

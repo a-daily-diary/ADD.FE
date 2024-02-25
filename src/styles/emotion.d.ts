@@ -21,6 +21,7 @@ declare module '@emotion/react' {
       gray_06: string;
       bg_01: string;
       bg_02: string;
+      black_overlay_06: string;
       white: string;
       black: string;
       error: string;

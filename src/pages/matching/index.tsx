@@ -64,14 +64,13 @@ const MatchingRule: NextPage = () => {
           </RuleList>
           <Button
             type="button"
-            pattern="round"
+            shape="round"
             size="xl"
             onClick={async () => {
               await router.push(PAGE_PATH.matching_loading);
             }}
-          >
-            랜덤매칭 시작
-          </Button>
+            text="랜덤매칭 시작"
+          />
         </Article>
       </Section>
     </>
@@ -116,15 +115,11 @@ const RuleList = styled.ul`
 `;
 
 const ImageWrapper = styled.div`
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${colors.bg_02};
-  min-width: 60px;
+  width: 60px;
   height: 60px;
   border-radius: 20px;
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 `;

@@ -16,6 +16,8 @@ export const colors = {
   // Background scale
   bg_01: '#fafafa',
   bg_02: '#f4f4f4',
+  // Overlay
+  black_overlay_06: 'rgba(0, 0, 0, 0.6)',
   // Other colors
   white: '#ffffff',
   black: '#000000',

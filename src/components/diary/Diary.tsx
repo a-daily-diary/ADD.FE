@@ -43,7 +43,7 @@ const Diary = ({
         )}
         <DateContainer>
           <span>
-            <span>{author.username}</span>
+            <Link href={`/profile/${author.username}`}>{author.username}</Link>
             <span>・</span>
             <span>{dateFormat(createdAt)}</span>
           </span>

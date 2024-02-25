@@ -54,12 +54,9 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
           <Button
             type="submit"
             disabled={!isValid}
-            pattern="box"
-            size="lg"
             fullWidth
-          >
-            재설정 링크보내기
-          </Button>
+            text="재설정 링크보내기"
+          />
         </ButtonContainer>
       </Form>
     </>

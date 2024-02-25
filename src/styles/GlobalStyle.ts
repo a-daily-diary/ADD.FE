@@ -26,6 +26,11 @@ const GlobalStyle = css`
     font-size: 1.6rem;
   }
 
+  a,
+  button {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  }
+
   a {
     color: inherit;
     text-decoration: none;
@@ -40,7 +45,6 @@ const GlobalStyle = css`
     background: transparent;
     color: inherit;
     font: inherit;
-    text-align: inherit;
     cursor: pointer;
 
     /* Normalize 'line-height'. Cannot be changed from 'normal' in Firefox 4+. */

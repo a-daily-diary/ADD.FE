@@ -18,7 +18,7 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import { Modal, ResponsiveImage, Seo } from 'components/common';
+import { Loading, Modal, ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
@@ -134,7 +134,7 @@ const EditDiary: NextPage = () => {
   };
 
   if (diaryData === undefined) return <div />;
-  if (isLoading) return <div>Loading</div>;
+  if (isLoading) return <Loading />;
 
   const { title, createdAt } = diaryData;
 

@@ -1,16 +1,11 @@
 import styled from '@emotion/styled';
-import React from 'react';
-
-import type { ComponentProps } from 'react';
 
 import { Button } from 'components/common';
 import { ScreenReaderOnly } from 'styles';
 
-interface RecommendTopicProps extends ComponentProps<'article'> {}
-
-const RecommendTopic = ({ ...otherProps }: RecommendTopicProps) => {
+const RecommendTopic = () => {
   return (
-    <article {...otherProps}>
+    <Container>
       <SubTitle>추천 대화</SubTitle>
       <Card>
         <RegularParagraph>추천하는 대화 주제</RegularParagraph>
@@ -21,10 +16,8 @@ const RecommendTopic = ({ ...otherProps }: RecommendTopicProps) => {
         <SmallParagraph>취미가 무엇인가요?</SmallParagraph>
       </Card>
       {/* FIXME: 버튼 background color 변경 필요 */}
-      <Button type="button" pattern="round" size="md">
-        다음 질문
-      </Button>
-    </article>
+      <Button type="button" shape="round" size="md" text="다음 질문" />
+    </Container>
   );
 };
 
@@ -32,6 +25,10 @@ export default RecommendTopic;
 
 const SubTitle = styled.h2`
   ${ScreenReaderOnly}
+`;
+
+const Container = styled.article`
+  margin-top: 30px;
 `;
 
 const Card = styled.div`
