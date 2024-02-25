@@ -13,13 +13,15 @@ import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH, PAGE_SIZE } from 'constants/api/path';
 import axios from 'lib/axios';
 
-export const getDiaries = async ({ page, config }: GetDiariesRequest) => {
+export const getDiaries = async ({ page }: GetDiariesRequest) => {
   const {
     data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.index}?skip=${PAGE_SIZE * page}&take=${PAGE_SIZE}`,
-    config,
-  );
+  } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
+    params: {
+      skip: PAGE_SIZE * page,
+      take: PAGE_SIZE,
+    },
+  });
 
   const nextPage: number | undefined =
     data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
@@ -30,16 +32,16 @@ export const getDiaries = async ({ page, config }: GetDiariesRequest) => {
 export const getDiariesByUsername = async ({
   page,
   username,
-  config,
 }: GetDiariesByUsernameRequest) => {
   const {
     data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.index}?username=${username}&skip=${
-      PAGE_SIZE * page
-    }&take=${PAGE_SIZE}`,
-    config,
-  );
+  } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
+    params: {
+      username,
+      skip: PAGE_SIZE * page,
+      take: PAGE_SIZE,
+    },
+  });
 
   const nextPage: number | undefined =
     data.diaries.length >= PAGE_SIZE ? page + 1 : undefined;
@@ -50,15 +52,17 @@ export const getDiariesByUsername = async ({
 export const getBookmarkedDiariesByUsername = async ({
   page,
   username,
-  config,
 }: GetDiariesByUsernameRequest) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Diaries>>(
-    `${API_PATH.diaries.bookmark}/${username}?skip=${
-      PAGE_SIZE * page
-    }&take=${PAGE_SIZE}`,
-    config,
+    `${API_PATH.diaries.bookmark}/${username}`,
+    {
+      params: {
+        skip: PAGE_SIZE * page,
+        take: PAGE_SIZE,
+      },
+    },
   );
 
   const nextPage: number | undefined =
