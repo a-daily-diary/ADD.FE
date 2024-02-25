@@ -2,11 +2,16 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { LoadingIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
-import { RotationAnimationStyle, SVGVerticalAlignStyle } from 'styles';
+import {
+  RotationAnimationStyle,
+  SVGVerticalAlignStyle,
+  ScreenReaderOnly,
+} from 'styles';
 
 export const FullPageLoading = () => {
   return (
     <FullPageContainer>
+      <Title>로딩 중 입니다.</Title>
       <IconContainer>
         <LoadingIcon width={136} height={136} />
       </IconContainer>
@@ -17,6 +22,7 @@ export const FullPageLoading = () => {
 export const Loading = () => {
   return (
     <Container>
+      <Title>데이터를 불러오는 중 입니다.</Title>
       <IconContainer>
         <LoadingIcon width={32} height={32} />
       </IconContainer>
@@ -30,7 +36,7 @@ const ContainerStyle = css`
   justify-content: center;
 `;
 
-const FullPageContainer = styled.div`
+const FullPageContainer = styled.section`
   ${ContainerStyle}
 
   position: fixed;
@@ -42,11 +48,15 @@ const FullPageContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.black_overlay_06};
 `;
 
-const Container = styled.div`
+const Container = styled.section`
   ${ContainerStyle}
 
   padding: 20px 0;
   background-color: ${({ theme }) => theme.colors.white};
+`;
+
+const Title = styled.h1`
+  ${ScreenReaderOnly}
 `;
 
 const IconContainer = styled.div`
