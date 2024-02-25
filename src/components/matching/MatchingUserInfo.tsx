@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import React from 'react';
 
 import { useTimer } from 'hooks/common/useTimer';
 import { ScreenReaderOnly } from 'styles';

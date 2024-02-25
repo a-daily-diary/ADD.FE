@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import React from 'react';
 
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
