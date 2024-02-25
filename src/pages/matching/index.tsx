@@ -64,14 +64,13 @@ const MatchingRule: NextPage = () => {
           </RuleList>
           <Button
             type="button"
-            pattern="round"
+            shape="round"
             size="xl"
             onClick={async () => {
               await router.push(PAGE_PATH.matching_loading);
             }}
-          >
-            랜덤매칭 시작
-          </Button>
+            text="랜덤매칭 시작"
+          />
         </Article>
       </Section>
     </>

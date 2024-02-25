@@ -45,7 +45,6 @@ const GlobalStyle = css`
     background: transparent;
     color: inherit;
     font: inherit;
-    text-align: inherit;
     cursor: pointer;
 
     /* Normalize 'line-height'. Cannot be changed from 'normal' in Firefox 4+. */

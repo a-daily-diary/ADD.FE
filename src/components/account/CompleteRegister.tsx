@@ -26,13 +26,10 @@ export const CompleteRegister = () => {
       <ButtonContainer>
         <Button
           type="button"
-          pattern="box"
-          size="lg"
           fullWidth
           onClick={async () => await router.replace('/account/login')}
-        >
-          로그인하기
-        </Button>
+          text="로그인하기"
+        />
       </ButtonContainer>
     </Section>
   );
