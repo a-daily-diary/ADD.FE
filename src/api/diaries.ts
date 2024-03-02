@@ -10,7 +10,7 @@ import type {
   GetDiariesByUsernameRequest,
 } from 'types/diary';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH, PAGE_SIZE } from 'constants/api/path';
+import { API_PATH, PAGE_SIZE } from 'constants/service';
 import axios from 'lib/axios';
 
 export const getDiaries = async ({ currentPage }: GetDiariesRequest) => {

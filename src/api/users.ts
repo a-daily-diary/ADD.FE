@@ -1,7 +1,7 @@
 import type { LoginRequest, LoginResponse } from 'types/login';
 import type { ExistsRequest, RegisterRequest } from 'types/register';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH } from 'constants/service';
 import axios from 'lib/axios';
 
 export const register = async ({

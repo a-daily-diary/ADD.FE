@@ -3,7 +3,7 @@ import type {
   UploadImageRequest,
   UploadImageResponse,
 } from 'types/uploadImage';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH } from 'constants/service';
 import axios from 'lib/axios';
 
 export const uploadImage = async ({

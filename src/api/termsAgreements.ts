@@ -1,6 +1,6 @@
 import type { SuccessResponse } from 'types/response';
 import type { TermsAgreementResponse } from 'types/termsAgreement';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH } from 'constants/service';
 import axios from 'lib/axios';
 
 export const getTermsAgreement = async () => {

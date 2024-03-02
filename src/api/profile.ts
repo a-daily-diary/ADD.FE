@@ -4,7 +4,7 @@ import type {
   GetProfileByUsernameRequest,
 } from 'types/profile';
 import type { SuccessResponse } from 'types/response';
-import { API_PATH } from 'constants/api/path';
+import { API_PATH } from 'constants/service';
 import axios from 'lib/axios';
 
 export const getProfileByUsername = async ({

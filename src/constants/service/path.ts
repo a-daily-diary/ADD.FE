@@ -16,5 +16,3 @@ export const API_PATH = {
     index: '/terms-agreements',
   },
 } as const;
-
-export const PAGE_SIZE = 10;
