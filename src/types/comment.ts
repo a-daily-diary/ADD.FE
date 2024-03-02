@@ -24,8 +24,7 @@ export type CommentForm = Pick<Comment, 'comment'>;
 
 export interface GetCommentRequest {
   diaryId: Pick<DiaryDetail, 'id'>['id'];
-  page: number;
-  config?: AxiosRequestConfig;
+  currentPage: number;
 }
 
 export interface WriteCommentRequest extends CommentForm {

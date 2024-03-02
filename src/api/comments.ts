@@ -11,20 +11,23 @@ import axios from 'lib/axios';
 
 export const getComments = async ({
   diaryId,
-  page,
-  config,
+  currentPage,
 }: GetCommentRequest) => {
+  const currentPageIndex = currentPage - 1;
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Comments>>(
-    `${API_PATH.diaries.index}/${diaryId}/comment?skip=${
-      PAGE_SIZE * page
-    }&take=${PAGE_SIZE}`,
-    config,
+    `${API_PATH.diaries.index}/${diaryId}/comment`,
+    {
+      params: {
+        skip: PAGE_SIZE * currentPageIndex,
+        take: PAGE_SIZE,
+      },
+    },
   );
 
   const nextPage: number | undefined =
-    data.comments.length >= PAGE_SIZE ? page + 1 : undefined;
+    data.totalPage > currentPage ? currentPage + 1 : undefined;
 
   return { ...data, nextPage };
 };
