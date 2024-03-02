@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { DiaryComment } from './DiaryComment';
+import EmptyComment from './EmptyComment';
 import type { Comments } from 'types/comment';
 import { ScreenReaderOnly } from 'styles';
 
@@ -16,13 +17,7 @@ export const DiaryComments = ({
   const isEmptyComments = totalCount === 0;
 
   if (isEmptyComments) {
-    return (
-      <NoCommentTitle>
-        아직 댓글이 없어요.
-        <br />
-        가장 먼저 댓글을 남겨보세요.
-      </NoCommentTitle>
-    );
+    return <EmptyComment />;
   }
 
   return (
@@ -48,11 +43,4 @@ export const DiaryComments = ({
 
 const CommentTitle = styled.h3`
   ${ScreenReaderOnly}
-`;
-
-const NoCommentTitle = styled.h3`
-  margin: 40px 0 20px;
-  color: ${({ theme }) => theme.colors.gray_02};
-  ${({ theme }) => theme.fonts.body_09};
-  text-align: center;
 `;
