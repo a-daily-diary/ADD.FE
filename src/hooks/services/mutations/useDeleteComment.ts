@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { DeleteCommentRequest } from 'types/comment';
 import * as api from 'api';
-import { queryKeys } from 'constants/queryKeys';
+import { queryKeys } from 'constants/service';
 
 export const useDeleteComment = (diaryId: string) => {
   const queryClient = useQueryClient();

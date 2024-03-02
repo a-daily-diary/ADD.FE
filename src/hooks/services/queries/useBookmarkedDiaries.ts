@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import * as api from 'api';
-import { queryKeys } from 'constants/queryKeys';
+import { queryKeys } from 'constants/service';
 
 export const useBookmarkedDiaries = (username: string) => {
   const { data, isFetching, isFetchingNextPage, isError, fetchNextPage } =

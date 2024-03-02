@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as api from 'api';
-import { queryKeys } from 'constants/queryKeys';
+import { queryKeys } from 'constants/service';
 
 export const useFavoriteDiary = (diaryId: string) => {
   const queryClient = useQueryClient();
