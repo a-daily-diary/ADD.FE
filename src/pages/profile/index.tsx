@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { Loading, ObserverTarget, Seo, Tab } from 'components/common';
+import { FullPageLoading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
@@ -47,7 +47,7 @@ const MyProfile: NextPage = () => {
     });
 
   if (userDiariesData === undefined || bookmarkedDiariesData === undefined) {
-    return <Loading />;
+    return <FullPageLoading />;
   }
 
   return (

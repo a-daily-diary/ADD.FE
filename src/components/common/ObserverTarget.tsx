@@ -1,3 +1,4 @@
+import { Loading } from './Loading';
 import type { Dispatch, SetStateAction } from 'react';
 
 interface ObserverTargetProps {
@@ -13,8 +14,8 @@ export const ObserverTarget = ({
 }: ObserverTargetProps) => {
   return (
     <div ref={targetRef}>
+      {isLoading && <Loading />}
       {/* TODO: 로딩/에러 시 UI 수정 */}
-      {isLoading && <p>데이터를 불러오는 중입니다.</p>}
       {isError && <p>데이터를 불러오는데 실패했습니다.</p>}
     </div>
   );

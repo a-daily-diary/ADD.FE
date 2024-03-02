@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { NoLinkProfileImage } from './ProfileImage';
 import { SettingIcon } from 'assets/icons';
-import { Loading } from 'components/common';
+import { FullPageLoading } from 'components/common';
 import { useProfile } from 'hooks/services';
 
 interface ProfileContainerProps {
@@ -16,7 +16,7 @@ export const ProfileContainer = ({
 }: ProfileContainerProps) => {
   const { profileData, isLoading } = useProfile(username);
 
-  if (profileData === undefined || isLoading) return <Loading />;
+  if (profileData === undefined || isLoading) return <FullPageLoading />;
 
   return (
     <Container>

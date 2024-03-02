@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import type { GetServerSideProps, NextPage } from 'next';
 import {
-  Loading,
+  FullPageLoading,
   ObserverTarget,
   ResponsiveImage,
   Seo,
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
     onIntersect: fetchNextPage,
   });
 
-  if (diariesData === undefined) return <Loading />;
+  if (diariesData === undefined) return <FullPageLoading />;
 
   return (
     <>

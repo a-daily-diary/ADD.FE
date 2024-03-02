@@ -9,7 +9,7 @@ import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import { DiaryCommentsContainer } from 'components/comment';
-import { FloatingMenu, Loading, Modal, Seo } from 'components/common';
+import { FloatingMenu, FullPageLoading, Modal, Seo } from 'components/common';
 import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
@@ -43,7 +43,7 @@ const DiaryDetailPage: NextPage = () => {
     }
   };
 
-  if (diaryData === undefined || isLoading) return <Loading />;
+  if (diaryData === undefined || isLoading) return <FullPageLoading />;
 
   const { author, title } = diaryData;
   const isAuthor = author.id === session?.user.id;
