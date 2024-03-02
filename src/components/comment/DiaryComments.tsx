@@ -13,7 +13,7 @@ export const DiaryComments = ({
   diaryId,
 }: DiaryCommentsProps) => {
   const { totalCount } = diaryComments[0];
-  const isEmptyComments = diaryComments.length === 0;
+  const isEmptyComments = totalCount === 0;
 
   if (isEmptyComments) {
     return (

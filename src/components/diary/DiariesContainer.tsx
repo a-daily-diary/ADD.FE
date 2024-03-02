@@ -14,7 +14,8 @@ export const DiariesContainer = ({
   diariesData,
   empty,
 }: DiariesContainerProps) => {
-  const isEmptyDiaries = diariesData.length === 0;
+  const { totalCount } = diariesData[0];
+  const isEmptyDiaries = totalCount === 0;
 
   if (isEmptyDiaries) return empty;
 
