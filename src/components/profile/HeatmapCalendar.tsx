@@ -3,64 +3,35 @@ import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import type { HeatmapCell, HeatmapCells } from 'types/heatmap';
 import { WEEKDAY } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
-// TODO: Mock data 제거
-const data = [
-  {
-    date: '2022-04-25',
-    count: 1,
-  },
-  {
-    date: '2023-01-01',
-    count: 1,
-  },
-  {
-    date: '2023-01-11',
-    count: 2,
-  },
-  {
-    date: '2023-02-01',
-    count: 3,
-  },
-  {
-    date: '2023-04-24',
-    count: 3,
-  },
-  {
-    date: '2024-03-03',
-    count: 6,
-  },
-];
-
-interface Value {
-  date: string;
-  count: number;
+interface HeatmapCalendarProps {
+  heatmapCalendarData: HeatmapCells;
 }
 
-export const HeatmapCalendar = () => {
+export const HeatmapCalendar = ({
+  heatmapCalendarData,
+}: HeatmapCalendarProps) => {
   const today = new Date();
 
   const boxRef = useRef<HTMLDivElement | null>(null);
 
-  const getClassForValue = (value: Value) => {
-    if (value === null) return 'color-step-0';
+  const getClassForValue = (value: HeatmapCell) => {
+    const { activityCount } = value;
 
-    const { count } = value;
-
-    if (count > 0) return 'color-step-1';
-    if (count > 2) return 'color-step-2';
-    if (count > 4) return 'color-step-3';
+    if (activityCount > 0) return 'color-step-1';
+    if (activityCount > 2) return 'color-step-2';
+    if (activityCount > 4) return 'color-step-3';
 
     return 'color-step-0';
   };
 
   // TODO: Tooltip 필요한지 확인
-  const getTooltipDataAttrs = (value: Value) => {
-    const content =
-      value.date === null ? today : `${value.date} has count: ${value.count}`;
+  const getTooltipDataAttrs = (value: HeatmapCell) => {
+    const content = `${value.date} has count: ${value.activityCount}`;
 
     return {
       'data-tooltip-id': 'my-tooltip',
@@ -68,11 +39,9 @@ export const HeatmapCalendar = () => {
     };
   };
 
-  const handleClick = (value: Value) => {
-    if (value === null) return;
-
+  const handleClick = (value: HeatmapCell) => {
     // TODO: 클릭 시 해당 날짜 활동 내역 보여주기
-    console.log(`Clicked on value with count: ${value.count}`);
+    console.log(`Clicked on value with count: ${value.activityCount}`);
   };
 
   useEffect(() => {
@@ -95,10 +64,12 @@ export const HeatmapCalendar = () => {
             gutterSize={1}
             startDate={getLastYearDate(today)}
             endDate={today}
-            values={data}
-            classForValue={(value: Value) => getClassForValue(value)}
-            tooltipDataAttrs={(value: Value) => getTooltipDataAttrs(value)}
-            onClick={(value: Value) => {
+            values={heatmapCalendarData}
+            classForValue={(value: HeatmapCell) => getClassForValue(value)}
+            tooltipDataAttrs={(value: HeatmapCell) =>
+              getTooltipDataAttrs(value)
+            }
+            onClick={(value: HeatmapCell) => {
               handleClick(value);
             }}
           />
