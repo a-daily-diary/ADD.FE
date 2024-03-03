@@ -1,13 +1,29 @@
 import styled from '@emotion/styled';
 
+import { useEffect, useRef } from 'react';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
+import { useAudioStream } from 'hooks/common/useAudioStream';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const { audioStream } = useAudioStream();
+
+  useEffect(() => {
+    if (audioRef.current !== null && audioStream !== null) {
+      // FIXME: 추후 WebRTC로 연동된 매칭 상대의 stream으로 대체 예정.
+      audioRef.current.srcObject = audioStream;
+    }
+  }, [audioStream]);
+
   return (
     <Container>
       <SubTitle>통화 제어</SubTitle>
+      <audio ref={audioRef} muted autoPlay>
+        <track kind="captions" />
+      </audio>
       <CircleButton type="button" backgroundColor={colors.bg_02}>
         <Tooltip>마이크를 켜주세요!</Tooltip>
         <MicrophoneOffIcon />
