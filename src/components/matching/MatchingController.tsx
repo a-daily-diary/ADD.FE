@@ -37,24 +37,21 @@ const CircleButton = styled.button<{
   backgroundColor: string;
 }>`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 60px;
   height: 60px;
   border-radius: 100%;
   background-color: ${(props) => props.backgroundColor};
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
   span {
+    ${({ theme }) => theme.fonts.body_07}
     position: absolute;
     bottom: -26px;
     left: 50%;
     transform: translateX(-50%);
     width: 60px;
     color: ${({ theme }) => theme.colors.gray_00};
-    ${({ theme }) => theme.fonts.body_07}
   }
 `;
 
