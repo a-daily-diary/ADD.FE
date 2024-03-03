@@ -47,9 +47,9 @@ export const HeatmapCalendar = () => {
   const boxRef = useRef<HTMLDivElement | null>(null);
 
   const getClassForValue = (value: Value) => {
-    const { count } = value;
-
     if (value === null) return 'color-step-0';
+
+    const { count } = value;
 
     if (count > 0) return 'color-step-1';
     if (count > 2) return 'color-step-2';
