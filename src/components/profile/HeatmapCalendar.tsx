@@ -3,7 +3,9 @@ import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import { getLastYearDate } from 'utils';
 
+// TODO: Mock data 제거
 const data = [
   {
     date: '2022-04-25',
@@ -25,101 +27,136 @@ const data = [
     date: '2023-04-24',
     count: 3,
   },
+  {
+    date: '2024-03-03',
+    count: 6,
+  },
 ];
 
+// TODO: constants/common으로 이동
 const WEEKDAY = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-const HeatmapCalendar = () => {
+interface Value {
+  date: string;
+  count: number;
+}
+
+export const HeatmapCalendar = () => {
   const today = new Date();
-  const oneYearAgo = new Date(today.setFullYear(today.getFullYear() - 1));
+
   const boxRef = useRef<HTMLDivElement | null>(null);
 
+  const getClassForValue = (value: Value) => {
+    const { count } = value;
+
+    if (value === null) return 'color-step-0';
+
+    if (count > 0) return 'color-step-1';
+    if (count > 2) return 'color-step-2';
+    if (count > 4) return 'color-step-3';
+
+    return 'color-step-0';
+  };
+
+  // TODO: Tooltip 필요한지 확인
+  const getTooltipDataAttrs = (value: Value) => {
+    const content =
+      value.date === null ? today : `${value.date} has count: ${value.count}`;
+
+    return {
+      'data-tooltip-id': 'my-tooltip',
+      'data-tooltip-content': content,
+    };
+  };
+
+  const handleClick = (value: Value) => {
+    if (value === null) return;
+
+    // TODO: 클릭 시 해당 날짜 활동 내역 보여주기
+    console.log(`Clicked on value with count: ${value.count}`);
+  };
+
   useEffect(() => {
-    if (boxRef !== null) {
-      boxRef.current?.scrollTo({ left: 1600 });
+    if (boxRef?.current !== null) {
+      boxRef.current.scrollTo({ left: 1520 });
     }
   }, []);
 
   return (
-    <>
-      <HeatMapContainer ref={boxRef}>
-        <WeekdayContainer>
+    <Container>
+      <Contents ref={boxRef}>
+        <WeekdayList>
           {WEEKDAY.map((day) => (
             <li key={day}>{day}</li>
           ))}
-        </WeekdayContainer>
-        <Box>
+        </WeekdayList>
+
+        <CalendarContainer>
           <CalendarHeatmap
-            startDate={oneYearAgo}
-            endDate={new Date()}
-            values={data}
-            classForValue={(value: { date: string; count: number }) => {
-              if (value === null) {
-                return 'color-empty';
-              }
-              return `color-github-${value.count}`;
-            }}
-            tooltipDataAttrs={(value: { date: string; count: number }) => {
-              if (value.date === null) return false;
-              return {
-                'data-tooltip-id': 'my-tooltip',
-                'data-tooltip-content': `${value.date} has count: ${value.count}`,
-              };
-            }}
-            onClick={(value: { date: string; count: number }) => {
-              alert(`Clicked on value with count: ${value.count}`);
-            }}
             gutterSize={1}
+            startDate={getLastYearDate(today)}
+            endDate={today}
+            values={data}
+            classForValue={(value: Value) => getClassForValue(value)}
+            tooltipDataAttrs={(value: Value) => getTooltipDataAttrs(value)}
+            onClick={(value: Value) => {
+              handleClick(value);
+            }}
           />
-        </Box>
-      </HeatMapContainer>
+        </CalendarContainer>
+      </Contents>
+
+      {/* TODO: Tooltip 필요한지 확인 */}
       <Tooltip id="my-tooltip" />
-    </>
+    </Container>
   );
 };
 
-export default HeatmapCalendar;
+const Container = styled.div`
+  padding: 0 20px;
+`;
 
-const HeatMapContainer = styled.div`
+const Contents = styled.div`
   overflow-x: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
   display: grid;
-  grid-template-columns: 30px auto;
+  grid-template-columns: 28px auto;
+  gap: 2px;
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 `;
 
-const WeekdayContainer = styled.ul`
+const WeekdayList = styled.ul`
   display: grid;
-  grid-template-rows: repeat(7, 27.5px);
-  row-gap: 3px;
+  grid-template-rows: repeat(7, 26.2px);
+  row-gap: 2.5px;
   align-content: end;
   position: sticky;
   left: 0;
   bottom: 0;
-  background-color: #fff;
-
-  & li {
-    font-size: 1.1rem;
-    font-weight: 400;
-    letter-spacing: -0.04em;
-    line-height: 27.5px;
-  }
+  padding-bottom: 8px;
+  background-color: ${({ theme }) => theme.colors.white};
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 26px;
 `;
 
-const Box = styled.div`
-  width: 1600px;
+const CalendarContainer = styled.div`
+  width: 1520px;
+  height: 240px;
+
+  & .react-calendar-heatmap .react-calendar-heatmap-all-weeks {
+    transform: translate(0, 13px);
+  }
 
   & .react-calendar-heatmap text {
     font-family: pretendard;
-    font-size: 5px;
-  }
-
-  & .react-calendar-heatmap .react-calendar-heatmap-small-text {
-    font-size: 5px;
+    font-size: 5.5px;
   }
 
   & .react-calendar-heatmap rect {
@@ -127,39 +164,21 @@ const Box = styled.div`
   }
 
   & .react-calendar-heatmap rect:hover {
-    stroke: #555;
-    stroke-width: 1px;
+    border-radius: 0.5px;
+    outline: 1px solid ${({ theme }) => theme.colors.pink};
+    outline-offset: -1px;
   }
 
-  /*
- * Default color scale
- */
-
-  & .react-calendar-heatmap .color-empty {
-    fill: #eeeeee;
+  & .react-calendar-heatmap .color-step-0 {
+    fill: ${({ theme }) => theme.colors.gray_06};
   }
-
-  & .react-calendar-heatmap .color-filled {
-    fill: #8cc665;
+  & .react-calendar-heatmap .color-step-1 {
+    fill: ${({ theme }) => theme.colors.primary_02};
   }
-
-  /*
- * Github color scale
- */
-
-  & .react-calendar-heatmap .color-github-0 {
-    fill: #eeeeee;
+  & .react-calendar-heatmap .color-step-2 {
+    fill: ${({ theme }) => theme.colors.primary_01};
   }
-  & .react-calendar-heatmap .color-github-1 {
-    fill: #d6e685;
-  }
-  & .react-calendar-heatmap .color-github-2 {
-    fill: #8cc665;
-  }
-  & .react-calendar-heatmap .color-github-3 {
-    fill: #44a340;
-  }
-  & .react-calendar-heatmap .color-github-4 {
-    fill: #1e6823;
+  & .react-calendar-heatmap .color-step-3 {
+    fill: ${({ theme }) => theme.colors.primary_00};
   }
 `;
