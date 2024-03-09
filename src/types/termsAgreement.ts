@@ -6,7 +6,3 @@ export interface TermsAgreement {
   content: string;
   isRequired: boolean;
 }
-
-/* Response */
-
-export type TermsAgreementResponse = TermsAgreement[];
