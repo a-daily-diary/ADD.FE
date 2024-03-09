@@ -1,5 +1,5 @@
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH } from 'constants/service';
+import { API_PATH } from 'constants/services';
 import axios from 'lib/axios';
 
 export const favoriteDiary = async (diaryId: string) => {

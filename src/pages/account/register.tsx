@@ -18,7 +18,7 @@ import {
 
 import { Button, Seo } from 'components/common';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 import { Z_INDEX } from 'constants/styles';
 import { useRegisterUser } from 'hooks/services';
 import { errorResponseMessage } from 'utils';

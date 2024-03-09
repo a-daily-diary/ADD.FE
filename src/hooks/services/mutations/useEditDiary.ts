@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { EditDiaryRequest } from 'types/diary';
 import * as api from 'api';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 
 export const useEditDiary = (id: string) => {
   const queryClient = useQueryClient();

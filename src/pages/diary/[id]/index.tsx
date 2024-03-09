@@ -13,7 +13,7 @@ import { FloatingMenu, FullPageLoading, Modal, Seo } from 'components/common';
 import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteDiary, useDiary } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';

@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import * as api from 'api';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 
 export const useComments = (diaryId: string) => {
   const { data, isFetching, isFetchingNextPage, isError, fetchNextPage } =

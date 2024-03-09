@@ -31,7 +31,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { useDiary, useEditDiary, useImageUpload } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';

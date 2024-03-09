@@ -6,7 +6,7 @@ import type {
   GetCommentRequest,
 } from 'types/comment';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
-import { API_PATH, PAGE_SIZE } from 'constants/service';
+import { API_PATH, PAGE_SIZE } from 'constants/services';
 import axios from 'lib/axios';
 
 export const getComments = async ({

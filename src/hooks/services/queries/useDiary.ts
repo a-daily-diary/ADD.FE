@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import * as api from 'api';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 
 export const useDiary = (id: string) => {
   const { data: diaryData, isLoading } = useQuery(

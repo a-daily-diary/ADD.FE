@@ -12,7 +12,7 @@ import { Loading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
-import { queryKeys } from 'constants/service';
+import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
