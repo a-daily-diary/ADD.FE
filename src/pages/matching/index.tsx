@@ -7,7 +7,7 @@ import { EnIcon, BlockIcon, PrivacyIcon, DiseaseIcon } from 'assets/icons';
 
 import { Button, Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
-import { PAGE_PATH } from 'constants/page';
+import { PAGE_PATH } from 'constants/common';
 import { colors } from 'constants/styles';
 import { ScreenReaderOnly } from 'styles';
 

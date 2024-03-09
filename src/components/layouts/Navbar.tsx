@@ -7,7 +7,7 @@ import {
   ProfileIcon,
   WriteDiaryIcon,
 } from 'assets/icons';
-import { PAGE_PATH } from 'constants/page';
+import { PAGE_PATH } from 'constants/common';
 import { Z_INDEX } from 'constants/styles';
 
 const NAVIGATION_LIST = [

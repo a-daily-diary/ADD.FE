@@ -9,7 +9,7 @@ import type { NextPage } from 'next';
 import type { LoadingAnimationKey } from 'types/common';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
-import { PAGE_PATH } from 'constants/page';
+import { PAGE_PATH } from 'constants/common';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();

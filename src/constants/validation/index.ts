@@ -1,2 +1,2 @@
-export * from './Message';
-export * from './Value';
+export * from './message';
+export * from './value';
