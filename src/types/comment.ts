@@ -15,6 +15,7 @@ export interface Comments {
   comments: Comment[];
   totalCount: number;
   totalPage: number;
+  nextPage: number | undefined;
 }
 
 export type CommentForm = Pick<Comment, 'comment'>;
@@ -23,7 +24,7 @@ export type CommentForm = Pick<Comment, 'comment'>;
 
 export interface GetCommentRequest {
   diaryId: Pick<DiaryDetail, 'id'>['id'];
-  config?: AxiosRequestConfig;
+  currentPage: number;
 }
 
 export interface WriteCommentRequest extends CommentForm {

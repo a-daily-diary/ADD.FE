@@ -132,11 +132,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     [queryKeys.diaries, id],
     async () => await api.getDiaryDetail({ id: id as string, config: headers }),
   );
-  await queryClient.prefetchQuery(
-    [queryKeys.comments, id],
-    async () =>
-      await api.getComments({ diaryId: id as string, config: headers }),
-  );
+
   return { props: { dehydratedState: dehydrate(queryClient) } };
 };
 
