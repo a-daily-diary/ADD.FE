@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
-import type { HeatmapCell, HeatmapCells } from 'types/heatmap';
+import type { HeatmapCell } from 'types/heatmap';
 import { WEEKDAY } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
 interface HeatmapCalendarProps {
-  heatmapCalendarData: HeatmapCells;
+  heatmapCalendarData: HeatmapCell[];
 }
 
 export const HeatmapCalendar = ({

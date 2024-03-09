@@ -5,8 +5,6 @@ export interface HeatmapCell {
   activityCount: number;
 }
 
-export type HeatmapCells = HeatmapCell[];
-
 /* Request */
 
 export type GetHeatmapByUsernameRequest = Pick<RegisterRequest, 'username'>;
