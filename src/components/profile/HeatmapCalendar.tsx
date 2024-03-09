@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
-import { Tooltip } from 'react-tooltip';
-import 'react-tooltip/dist/react-tooltip.css';
 import type { HeatmapCell, HeatmapCells } from 'types/heatmap';
 import { WEEKDAY } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
@@ -27,16 +25,6 @@ export const HeatmapCalendar = ({
     if (activityCount > 4) return 'color-step-3';
 
     return 'color-step-0';
-  };
-
-  // TODO: Tooltip 필요한지 확인
-  const getTooltipDataAttrs = (value: HeatmapCell) => {
-    const content = `${value.date} has count: ${value.activityCount}`;
-
-    return {
-      'data-tooltip-id': 'my-tooltip',
-      'data-tooltip-content': content,
-    };
   };
 
   const handleClick = (value: HeatmapCell) => {
@@ -66,18 +54,12 @@ export const HeatmapCalendar = ({
             endDate={today}
             values={heatmapCalendarData}
             classForValue={(value: HeatmapCell) => getClassForValue(value)}
-            tooltipDataAttrs={(value: HeatmapCell) =>
-              getTooltipDataAttrs(value)
-            }
             onClick={(value: HeatmapCell) => {
               handleClick(value);
             }}
           />
         </CalendarContainer>
       </Contents>
-
-      {/* TODO: Tooltip 필요한지 확인 */}
-      <Tooltip id="my-tooltip" />
     </Container>
   );
 };
