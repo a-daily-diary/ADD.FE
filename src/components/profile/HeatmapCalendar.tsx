@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
+import { WEEKDAY } from 'constants/common';
+import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
 // TODO: Mock data 제거
@@ -32,9 +34,6 @@ const data = [
     count: 6,
   },
 ];
-
-// TODO: constants/common으로 이동
-const WEEKDAY = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
 interface Value {
   date: string;
@@ -78,7 +77,7 @@ export const HeatmapCalendar = () => {
 
   useEffect(() => {
     if (boxRef?.current !== null) {
-      boxRef.current.scrollTo({ left: 1520 });
+      boxRef.current.scrollTo({ left: HEATMAP_WIDTH });
     }
   }, []);
 
@@ -147,7 +146,7 @@ const WeekdayList = styled.ul`
 `;
 
 const CalendarContainer = styled.div`
-  width: 1520px;
+  width: ${HEATMAP_WIDTH}px;
   height: 240px;
 
   & .react-calendar-heatmap .react-calendar-heatmap-all-weeks {
