@@ -4,7 +4,7 @@ import { queryKeys } from 'constants/services';
 
 export const useHeatmapCalendar = (username: string) => {
   const { data: heatmapCalendarData, isLoading } = useQuery(
-    [queryKeys.heatmap, username],
+    [queryKeys.activities, username],
     async () => await api.getHeatmapByUsername({ username }),
   );
   return { heatmapCalendarData, isLoading };

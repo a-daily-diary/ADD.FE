@@ -15,7 +15,7 @@ export const API_PATH = {
   terms: {
     index: '/terms-agreements',
   },
-  heatmap: {
-    index: '/heatmap/graph',
+  activities: {
+    index: '/activities',
   },
 } as const;

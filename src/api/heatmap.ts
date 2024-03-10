@@ -14,7 +14,7 @@ export const getHeatmapByUsername = async ({
   const {
     data: { data },
   } = await axios.get<SuccessResponse<HeatmapCell[]>>(
-    `${API_PATH.heatmap.index}/${username}`,
+    `${API_PATH.activities.index}/${username}`,
   );
   return data;
 };
@@ -26,7 +26,7 @@ export const getHeatmapDetail = async ({
   const {
     data: { data },
   } = await axios.get<SuccessResponse<HeatmapCellDetail>>(
-    `${API_PATH.heatmap.index}/${username}/${dateString}`,
+    `${API_PATH.activities.index}/${username}/${dateString}`,
   );
   return data;
 };
