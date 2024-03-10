@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
+import { Loading } from 'components/common';
 import Diary from 'components/diary/Diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
 import { useHeatmapDetail } from 'hooks/services/queries';
@@ -19,7 +20,7 @@ export const HeatmapDetail = ({ dateString }: HeatmapDetailProps) => {
     dateString,
   });
 
-  if (heatmapDetailData === undefined) return <div>로딩중</div>;
+  if (heatmapDetailData === undefined) return <Loading />;
 
   const {
     date: heatmapDetailDate,
