@@ -1,3 +1,8 @@
+/**
+ * YYYY.MM.DD 날짜 포맷터
+ * @param dateString Date string
+ * @returns null | YYYY.MM.DD
+ */
 export const dateFormat = (dateString: string): string | null => {
   // invalid date 에러 방어 코드
   if (isNaN(Date.parse(dateString))) return null;
@@ -13,9 +18,13 @@ export const dateFormat = (dateString: string): string | null => {
     .replace(/ /g, '');
 
   return convertDate;
-  // 예: 2020.08.29
 };
 
+/**
+ * 시간 포맷터
+ * @param dateString Date string
+ * @returns null | 방금 전 | N분 전 | N시간 전
+ */
 export const timeFormat = (dateString: string): string | null => {
   // invalid date 에러 방어 코드
   if (isNaN(Date.parse(dateString))) return null;
