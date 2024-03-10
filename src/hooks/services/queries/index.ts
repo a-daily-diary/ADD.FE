@@ -6,3 +6,4 @@ export * from './useProfile';
 export * from './useUserDiaries';
 export * from './useBookmarkedDiaries';
 export * from './useHeatmapCalendar';
+export * from './useHeatmapDetail';
