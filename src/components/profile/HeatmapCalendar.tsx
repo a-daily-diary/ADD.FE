@@ -100,10 +100,7 @@ const WeekdayList = styled.ul`
   bottom: 0;
   padding-bottom: 8px;
   background-color: ${({ theme }) => theme.colors.white};
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 26px;
+  ${({ theme }) => theme.fonts.caption_03}
 `;
 
 const CalendarContainer = styled.div`
@@ -115,8 +112,8 @@ const CalendarContainer = styled.div`
   }
 
   & .react-calendar-heatmap text {
-    font-family: pretendard;
-    font-size: 5.5px;
+    ${({ theme }) => theme.fonts.caption_01};
+    font-size: 0.55rem;
   }
 
   & .react-calendar-heatmap rect {

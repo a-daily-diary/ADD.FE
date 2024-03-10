@@ -45,6 +45,7 @@ declare module '@emotion/react' {
       body_09: SerializedStyles;
       caption_01: SerializedStyles;
       caption_02: SerializedStyles;
+      caption_03: SerializedStyles;
       navigation: SerializedStyles;
       button_01: SerializedStyles;
       button_02: SerializedStyles;
