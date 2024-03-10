@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
+import { HeatmapDetail } from './HeatmapDetail';
 import type { HeatmapCell } from 'types/heatmap';
 import { WEEKDAY } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
-import { getLastYearDate } from 'utils';
+import { getLastYearDate, dateStringFormat } from 'utils';
 
 interface HeatmapCalendarProps {
   heatmapCalendarData: HeatmapCell[];
@@ -14,10 +15,15 @@ export const HeatmapCalendar = ({
   heatmapCalendarData,
 }: HeatmapCalendarProps) => {
   const today = new Date();
+  const todayString = today.toDateString();
 
   const boxRef = useRef<HTMLDivElement | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string>(
+    dateStringFormat(todayString) as string,
+  );
 
   const getClassForValue = (value: HeatmapCell) => {
+    if (value === null) return;
     const { activityCount } = value;
 
     switch (true) {
@@ -33,18 +39,21 @@ export const HeatmapCalendar = ({
   };
 
   const handleClick = (value: HeatmapCell) => {
-    // TODO: 클릭 시 해당 날짜 활동 내역 보여주기
-    console.log(`Clicked on value with count: ${value.activityCount}`);
+    const { date } = value;
+
+    setSelectedDate(dateStringFormat(date) as string);
   };
 
   useEffect(() => {
     if (boxRef?.current !== null) {
       boxRef.current.scrollTo({ left: HEATMAP_WIDTH });
     }
+
+    setSelectedDate(dateStringFormat(todayString) as string);
   }, []);
 
   return (
-    <Container>
+    <section>
       <Contents ref={boxRef}>
         <WeekdayList>
           {WEEKDAY.map((day) => (
@@ -65,19 +74,18 @@ export const HeatmapCalendar = ({
           />
         </CalendarContainer>
       </Contents>
-    </Container>
+
+      <HeatmapDetail dateString={selectedDate} />
+    </section>
   );
 };
-
-const Container = styled.div`
-  padding: 0 20px;
-`;
 
 const Contents = styled.div`
   overflow-x: auto;
   display: grid;
   grid-template-columns: 28px auto;
   gap: 2px;
+  margin: 0 20px;
   scrollbar-width: none;
 
   -ms-overflow-style: none;
