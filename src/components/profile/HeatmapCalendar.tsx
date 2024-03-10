@@ -70,10 +70,8 @@ export const HeatmapCalendar = ({
             startDate={getLastYearDate(today)}
             endDate={today}
             values={heatmapCalendarData}
-            classForValue={(value: HeatmapCell) => getClassForValue(value)}
-            onClick={(value: HeatmapCell) => {
-              handleClick(value);
-            }}
+            classForValue={getClassForValue}
+            onClick={handleClick}
           />
         </CalendarContainer>
       </Contents>
