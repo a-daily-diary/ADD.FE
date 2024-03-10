@@ -26,7 +26,7 @@ export const getHeatmapDetail = async ({
   const {
     data: { data },
   } = await axios.get<SuccessResponse<HeatmapCellDetail>>(
-    `/heatmap/graph/${username}/${dateString}`,
+    `${API_PATH.heatmap.index}/${username}/${dateString}`,
   );
   return data;
 };

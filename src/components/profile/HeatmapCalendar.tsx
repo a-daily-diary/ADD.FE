@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import { HeatmapDetail } from './HeatmapDetail';
 import type { HeatmapCell } from 'types/heatmap';
-import { WEEKDAY } from 'constants/common';
+import { DAY_OF_WEEK } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate, dateStringFormat } from 'utils';
 
@@ -56,7 +56,7 @@ export const HeatmapCalendar = ({
     <section>
       <Contents ref={boxRef}>
         <WeekdayList>
-          {WEEKDAY.map((day) => (
+          {DAY_OF_WEEK.short.map((day) => (
             <li key={day}>{day}</li>
           ))}
         </WeekdayList>

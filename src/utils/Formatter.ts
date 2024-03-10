@@ -1,3 +1,5 @@
+import { DAY_OF_WEEK } from 'constants/common';
+
 /**
  * YYYY.MM.DD 날짜 포맷터
  * @param dateString Date string
@@ -18,19 +20,6 @@ export const dateFormat = (dateString: string): string | null => {
     .replace(/ /g, '');
 
   return convertDate;
-};
-
-// TODO: constant/common으로 이동
-const DAY_OF_WEEK = {
-  long: [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ],
 };
 
 /**
