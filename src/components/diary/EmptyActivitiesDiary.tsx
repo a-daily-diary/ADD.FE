@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { Button } from 'components/common';
-import { PAGE_PATH } from 'constants/page';
+import { PAGE_PATH } from 'constants/common';
 
 export const EmptyActivitiesDiary = () => {
   const router = useRouter();
