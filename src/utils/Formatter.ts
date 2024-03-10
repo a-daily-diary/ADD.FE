@@ -20,6 +20,35 @@ export const dateFormat = (dateString: string): string | null => {
   return convertDate;
 };
 
+// TODO: constant/common으로 이동
+const DAY_OF_WEEK = {
+  long: [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ],
+};
+
+/**
+ * YYYY.MM.DD 요일 날짜 포맷터
+ * @param dateString Date string
+ * @returns null | YYYY.MM.DD Day of week
+ */
+export const dateWithDayFormat = (dateString: string): string | null => {
+  // invalid date 에러 방어 코드
+  if (isNaN(Date.parse(dateString))) return null;
+
+  const date = new Date(dateString);
+  const convertDate = dateFormat(dateString) as string;
+  const dayOfWeek = DAY_OF_WEEK.long[date.getDay()];
+
+  return `${convertDate} ${dayOfWeek}`;
+};
+
 /**
  * 시간 포맷터
  * @param dateString Date string
