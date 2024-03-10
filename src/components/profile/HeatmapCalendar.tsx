@@ -20,11 +20,16 @@ export const HeatmapCalendar = ({
   const getClassForValue = (value: HeatmapCell) => {
     const { activityCount } = value;
 
-    if (activityCount > 0) return 'color-step-1';
-    if (activityCount > 2) return 'color-step-2';
-    if (activityCount > 4) return 'color-step-3';
-
-    return 'color-step-0';
+    switch (true) {
+      case activityCount > 4:
+        return 'color-step-3';
+      case activityCount > 2:
+        return 'color-step-2';
+      case activityCount > 0:
+        return 'color-step-1';
+      default:
+        return 'color-step-0';
+    }
   };
 
   const handleClick = (value: HeatmapCell) => {
