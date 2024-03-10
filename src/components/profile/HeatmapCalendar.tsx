@@ -21,18 +21,26 @@ export const HeatmapCalendar = ({
 
   const getClassForValue = (value: HeatmapCell) => {
     if (value === null) return;
-    const { activityCount } = value;
+
+    const { activityCount, date } = value;
+    const isSelected = date === selectedDate;
+    let className = '';
 
     switch (true) {
       case activityCount > 4:
-        return 'color-step-3';
+        className = 'color-step-3';
+        break;
       case activityCount > 2:
-        return 'color-step-2';
+        className = 'color-step-2';
+        break;
       case activityCount > 0:
-        return 'color-step-1';
+        className = 'color-step-1';
+        break;
       default:
-        return 'color-step-0';
+        className = 'color-step-0';
     }
+
+    return isSelected ? `${className} selected` : className;
   };
 
   const handleClick = (value: HeatmapCell) => {
@@ -120,7 +128,7 @@ const CalendarContainer = styled.div`
     rx: 1px;
   }
 
-  & .react-calendar-heatmap rect:hover {
+  & .react-calendar-heatmap .selected {
     border-radius: 0.5px;
     outline: 1px solid ${({ theme }) => theme.colors.pink};
     outline-offset: -1px;
