@@ -50,6 +50,20 @@ export const dateWithDayFormat = (dateString: string): string | null => {
 };
 
 /**
+ * YYYY-MM-DD 날짜 포맷터
+ * @param dateString Date string
+ * @returns null | YYYY-MM-DD
+ */
+export const dateStringFormat = (dateString: string): string | null => {
+  // invalid date 에러 방어 코드
+  if (isNaN(Date.parse(dateString))) return null;
+
+  const convertDate = (dateFormat(dateString) as string).replace(/\./g, '-');
+
+  return convertDate;
+};
+
+/**
  * 시간 포맷터
  * @param dateString Date string
  * @returns null | 방금 전 | N분 전 | N시간 전
