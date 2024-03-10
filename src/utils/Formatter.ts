@@ -9,7 +9,8 @@ export const dateFormat = (dateString: string): string | null => {
     day: '2-digit',
   })
     .format(date)
-    .slice(0, -1);
+    .slice(0, -1)
+    .replace(/ /g, '');
 
   return convertDate;
   // 예: 2020.08.29
