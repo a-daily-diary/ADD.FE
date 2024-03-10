@@ -15,12 +15,9 @@ export const HeatmapCalendar = ({
   heatmapCalendarData,
 }: HeatmapCalendarProps) => {
   const today = new Date();
-  const todayString = today.toDateString();
 
   const boxRef = useRef<HTMLDivElement | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>(
-    dateStringFormat(todayString) as string,
-  );
+  const [selectedDate, setSelectedDate] = useState<string>('');
 
   const getClassForValue = (value: HeatmapCell) => {
     if (value === null) return;
@@ -48,8 +45,6 @@ export const HeatmapCalendar = ({
     if (boxRef?.current !== null) {
       boxRef.current.scrollTo({ left: HEATMAP_WIDTH });
     }
-
-    setSelectedDate(dateStringFormat(todayString) as string);
   }, []);
 
   return (
@@ -75,7 +70,7 @@ export const HeatmapCalendar = ({
         </CalendarContainer>
       </Contents>
 
-      <HeatmapDetail dateString={selectedDate} />
+      {selectedDate.length !== 0 && <HeatmapDetail dateString={selectedDate} />}
     </section>
   );
 };
