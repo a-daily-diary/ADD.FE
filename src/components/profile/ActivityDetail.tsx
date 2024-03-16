@@ -6,11 +6,11 @@ import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
 import { useHeatmapDetail } from 'hooks/services/queries';
 import { dateWithDayFormat } from 'utils';
 
-interface HeatmapDetailProps {
+interface ActivityDetailProps {
   dateString: string;
 }
 
-export const HeatmapDetail = ({ dateString }: HeatmapDetailProps) => {
+export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
   const { data: session } = useSession();
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기

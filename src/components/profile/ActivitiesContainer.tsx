@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ActivitiesCalendar } from './ActivitiesCalendar';
-import { HeatmapDetail } from './HeatmapDetail';
+import { ActivityDetail } from './ActivityDetail';
 import type { HeatmapCell } from 'types/heatmap';
 import { dateStringFormat } from 'utils';
 
@@ -29,7 +29,7 @@ export const ActivitiesContainer = ({
         onClick={handleClick}
       />
 
-      {isSelected && <HeatmapDetail dateString={selectedDate} />}
+      {isSelected && <ActivityDetail dateString={selectedDate} />}
     </section>
   );
 };
