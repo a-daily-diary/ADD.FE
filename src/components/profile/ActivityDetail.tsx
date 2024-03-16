@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
 import { Loading } from 'components/common';
-import Diary from 'components/diary/Diary';
+import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
 import { useHeatmapDetail } from 'hooks/services/queries';
 import { dateWithDayFormat } from 'utils';
@@ -26,7 +26,6 @@ export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
     date: heatmapDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
   } = heatmapDetailData;
-  const isEmptyDiary = diaries.length === 0;
 
   return (
     <>
@@ -48,18 +47,11 @@ export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
         </CountList>
       </DetailHeader>
 
-      {/* TODO: activities.diaries 데이터 구조 변경 후 DiariesContainer 적용 */}
-      {isEmptyDiary ? (
-        <EmptyActivitiesDiary />
-      ) : (
-        <List>
-          {diaries.map((diary) => {
-            const { id } = diary;
-            // TODO: 데이터 구조 변경 필요
-            return <Diary key={`diary-list-${id}`} {...diary} />;
-          })}
-        </List>
-      )}
+      <ActivityDiariesContainer
+        title={`${dateString} 작성한 일기`}
+        diariesData={diaries}
+        empty={<EmptyActivitiesDiary />}
+      />
     </>
   );
 };
@@ -83,10 +75,4 @@ const CountList = styled.ul`
 
 const Count = styled.strong`
   font-weight: 700;
-`;
-
-const List = styled.ul`
-  display: grid;
-  gap: 6px;
-  background-color: ${({ theme }) => theme.colors.gray_06};
 `;
