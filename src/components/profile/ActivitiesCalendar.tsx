@@ -1,15 +1,15 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
-import type { HeatmapCell } from 'types/heatmap';
+import type { Activity } from 'types/activity';
 import { DAY_OF_WEEK } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
 interface ActivitiesCalendarProps {
-  heatmapCalendarData: HeatmapCell[];
+  heatmapCalendarData: Activity[];
   selectedDate: string;
-  onClick: (value: HeatmapCell) => void;
+  onClick: (value: Activity) => void;
 }
 
 export const ActivitiesCalendar = ({
@@ -21,7 +21,7 @@ export const ActivitiesCalendar = ({
 
   const boxRef = useRef<HTMLDivElement | null>(null);
 
-  const getClassForValue = (value: HeatmapCell) => {
+  const getClassForValue = (value: Activity) => {
     if (value === null) return;
 
     const { activityCount, date } = value;

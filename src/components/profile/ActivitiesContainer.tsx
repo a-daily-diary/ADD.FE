@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { ActivitiesCalendar } from './ActivitiesCalendar';
 import { ActivityDetail } from './ActivityDetail';
-import type { HeatmapCell } from 'types/heatmap';
+import type { Activity } from 'types/activity';
 import { dateStringFormat } from 'utils';
 
 interface ActivitiesContainerProps {
-  heatmapCalendarData: HeatmapCell[];
+  heatmapCalendarData: Activity[];
 }
 
 export const ActivitiesContainer = ({
@@ -15,7 +15,7 @@ export const ActivitiesContainer = ({
 
   const isSelected = selectedDate.length !== 0;
 
-  const handleClick = (value: HeatmapCell) => {
+  const handleClick = (value: Activity) => {
     const { date } = value;
 
     setSelectedDate(dateStringFormat(date) as string);
