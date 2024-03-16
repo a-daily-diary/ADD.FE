@@ -7,13 +7,13 @@ import { DAY_OF_WEEK } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate, dateStringFormat } from 'utils';
 
-interface HeatmapCalendarProps {
+interface ActivitiesContainerProps {
   heatmapCalendarData: HeatmapCell[];
 }
 
-export const HeatmapCalendar = ({
+export const ActivitiesContainer = ({
   heatmapCalendarData,
-}: HeatmapCalendarProps) => {
+}: ActivitiesContainerProps) => {
   const today = new Date();
 
   const boxRef = useRef<HTMLDivElement | null>(null);
