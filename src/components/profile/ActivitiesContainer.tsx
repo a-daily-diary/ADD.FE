@@ -11,7 +11,8 @@ interface ActivitiesContainerProps {
 export const ActivitiesContainer = ({
   activitiesData,
 }: ActivitiesContainerProps) => {
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const todayDateString = dateStringFormat(new Date().toDateString()) as string;
+  const [selectedDate, setSelectedDate] = useState<string>(todayDateString);
 
   const isSelected = selectedDate.length !== 0;
 
