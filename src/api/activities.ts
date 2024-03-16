@@ -8,7 +8,7 @@ import type { SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/services';
 import axios from 'lib/axios';
 
-export const getHeatmapByUsername = async ({
+export const getActivitiesByUsername = async ({
   username,
 }: GetActivitiesByUsernameRequest) => {
   const {
@@ -19,7 +19,7 @@ export const getHeatmapByUsername = async ({
   return data;
 };
 
-export const getHeatmapDetail = async ({
+export const getActivityDetail = async ({
   username,
   dateString,
 }: GetActivityDetailRequest) => {

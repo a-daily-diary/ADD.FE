@@ -9,7 +9,7 @@ export const useHeatmapDetail = ({
 }: GetActivityDetailRequest) => {
   const { data: heatmapDetailData, isLoading } = useQuery(
     [queryKeys.activities, username, dateString],
-    async () => await api.getHeatmapDetail({ username, dateString }),
+    async () => await api.getActivityDetail({ username, dateString }),
   );
 
   return { heatmapDetailData, isLoading };
