@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { Loading } from 'components/common';
 import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
-import { useHeatmapDetail } from 'hooks/services/queries';
+import { useActivityDetail } from 'hooks/services/queries';
 import { dateWithDayFormat } from 'utils';
 
 interface ActivityDetailProps {
@@ -15,22 +15,22 @@ export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
-  const { heatmapDetailData } = useHeatmapDetail({
+  const { activityDetailData } = useActivityDetail({
     username: session.user.username,
     dateString,
   });
 
-  if (heatmapDetailData === undefined) return <Loading />;
+  if (activityDetailData === undefined) return <Loading />;
 
   const {
-    date: heatmapDetailDate,
+    date: activityDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
-  } = heatmapDetailData;
+  } = activityDetailData;
 
   return (
     <>
       <DetailHeader>
-        <DateText>{dateWithDayFormat(heatmapDetailDate)}</DateText>
+        <DateText>{dateWithDayFormat(activityDetailDate)}</DateText>
         <CountList>
           <li>
             <span>랜덤 매칭 통화 </span>

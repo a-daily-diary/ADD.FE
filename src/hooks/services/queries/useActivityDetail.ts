@@ -3,14 +3,14 @@ import type { GetActivityDetailRequest } from 'types/activity';
 import * as api from 'api';
 import { queryKeys } from 'constants/services';
 
-export const useHeatmapDetail = ({
+export const useActivityDetail = ({
   username,
   dateString,
 }: GetActivityDetailRequest) => {
-  const { data: heatmapDetailData, isLoading } = useQuery(
+  const { data: activityDetailData, isLoading } = useQuery(
     [queryKeys.activities, username, dateString],
     async () => await api.getActivityDetail({ username, dateString }),
   );
 
-  return { heatmapDetailData, isLoading };
+  return { activityDetailData, isLoading };
 };

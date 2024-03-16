@@ -5,5 +5,5 @@ export * from './useTermsAgreements';
 export * from './useProfile';
 export * from './useUserDiaries';
 export * from './useBookmarkedDiaries';
-export * from './useHeatmapCalendar';
-export * from './useHeatmapDetail';
+export * from './useActivities';
+export * from './useActivityDetail';

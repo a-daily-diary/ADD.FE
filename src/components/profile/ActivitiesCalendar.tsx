@@ -7,13 +7,13 @@ import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
 interface ActivitiesCalendarProps {
-  heatmapCalendarData: Activity[];
+  activitiesData: Activity[];
   selectedDate: string;
   onClick: (value: Activity) => void;
 }
 
 export const ActivitiesCalendar = ({
-  heatmapCalendarData,
+  activitiesData,
   selectedDate,
   onClick,
 }: ActivitiesCalendarProps) => {
@@ -64,7 +64,7 @@ export const ActivitiesCalendar = ({
           gutterSize={1}
           startDate={getLastYearDate(today)}
           endDate={today}
-          values={heatmapCalendarData}
+          values={activitiesData}
           classForValue={getClassForValue}
           onClick={onClick}
         />

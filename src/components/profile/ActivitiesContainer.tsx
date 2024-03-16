@@ -5,11 +5,11 @@ import type { Activity } from 'types/activity';
 import { dateStringFormat } from 'utils';
 
 interface ActivitiesContainerProps {
-  heatmapCalendarData: Activity[];
+  activitiesData: Activity[];
 }
 
 export const ActivitiesContainer = ({
-  heatmapCalendarData,
+  activitiesData,
 }: ActivitiesContainerProps) => {
   const [selectedDate, setSelectedDate] = useState<string>('');
 
@@ -24,7 +24,7 @@ export const ActivitiesContainer = ({
   return (
     <section>
       <ActivitiesCalendar
-        heatmapCalendarData={heatmapCalendarData}
+        activitiesData={activitiesData}
         selectedDate={selectedDate}
         onClick={handleClick}
       />
