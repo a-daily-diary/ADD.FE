@@ -6,3 +6,4 @@ export * from './comments';
 export * from './favorite';
 export * from './bookmark';
 export * from './profile';
+export * from './heatmap';

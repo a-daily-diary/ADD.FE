@@ -4,6 +4,7 @@ export const queryKeys = {
   comments: 'comments',
   diaries: 'diaries',
   favorite: 'favorite',
+  heatmap: 'heatmap',
   termsAgreements: 'terms-agreements',
   users: 'users',
 } as const;

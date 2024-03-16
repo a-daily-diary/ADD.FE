@@ -1,5 +1,4 @@
 import type { DiaryDetail } from './diary';
-import type { AxiosRequestConfig } from 'axios';
 import type { User } from 'next-auth';
 
 export interface Comment {
