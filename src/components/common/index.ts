@@ -9,3 +9,4 @@ export * from './Tab';
 export * from './Modal';
 export * from './Loading';
 export * from './ObserverTarget';
+export * from './PopOver';
