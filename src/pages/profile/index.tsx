@@ -7,12 +7,12 @@ import * as api from 'api';
 import { FullPageLoading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
-import { ProfileContainer, HeatmapCalendar } from 'components/profile';
+import { ProfileContainer, ActivitiesContainer } from 'components/profile';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import {
   useBookmarkedDiaries,
-  useHeatmapCalendar,
+  useActivities,
   useUserDiaries,
 } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -30,7 +30,7 @@ const MyProfile: NextPage = () => {
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
-  const { heatmapCalendarData } = useHeatmapCalendar(session.user.username);
+  const { activitiesData } = useActivities(session.user.username);
   const {
     userDiariesData,
     isLoading: isUserDiariesLoading,
@@ -54,7 +54,7 @@ const MyProfile: NextPage = () => {
   if (
     userDiariesData === undefined ||
     bookmarkedDiariesData === undefined ||
-    heatmapCalendarData === undefined
+    activitiesData === undefined
   ) {
     return <FullPageLoading />;
   }
@@ -83,7 +83,7 @@ const MyProfile: NextPage = () => {
         })}
       </Tab>
       {PROFILE_TAB_LIST[activeIndex].id === 'activities' && (
-        <HeatmapCalendar heatmapCalendarData={heatmapCalendarData} />
+        <ActivitiesContainer activitiesData={activitiesData} />
       )}
       {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
         <>

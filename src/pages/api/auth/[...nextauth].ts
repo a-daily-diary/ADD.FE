@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
 
       return await Promise.resolve(session);
     },
-    async signIn({ user }) {
+    async signIn() {
       return await Promise.resolve(true);
     },
   },

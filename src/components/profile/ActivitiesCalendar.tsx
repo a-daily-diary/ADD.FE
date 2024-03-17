@@ -1,40 +1,48 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
-import type { HeatmapCell } from 'types/heatmap';
-import { WEEKDAY } from 'constants/common';
+import type { Activity } from 'types/activity';
+import { DAY_OF_WEEK } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
 import { getLastYearDate } from 'utils';
 
-interface HeatmapCalendarProps {
-  heatmapCalendarData: HeatmapCell[];
+interface ActivitiesCalendarProps {
+  activitiesData: Activity[];
+  selectedDate: string;
+  onClick: (value: Activity) => void;
 }
 
-export const HeatmapCalendar = ({
-  heatmapCalendarData,
-}: HeatmapCalendarProps) => {
+export const ActivitiesCalendar = ({
+  activitiesData,
+  selectedDate,
+  onClick,
+}: ActivitiesCalendarProps) => {
   const today = new Date();
 
   const boxRef = useRef<HTMLDivElement | null>(null);
 
-  const getClassForValue = (value: HeatmapCell) => {
-    const { activityCount } = value;
+  const getClassForValue = (value: Activity) => {
+    if (value === null) return;
+
+    const { activityCount, date } = value;
+    const isSelected = date === selectedDate;
+    let className = '';
 
     switch (true) {
       case activityCount > 4:
-        return 'color-step-3';
+        className = 'color-step-3';
+        break;
       case activityCount > 2:
-        return 'color-step-2';
+        className = 'color-step-2';
+        break;
       case activityCount > 0:
-        return 'color-step-1';
+        className = 'color-step-1';
+        break;
       default:
-        return 'color-step-0';
+        className = 'color-step-0';
     }
-  };
 
-  const handleClick = (value: HeatmapCell) => {
-    // TODO: 클릭 시 해당 날짜 활동 내역 보여주기
-    console.log(`Clicked on value with count: ${value.activityCount}`);
+    return isSelected ? `${className} selected` : className;
   };
 
   useEffect(() => {
@@ -44,40 +52,33 @@ export const HeatmapCalendar = ({
   }, []);
 
   return (
-    <Container>
-      <Contents ref={boxRef}>
-        <WeekdayList>
-          {WEEKDAY.map((day) => (
-            <li key={day}>{day}</li>
-          ))}
-        </WeekdayList>
+    <Container ref={boxRef}>
+      <WeekdayList>
+        {DAY_OF_WEEK.short.map((day) => (
+          <li key={day}>{day}</li>
+        ))}
+      </WeekdayList>
 
-        <CalendarContainer>
-          <CalendarHeatmap
-            gutterSize={1}
-            startDate={getLastYearDate(today)}
-            endDate={today}
-            values={heatmapCalendarData}
-            classForValue={(value: HeatmapCell) => getClassForValue(value)}
-            onClick={(value: HeatmapCell) => {
-              handleClick(value);
-            }}
-          />
-        </CalendarContainer>
-      </Contents>
+      <CalendarContainer>
+        <CalendarHeatmap
+          gutterSize={1}
+          startDate={getLastYearDate(today)}
+          endDate={today}
+          values={activitiesData}
+          classForValue={getClassForValue}
+          onClick={onClick}
+        />
+      </CalendarContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding: 0 20px;
-`;
-
-const Contents = styled.div`
   overflow-x: auto;
   display: grid;
   grid-template-columns: 28px auto;
   gap: 2px;
+  margin: 0 20px;
   scrollbar-width: none;
 
   -ms-overflow-style: none;
@@ -97,10 +98,7 @@ const WeekdayList = styled.ul`
   bottom: 0;
   padding-bottom: 8px;
   background-color: ${({ theme }) => theme.colors.white};
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: -0.04em;
-  line-height: 26px;
+  ${({ theme }) => theme.fonts.caption_03}
 `;
 
 const CalendarContainer = styled.div`
@@ -112,15 +110,15 @@ const CalendarContainer = styled.div`
   }
 
   & .react-calendar-heatmap text {
-    font-family: pretendard;
-    font-size: 5.5px;
+    ${({ theme }) => theme.fonts.caption_01};
+    font-size: 0.55rem;
   }
 
   & .react-calendar-heatmap rect {
     rx: 1px;
   }
 
-  & .react-calendar-heatmap rect:hover {
+  & .react-calendar-heatmap .selected {
     border-radius: 0.5px;
     outline: 1px solid ${({ theme }) => theme.colors.pink};
     outline-offset: -1px;

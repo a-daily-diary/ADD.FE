@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import type { SubmitHandler } from 'react-hook-form';
 import type { EditProfileForm } from 'types/profile';
 import type {
@@ -29,6 +29,7 @@ import {
   VALID_VALUE,
 } from 'constants/validation';
 import { useEditProfile } from 'hooks/services';
+import { authOptions } from 'pages/api/auth/[...nextauth]';
 import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
@@ -189,6 +190,22 @@ const ProfileEditPage: NextPage = () => {
       </Section>
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req, res } = context;
+  const session = await getServerSession(req, res, authOptions);
+
+  if (session === null) {
+    return {
+      redirect: {
+        destination: '/account/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: { session } };
 };
 
 export default ProfileEditPage;

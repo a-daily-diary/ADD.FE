@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import React from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 import type { SubmitHandler } from 'react-hook-form';

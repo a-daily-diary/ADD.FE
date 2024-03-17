@@ -198,6 +198,13 @@ const theme: Theme = {
       lineHeight: 1,
       letterSpacing: -0.02,
     }),
+    caption_03: fontStyle({
+      fontFamily: pretendard.style.fontFamily,
+      size: 1,
+      weight: 400,
+      lineHeight: 2.6,
+      letterSpacing: -0.02,
+    }),
     navigation: fontStyle({
       fontFamily: pretendard.style.fontFamily,
       size: 1.2,
