@@ -4,21 +4,23 @@ import CalendarHeatmap from 'react-calendar-heatmap';
 import type { Activity } from 'types/activity';
 import { DAY_OF_WEEK } from 'constants/common';
 import { HEATMAP_WIDTH } from 'constants/styles';
-import { getLastYearDate } from 'utils';
 
 interface ActivitiesCalendarProps {
   activitiesData: Activity[];
   selectedDate: string;
+  calendarDate: {
+    startDate: Date;
+    endDate: Date;
+  };
   onClick: (value: Activity) => void;
 }
 
 export const ActivitiesCalendar = ({
   activitiesData,
   selectedDate,
+  calendarDate,
   onClick,
 }: ActivitiesCalendarProps) => {
-  const today = new Date();
-
   const boxRef = useRef<HTMLDivElement | null>(null);
 
   const getClassForValue = (value: Activity) => {
@@ -62,8 +64,8 @@ export const ActivitiesCalendar = ({
       <CalendarContainer>
         <CalendarHeatmap
           gutterSize={1}
-          startDate={getLastYearDate(today)}
-          endDate={today}
+          startDate={calendarDate.startDate}
+          endDate={calendarDate.endDate}
           values={activitiesData}
           classForValue={getClassForValue}
           onClick={onClick}
