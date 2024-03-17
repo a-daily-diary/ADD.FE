@@ -22,7 +22,7 @@ export interface GetActivitiesByUsernameRequest {
   year: string | null;
 }
 
-export interface GetActivityDetailRequest
-  extends GetActivitiesByUsernameRequest {
+export interface GetActivityDetailRequest {
+  username: Pick<RegisterRequest, 'username'>['username'];
   dateString: string;
 }
