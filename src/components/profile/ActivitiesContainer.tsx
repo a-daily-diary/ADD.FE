@@ -7,6 +7,7 @@ import type { ChangeEventHandler } from 'react';
 import type { Activity } from 'types/activity';
 import { FullPageLoading } from 'components/common';
 import { useActivities } from 'hooks/services';
+import { ScreenReaderOnly } from 'styles';
 import {
   dateStringFormat,
   getLastYearDate,
@@ -19,7 +20,11 @@ const initialCalendarDate = {
   activeYear: null,
 };
 
-export const ActivitiesContainer = () => {
+interface ActivitiesContainerProps {
+  title: string;
+}
+
+export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
   const today = new Date();
   const todayDateString = dateStringFormat(today.toDateString()) as string;
   const years = getYearsForActivitiesCalendar();
@@ -76,6 +81,7 @@ export const ActivitiesContainer = () => {
 
   return (
     <section>
+      <Title>{title}</Title>
       <ActivitiesCalendarHeader>
         <Select defaultValue={undefined} onChange={handleSelect}>
           {years.map((year) => {
@@ -99,6 +105,10 @@ export const ActivitiesContainer = () => {
     </section>
   );
 };
+
+const Title = styled.h2`
+  ${ScreenReaderOnly}
+`;
 
 const ActivitiesCalendarHeader = styled.header`
   padding: 0 20px 0 50px;
