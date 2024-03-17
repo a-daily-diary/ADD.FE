@@ -10,11 +10,17 @@ import axios from 'lib/axios';
 
 export const getActivitiesByUsername = async ({
   username,
+  year,
 }: GetActivitiesByUsernameRequest) => {
   const {
     data: { data },
   } = await axios.get<SuccessResponse<Activity[]>>(
     `${API_PATH.activities.index}/${username}`,
+    {
+      params: {
+        year,
+      },
+    },
   );
   return data;
 };

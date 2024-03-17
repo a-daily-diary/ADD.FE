@@ -17,9 +17,12 @@ export interface ActivityDetail extends Activity {
 
 /* Request */
 
-export type GetActivitiesByUsernameRequest = Pick<RegisterRequest, 'username'>;
+export interface GetActivitiesByUsernameRequest {
+  username: Pick<RegisterRequest, 'username'>['username'];
+  year: string | null;
+}
 
-export interface GetActivityDetailRequest
-  extends GetActivitiesByUsernameRequest {
+export interface GetActivityDetailRequest {
+  username: Pick<RegisterRequest, 'username'>['username'];
   dateString: string;
 }

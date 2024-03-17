@@ -1,4 +1,5 @@
 export * from './Button';
+export * from './ColorChip';
 export * from './IconButton';
 export * from './FloatingMenu';
 export * from './FloatingMenuButton';
@@ -8,3 +9,4 @@ export * from './Tab';
 export * from './Modal';
 export * from './Loading';
 export * from './ObserverTarget';
+export * from './PopOver';
