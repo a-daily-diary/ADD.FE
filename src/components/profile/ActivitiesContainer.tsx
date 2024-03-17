@@ -2,12 +2,15 @@ import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { ActivitiesCalendar } from './ActivitiesCalendar';
+import { ActivitiesInformation } from './ActivitiesInformation';
 import { ActivityDetail } from './ActivityDetail';
 import type { ChangeEventHandler } from 'react';
 import type { Activity } from 'types/activity';
-import { FullPageLoading } from 'components/common';
+import { QuestionIcon } from 'assets/icons';
+import { FullPageLoading, PopOver } from 'components/common';
+import { useClickOutside } from 'hooks/common';
 import { useActivities } from 'hooks/services';
-import { ScreenReaderOnly } from 'styles';
+import { SVGVerticalAlignStyle, ScreenReaderOnly } from 'styles';
 import {
   dateStringFormat,
   getLastYearDate,
@@ -40,6 +43,7 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
+  const { ref, isVisible, setIsVisible } = useClickOutside();
   const { activitiesData } = useActivities({
     username: session.user.username,
     year: calendarDate.activeYear,
@@ -79,6 +83,10 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
     return <FullPageLoading />;
   }
 
+  const handleClickQuestion = () => {
+    setIsVisible((state) => !state);
+  };
+
   return (
     <section>
       <Title>{title}</Title>
@@ -92,6 +100,16 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
             );
           })}
         </Select>
+        <ActivitiesInformationContainer>
+          <QuestionButton ref={ref} type="button" onClick={handleClickQuestion}>
+            <QuestionIcon />
+          </QuestionButton>
+          {isVisible && (
+            <PopOver>
+              <ActivitiesInformation />
+            </PopOver>
+          )}
+        </ActivitiesInformationContainer>
       </ActivitiesCalendarHeader>
 
       <ActivitiesCalendar
@@ -111,10 +129,21 @@ const Title = styled.h2`
 `;
 
 const ActivitiesCalendarHeader = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 20px 0 50px;
 `;
 
 const Select = styled.select`
   border: 0;
   ${({ theme }) => theme.fonts.body_07}
+`;
+
+const QuestionButton = styled.button`
+  ${SVGVerticalAlignStyle}
+`;
+
+const ActivitiesInformationContainer = styled.div`
+  position: relative;
 `;
