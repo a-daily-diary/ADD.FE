@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { ActivitiesCalendar } from './ActivitiesCalendar';
 import { ActivitiesInformation } from './ActivitiesInformation';

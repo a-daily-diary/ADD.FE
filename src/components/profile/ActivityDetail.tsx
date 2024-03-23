@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
 import { Loading } from 'components/common';
 import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
