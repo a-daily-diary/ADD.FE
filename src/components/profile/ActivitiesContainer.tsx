@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { ActivitiesCalendar } from './ActivitiesCalendar';
 import { ActivitiesInformation } from './ActivitiesInformation';
@@ -25,9 +24,13 @@ const initialCalendarDate = {
 
 interface ActivitiesContainerProps {
   title: string;
+  username: string;
 }
 
-export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
+export const ActivitiesContainer = ({
+  title,
+  username,
+}: ActivitiesContainerProps) => {
   const today = new Date();
   const todayDateString = dateStringFormat(today.toDateString()) as string;
   const years = getYearsForActivitiesCalendar();
@@ -39,13 +42,9 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
   }>(initialCalendarDate);
   const [selectedDate, setSelectedDate] = useState<string>(todayDateString);
 
-  const { data: session } = useSession({ required: true });
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
-
   const { ref, isVisible, setIsVisible } = useClickOutside();
   const { activitiesData } = useActivities({
-    username: session.user.username,
+    username,
     year: calendarDate.activeYear,
   });
 
@@ -119,7 +118,9 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
         onClick={handleClick}
       />
 
-      {isSelected && <ActivityDetail dateString={selectedDate} />}
+      {isSelected && (
+        <ActivityDetail dateString={selectedDate} username={username} />
+      )}
     </section>
   );
 };

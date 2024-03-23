@@ -74,7 +74,10 @@ const MyProfile: NextPage = () => {
         })}
       </Tab>
       {PROFILE_TAB_LIST[activeIndex].id === 'activities' && (
-        <ActivitiesContainer title={PROFILE_TAB_LIST[activeIndex].title} />
+        <ActivitiesContainer
+          title={PROFILE_TAB_LIST[activeIndex].title}
+          username={session.user.username}
+        />
       )}
       {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
         <>
