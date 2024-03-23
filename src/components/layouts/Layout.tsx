@@ -8,7 +8,7 @@ interface LayoutProps {
   children?: ReactNode;
 }
 
-const SHOW_NAVBAR_PAGES = ['/', '/profile'];
+const SHOW_NAVBAR_PAGES = ['/', '/profile', '/profile/[username]'];
 
 const Layout = ({ children }: LayoutProps): ReactJSXElement => {
   const { pathname } = useRouter();
