@@ -6,6 +6,7 @@ import type { LoginRequest } from 'types/login';
 import type { EditProfileRequest } from 'types/profile';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
+import { PAGE_PATH } from 'constants/common';
 import { errorResponseMessage } from 'utils';
 
 export const authOptions: NextAuthOptions = {
@@ -72,7 +73,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/account/login',
+    signIn: PAGE_PATH().account.login,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

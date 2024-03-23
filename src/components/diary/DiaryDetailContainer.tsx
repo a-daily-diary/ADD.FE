@@ -10,6 +10,7 @@ import {
 } from 'assets/icons';
 import { ResponsiveImage } from 'components/common';
 import { ProfileImage } from 'components/profile';
+import { PAGE_PATH } from 'constants/common';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { dateFormat, timeFormat } from 'utils';
 
@@ -40,7 +41,7 @@ export const DiaryDetailContainer = ({
           src={author.imgUrl}
           username={author.username}
         />
-        <UsernameLink href={`/profile/${author.username}`}>
+        <UsernameLink href={PAGE_PATH(author.username).profile.username}>
           {author.username}
         </UsernameLink>
         <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>

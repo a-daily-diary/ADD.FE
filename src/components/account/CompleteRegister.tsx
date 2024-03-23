@@ -2,9 +2,14 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Button } from 'components/common';
+import { PAGE_PATH } from 'constants/common';
 
 export const CompleteRegister = () => {
   const router = useRouter();
+
+  const handleGoToLogin = () => {
+    void router.replace(PAGE_PATH().account.login);
+  };
 
   return (
     <Section>
@@ -27,7 +32,7 @@ export const CompleteRegister = () => {
         <Button
           type="button"
           fullWidth
-          onClick={async () => await router.replace('/account/login')}
+          onClick={handleGoToLogin}
           text="로그인하기"
         />
       </ButtonContainer>

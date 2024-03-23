@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { NoLinkProfileImage } from './ProfileImage';
 import { SettingIcon } from 'assets/icons';
 import { FullPageLoading } from 'components/common';
+import { PAGE_PATH } from 'constants/common';
 import { useProfile } from 'hooks/services';
 
 interface ProfileContainerProps {
@@ -21,7 +22,7 @@ export const ProfileContainer = ({
   return (
     <Container>
       {isMyProfile && (
-        <SettingLink href={'/setting'}>
+        <SettingLink href={PAGE_PATH().setting.index}>
           <SettingIcon />
         </SettingLink>
       )}
@@ -31,7 +32,9 @@ export const ProfileContainer = ({
         username={profileData.username}
       />
       <UserName>{username}</UserName>
-      {isMyProfile && <EditLink href={'/profile/edit'}>프로필 수정</EditLink>}
+      {isMyProfile && (
+        <EditLink href={PAGE_PATH().profile.edit}>프로필 수정</EditLink>
+      )}
     </Container>
   );
 };

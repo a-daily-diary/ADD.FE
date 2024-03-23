@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
+import { PAGE_PATH } from 'constants/common';
 
 interface ProfileImageProps {
   username: string;
@@ -11,7 +12,7 @@ interface ProfileImageProps {
 
 export const ProfileImage = ({ username, src, size }: ProfileImageProps) => {
   return (
-    <ImageLink href={`/profile/${username}`}>
+    <ImageLink href={PAGE_PATH(username).profile.username}>
       <Image
         src={src}
         alt={username}

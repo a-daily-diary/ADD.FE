@@ -8,6 +8,7 @@ import type { MatchingFeedbackForm } from 'types/matching';
 import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
+import { PAGE_PATH } from 'constants/common';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingSurvey = () => {
@@ -18,7 +19,7 @@ const MatchingSurvey = () => {
   const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
     console.log(data); // FIXME: 실제 API 연동할 때 사용될 데이터 console.log 입니다.
 
-    await router.push('/');
+    await router.push(PAGE_PATH().main);
   };
 
   const isBlockedMatching = useWatch({

@@ -9,6 +9,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import type { LoginForm } from 'types/login';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
+import { PAGE_PATH } from 'constants/common';
 import {
   ERROR_MESSAGE,
   VALID_VALUE,
@@ -24,6 +25,10 @@ const Login: NextPage = () => {
     setError,
     formState: { errors, isValid },
   } = useForm<LoginForm>({ mode: 'onChange' });
+
+  const handleGoToRegister = () => {
+    void router.push(PAGE_PATH().account.register);
+  };
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
     const { email, password } = data;
@@ -44,7 +49,7 @@ const Login: NextPage = () => {
         });
       }
       if (response?.ok === true) {
-        await router.replace('/');
+        await router.replace(PAGE_PATH().main);
       }
     } catch (error) {
       // TODO: 예기치 못한 에러 임의로 처리, 수정 필요
@@ -102,7 +107,7 @@ const Login: NextPage = () => {
         />
         <Button type="submit" disabled={!isValid} fullWidth text="로그인" />
       </Form>
-      <StyledLink href={'/account/findPassword'}>
+      <StyledLink href={PAGE_PATH().account.findPassword}>
         비밀번호를 잊으셨나요?
       </StyledLink>
       <ButtonContainer>
@@ -110,7 +115,7 @@ const Login: NextPage = () => {
           type="button"
           fullWidth
           variant="line"
-          onClick={async () => await router.push('/account/register')}
+          onClick={handleGoToRegister}
           text="이메일로 가입하기"
         />
       </ButtonContainer>

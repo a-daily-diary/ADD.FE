@@ -7,7 +7,7 @@ export const EmptyActivitiesDiary = () => {
   const router = useRouter();
 
   const handleGoToWriteDiary = () => {
-    void router.push(PAGE_PATH.diary);
+    void router.push(PAGE_PATH().diary.index);
   };
 
   return (
