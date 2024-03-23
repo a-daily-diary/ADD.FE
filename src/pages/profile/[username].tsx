@@ -11,7 +11,7 @@ import * as api from 'api';
 import { FullPageLoading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
-import { ProfileContainer } from 'components/profile';
+import { ActivitiesContainer, ProfileContainer } from 'components/profile';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
@@ -58,6 +58,12 @@ const YourProfile: NextPage<
           );
         })}
       </Tab>
+      {PROFILE_TAB_LIST[activeIndex].id === 'activities' && (
+        <ActivitiesContainer
+          title={PROFILE_TAB_LIST[activeIndex].title}
+          username={username}
+        />
+      )}
       {PROFILE_TAB_LIST[activeIndex].id === 'diaries' && (
         <>
           <DiariesContainer

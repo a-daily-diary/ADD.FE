@@ -8,15 +8,15 @@ import { dateWithDayFormat } from 'utils';
 
 interface ActivityDetailProps {
   dateString: string;
+  username: string;
 }
 
-export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
-  const { data: session } = useSession();
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
-
+export const ActivityDetail = ({
+  dateString,
+  username,
+}: ActivityDetailProps) => {
   const { activityDetailData } = useActivityDetail({
-    username: session.user.username,
+    username,
     dateString,
   });
 
@@ -47,6 +47,7 @@ export const ActivityDetail = ({ dateString }: ActivityDetailProps) => {
         </CountList>
       </DetailHeader>
 
+      {/* TODO: 날짜별, 사용자별 UI 수정 필요 */}
       <ActivityDiariesContainer
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
