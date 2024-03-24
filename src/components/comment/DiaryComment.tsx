@@ -68,7 +68,6 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
         <CommentContent>{comment}</CommentContent>
         {isVisible && (
           <FloatingMenu
-            position="absolute"
             items={
               isCommenter
                 ? [

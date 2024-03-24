@@ -54,45 +54,47 @@ const DiaryDetailPage: NextPage = () => {
       <Header
         left={<HeaderLeft type="이전" />}
         right={
-          <HeaderRight
-            buttonRef={ref}
-            type="더보기"
-            onClick={() => {
-              setIsVisible((state) => !state);
-            }}
-          />
+          <>
+            <HeaderRight
+              buttonRef={ref}
+              type="더보기"
+              onClick={() => {
+                setIsVisible((state) => !state);
+              }}
+            />
+            {isVisible && (
+              <FloatingMenu
+                items={
+                  isAuthor
+                    ? [
+                        {
+                          icon: <EditIcon />,
+                          label: '수정하기',
+                          onClick: async () =>
+                            await router.push(`/diary/${id as string}/edit`),
+                        },
+                        {
+                          icon: <TrashIcon />,
+                          label: '삭제하기',
+                          onClick: handleDeleteModal.open,
+                        },
+                      ]
+                    : [
+                        {
+                          icon: <ReportIcon />,
+                          label: '신고하기',
+                          onClick: () => {
+                            confirm('신고하시겠습니까?'); // TODO: 신고하기 기능
+                          },
+                        },
+                      ]
+                }
+              />
+            )}
+          </>
         }
       />
-      {isVisible && (
-        <FloatingMenu
-          position="fixed"
-          items={
-            isAuthor
-              ? [
-                  {
-                    icon: <EditIcon />,
-                    label: '수정하기',
-                    onClick: async () =>
-                      await router.push(`/diary/${id as string}/edit`),
-                  },
-                  {
-                    icon: <TrashIcon />,
-                    label: '삭제하기',
-                    onClick: handleDeleteModal.open,
-                  },
-                ]
-              : [
-                  {
-                    icon: <ReportIcon />,
-                    label: '신고하기',
-                    onClick: () => {
-                      confirm('신고하시겠습니까?'); // TODO: 신고하기 기능
-                    },
-                  },
-                ]
-          }
-        />
-      )}
+
       <Section>
         <DiaryDetailContainer {...diaryData} />
         <DiaryCommentsContainer diaryId={id as string} />
