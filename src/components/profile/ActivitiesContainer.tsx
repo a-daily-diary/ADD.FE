@@ -105,7 +105,7 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
             <QuestionIcon />
           </QuestionButton>
           {isVisible && (
-            <PopOver>
+            <PopOver positionBase="bottom">
               <ActivitiesInformation />
             </PopOver>
           )}
