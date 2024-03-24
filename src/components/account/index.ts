@@ -4,3 +4,4 @@ export * from './RegisterProfileImage';
 export * from './RegisterTerms';
 export * from './FindPasswordForm';
 export * from './CompleteFindPassword';
+export * from './ResetPasswordForm';

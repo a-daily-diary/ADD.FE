@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 import type { NextPage } from 'next/types';
+import { ResetPasswordForm } from 'components/account';
 
 const ResetPassword: NextPage = () => {
   return (
     <>
-      <ContentWrapper />
+      <ContentWrapper>
+        <ResetPasswordForm />
+      </ContentWrapper>
     </>
   );
 };
