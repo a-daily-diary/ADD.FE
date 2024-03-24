@@ -3,7 +3,7 @@ import { isAxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import type { Dispatch, SetStateAction } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import type { RegisterForm } from 'types/register';
+import type { PasswordFindForm } from 'types/password';
 import type { ErrorResponse } from 'types/response';
 import { passwordResetLink } from 'api';
 import { Button } from 'components/common';
@@ -15,18 +15,14 @@ interface FindPasswordFormProps {
 }
 
 export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
-  /**
-   * @todo
-   * RegisterForm 대신 PasswordFindForm 정의하여 사용
-   */
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isValid },
-  } = useForm<RegisterForm>({ mode: 'onChange' });
+  } = useForm<PasswordFindForm>({ mode: 'onChange' });
 
-  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
+  const onSubmit: SubmitHandler<PasswordFindForm> = async (data) => {
     try {
       const { email } = data;
       await passwordResetLink({
