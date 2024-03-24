@@ -21,14 +21,14 @@ export const PAGE_PATH = (id?: string) => {
     },
 
     account: {
-      index: 'account',
+      index: '/account',
       login: '/account/login',
       register: '/account/register',
       findPassword: '/account/findPassword',
     },
 
     setting: {
-      index: 'setting',
+      index: '/setting',
     },
   } as const;
 };
