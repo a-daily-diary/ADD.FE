@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import router from 'next/router';
 import { useForm } from 'react-hook-form';
 import type { PasswordResetForm } from 'types/password';
 import { Button } from 'components/common';
@@ -13,13 +14,22 @@ export const ResetPasswordForm = () => {
   const {
     register,
     getValues,
+    handleSubmit,
     formState: { isValid, errors },
   } = useForm<PasswordResetForm>({ mode: 'onChange' });
+
+  const onSubmit = async () => {
+    /**
+     * @todo
+     * 비밀번호 재설정 API 요청
+     */
+    await router.push('/account/login');
+  };
 
   return (
     <>
       <Title>비밀번호를 재설정해주세요.</Title>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           register={register('password', {
             required: ERROR_MESSAGE.password.required,
