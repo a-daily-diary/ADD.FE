@@ -3,27 +3,70 @@ import { useForm } from 'react-hook-form';
 import type { PasswordResetForm } from 'types/password';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
+import {
+  ERROR_MESSAGE,
+  INVALID_VALUE,
+  VALID_VALUE,
+} from 'constants/validation';
 
 export const ResetPasswordForm = () => {
-  const { register } = useForm<PasswordResetForm>({ mode: 'onChange' });
+  const {
+    register,
+    getValues,
+    formState: { isValid, errors },
+  } = useForm<PasswordResetForm>({ mode: 'onChange' });
 
   return (
     <>
       <Title>비밀번호를 재설정해주세요.</Title>
       <Form>
         <FormInput
-          register={register('password', {})}
+          register={register('password', {
+            required: ERROR_MESSAGE.password.required,
+            minLength: {
+              value: VALID_VALUE.password.min,
+              message: ERROR_MESSAGE.password.length,
+            },
+            maxLength: {
+              value: VALID_VALUE.password.max,
+              message: ERROR_MESSAGE.password.length,
+            },
+            pattern: {
+              value: VALID_VALUE.password.pattern,
+              message: ERROR_MESSAGE.password.pattern,
+            },
+            validate: (value) =>
+              !INVALID_VALUE.password.test(value) ||
+              ERROR_MESSAGE.password.invalidPattern,
+          })}
           type="password"
           placeholder="비밀번호"
           label="비밀번호"
+          errors={errors.password}
         />
         <FormInput
-          register={register('passwordCheck', {})}
+          register={register('passwordCheck', {
+            required: ERROR_MESSAGE.passwordCheck.required,
+            validate: {
+              matchesPreviousPassword: (value) => {
+                const { password } = getValues();
+                return (
+                  password === value || ERROR_MESSAGE.passwordCheck.pattern
+                );
+              },
+            },
+          })}
           type="password"
           placeholder="비밀번호 확인"
           label="비밀번호 확인"
+          errors={errors.passwordCheck}
         />
-        <StyledButton type="submit" text="비밀번호 재설정" fullWidth />
+        <StyledButton
+          type="submit"
+          disabled={!isValid}
+          text="비밀번호 재설정"
+          fullWidth
+        />
       </Form>
     </>
   );
