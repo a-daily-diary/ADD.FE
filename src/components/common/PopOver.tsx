@@ -4,7 +4,6 @@ import { Z_INDEX } from 'constants/styles';
 import { theme } from 'styles';
 
 interface PopOverProps extends PropsWithChildren {
-  position?: 'absolute' | 'fixed';
   positionBase?: 'top' | 'bottom';
   top?: number;
   right?: number;
@@ -13,7 +12,6 @@ interface PopOverProps extends PropsWithChildren {
 // NOTE: PopOver의 부모에 position: relative 필요
 export const PopOver = ({
   children,
-  position = 'absolute',
   positionBase = 'top',
   top = 10,
   right = 0,
@@ -21,7 +19,7 @@ export const PopOver = ({
   return (
     <div
       css={css`
-        position: ${position};
+        position: absolute;
         top: ${positionBase === 'top' ? `${top}px` : 'auto'};
         bottom: ${positionBase === 'bottom' ? 0 : 'auto'};
         right: ${right}px;
