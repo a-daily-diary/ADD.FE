@@ -19,7 +19,7 @@ const MatchingLoading: NextPage = () => {
   const cancelMatching = () => {
     setIsCancel(true);
     setTimeout(async () => {
-      await router.push(PAGE_PATH.matching);
+      await router.push(PAGE_PATH().matching.index);
     }, 2000);
   };
 

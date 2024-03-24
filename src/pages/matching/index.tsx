@@ -67,7 +67,7 @@ const MatchingRule: NextPage = () => {
             shape="round"
             size="xl"
             onClick={async () => {
-              await router.push(PAGE_PATH.matching_loading);
+              await router.push(PAGE_PATH().matching.loading);
             }}
             text="랜덤매칭 시작"
           />

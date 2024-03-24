@@ -12,6 +12,7 @@ import { Loading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer } from 'components/profile';
+import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
@@ -85,7 +86,7 @@ export const getServerSideProps = (async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: '/account/login',
+        destination: PAGE_PATH().account.login,
         permanent: false,
       },
     };

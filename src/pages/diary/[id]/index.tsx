@@ -12,6 +12,7 @@ import { DiaryCommentsContainer } from 'components/comment';
 import { FloatingMenu, FullPageLoading, Modal, Seo } from 'components/common';
 import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
+import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/services';
 import { useClickOutside, useModal } from 'hooks/common';
@@ -30,6 +31,10 @@ const DiaryDetailPage: NextPage = () => {
 
   const { diaryData, isLoading } = useDiary(id as string);
   const deleteDiaryMutation = useDeleteDiary({ id: id as string });
+
+  const handleGoToEdit = () => {
+    void router.push(PAGE_PATH(id as string).diary.edit);
+  };
 
   const handleDeleteDiary = () => {
     try {
@@ -72,8 +77,7 @@ const DiaryDetailPage: NextPage = () => {
                   {
                     icon: <EditIcon />,
                     label: '수정하기',
-                    onClick: async () =>
-                      await router.push(`/diary/${id as string}/edit`),
+                    onClick: handleGoToEdit,
                   },
                   {
                     icon: <TrashIcon />,
@@ -116,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: '/account/login',
+        destination: PAGE_PATH().account.login,
         permanent: false,
       },
     };

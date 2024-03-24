@@ -23,6 +23,7 @@ import {
   HeaderTitle,
 } from 'components/layouts';
 import { NoLinkProfileImage, SelectProfileImage } from 'components/profile';
+import { PAGE_PATH } from 'constants/common';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -97,7 +98,7 @@ const ProfileEditPage: NextPage = () => {
       editProfileMutation({ username, imgUrl });
       void update({ username, imgUrl });
 
-      await router.replace('/profile');
+      await router.replace(PAGE_PATH().profile.index);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         // TODO: 에러 처리
@@ -199,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: '/account/login',
+        destination: PAGE_PATH().account.login,
         permanent: false,
       },
     };

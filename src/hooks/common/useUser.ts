@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import type { User } from 'next-auth';
+import { PAGE_PATH } from 'constants/common';
 
 interface LoggedStatus {
   user: User | null;
@@ -19,7 +20,7 @@ export const useUser = (): LoggedStatus => {
   const useData = session !== null ? session?.user : null;
 
   if (isUnauthenticated) {
-    void router.push('/account/login');
+    void router.push(PAGE_PATH().account.login);
   }
 
   return {
