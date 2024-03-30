@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import type { NextPage } from 'next';
 import { Seo } from 'components/common';
 import { SearchHeader } from 'components/search';
+import { NoSearchResults } from 'components/search/NoSearchResults';
 
 const SearchPage: NextPage = () => {
   return (
@@ -9,7 +10,8 @@ const SearchPage: NextPage = () => {
       <Seo title={'검색 | a daily diary'} />
       <SearchHeader />
       <Container>
-        <div>search</div>
+        <Title>최근 검색어</Title>
+        <NoSearchResults description="최근 검색어 내역이 없습니다." />
       </Container>
     </>
   );
@@ -26,4 +28,9 @@ const Container = styled.section`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const Title = styled.h2`
+  padding: 24px 20px;
+  ${({ theme }) => theme.fonts.headline_02}
 `;
