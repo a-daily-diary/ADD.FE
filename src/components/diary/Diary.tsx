@@ -10,6 +10,7 @@ import {
   HeartOffIcon,
 } from 'assets/icons';
 import { ResponsiveImage } from 'components/common';
+import { PAGE_PATH } from 'constants/common';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
@@ -37,13 +38,15 @@ const Diary = ({
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        <ContentLink href={`/diary/${id}`}>{content}</ContentLink>
+        <ContentLink href={PAGE_PATH.diary.detail(id)}>{content}</ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage src={imgUrl} alt={title} aspectRatio={2 / 1} />
         )}
         <DateContainer>
           <span>
-            <Link href={`/profile/${author.username}`}>{author.username}</Link>
+            <Link href={PAGE_PATH.profile.username(author.username)}>
+              {author.username}
+            </Link>
             <span>・</span>
             <span>{dateFormat(createdAt)}</span>
           </span>
@@ -56,7 +59,10 @@ const Diary = ({
             {isFavorite ? <HeartOnIcon /> : <HeartOffIcon />}
             {favoriteCount}
           </FavoriteButton>
-          <CommentLink href={`/diary/${id}?focus=comment`} as={`/diary/${id}`}>
+          <CommentLink
+            href={PAGE_PATH.diary.focusComment(id)}
+            as={PAGE_PATH.diary.detail(id)}
+          >
             <CommentIcon />
             {commentCount}
           </CommentLink>
