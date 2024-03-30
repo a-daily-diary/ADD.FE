@@ -3,19 +3,19 @@ import type { PropsWithChildren } from 'react';
 import { Z_INDEX } from 'constants/styles';
 import { theme } from 'styles';
 
-interface PopOverProps extends PropsWithChildren {
+interface PopoverProps extends PropsWithChildren {
   position?: 'absolute' | 'fixed';
   top?: number;
   right?: number;
 }
 
-// NOTE: PopOver의 부모에 position: relative 필요
-export const PopOver = ({
+// NOTE: Popover의 부모에 position: relative 필요
+export const Popover = ({
   children,
   position = 'absolute',
   top = 10,
   right = 0,
-}: PopOverProps) => {
+}: PopoverProps) => {
   return (
     <div
       css={css`
