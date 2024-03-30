@@ -7,7 +7,7 @@ import { ActivityDetail } from './ActivityDetail';
 import type { ChangeEventHandler } from 'react';
 import type { Activity } from 'types/activity';
 import { QuestionIcon } from 'assets/icons';
-import { FullPageLoading, PopOver } from 'components/common';
+import { FullPageLoading, Popover } from 'components/common';
 import { useClickOutside } from 'hooks/common';
 import { useActivities } from 'hooks/services';
 import { SVGVerticalAlignStyle, ScreenReaderOnly } from 'styles';
@@ -105,9 +105,9 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
             <QuestionIcon />
           </QuestionButton>
           {isVisible && (
-            <PopOver>
+            <Popover>
               <ActivitiesInformation />
-            </PopOver>
+            </Popover>
           )}
         </ActivitiesInformationContainer>
       </ActivitiesCalendarHeader>
