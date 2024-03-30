@@ -2,7 +2,7 @@ import {
   FloatingMenuButton,
   type FloatingMenuButtonProps,
 } from './FloatingMenuButton';
-import { PopOver } from './PopOver';
+import { Popover } from './Popover';
 
 interface FloatingMenuProps {
   items: FloatingMenuButtonProps[];
@@ -10,7 +10,7 @@ interface FloatingMenuProps {
 
 export const FloatingMenu = ({ items }: FloatingMenuProps) => {
   return (
-    <PopOver top={40} right={20}>
+    <Popover top={40} right={20}>
       <ul>
         {items.map((item, index) => {
           const { label, icon, onClick } = item;
@@ -21,6 +21,6 @@ export const FloatingMenu = ({ items }: FloatingMenuProps) => {
           );
         })}
       </ul>
-    </PopOver>
+    </Popover>
   );
 };

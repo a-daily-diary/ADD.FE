@@ -75,8 +75,7 @@ const DiaryDetailPage: NextPage = () => {
                         {
                           icon: <EditIcon />,
                           label: '수정하기',
-                          onClick: async () =>
-                            await router.push(`/diary/${id as string}/edit`),
+                          onClick: handleGoToEdit,
                         },
                         {
                           icon: <TrashIcon />,
