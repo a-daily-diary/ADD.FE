@@ -7,15 +7,15 @@ export const getLastYearDate = (date: Date): Date => {
 };
 
 /**
- * 활동 탭 캘린더를 위한 가입년도부터 현재년도까지 목록
- * @params  registerYear 사용자 가입년도 string
- * @returns string[] | [가입년도, ..., 현재년도]
+ * 시작연도부터 현재까지의 연도 목록
+ * @params  startYear 시작연도 string
+ * @returns string[] | [시작연도, ..., 현재연도]
  */
-export const getYearsForActivitiesCalendar = (): string[] => {
-  const registerYear = 2023; // TODO: 사용자 가입연도로 수정
+export const getYearsFromStartYearToNow = (): string[] => {
+  const startYear = 2023; // TODO: 활동 탭에서는 사용자의 시작 연도로 수정
   const nowYear = new Date().getFullYear();
 
-  const years = Array.from({ length: nowYear - registerYear + 1 }, (_, index) =>
+  const years = Array.from({ length: nowYear - startYear + 1 }, (_, index) =>
     String(nowYear - index),
   );
 

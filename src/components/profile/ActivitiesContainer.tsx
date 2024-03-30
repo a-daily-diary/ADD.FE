@@ -14,7 +14,7 @@ import { SVGVerticalAlignStyle, ScreenReaderOnly } from 'styles';
 import {
   dateStringFormat,
   getLastYearDate,
-  getYearsForActivitiesCalendar,
+  getYearsFromStartYearToNow,
 } from 'utils';
 
 const initialCalendarDate = {
@@ -30,7 +30,7 @@ interface ActivitiesContainerProps {
 export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
   const today = new Date();
   const todayDateString = dateStringFormat(today.toDateString()) as string;
-  const years = getYearsForActivitiesCalendar();
+  const years = getYearsFromStartYearToNow();
 
   const [calendarDate, setCalendarDate] = useState<{
     startDate: Date;
