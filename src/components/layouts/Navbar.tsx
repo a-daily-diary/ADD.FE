@@ -18,17 +18,17 @@ const NAVIGATION_LIST = [
   },
   {
     label: '랜덤매칭',
-    href: PAGE_PATH.matching,
+    href: PAGE_PATH.matching.index,
     icon: <MatchingIcon />,
   },
   {
     label: '일기작성',
-    href: PAGE_PATH.diary,
+    href: PAGE_PATH.diary.index,
     icon: <WriteDiaryIcon width={24} height={24} />,
   },
   {
     label: '프로필',
-    href: PAGE_PATH.profile,
+    href: PAGE_PATH.profile.index,
     icon: <ProfileIcon />,
   },
 ];

@@ -30,6 +30,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
+import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { queryKeys } from 'constants/services';
 import { useBeforeLeave, useModal } from 'hooks/common';
@@ -130,7 +131,7 @@ const EditDiary: NextPage = () => {
         id: id as string,
       });
 
-      await router.replace(`/diary/${id as string}`);
+      await router.replace(PAGE_PATH.diary.detail(id as string));
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         alert(errorResponseMessage(error.response?.data.message));
@@ -142,7 +143,7 @@ const EditDiary: NextPage = () => {
 
   const { title, createdAt } = diaryData;
 
-  const createdAtDate = dateFormat(createdAt) as string;
+  const createdAtDate = dateFormat(createdAt);
 
   return (
     <>
@@ -254,7 +255,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: '/account/login',
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

@@ -7,6 +7,7 @@ import type { ErrorResponse } from 'types/response';
 import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import { FloatingMenu, Modal } from 'components/common';
 import { ProfileImage } from 'components/profile';
+import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteComment } from 'hooks/services';
@@ -38,6 +39,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
       }
     }
   };
+
   return (
     <>
       <CommentItem>
@@ -47,11 +49,11 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
             src={commenter.imgUrl}
             username={commenter.username}
           />
-          <UsernameLink href={`/profile/${commenter.username}`}>
+          <UsernameLink href={PAGE_PATH.profile.username(commenter.username)}>
             {commenter.username}
           </UsernameLink>
           <CreatedAtSpan>
-            {timeFormat(createdAt) !== null
+            {timeFormat(createdAt).length !== 0
               ? timeFormat(createdAt)
               : dateFormat(createdAt)}
           </CreatedAtSpan>

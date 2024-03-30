@@ -1,13 +1,32 @@
 export const PAGE_PATH = {
   main: '/',
 
-  // matching
-  matching: '/matching',
-  matching_loading: '/matching/loading',
+  matching: {
+    index: '/matching',
+    loading: '/matching/loading',
+  },
 
-  // diary
-  diary: '/diary',
+  diary: {
+    index: '/diary',
+    detail: (id: string) => `/diary/${id}`,
+    edit: (id: string) => `/diary/${id}/edit`,
+    focusComment: (id: string) => `/diary/${id}?focus=comment`,
+  },
 
-  // profile
-  profile: '/profile',
-};
+  profile: {
+    index: '/profile',
+    edit: '/profile/edit',
+    username: (username: string) => `/profile/${username}`,
+  },
+
+  account: {
+    index: '/account',
+    login: '/account/login',
+    register: '/account/register',
+    findPassword: '/account/findPassword',
+  },
+
+  setting: {
+    index: '/setting',
+  },
+} as const;
