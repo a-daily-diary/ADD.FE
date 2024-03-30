@@ -17,9 +17,10 @@ import {
   getYearsFromStartYearToNow,
 } from 'utils';
 
+const today = new Date();
 const initialCalendarDate = {
-  startDate: getLastYearDate(new Date()),
-  endDate: new Date(),
+  startDate: getLastYearDate(today),
+  endDate: today,
   activeYear: null,
 };
 
@@ -28,7 +29,6 @@ interface ActivitiesContainerProps {
 }
 
 export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
-  const today = new Date();
   const todayDateString = dateStringFormat(today.toDateString()) as string;
   const years = getYearsFromStartYearToNow();
 
