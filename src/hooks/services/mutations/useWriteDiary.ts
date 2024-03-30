@@ -23,7 +23,7 @@ export const useWriteDiary = () => {
     {
       onSuccess: async (diary) => {
         await queryClient.invalidateQueries([queryKeys.diaries, diary.id]);
-        await router.replace(PAGE_PATH(diary.id).diary.detail);
+        await router.replace(PAGE_PATH.diary.detail(diary.id));
       },
     },
   );

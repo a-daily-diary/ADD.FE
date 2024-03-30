@@ -22,7 +22,7 @@ export const ProfileContainer = ({
   return (
     <Container>
       {isMyProfile && (
-        <SettingLink href={PAGE_PATH().setting.index}>
+        <SettingLink href={PAGE_PATH.setting.index}>
           <SettingIcon />
         </SettingLink>
       )}
@@ -33,7 +33,7 @@ export const ProfileContainer = ({
       />
       <UserName>{username}</UserName>
       {isMyProfile && (
-        <EditLink href={PAGE_PATH().profile.edit}>프로필 수정</EditLink>
+        <EditLink href={PAGE_PATH.profile.edit}>프로필 수정</EditLink>
       )}
     </Container>
   );

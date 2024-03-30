@@ -12,7 +12,7 @@ interface ProfileImageProps {
 
 export const ProfileImage = ({ username, src, size }: ProfileImageProps) => {
   return (
-    <ImageLink href={PAGE_PATH(username).profile.username}>
+    <ImageLink href={PAGE_PATH.profile.username(username)}>
       <Image
         src={src}
         alt={username}

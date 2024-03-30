@@ -41,7 +41,7 @@ export const DiaryDetailContainer = ({
           src={author.imgUrl}
           username={author.username}
         />
-        <UsernameLink href={PAGE_PATH(author.username).profile.username}>
+        <UsernameLink href={PAGE_PATH.profile.username(author.username)}>
           {author.username}
         </UsernameLink>
         <CreatedAtText>{dateFormat(createdAt)}</CreatedAtText>

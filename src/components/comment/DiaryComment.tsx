@@ -48,7 +48,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
             src={commenter.imgUrl}
             username={commenter.username}
           />
-          <UsernameLink href={PAGE_PATH(commenter.username).profile.username}>
+          <UsernameLink href={PAGE_PATH.profile.username(commenter.username)}>
             {commenter.username}
           </UsernameLink>
           <CreatedAtSpan>

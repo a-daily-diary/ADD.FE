@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         right={<HeaderRight type="검색" />}
       />
       <BannerContainer>
-        <Link href={PAGE_PATH().diary.index}>
+        <Link href={PAGE_PATH.diary.index}>
           <ResponsiveImage
             src="/images/main/banner/go_to_write.png"
             alt="오늘 영어 일기 쓰러가기"
@@ -61,7 +61,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: PAGE_PATH().account.login,
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

@@ -131,7 +131,7 @@ const EditDiary: NextPage = () => {
         id: id as string,
       });
 
-      await router.replace(PAGE_PATH(id as string).diary.detail);
+      await router.replace(PAGE_PATH.diary.detail(id as string));
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         alert(errorResponseMessage(error.response?.data.message));
@@ -255,7 +255,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: PAGE_PATH().account.login,
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

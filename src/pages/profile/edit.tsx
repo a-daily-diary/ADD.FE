@@ -98,7 +98,7 @@ const ProfileEditPage: NextPage = () => {
       editProfileMutation({ username, imgUrl });
       void update({ username, imgUrl });
 
-      await router.replace(PAGE_PATH().profile.index);
+      await router.replace(PAGE_PATH.profile.index);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         // TODO: 에러 처리
@@ -200,7 +200,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: PAGE_PATH().account.login,
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

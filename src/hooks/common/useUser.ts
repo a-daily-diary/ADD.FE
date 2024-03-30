@@ -20,7 +20,7 @@ export const useUser = (): LoggedStatus => {
   const useData = session !== null ? session?.user : null;
 
   if (isUnauthenticated) {
-    void router.push(PAGE_PATH().account.login);
+    void router.push(PAGE_PATH.account.login);
   }
 
   return {

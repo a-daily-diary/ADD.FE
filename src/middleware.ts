@@ -11,8 +11,8 @@ export async function middleware(request: NextRequest) {
 
   // 로그인 상태에서 로그인, 회원가입 페이지 접근 시 메인 페이지로 리다이렉트
   if (session != null) {
-    if (pathname.startsWith(PAGE_PATH().account.index)) {
-      return NextResponse.redirect(new URL(PAGE_PATH().main, request.url));
+    if (pathname.startsWith(PAGE_PATH.account.index)) {
+      return NextResponse.redirect(new URL(PAGE_PATH.main, request.url));
     }
   }
 }

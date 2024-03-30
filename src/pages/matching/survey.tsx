@@ -19,7 +19,7 @@ const MatchingSurvey = () => {
   const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
     console.log(data); // FIXME: 실제 API 연동할 때 사용될 데이터 console.log 입니다.
 
-    await router.push(PAGE_PATH().main);
+    await router.push(PAGE_PATH.main);
   };
 
   const isBlockedMatching = useWatch({

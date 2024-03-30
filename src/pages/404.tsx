@@ -15,7 +15,7 @@ const Custom404 = () => {
       />
       <Title>죄송합니다.</Title>
       <Text>찾으시는 페이지가 존재하지 않습니다.</Text>
-      <HomeLink href={PAGE_PATH().main}>홈화면으로 이동</HomeLink>
+      <HomeLink href={PAGE_PATH.main}>홈화면으로 이동</HomeLink>
     </Section>
   );
 };

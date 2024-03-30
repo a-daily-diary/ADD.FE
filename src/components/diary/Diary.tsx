@@ -38,13 +38,13 @@ const Diary = ({
     <Container>
       <ContentContainer>
         <Title>{title}</Title>
-        <ContentLink href={PAGE_PATH(id).diary.detail}>{content}</ContentLink>
+        <ContentLink href={PAGE_PATH.diary.detail(id)}>{content}</ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage src={imgUrl} alt={title} aspectRatio={2 / 1} />
         )}
         <DateContainer>
           <span>
-            <Link href={PAGE_PATH(author.username).profile.username}>
+            <Link href={PAGE_PATH.profile.username(author.username)}>
               {author.username}
             </Link>
             <span>・</span>
@@ -60,8 +60,8 @@ const Diary = ({
             {favoriteCount}
           </FavoriteButton>
           <CommentLink
-            href={PAGE_PATH(id).diary.focusComment}
-            as={PAGE_PATH(id).diary.detail}
+            href={PAGE_PATH.diary.focusComment(id)}
+            as={PAGE_PATH.diary.detail(id)}
           >
             <CommentIcon />
             {commentCount}

@@ -27,7 +27,7 @@ const Login: NextPage = () => {
   } = useForm<LoginForm>({ mode: 'onChange' });
 
   const handleGoToRegister = () => {
-    void router.push(PAGE_PATH().account.register);
+    void router.push(PAGE_PATH.account.register);
   };
 
   const onSubmit: SubmitHandler<LoginForm> = async (data) => {
@@ -49,7 +49,7 @@ const Login: NextPage = () => {
         });
       }
       if (response?.ok === true) {
-        await router.replace(PAGE_PATH().main);
+        await router.replace(PAGE_PATH.main);
       }
     } catch (error) {
       // TODO: 예기치 못한 에러 임의로 처리, 수정 필요
@@ -107,7 +107,7 @@ const Login: NextPage = () => {
         />
         <Button type="submit" disabled={!isValid} fullWidth text="로그인" />
       </Form>
-      <StyledLink href={PAGE_PATH().account.findPassword}>
+      <StyledLink href={PAGE_PATH.account.findPassword}>
         비밀번호를 잊으셨나요?
       </StyledLink>
       <ButtonContainer>

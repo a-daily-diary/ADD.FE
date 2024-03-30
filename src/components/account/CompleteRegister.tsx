@@ -8,7 +8,7 @@ export const CompleteRegister = () => {
   const router = useRouter();
 
   const handleGoToLogin = () => {
-    void router.replace(PAGE_PATH().account.login);
+    void router.replace(PAGE_PATH.account.login);
   };
 
   return (

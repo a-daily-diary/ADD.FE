@@ -33,7 +33,7 @@ const DiaryDetailPage: NextPage = () => {
   const deleteDiaryMutation = useDeleteDiary({ id: id as string });
 
   const handleGoToEdit = () => {
-    void router.push(PAGE_PATH(id as string).diary.edit);
+    void router.push(PAGE_PATH.diary.edit(id as string));
   };
 
   const handleDeleteDiary = () => {
@@ -120,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: PAGE_PATH().account.login,
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

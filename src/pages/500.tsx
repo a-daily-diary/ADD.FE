@@ -15,7 +15,7 @@ const Custom500 = () => {
       />
       <Title>화면을 표시 할 수 없습니다.</Title>
       <Text>내부 서버 오류가 발생했습니다</Text>
-      <HomeLink href={PAGE_PATH().main}>홈화면으로 이동</HomeLink>
+      <HomeLink href={PAGE_PATH.main}>홈화면으로 이동</HomeLink>
     </Section>
   );
 };

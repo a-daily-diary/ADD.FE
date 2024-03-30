@@ -116,7 +116,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (session === null) {
     return {
       redirect: {
-        destination: PAGE_PATH().account.login,
+        destination: PAGE_PATH.account.login,
         permanent: false,
       },
     };

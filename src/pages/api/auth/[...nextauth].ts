@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: PAGE_PATH().account.login,
+    signIn: PAGE_PATH.account.login,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
