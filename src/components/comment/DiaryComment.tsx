@@ -39,6 +39,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
       }
     }
   };
+
   return (
     <>
       <CommentItem>
@@ -52,7 +53,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
             {commenter.username}
           </UsernameLink>
           <CreatedAtSpan>
-            {timeFormat(createdAt) !== null
+            {timeFormat(createdAt).length !== 0
               ? timeFormat(createdAt)
               : dateFormat(createdAt)}
           </CreatedAtSpan>

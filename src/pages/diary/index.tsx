@@ -33,7 +33,7 @@ const WriteDiary: NextPage = () => {
 
   const [previewImage, setPreviewImage] = useState<string>('');
 
-  const today = dateFormat(new Date().toISOString()) as string;
+  const today = dateFormat(new Date().toISOString());
   const isPhotoActive = previewImage.length > 0;
 
   const {

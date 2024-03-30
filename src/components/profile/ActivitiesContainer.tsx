@@ -29,7 +29,7 @@ interface ActivitiesContainerProps {
 }
 
 export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
-  const todayDateString = dateStringFormat(today.toDateString()) as string;
+  const todayDateString = dateStringFormat(today.toDateString());
   const years = getYearsFromStartYearToNow();
 
   const [calendarDate, setCalendarDate] = useState<{
@@ -76,7 +76,7 @@ export const ActivitiesContainer = ({ title }: ActivitiesContainerProps) => {
 
     const { date } = value;
 
-    setSelectedDate(dateStringFormat(date) as string);
+    setSelectedDate(dateStringFormat(date));
   };
 
   if (activitiesData === undefined) {

@@ -143,7 +143,7 @@ const EditDiary: NextPage = () => {
 
   const { title, createdAt } = diaryData;
 
-  const createdAtDate = dateFormat(createdAt) as string;
+  const createdAtDate = dateFormat(createdAt);
 
   return (
     <>

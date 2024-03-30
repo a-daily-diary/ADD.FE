@@ -5,9 +5,9 @@ import { DAY_OF_WEEK } from 'constants/common';
  * @param dateString Date string
  * @returns null | YYYY.MM.DD
  */
-export const dateFormat = (dateString: string): string | null => {
+export const dateFormat = (dateString: string): string => {
   // invalid date 에러 방어 코드
-  if (isNaN(Date.parse(dateString))) return null;
+  if (isNaN(Date.parse(dateString))) return '';
 
   const date = new Date(dateString);
   const convertDate = new Intl.DateTimeFormat('ko-KR', {
@@ -25,14 +25,14 @@ export const dateFormat = (dateString: string): string | null => {
 /**
  * YYYY.MM.DD 요일 날짜 포맷터
  * @param dateString Date string
- * @returns null | YYYY.MM.DD Day of week
+ * @returns YYYY.MM.DD Day of week
  */
-export const dateWithDayFormat = (dateString: string): string | null => {
+export const dateWithDayFormat = (dateString: string): string => {
   // invalid date 에러 방어 코드
-  if (isNaN(Date.parse(dateString))) return null;
+  if (isNaN(Date.parse(dateString))) return '';
 
   const date = new Date(dateString);
-  const convertDate = dateFormat(dateString) as string;
+  const convertDate = dateFormat(dateString);
   const dayOfWeek = DAY_OF_WEEK.long[date.getDay()];
 
   return `${convertDate} ${dayOfWeek}`;
@@ -41,13 +41,13 @@ export const dateWithDayFormat = (dateString: string): string | null => {
 /**
  * YYYY-MM-DD 날짜 포맷터
  * @param dateString Date string
- * @returns null | YYYY-MM-DD
+ * @returns YYYY-MM-DD
  */
-export const dateStringFormat = (dateString: string): string | null => {
+export const dateStringFormat = (dateString: string): string => {
   // invalid date 에러 방어 코드
-  if (isNaN(Date.parse(dateString))) return null;
+  if (isNaN(Date.parse(dateString))) return '';
 
-  const convertDate = (dateFormat(dateString) as string).replace(/\./g, '-');
+  const convertDate = dateFormat(dateString).replace(/\./g, '-');
 
   return convertDate;
 };
@@ -55,20 +55,20 @@ export const dateStringFormat = (dateString: string): string | null => {
 /**
  * 시간 포맷터
  * @param dateString Date string
- * @returns null | 방금 전 | N분 전 | N시간 전
+ * @returns 방금 전 | N분 전 | N시간 전
  */
-export const timeFormat = (dateString: string): string | null => {
+export const timeFormat = (dateString: string): string => {
   // invalid date 에러 방어 코드
-  if (isNaN(Date.parse(dateString))) return null;
+  if (isNaN(Date.parse(dateString))) return '';
 
   const nowDate = new Date();
   const date = new Date(dateString);
   const minTimeGap = Math.floor(nowDate.getTime() - date.getTime()) / 1000 / 60;
 
-  if (minTimeGap < 0) return null;
+  if (minTimeGap < 0) return '';
   if (minTimeGap < 1) return '방금 전';
   if (minTimeGap < 60) return `${Math.floor(minTimeGap)}분 전`;
   if (minTimeGap / 24 < 24) return `${Math.floor(minTimeGap / 24)}시간 전`;
 
-  return null;
+  return '';
 };
