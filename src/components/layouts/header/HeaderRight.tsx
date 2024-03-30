@@ -29,7 +29,7 @@ export const HeaderRight = ({
       )}
       {type === '검색' && (
         <SearchLink href="/search">
-          <SearchIcon />
+          <SearchIcon width={24} height={24} />
         </SearchLink>
       )}
       {(type === '등록' || type === '수정' || type === '저장') && (
