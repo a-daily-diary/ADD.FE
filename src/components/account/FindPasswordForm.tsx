@@ -27,11 +27,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
       const { email } = data;
       await passwordResetLink({
         email,
-        /**
-         * @todo
-         * redirectUrl을 비밀번호 재설정 페이지로 변경
-         */
-        redirectUrl: `${window.location.origin}`,
+        redirectUrl: `${window.location.origin}/account/resetPassword`,
       });
       setIsSubmitted(true);
     } catch (error) {
