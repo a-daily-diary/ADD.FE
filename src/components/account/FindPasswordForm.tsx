@@ -19,7 +19,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PasswordFindForm>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<PasswordFindForm> = async (data) => {
@@ -72,7 +72,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
         <ButtonContainer>
           <Button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isSubmitting}
             fullWidth
             text="재설정 링크보내기"
           />

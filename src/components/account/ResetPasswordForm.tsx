@@ -15,7 +15,7 @@ export const ResetPasswordForm = () => {
     register,
     getValues,
     handleSubmit,
-    formState: { isValid, errors },
+    formState: { isValid, errors, isSubmitting },
   } = useForm<PasswordResetForm>({ mode: 'onChange' });
 
   const onSubmit = async () => {
@@ -73,7 +73,7 @@ export const ResetPasswordForm = () => {
         />
         <StyledButton
           type="submit"
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
           text="비밀번호 재설정"
           fullWidth
         />
