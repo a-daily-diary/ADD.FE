@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { NoSearchResults } from './NoSearchResults';
 import { CloseIcon } from 'assets/icons';
+import { theme } from 'styles';
 
 // TODO: 목데이터 제거
 const RECENT_SEARCHES_MOCKS = [
@@ -34,7 +35,11 @@ export const RecentSearchContainer = () => {
               <li key={recentSearch}>
                 <RecentSearchButton type="button">
                   {recentSearch}
-                  <CloseIcon width={16} height={16} />
+                  <CloseIcon
+                    width={16}
+                    height={16}
+                    stroke={theme.colors.gray_04}
+                  />
                 </RecentSearchButton>
               </li>
             );
@@ -68,8 +73,4 @@ const RecentSearchButton = styled.button`
   border-radius: 100px;
   background-color: ${({ theme }) => theme.colors.bg_01};
   ${({ theme }) => theme.fonts.body_05}
-
-  & svg {
-    stroke: ${({ theme }) => theme.colors.gray_04};
-  }
 `;
