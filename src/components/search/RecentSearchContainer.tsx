@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { NoSearchResults } from './NoSearchResults';
 import { CloseIcon } from 'assets/icons';
 import { theme } from 'styles';
@@ -17,11 +16,8 @@ const RECENT_SEARCHES_MOCKS = [
 ];
 
 export const RecentSearchContainer = () => {
-  const [recentSearches, setRecentSearches] = useState<string[]>(
-    RECENT_SEARCHES_MOCKS,
-  );
-
-  const isEmptyRecentSearches = recentSearches.length === 0;
+  // TODO: localStorage 최근 검색어 목록으로 변경
+  const isEmptyRecentSearches = RECENT_SEARCHES_MOCKS.length === 0;
 
   return (
     <Container>
@@ -30,7 +26,7 @@ export const RecentSearchContainer = () => {
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
         <RecentSearchList>
-          {recentSearches.map((recentSearch) => {
+          {RECENT_SEARCHES_MOCKS.map((recentSearch) => {
             return (
               <li key={recentSearch}>
                 <RecentSearchButton type="button">
