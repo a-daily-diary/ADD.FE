@@ -6,6 +6,7 @@ export const API_PATH = {
     usernameExists: '/users/username-exists',
     register: '/users/register',
     login: '/users/login',
+    passwordResetLink: '/users/password-reset-link',
   },
   diaries: {
     index: '/diaries',

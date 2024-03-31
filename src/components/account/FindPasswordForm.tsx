@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import type { Dispatch, SetStateAction } from 'react';
-import type { RegisterForm } from 'types/register';
+import type { SubmitHandler } from 'react-hook-form';
+import type { PasswordFindForm } from 'types/password';
+import type { ErrorResponse } from 'types/response';
+import { passwordResetLink } from 'api';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
@@ -11,22 +15,40 @@ interface FindPasswordFormProps {
 }
 
 export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
-  /**
-   * @todo
-   * RegisterForm 대신 PasswordFindForm 정의하여 사용
-   */
   const {
     register,
     handleSubmit,
-    formState: { isValid },
-  } = useForm<RegisterForm>({ mode: 'onChange' });
+    setError,
+    formState: { errors, isValid },
+  } = useForm<PasswordFindForm>({ mode: 'onChange' });
 
-  /**
-   * @todo
-   * 서버로 이메일 전송 요청
-   */
-  const onSubmit = () => {
-    setIsSubmitted(true);
+  const onSubmit: SubmitHandler<PasswordFindForm> = async (data) => {
+    try {
+      const { email } = data;
+      await passwordResetLink({
+        email,
+        /**
+         * @todo
+         * redirectUrl을 비밀번호 재설정 페이지로 변경
+         */
+        redirectUrl: `${window.location.origin}`,
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        if (error.response?.status === 404) {
+          setError('email', {
+            type: 'emailNotFound',
+            message: '이메일이 존재하지 않습니다.',
+          });
+        } else {
+          /**
+           * @todo
+           * 404 외 모든 에러 공통 처리 */
+          console.log(error.response?.status);
+        }
+      }
+    }
   };
 
   return (
@@ -49,6 +71,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
           type="text"
           placeholder="이메일"
           label="이메일"
+          errors={errors.email}
         />
         <ButtonContainer>
           <Button

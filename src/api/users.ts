@@ -1,4 +1,5 @@
 import type { LoginRequest, LoginResponse } from 'types/login';
+import type { PasswordResetLinkRequest } from 'types/password';
 import type { ExistsRequest, RegisterRequest } from 'types/register';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/services';
@@ -45,5 +46,15 @@ export const login = async ({ email, password }: LoginRequest) => {
   return await axios.post<SuccessResponse<LoginResponse>>(
     API_PATH.users.login,
     { email, password },
+  );
+};
+
+export const passwordResetLink = async ({
+  email,
+  redirectUrl,
+}: PasswordResetLinkRequest) => {
+  return await axios.post<SuccessResponse<OnlyMessageResponse>>(
+    API_PATH.users.passwordResetLink,
+    { email, redirectUrl },
   );
 };
