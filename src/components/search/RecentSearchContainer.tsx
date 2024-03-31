@@ -4,14 +4,15 @@ import { CloseIcon } from 'assets/icons';
 import { theme } from 'styles';
 
 interface RecentSearchContainerProps {
-  recentSearchList: string[];
+  recentSearchKeywords: string[];
+  onDeleteSearchKeyword: (value: string) => void;
 }
 
 export const RecentSearchContainer = ({
-  recentSearchList,
+  recentSearchKeywords,
+  onDeleteSearchKeyword,
 }: RecentSearchContainerProps) => {
-  const isEmptyRecentSearches =
-    recentSearchList === null || recentSearchList.length === 0;
+  const isEmptyRecentSearches = recentSearchKeywords.length === 0;
 
   return (
     <Container>
@@ -20,11 +21,16 @@ export const RecentSearchContainer = ({
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
         <RecentSearchList>
-          {recentSearchList.map((recentSearch) => {
+          {recentSearchKeywords.map((recentSearchKeyword) => {
             return (
-              <li key={recentSearch}>
-                <RecentSearchButton type="button">
-                  {recentSearch}
+              <li key={recentSearchKeyword}>
+                <RecentSearchButton
+                  type="button"
+                  onClick={() => {
+                    onDeleteSearchKeyword(recentSearchKeyword);
+                  }}
+                >
+                  {recentSearchKeyword}
                   <CloseIcon
                     width={16}
                     height={16}

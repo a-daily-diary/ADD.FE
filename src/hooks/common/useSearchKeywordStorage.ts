@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { LOCAL_STORAGE_KEYS } from 'constants/common';
 
 export function useSearchKeywordStorage() {
-  const [keywordList, setKeywordList] = useState<string[]>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [isLastKeyword, setIsLastKeyword] = useState<boolean>(false);
 
   const handleSaveSearchKeyword = (value: string) => {
     const keywordValue = value.trim();
@@ -10,49 +11,66 @@ export function useSearchKeywordStorage() {
 
     if (!isValidKeyword) return;
 
-    setKeywordList((prevState) => {
+    setKeywords((prevState) => {
       if (prevState.includes(keywordValue)) {
         return prevState;
       }
+
       if (prevState.length === 8) {
         return [...prevState.slice(1), keywordValue];
       }
+
       return [...prevState, keywordValue];
     });
   };
 
-  // TODO: 필요 시 주석 해제
-  // const handleDeleteSearchKeyword = (value: string) => {
-  //   setKeywordList((prevState) => prevState.filter((key) => key !== value));
-  // };
+  const handleDeleteSearchKeyword = (value: string) => {
+    setKeywords((prevState) => {
+      const result = prevState.filter((key) => key !== value);
 
+      if (result.length === 0) {
+        setIsLastKeyword(true);
+      }
+
+      return result;
+    });
+  };
+
+  // TODO: 필요 시 주석 해제
   // const handleDeleteAllSearchKeyword = () => {
   //   localStorage.removeItem(LOCAL_STORAGE_KEYS.searchKeyword);
-  //   setKeywordList([]);
+  //   setKeywords([]);
   // };
 
   useEffect(() => {
-    if (keywordList.length > 0) {
+    if (isLastKeyword && keywords.length === 0) {
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.searchKeyword);
+      setIsLastKeyword(false);
+    }
+  }, [isLastKeyword]);
+
+  useEffect(() => {
+    if (keywords.length > 0) {
       localStorage.setItem(
         LOCAL_STORAGE_KEYS.searchKeyword,
-        JSON.stringify(keywordList),
+        JSON.stringify(keywords),
       );
     }
-  }, [keywordList]);
+  }, [keywords]);
 
   useEffect(() => {
     const localStorageKeyword =
       localStorage.getItem(LOCAL_STORAGE_KEYS.searchKeyword) ?? '[]';
 
     if (localStorageKeyword !== 'undefined') {
-      setKeywordList(JSON.parse(localStorageKeyword) as string[]);
+      setKeywords(JSON.parse(localStorageKeyword) as string[]);
     }
   }, []);
 
   return {
-    keywordList,
+    keywords,
     handleSaveSearchKeyword,
-    // handleDeleteSearchKeyword,
+    handleDeleteSearchKeyword,
     // handleDeleteAllSearchKeyword,
   };
 }

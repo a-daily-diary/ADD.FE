@@ -11,7 +11,8 @@ const SearchPage: NextPage = () => {
   const { watch } = methods;
   const { searchKeyword } = watch();
 
-  const { keywordList, handleSaveSearchKeyword } = useSearchKeywordStorage();
+  const { keywords, handleSaveSearchKeyword, handleDeleteSearchKeyword } =
+    useSearchKeywordStorage();
 
   const isShowRecentSearchResult =
     searchKeyword === undefined || searchKeyword.trim().length === 0;
@@ -23,7 +24,10 @@ const SearchPage: NextPage = () => {
         <FormProvider {...methods}>
           <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
           {isShowRecentSearchResult ? (
-            <RecentSearchContainer recentSearchList={keywordList} />
+            <RecentSearchContainer
+              recentSearchKeywords={keywords}
+              onDeleteSearchKeyword={handleDeleteSearchKeyword}
+            />
           ) : (
             <div>검색결과</div>
           )}
