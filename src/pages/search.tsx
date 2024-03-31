@@ -4,11 +4,14 @@ import type { NextPage } from 'next';
 import type { SearchForm } from 'types/search';
 import { Seo } from 'components/common';
 import { RecentSearchContainer, SearchHeader } from 'components/search';
+import { useSearchKeywordStorage } from 'hooks/common';
 
 const SearchPage: NextPage = () => {
   const methods = useForm<SearchForm>({ mode: 'onChange' });
   const { watch } = methods;
   const { searchKeyword } = watch();
+
+  const { keywordList, handleSaveSearchKeyword } = useSearchKeywordStorage();
 
   const isShowRecentSearchResult =
     searchKeyword === undefined || searchKeyword.trim().length === 0;
@@ -18,9 +21,9 @@ const SearchPage: NextPage = () => {
       <Seo title={'검색 | a daily diary'} />
       <Section>
         <FormProvider {...methods}>
-          <SearchHeader />
+          <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
           {isShowRecentSearchResult ? (
-            <RecentSearchContainer />
+            <RecentSearchContainer recentSearchList={keywordList} />
           ) : (
             <div>검색결과</div>
           )}

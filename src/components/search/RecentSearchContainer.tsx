@@ -3,21 +3,15 @@ import { NoSearchResults } from './NoSearchResults';
 import { CloseIcon } from 'assets/icons';
 import { theme } from 'styles';
 
-// TODO: 목데이터 제거
-const RECENT_SEARCHES_MOCKS = [
-  'hello',
-  'daily routine',
-  'dance',
-  'morning',
-  'movies',
-  'cakes',
-  'happy',
-  'computer',
-];
+interface RecentSearchContainerProps {
+  recentSearchList: string[];
+}
 
-export const RecentSearchContainer = () => {
-  // TODO: localStorage 최근 검색어 목록으로 변경
-  const isEmptyRecentSearches = RECENT_SEARCHES_MOCKS.length === 0;
+export const RecentSearchContainer = ({
+  recentSearchList,
+}: RecentSearchContainerProps) => {
+  const isEmptyRecentSearches =
+    recentSearchList === null || recentSearchList.length === 0;
 
   return (
     <Container>
@@ -26,7 +20,7 @@ export const RecentSearchContainer = () => {
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
         <RecentSearchList>
-          {RECENT_SEARCHES_MOCKS.map((recentSearch) => {
+          {recentSearchList.map((recentSearch) => {
             return (
               <li key={recentSearch}>
                 <RecentSearchButton type="button">
