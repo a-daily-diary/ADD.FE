@@ -1,27 +1,36 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import type { SearchForm } from 'types/search';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
-import { Z_INDEX } from 'constants/styles';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
 export const SearchHeader = () => {
-  // TODO: react-hook-form 연결
-  const [searchKeyword, setSerchKeyword] = useState<string>('');
+  const { register, watch } = useFormContext<SearchForm>();
+  const { searchKeyword } = watch();
+
+  const handleChangeSearch = () => {
+    // TODO: 검색 기능 구현
+    console.log(searchKeyword);
+  };
 
   return (
     <HeaderLayout>
       <SearchContainer>
-        <SearchLabel htmlFor="search">
+        <SearchLabel htmlFor="searchKeyword">
           <SearchIcon width={20} height={20} stroke={theme.colors.primary_00} />
         </SearchLabel>
         <SearchInput
+          {...register('searchKeyword', {
+            required: true,
+            onChange: handleChangeSearch,
+          })}
           type="search"
-          id="search"
+          id="searchKeyword"
           placeholder="검색어를 입력하세요."
         />
-        <DeleteButton type="button" isVisible={searchKeyword.length > 0}>
+        <DeleteButton type="button" isVisible={searchKeyword?.length > 0}>
           <DeleteIcon />
         </DeleteButton>
       </SearchContainer>
