@@ -3,3 +3,4 @@ export * from './useClickOutside';
 export * from './useTabIndicator';
 export * from './useModal';
 export * from './useIntersectionObserver';
+export * from './useSearchKeywordStorage';
