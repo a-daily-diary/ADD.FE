@@ -36,11 +36,10 @@ export function useSearchKeywordStorage() {
     });
   };
 
-  // TODO: 필요 시 주석 해제
-  // const handleDeleteAllSearchKeyword = () => {
-  //   localStorage.removeItem(LOCAL_STORAGE_KEYS.searchKeyword);
-  //   setKeywords([]);
-  // };
+  const handleDeleteAllSearchKeyword = () => {
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.searchKeyword);
+    setKeywords([]);
+  };
 
   useEffect(() => {
     if (isLastKeyword && keywords.length === 0) {
@@ -71,6 +70,6 @@ export function useSearchKeywordStorage() {
     keywords,
     handleSaveSearchKeyword,
     handleDeleteSearchKeyword,
-    // handleDeleteAllSearchKeyword,
+    handleDeleteAllSearchKeyword,
   };
 }

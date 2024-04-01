@@ -6,17 +6,26 @@ import { theme } from 'styles';
 interface RecentSearchContainerProps {
   recentSearchKeywords: string[];
   onDeleteSearchKeyword: (value: string) => void;
+  onDeleteAllSearchKeyword: () => void;
 }
 
 export const RecentSearchContainer = ({
   recentSearchKeywords,
   onDeleteSearchKeyword,
+  onDeleteAllSearchKeyword,
 }: RecentSearchContainerProps) => {
   const isEmptyRecentSearches = recentSearchKeywords.length === 0;
 
   return (
     <Container>
-      <Title>최근 검색어</Title>
+      <TitleContainer>
+        <Title>최근 검색어</Title>
+        {!isEmptyRecentSearches && (
+          <DeleteAllButton type="button" onClick={onDeleteAllSearchKeyword}>
+            전체 삭제
+          </DeleteAllButton>
+        )}
+      </TitleContainer>
       {isEmptyRecentSearches ? (
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
@@ -50,8 +59,19 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const Title = styled.h2`
   ${({ theme }) => theme.fonts.headline_02}
+`;
+
+const DeleteAllButton = styled.button`
+  color: ${({ theme }) => theme.colors.gray_04};
+  ${({ theme }) => theme.fonts.body_06}
 `;
 
 const RecentSearchList = styled.ul`

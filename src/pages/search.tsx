@@ -11,8 +11,12 @@ const SearchPage: NextPage = () => {
   const { watch } = methods;
   const { searchKeyword } = watch();
 
-  const { keywords, handleSaveSearchKeyword, handleDeleteSearchKeyword } =
-    useSearchKeywordStorage();
+  const {
+    keywords,
+    handleSaveSearchKeyword,
+    handleDeleteSearchKeyword,
+    handleDeleteAllSearchKeyword,
+  } = useSearchKeywordStorage();
 
   const isShowRecentSearchResult =
     searchKeyword === undefined || searchKeyword.trim().length === 0;
@@ -27,6 +31,7 @@ const SearchPage: NextPage = () => {
             <RecentSearchContainer
               recentSearchKeywords={keywords}
               onDeleteSearchKeyword={handleDeleteSearchKeyword}
+              onDeleteAllSearchKeyword={handleDeleteAllSearchKeyword}
             />
           ) : (
             <div>검색결과</div>
