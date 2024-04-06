@@ -6,22 +6,21 @@ export function useSearchKeywordStorage() {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [isLastKeyword, setIsLastKeyword] = useState<boolean>(false);
 
-  const handleSaveSearchKeyword = (value: string) => {
-    const keywordValue = value.trim();
-    const isValidKeyword = keywordValue.length > 0;
+  const handleSaveSearchKeyword = (keyword: string) => {
+    const isValidKeyword = keyword.length > 0;
 
     if (!isValidKeyword) return;
 
     setKeywords((prevState) => {
-      if (prevState.includes(keywordValue)) {
+      if (prevState.includes(keyword)) {
         return prevState;
       }
 
       if (prevState.length === VALID_VALUE.searchKeywordsMexLength) {
-        return [...prevState.slice(1), keywordValue];
+        return [...prevState.slice(1), keyword];
       }
 
-      return [...prevState, keywordValue];
+      return [...prevState, keyword];
     });
   };
 

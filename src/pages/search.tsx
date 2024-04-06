@@ -19,7 +19,7 @@ const SearchPage: NextPage = () => {
   } = useSearchKeywordStorage();
 
   const isShowRecentSearchResult =
-    searchKeyword === undefined || searchKeyword.trim().length === 0;
+    searchKeyword === undefined || searchKeyword.length === 0;
 
   return (
     <>

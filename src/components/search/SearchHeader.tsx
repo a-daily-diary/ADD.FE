@@ -41,6 +41,7 @@ export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
         <SearchInput
           {...register('searchKeyword', {
             required: true,
+            setValueAs: (value: string) => value.trim(),
             // onChange: handleChangeSearch,
           })}
           type="search"
