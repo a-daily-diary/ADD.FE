@@ -7,8 +7,12 @@ import { PAGE_PATH } from 'constants/common';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
 export const SearchHeader = () => {
-  const { register, watch } = useFormContext<SearchForm>();
+  const { register, setValue, watch } = useFormContext<SearchForm>();
   const { searchKeyword } = watch();
+
+  const handleDeleteSearchKeyword = () => {
+    setValue('searchKeyword', '');
+  };
 
   const handleChangeSearch = () => {
     // TODO: 검색 기능 구현
@@ -30,7 +34,11 @@ export const SearchHeader = () => {
           id="searchKeyword"
           placeholder="검색어를 입력하세요."
         />
-        <DeleteButton type="button" isVisible={searchKeyword?.length > 0}>
+        <DeleteButton
+          type="button"
+          isVisible={searchKeyword?.length > 0}
+          onClick={handleDeleteSearchKeyword}
+        >
           <DeleteIcon />
         </DeleteButton>
       </SearchContainer>
