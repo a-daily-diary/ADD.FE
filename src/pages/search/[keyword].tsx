@@ -63,6 +63,7 @@ const SearchResultPage: NextPage<
                 title={`${searchKeyword} 검색 결과`}
                 diariesData={diariesData}
                 empty={<NoSearchResults description="검색 결과가 없습니다." />}
+                page="search"
               />
               <ObserverTarget
                 targetRef={setTargetRef}
