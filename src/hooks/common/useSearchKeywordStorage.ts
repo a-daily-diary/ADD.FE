@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { LOCAL_STORAGE_KEYS } from 'constants/common';
+import { VALID_VALUE } from 'constants/validation';
 
 export function useSearchKeywordStorage() {
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -16,7 +17,7 @@ export function useSearchKeywordStorage() {
         return prevState;
       }
 
-      if (prevState.length === 8) {
+      if (prevState.length === VALID_VALUE.searchKeywordsMexLength) {
         return [...prevState.slice(1), keywordValue];
       }
 
