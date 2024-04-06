@@ -32,6 +32,7 @@ export type DiaryForm = Pick<
 
 export interface GetDiariesRequest {
   currentPage: number;
+  searchKeyword?: string;
 }
 
 export interface GetDiariesByUsernameRequest extends GetDiariesRequest {

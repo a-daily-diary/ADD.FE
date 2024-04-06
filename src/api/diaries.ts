@@ -13,7 +13,10 @@ import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH, PAGE_SIZE } from 'constants/services';
 import axios from 'lib/axios';
 
-export const getDiaries = async ({ currentPage }: GetDiariesRequest) => {
+export const getDiaries = async ({
+  currentPage,
+  searchKeyword,
+}: GetDiariesRequest) => {
   const currentPageIndex = currentPage - 1;
   const {
     data: { data },
@@ -21,6 +24,7 @@ export const getDiaries = async ({ currentPage }: GetDiariesRequest) => {
     params: {
       skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
+      searchKeyword,
     },
   });
 
