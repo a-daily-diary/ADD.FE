@@ -9,24 +9,34 @@ import {
   HeartOnIcon,
   HeartOffIcon,
 } from 'assets/icons';
-import { ResponsiveImage } from 'components/common';
+import { HighlightText, ResponsiveImage } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { useHandleFavorite, useHandleBookmark } from 'hooks/services/common';
 import { EllipsisStyle } from 'styles';
 import { dateFormat, timeFormat } from 'utils';
 
+interface DiaryProps {
+  diaryData: DiaryDetail;
+  highlightKeyword?: string;
+}
+
 const Diary = ({
-  id,
-  title,
-  content,
-  imgUrl,
-  commentCount,
-  favoriteCount,
-  isFavorite,
-  isBookmark,
-  createdAt,
-  author,
-}: DiaryDetail) => {
+  diaryData: {
+    id,
+    title,
+    content,
+    imgUrl,
+    commentCount,
+    favoriteCount,
+    isFavorite,
+    isBookmark,
+    createdAt,
+    author,
+  },
+  highlightKeyword,
+}: DiaryProps) => {
+  const isHighlightKeyword = highlightKeyword !== undefined;
+
   const handleFavorite = useHandleFavorite({ isFavorite, id });
   const handleBookmark = useHandleBookmark({
     isBookmark,
@@ -37,8 +47,20 @@ const Diary = ({
   return (
     <Container>
       <ContentContainer>
-        <Title>{title}</Title>
-        <ContentLink href={PAGE_PATH.diary.detail(id)}>{content}</ContentLink>
+        <Title>
+          {isHighlightKeyword ? (
+            <HighlightText text={title} keyword={highlightKeyword} />
+          ) : (
+            title
+          )}
+        </Title>
+        <ContentLink href={PAGE_PATH.diary.detail(id)}>
+          {isHighlightKeyword ? (
+            <HighlightText text={content} keyword={highlightKeyword} />
+          ) : (
+            content
+          )}
+        </ContentLink>
         {imgUrl !== null && (
           <ResponsiveImage src={imgUrl} alt={title} aspectRatio={2 / 1} />
         )}

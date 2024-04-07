@@ -69,7 +69,7 @@ const SearchResultPage: NextPage<
                     totalCount={diariesData[0].totalCount ?? 0}
                   />
                 }
-                page="search"
+                highlightKeyword={searchKeyword}
               />
               <ObserverTarget
                 targetRef={setTargetRef}
