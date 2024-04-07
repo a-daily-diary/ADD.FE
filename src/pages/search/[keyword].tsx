@@ -47,7 +47,7 @@ const SearchResultPage: NextPage<
 
   return (
     <>
-      <Seo title={'검색 | a daily diary'} />
+      <Seo title={`${searchKeyword} 검색 결과 | a daily diary`} />
       <Section>
         <FormProvider {...methods}>
           <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
