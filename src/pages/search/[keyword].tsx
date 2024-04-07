@@ -13,6 +13,7 @@ import {
   NoSearchResults,
   RecentSearchContainer,
   SearchHeader,
+  SearchResultHeader,
 } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
 import { useIntersectionObserver, useSearchKeywordStorage } from 'hooks/common';
@@ -63,6 +64,11 @@ const SearchResultPage: NextPage<
                 title={`${searchKeyword} 검색 결과`}
                 diariesData={diariesData}
                 empty={<NoSearchResults description="검색 결과가 없습니다." />}
+                header={
+                  <SearchResultHeader
+                    totalCount={diariesData[0].totalCount ?? 0}
+                  />
+                }
                 page="search"
               />
               <ObserverTarget
