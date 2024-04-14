@@ -137,6 +137,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   await queryClient.prefetchQuery([queryKeys.users, username], async () => {
     return await api.getProfileByUsername({ username, config: headers });
   });
+  await queryClient.prefetchQuery([queryKeys.badges, username], async () => {
+    return await api.getBadgesByUsername({ username, config: headers });
+  });
   return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
 
