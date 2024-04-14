@@ -2,8 +2,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface HeaderTitleStyleProps {
-  position?: 'left';
-  fontWeight?: 700;
+  position?: 'left' | 'center';
+  fontWeight?: 500 | 700;
 }
 interface HeaderTitleProps extends HeaderTitleStyleProps {
   title: string;
@@ -12,7 +12,7 @@ interface HeaderTitleProps extends HeaderTitleStyleProps {
 export const HeaderTitle = ({
   title,
   position,
-  fontWeight,
+  fontWeight = 500,
 }: HeaderTitleProps) => {
   return (
     <TitleText position={position} fontWeight={fontWeight}>
@@ -28,6 +28,14 @@ const TitleText = styled.strong<HeaderTitleStyleProps>`
       margin-right: auto;
       padding-left: 4px;
     `};
+  ${({ position }) =>
+    position === 'center' &&
+    css`
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    `};
+
   ${({ theme }) => theme.fonts.body_02};
-  ${({ fontWeight }) => fontWeight === 700 && 'font-weight: 700'};
+  font-weight: ${({ fontWeight }) => fontWeight};
 `;

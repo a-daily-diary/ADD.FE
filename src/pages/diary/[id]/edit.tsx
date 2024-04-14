@@ -161,7 +161,13 @@ const EditDiary: NextPage = () => {
                 }}
               />
             }
-            title={<HeaderTitle title={createdAtDate} fontWeight={700} />}
+            title={
+              <HeaderTitle
+                title={createdAtDate}
+                fontWeight={700}
+                position="center"
+              />
+            }
             right={<HeaderRight type="수정" disabled={!isValid} />}
           />
           <FormHeader>

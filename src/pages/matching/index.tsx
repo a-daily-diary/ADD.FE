@@ -21,8 +21,7 @@ const MatchingRule: NextPage = () => {
         <Title>랜덤 매칭 규칙</Title>
         <Header
           left={<HeaderLeft type="이전" />} // FIXME: 이전 버튼에 대해 클릭 이벤트 함수 props로 받을 수 있도록 셋팅
-          title={<HeaderTitle title="랜덤 매칭" />}
-          right={<div />}
+          title={<HeaderTitle title="랜덤 매칭" position="center" />}
         />
         <Article>
           <h2>
