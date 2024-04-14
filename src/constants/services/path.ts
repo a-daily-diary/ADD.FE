@@ -19,4 +19,8 @@ export const API_PATH = {
   activities: {
     index: '/activities',
   },
+  badges: {
+    index: '/badges',
+    users: '/badges/users',
+  },
 } as const;
