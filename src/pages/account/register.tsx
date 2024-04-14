@@ -99,7 +99,7 @@ const Register: NextPage = () => {
       <Seo title={'회원가입 | a daily diary'} />
       <Header
         left={<HeaderLeft type="이전" />}
-        title={<HeaderTitle title={'회원가입'} position={'left'} />}
+        title={<HeaderTitle title="회원가입" position="left" />}
       />
       {!registerStep.welcomeMessage && (
         <FormProvider {...methods}>
