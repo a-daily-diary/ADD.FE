@@ -7,3 +7,4 @@ export * from './useUserDiaries';
 export * from './useBookmarkedDiaries';
 export * from './useActivities';
 export * from './useActivityDetail';
+export * from './useBadges';
