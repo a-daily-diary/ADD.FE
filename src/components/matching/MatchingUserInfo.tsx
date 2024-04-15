@@ -4,21 +4,29 @@ import Image from 'next/image';
 import { useTimer } from 'hooks/common/useTimer';
 import { ScreenReaderOnly } from 'styles';
 
-const MatchingUserInfo = () => {
+interface MatchingUserInfoProps {
+  username: string;
+  thumbnailUrl: string;
+}
+
+const MatchingUserInfo = ({
+  username,
+  thumbnailUrl,
+}: MatchingUserInfoProps) => {
   const { minutes, seconds } = useTimer();
 
   return (
     <Container>
       <SubTitle>사용자 프로필</SubTitle>
       <Image
-        src="http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG"
+        src={thumbnailUrl}
         alt="프로필 사진"
         width={80}
         height={80}
         placeholder="blur"
-        blurDataURL="http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG"
+        blurDataURL={thumbnailUrl}
       />
-      <strong>username</strong>
+      <strong>{username}</strong>
       <span>
         {minutes}:{seconds}
       </span>
