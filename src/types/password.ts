@@ -11,6 +11,7 @@ export interface PasswordResetLinkRequest {
  */
 
 export type PasswordFindForm = Omit<PasswordResetLinkRequest, 'redirectUrl'>;
+
 export interface PasswordResetForm {
   password: string;
   passwordCheck: string;
