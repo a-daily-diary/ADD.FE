@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import type { PasswordResetForm } from 'types/password';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
+import { PAGE_PATH } from 'constants/common';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -23,7 +24,7 @@ export const ResetPasswordForm = () => {
      * @todo
      * 비밀번호 재설정 API 요청
      */
-    await router.push('/account/login');
+    await router.replace(PAGE_PATH.account.login);
   };
 
   return (
