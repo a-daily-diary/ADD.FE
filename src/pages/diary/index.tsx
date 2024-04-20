@@ -15,7 +15,7 @@ import {
   LockIcon,
   DeleteIcon,
 } from 'assets/icons';
-import { Modal, ResponsiveImage, Seo } from 'components/common';
+import { ConfirmModal, ResponsiveImage, Seo } from 'components/common';
 import {
   Header,
   HeaderLeft,
@@ -191,7 +191,7 @@ const WriteDiary: NextPage = () => {
           </ContentContainer>
         </form>
       </Section>
-      <Modal
+      <ConfirmModal
         isVisible={isVisibleBeforeLeave}
         message={MODAL_MESSAGE.beforeLeave}
         confirmText={MODAL_BUTTON.leave}

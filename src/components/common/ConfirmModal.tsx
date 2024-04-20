@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ModalLayout } from 'components/layouts';
 
-interface ModalProps {
+interface ConfirmModalProps {
   isVisible: boolean;
   message: string;
   confirmText: string;
@@ -10,13 +10,13 @@ interface ModalProps {
   onConfirm: () => void;
 }
 
-export const Modal = ({
+export const ConfirmModal = ({
   isVisible,
   message,
   confirmText,
   onClose,
   onConfirm,
-}: ModalProps) => {
+}: ConfirmModalProps) => {
   return (
     <ModalLayout isVisible={isVisible}>
       <Container>

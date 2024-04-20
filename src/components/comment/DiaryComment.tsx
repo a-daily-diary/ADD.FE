@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import type { Comment } from 'types/comment';
 import type { ErrorResponse } from 'types/response';
 import { MoreIcon, ReportIcon, TrashIcon } from 'assets/icons';
-import { FloatingMenu, Modal } from 'components/common';
+import { FloatingMenu, ConfirmModal } from 'components/common';
 import { ProfileImage } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
@@ -92,7 +92,7 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
           />
         )}
       </CommentItem>
-      <Modal
+      <ConfirmModal
         isVisible={isVisibleDeleteModal}
         message={MODAL_MESSAGE.delete}
         confirmText={MODAL_BUTTON.delete}
