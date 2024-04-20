@@ -13,7 +13,7 @@ const FindPassword: NextPage = () => {
       <Seo title={'비밀번호 찾기 | a daily diary'} />
       <Header
         left={<HeaderLeft type="이전" />}
-        title={<HeaderTitle title={'비밀번호 찾기'} position={'left'} />}
+        title={<HeaderTitle title="비밀번호 찾기" position="left" />}
       />
       <ContentWrapper>
         {isSubmitted ? (

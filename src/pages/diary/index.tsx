@@ -115,7 +115,9 @@ const WriteDiary: NextPage = () => {
                 }}
               />
             }
-            title={<HeaderTitle title={today} fontWeight={700} />}
+            title={
+              <HeaderTitle title={today} fontWeight={700} position="center" />
+            }
             right={<HeaderRight type="등록" disabled={!isValid} />}
           />
           <FormHeader>
