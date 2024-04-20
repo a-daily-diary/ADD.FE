@@ -16,7 +16,7 @@ export function useSearchKeywordStorage() {
         return prevState;
       }
 
-      if (prevState.length === VALID_VALUE.searchKeywordsMexLength) {
+      if (prevState.length === VALID_VALUE.searchKeywordsMaxLength) {
         return [...prevState.slice(1), keyword];
       }
 

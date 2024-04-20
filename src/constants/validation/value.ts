@@ -14,7 +14,7 @@ export const VALID_VALUE = {
     pattern:
       /(?!((?:[A-Za-z]+)|(?:[`~!@#$%^&*()-_=+[\]{}\\|;:'",<.>/?]+)|(?:[0-9]+))$)[A-Za-z\d`~!@#$%^&*()-_=+[\]{}\\|;:'",<.>/?]{6,30}$/,
   },
-  searchKeywordsMexLength: 8,
+  searchKeywordsMaxLength: 8,
 };
 
 export const INVALID_VALUE = {
