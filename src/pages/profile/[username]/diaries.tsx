@@ -7,30 +7,53 @@ import type {
   NextPage,
 } from 'next';
 import * as api from 'api';
-import { Seo } from 'components/common';
-import {
-  ActivitiesContainer,
-  ProfileContainer,
-  ProfileTab,
-} from 'components/profile';
+import { FullPageLoading, ObserverTarget, Seo } from 'components/common';
+import { DiariesContainer } from 'components/diary';
+import EmptyDiary from 'components/diary/EmptyDiary';
+import { ProfileContainer, ProfileTab } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { YOUR_PROFILE_TAB_LIST } from 'constants/profile';
 import { queryKeys } from 'constants/services';
+import { useIntersectionObserver } from 'hooks/common';
+import { useUserDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
-const YourProfile: NextPage<
+const YourProfileDiaries: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ username }) => {
+  const {
+    userDiariesData,
+    isLoading: isUserDiariesLoading,
+    isError: isUserDiariesError,
+    fetchNextPage: fetchUserDiariesNextPage,
+  } = useUserDiaries(username);
+  const { setTargetRef: setUserDiariesTargetRef } = useIntersectionObserver({
+    onIntersect: fetchUserDiariesNextPage,
+  });
+
+  if (userDiariesData === undefined) {
+    return <FullPageLoading />;
+  }
+
   return (
     <>
       <Seo title={`${username} 프로필 | a daily diary`} />
       <ProfileContainer username={username} isMyProfile={false} />
+
       <ProfileTab
         tabList={YOUR_PROFILE_TAB_LIST(username)}
         username={username}
       />
-
-      <ActivitiesContainer title={`${username} - 활동`} username={username} />
+      <DiariesContainer
+        title={`${username} 프로필 - 일기`}
+        diariesData={userDiariesData}
+        empty={<EmptyDiary text="일기가 없습니다." />}
+      />
+      <ObserverTarget
+        targetRef={setUserDiariesTargetRef}
+        isLoading={isUserDiariesLoading}
+        isError={isUserDiariesError}
+      />
     </>
   );
 };
@@ -50,16 +73,7 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  const { accessToken, username: loggedInUsername } = session.user;
-
-  if (loggedInUsername === username) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.profile.index,
-        permanent: false,
-      },
-    };
-  }
+  const { accessToken } = session.user;
 
   const headers = {
     headers: {
@@ -73,9 +87,6 @@ export const getServerSideProps = (async (context) => {
     await queryClient.fetchQuery([queryKeys.users, username], async () => {
       return await api.getProfileByUsername({ username, config: headers });
     });
-    await queryClient.fetchQuery([queryKeys.badges, username], async () => {
-      return await api.getBadgesByUsername({ username, config: headers });
-    });
   } catch (error) {
     if (isAxiosError(error)) {
       return {
@@ -87,4 +98,4 @@ export const getServerSideProps = (async (context) => {
   return { props: { dehydratedState: dehydrate(queryClient), username } };
 }) satisfies GetServerSideProps;
 
-export default YourProfile;
+export default YourProfileDiaries;
