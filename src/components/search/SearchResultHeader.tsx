@@ -8,6 +8,12 @@ interface SearchResultHeaderProps {
   totalCount: number;
 }
 
+interface SortOptions {
+  id: string;
+  title: string;
+  selected: boolean;
+}
+
 const initialSortOptions = [
   {
     id: 'latest',
@@ -22,7 +28,8 @@ const initialSortOptions = [
 ];
 
 export const SearchResultHeader = ({ totalCount }: SearchResultHeaderProps) => {
-  const [sortOptions, setSortOptions] = useState(initialSortOptions);
+  const [sortOptions, setSortOptions] =
+    useState<SortOptions[]>(initialSortOptions);
 
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
@@ -31,13 +38,12 @@ export const SearchResultHeader = ({ totalCount }: SearchResultHeaderProps) => {
   };
 
   // TODO: 정렬 기능 추가
-  const handleSelectSortOption = (index: number) => () => {
+  const handleSelectSortOption = (selectedIndex: number) => () => {
     setSortOptions((prevState) => {
-      return prevState.map((state, stateIndex) =>
-        stateIndex === index
-          ? { ...state, selected: true }
-          : { ...state, selected: false },
-      );
+      return prevState.map((state, stateIndex) => ({
+        ...state,
+        selected: stateIndex === selectedIndex,
+      }));
     });
   };
 
