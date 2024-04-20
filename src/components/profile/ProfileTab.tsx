@@ -16,28 +16,25 @@ export const ProfileTab = ({ tabList, username }: ProfileTabProps) => {
       : pathname.replace('[username]', username);
 
   return (
-    <Tab>
+    <TabList>
       {tabList.map((tab) => {
         const { id, title } = tab;
         return (
-          <li key={`tab-list-${id}`}>
-            <TabLink href={id} active={id === convertPathname}>
-              {title}
-            </TabLink>
-          </li>
+          <Tab key={`tab-list-${id}`} active={id === convertPathname}>
+            <Link href={id}>{title}</Link>
+          </Tab>
         );
       })}
-    </Tab>
+    </TabList>
   );
 };
 
-const Tab = styled.ul`
+const TabList = styled.ul`
   display: flex;
   padding: 14px 14px 0;
 `;
 
-const TabLink = styled(Link)<{ active: boolean }>`
-  display: block;
+const Tab = styled.li<{ active: boolean }>`
   padding: 10px 1px 8px;
   margin: 0 14px;
   ${({ theme }) => theme.fonts.headline_04};
