@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { ResponsiveImage, Seo } from 'components/common';
+import { BadgeDetailButton } from 'components/badge';
+import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
@@ -30,19 +30,11 @@ const BadgePage: NextPage = () => {
       <Section>
         <BadgeList>
           {badgesData?.map((badge) => {
-            const { id, imgUrl, description, name } = badge;
+            const { id } = badge;
             return (
-              <BadgeItem key={id}>
-                {/* TODO: 이미지 반응형으로 크기 수정? */}
-                <Image
-                  src={imgUrl}
-                  alt={description}
-                  width={80}
-                  height={80}
-                  priority
-                />
-                <span>{name}</span>
-              </BadgeItem>
+              <li key={id}>
+                <BadgeDetailButton badge={badge} />
+              </li>
             );
           })}
         </BadgeList>
@@ -90,12 +82,4 @@ const BadgeList = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px 34px;
-`;
-
-const BadgeItem = styled.li`
-  display: grid;
-  grid-template-rows: 80px;
-  place-items: center;
-  gap: 10px;
-  ${({ theme }) => theme.fonts.body_08}
 `;
