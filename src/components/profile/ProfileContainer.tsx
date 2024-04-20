@@ -36,7 +36,6 @@ export const ProfileContainer = ({
         username={profileData.username}
       />
       <UserName>{username}</UserName>
-      {/* TODO: pinned 최대 수 api 내 유효성 검사 확인 필요 */}
       <BadgesContainer>
         {badgesData.slice(0, 8).map((badge) => {
           const { id, imgUrl, description } = badge;
