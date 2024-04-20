@@ -20,7 +20,7 @@ export const getDiaries = async ({
   const currentPageIndex = currentPage - 1;
   const {
     data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
+  } = await axios.get<SuccessResponse<Diaries>>(API_PATH.diaries.index, {
     params: {
       skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
@@ -41,7 +41,7 @@ export const getDiariesByUsername = async ({
   const currentPageIndex = currentPage - 1;
   const {
     data: { data },
-  } = await axios.get<SuccessResponse<Diaries>>(`${API_PATH.diaries.index}`, {
+  } = await axios.get<SuccessResponse<Diaries>>(API_PATH.diaries.index, {
     params: {
       username,
       skip: PAGE_SIZE * currentPageIndex,
