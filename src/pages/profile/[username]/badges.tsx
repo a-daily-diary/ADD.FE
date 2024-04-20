@@ -22,10 +22,9 @@ const BadgePage: NextPage = () => {
   return (
     <>
       <Seo title="내 배지 | a daily diary" />
-      {/* TODO: TItle position center로 수정 */}
       <Header
         left={<HeaderLeft type="이전" />}
-        title={<HeaderTitle title="내 배지" />}
+        title={<HeaderTitle title="내 배지" position="center" />}
       />
       <Section>
         <BadgeList>
