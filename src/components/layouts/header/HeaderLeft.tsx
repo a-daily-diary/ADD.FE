@@ -42,7 +42,7 @@ export const HeaderLeft = ({ type, onClick }: HeaderLeftProps) => {
       )}
       {type === '닫기' && (
         <Button type="button" onClick={onClick}>
-          <CloseIcon />
+          <CloseIcon width={24} height={24} />
         </Button>
       )}
     </>

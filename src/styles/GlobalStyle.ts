@@ -92,6 +92,12 @@ const GlobalStyle = css`
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
     box-shadow: 0 0 0px 1000px #fff inset;
   }
+  input::-webkit-search-decoration,
+  input::-webkit-search-cancel-button,
+  input::-webkit-search-results-button,
+  input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
 
   @media (prefers-color-scheme: dark) {
     html {
