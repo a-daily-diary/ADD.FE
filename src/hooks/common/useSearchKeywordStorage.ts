@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { LOCAL_STORAGE_KEYS } from 'constants/common';
 import { VALID_VALUE } from 'constants/validation';
 
-export function useSearchKeywordStorage() {
+export const useSearchKeywordStorage = () => {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [isLastKeyword, setIsLastKeyword] = useState<boolean>(false);
 
@@ -72,4 +72,4 @@ export function useSearchKeywordStorage() {
     handleDeleteSearchKeyword,
     handleDeleteAllSearchKeyword,
   };
-}
+};
