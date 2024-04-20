@@ -15,6 +15,7 @@ const SHOW_NAVBAR_PAGES = [
   PAGE_PATH.profile.diaries,
   PAGE_PATH.profile.bookmarks,
   '/profile/[username]',
+  '/profile/[username]/diaries',
 ];
 
 const Layout = ({ children }: LayoutProps): ReactJSXElement => {
