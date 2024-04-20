@@ -4,10 +4,16 @@ import { useRouter } from 'next/router';
 
 interface ProfileTabProps {
   tabList: Array<{ id: string; title: string }>;
+  username?: string;
 }
 
-export const ProfileTab = ({ tabList }: ProfileTabProps) => {
+export const ProfileTab = ({ tabList, username }: ProfileTabProps) => {
   const { pathname } = useRouter();
+
+  const convertPathname =
+    username === undefined
+      ? pathname
+      : pathname.replace('[username]', username);
 
   return (
     <Tab>
@@ -15,7 +21,7 @@ export const ProfileTab = ({ tabList }: ProfileTabProps) => {
         const { id, title } = tab;
         return (
           <li key={`tab-list-${id}`}>
-            <TabLink href={id} active={id === pathname}>
+            <TabLink href={id} active={id === convertPathname}>
               {title}
             </TabLink>
           </li>
