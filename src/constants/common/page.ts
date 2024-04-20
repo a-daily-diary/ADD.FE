@@ -20,6 +20,7 @@ export const PAGE_PATH = {
     bookmarks: '/profile/bookmarks',
     username: (username: string) => `/profile/${username}`,
     badges: (username: string) => `/profile/${username}/badges`,
+    usernameDiaries: (username: string) => `/profile/${username}/diaries`,
   },
 
   account: {
