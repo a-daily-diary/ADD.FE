@@ -61,9 +61,7 @@ export const useSearchKeywordStorage = () => {
     const localStorageKeyword =
       localStorage.getItem(LOCAL_STORAGE_KEYS.searchKeyword) ?? '[]';
 
-    if (localStorageKeyword !== 'undefined') {
-      setKeywords(JSON.parse(localStorageKeyword) as string[]);
-    }
+    setKeywords(JSON.parse(localStorageKeyword) as string[]);
   }, []);
 
   return {
