@@ -17,6 +17,7 @@ export const PAGE_PATH = {
     index: '/profile',
     edit: '/profile/edit',
     username: (username: string) => `/profile/${username}`,
+    badges: (username: string) => `/profile/${username}/badges`,
   },
 
   account: {

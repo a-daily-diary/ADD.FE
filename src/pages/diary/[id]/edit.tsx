@@ -20,7 +20,7 @@ import {
 } from 'assets/icons';
 import {
   FullPageLoading,
-  Modal,
+  ConfirmModal,
   ResponsiveImage,
   Seo,
 } from 'components/common';
@@ -242,7 +242,7 @@ const EditDiary: NextPage = () => {
           </ContentContainer>
         </form>
       </Section>
-      <Modal
+      <ConfirmModal
         isVisible={isVisibleBeforeLeave}
         message={MODAL_MESSAGE.beforeLeave}
         confirmText={MODAL_BUTTON.leave}

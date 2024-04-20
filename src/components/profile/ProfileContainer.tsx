@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
 import Link from 'next/link';
 import { NoLinkProfileImage } from './ProfileImage';
-import { SettingIcon } from 'assets/icons';
+import { ArrowRightIcon, SettingIcon } from 'assets/icons';
 import { FullPageLoading } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
-import { useProfile } from 'hooks/services';
+import { useBadges, useProfile } from 'hooks/services';
+import { SVGVerticalAlignStyle } from 'styles';
 
 interface ProfileContainerProps {
   username: string;
@@ -15,9 +17,11 @@ export const ProfileContainer = ({
   username,
   isMyProfile = true,
 }: ProfileContainerProps) => {
-  const { profileData, isLoading } = useProfile(username);
+  const { profileData } = useProfile(username);
+  const { badgesData } = useBadges({ username, onlyPinned: true });
 
-  if (profileData === undefined || isLoading) return <FullPageLoading />;
+  if (profileData === undefined || badgesData === undefined)
+    return <FullPageLoading />;
 
   return (
     <Container>
@@ -32,6 +36,24 @@ export const ProfileContainer = ({
         username={profileData.username}
       />
       <UserName>{username}</UserName>
+      <BadgesContainer>
+        {badgesData.slice(0, 8).map((badge) => {
+          const { id, imgUrl, description } = badge;
+          return (
+            <Image
+              key={id}
+              src={imgUrl}
+              alt={description}
+              width={30}
+              height={30}
+              priority
+            />
+          );
+        })}
+        <BadgeLink href={PAGE_PATH.profile.badges(username)}>
+          <ArrowRightIcon />
+        </BadgeLink>
+      </BadgesContainer>
       {isMyProfile && (
         <EditLink href={PAGE_PATH.profile.edit}>프로필 수정</EditLink>
       )}
@@ -56,11 +78,22 @@ const SettingLink = styled(Link)`
 `;
 
 const UserName = styled.h2`
-  margin: 8px 0 6px;
+  margin: 6px 0 4px;
   ${({ theme }) => theme.fonts.headline_01};
 `;
 
+const BadgesContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+const BadgeLink = styled(Link)`
+  ${SVGVerticalAlignStyle}
+`;
+
 const EditLink = styled(Link)`
+  margin-top: 16px;
   padding: 12px 20px;
   border-radius: 120px;
   background: ${({ theme }) => theme.colors.bg_02};

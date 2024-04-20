@@ -9,7 +9,12 @@ import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
 import { DiaryCommentsContainer } from 'components/comment';
-import { FloatingMenu, FullPageLoading, Modal, Seo } from 'components/common';
+import {
+  FloatingMenu,
+  FullPageLoading,
+  ConfirmModal,
+  Seo,
+} from 'components/common';
 import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
@@ -102,7 +107,7 @@ const DiaryDetailPage: NextPage = () => {
         <DiaryDetailContainer {...diaryData} />
         <DiaryCommentsContainer diaryId={id as string} />
       </Section>
-      <Modal
+      <ConfirmModal
         isVisible={isVisibleDeleteModal}
         message={MODAL_MESSAGE.delete}
         confirmText={MODAL_BUTTON.delete}

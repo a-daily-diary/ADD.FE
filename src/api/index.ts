@@ -7,3 +7,4 @@ export * from './favorite';
 export * from './bookmark';
 export * from './profile';
 export * from './activities';
+export * from './badges';
