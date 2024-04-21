@@ -19,7 +19,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<PasswordFindForm>({ mode: 'onChange' });
 
   const onSubmit: SubmitHandler<PasswordFindForm> = async (data) => {
@@ -27,11 +27,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
       const { email } = data;
       await passwordResetLink({
         email,
-        /**
-         * @todo
-         * redirectUrl을 비밀번호 재설정 페이지로 변경
-         */
-        redirectUrl: `${window.location.origin}`,
+        redirectUrl: `${window.location.origin}/account/resetPassword`,
       });
       setIsSubmitted(true);
     } catch (error) {
@@ -76,7 +72,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
         <ButtonContainer>
           <Button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || isSubmitting}
             fullWidth
             text="재설정 링크보내기"
           />
