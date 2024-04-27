@@ -6,6 +6,8 @@ import BlockIcon from './block.svg';
 import BookmarkOffIcon from './bookmark_off.svg';
 import BookmarkOnIcon from './bookmark_on.svg';
 import CheckIcon from './check.svg';
+import CircleCheckedOffIcon from './checkbox-circle_off.svg';
+import CircleCheckedOnIcon from './checkbox-circle_on.svg';
 import CheckedOffIcon from './checkbox_off.svg';
 import CheckedOnIcon from './checkbox_on.svg';
 import CloseIcon from './close.svg';
@@ -58,6 +60,8 @@ export {
   CheckIcon,
   CheckedOffIcon,
   CheckedOnIcon,
+  CircleCheckedOffIcon,
+  CircleCheckedOnIcon,
   DeleteIcon,
   EditIcon,
   HideIcon,
