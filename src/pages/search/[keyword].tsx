@@ -47,7 +47,7 @@ const SearchResultPage: NextPage<
 
   return (
     <>
-      <Seo title={`${searchKeyword} 검색 결과 | a daily diary`} />
+      <Seo title={`${keyword} 검색 결과 | a daily diary`} />
       <Section>
         <FormProvider {...methods}>
           <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
@@ -60,7 +60,7 @@ const SearchResultPage: NextPage<
           ) : (
             <>
               <DiariesContainer
-                title={`${searchKeyword} 검색 결과`}
+                title={`${keyword} 검색 결과`}
                 diariesData={diariesData}
                 empty={<NoSearchResults description="검색 결과가 없습니다." />}
                 header={
@@ -68,7 +68,7 @@ const SearchResultPage: NextPage<
                     totalCount={diariesData[0].totalCount ?? 0}
                   />
                 }
-                highlightKeyword={searchKeyword}
+                highlightKeyword={keyword}
               />
               <ObserverTarget
                 targetRef={setTargetRef}
