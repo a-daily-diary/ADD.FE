@@ -34,9 +34,8 @@ const SearchResultPage: NextPage<
     handleDeleteAllSearchKeyword,
   } = useSearchKeywordStorage();
 
-  const { diariesData, isLoading, isError, fetchNextPage } = useDiaries(
-    keyword as string,
-  );
+  const { diariesData, isLoading, isError, fetchNextPage } =
+    useDiaries(keyword);
   const { setTargetRef } = useIntersectionObserver({
     onIntersect: fetchNextPage,
   });
@@ -83,8 +82,7 @@ const SearchResultPage: NextPage<
     </>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = (async (context) => {
+export const getServerSideProps = (async (context) => {
   const { req, res, params } = context;
   const keyword = params?.keyword as string;
 
@@ -99,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = (async (context) => {
     };
   }
 
-  return { props: { session, keyword } };
+  return { props: { keyword } };
 }) satisfies GetServerSideProps;
 
 export default SearchResultPage;
