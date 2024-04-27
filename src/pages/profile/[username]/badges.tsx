@@ -21,10 +21,15 @@ const BadgePage: NextPage = () => {
 
   return (
     <>
-      <Seo title="내 배지 | a daily diary" />
+      <Seo title={`${username as string}님의 배지 | a daily diary`} />
       <Header
         left={<HeaderLeft type="이전" />}
-        title={<HeaderTitle title="내 배지" position="center" />}
+        title={
+          <HeaderTitle
+            title={`${username as string}님의 배지`}
+            position="center"
+          />
+        }
       />
       <Section>
         <BadgeList>
