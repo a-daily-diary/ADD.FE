@@ -1,4 +1,5 @@
 export * from './useBookmarkDiary';
+export * from './useChangePinnedBadge';
 export * from './useCancelBookmarkDiary';
 export * from './useCancelFavoriteDiary';
 export * from './useDeleteComment';
