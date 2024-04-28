@@ -1,16 +1,32 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import type { ErrorResponse } from 'types/response';
 import { CircleCheckedOffIcon, CircleCheckedOnIcon } from 'assets/icons';
-import { useBadges } from 'hooks/services';
+import { useBadges, useChangePinnedBadge } from 'hooks/services';
+
 import { SVGVerticalAlignStyle } from 'styles';
+import { errorResponseMessage } from 'utils';
 
 export const BadgeContainer = () => {
   const { data: session } = useSession();
+
   const { badgesData } = useBadges({
     username: session?.user.username as string,
   });
+  const changePinnedBadgeMutation = useChangePinnedBadge();
+
+  const handleChangePinned = (id: string) => () => {
+    try {
+      changePinnedBadgeMutation(id);
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        alert(errorResponseMessage(error.response?.data.message));
+      }
+    }
+  };
 
   return (
     <Section>
@@ -19,10 +35,10 @@ export const BadgeContainer = () => {
       <BadgeList>
         {badgesData?.map((badge) => {
           const { id, imgUrl, description, name, userToBadge } = badge;
-
+          // TODO: 획득 전 배지 UI
           return (
             <li key={id}>
-              <BadgeButton type="button">
+              <BadgeButton type="button" onClick={handleChangePinned(id)}>
                 <BadgeImageContainer>
                   <Image
                     src={imgUrl}
@@ -31,10 +47,14 @@ export const BadgeContainer = () => {
                     height={80}
                     priority
                   />
-                  {userToBadge?.isPinned === true ? (
-                    <CheckedOnIcon />
-                  ) : (
-                    <CheckedOffIcon />
+                  {userToBadge !== null && (
+                    <>
+                      {userToBadge.isPinned ? (
+                        <CheckedOnIcon />
+                      ) : (
+                        <CheckedOffIcon />
+                      )}
+                    </>
                   )}
                 </BadgeImageContainer>
                 <span>{name}</span>
