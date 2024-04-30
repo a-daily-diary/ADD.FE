@@ -10,3 +10,9 @@ export interface MatchingFeedbackForm {
   message: string;
   isBlockedMatching: boolean;
 }
+
+export interface MatchingSuccessResponse {
+  role: 'offer' | 'answer';
+  matchingSocket: string;
+  matchingUser: string;
+}
