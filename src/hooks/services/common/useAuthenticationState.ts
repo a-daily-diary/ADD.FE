@@ -28,7 +28,7 @@ export const useAuthenticationState = () => {
         status: session.status,
       });
     }
-  }, [session]);
+  }, [session.status]);
 
   return authenticationState;
 };
