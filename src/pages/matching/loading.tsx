@@ -3,18 +3,36 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 
 import type { LoadingAnimationKey } from 'types/common';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
+import { MATCHING_SOCKET_EVENT } from 'constants/matching';
+import { useMatchingSocket } from 'contexts/MatchingSocketProvider';
+import { useAuthenticationState } from 'hooks/services/common/useAuthenticationState';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
+  const { connection: socketConnection } = useMatchingSocket();
+
+  const { user } = useAuthenticationState();
+
   const [isCancel, setIsCancel] = useState(false);
+
+  useEffect(() => {
+    if (user === undefined || socketConnection === undefined) return;
+
+    const socket = socketConnection();
+
+    socket.emit(MATCHING_SOCKET_EVENT.client.joinMatchingQueue, {
+      id: user.id,
+      username: user.username,
+    });
+  }, [user]);
 
   const cancelMatching = () => {
     setIsCancel(true);
