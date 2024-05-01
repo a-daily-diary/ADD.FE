@@ -11,7 +11,7 @@ export interface MatchingFeedbackForm {
   isBlockedMatching: boolean;
 }
 
-export interface MatchingSuccessResponse {
+export interface MatchingInformation {
   role: 'offer' | 'answer';
   matchingSocket: string;
   matchingUser: string;

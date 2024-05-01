@@ -1,22 +1,76 @@
 import styled from '@emotion/styled';
-
+import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
+import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
+import { MATCHING_SOCKET_EVENT } from 'constants/matching';
 import { colors } from 'constants/styles';
+import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
 import { useAudioStream } from 'hooks/common/useAudioStream';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
+  const router = useRouter();
+
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const { audioStream } = useAudioStream();
 
+  const { socket, startSignaling } = useMatchingRTC();
+
   useEffect(() => {
-    if (audioRef.current !== null && audioStream !== null) {
-      // FIXME: 추후 WebRTC로 연동된 매칭 상대의 stream으로 대체 예정.
-      audioRef.current.srcObject = audioStream;
+    const { current: audioElement } = audioRef;
+
+    if (
+      audioElement !== null &&
+      audioStream !== null &&
+      startSignaling !== undefined &&
+      socket !== null
+    ) {
+      const { query } = router;
+
+      const peerConnection = new RTCPeerConnection({
+        iceServers: [
+          {
+            urls: [
+              'stun:stun.l.google.com:19302',
+              'stun:stun1.l.google.com:19302',
+              'stun:stun2.l.google.com:19302',
+              'stun:stun3.l.google.com:19302',
+              'stun:stun4.l.google.com:19302',
+            ],
+          },
+        ],
+      });
+
+      peerConnection.addEventListener(
+        'icecandidate',
+        (data: RTCPeerConnectionIceEvent) => {
+          if (data.candidate === null) return;
+
+          socket.emit(MATCHING_SOCKET_EVENT.client.ice, {
+            matchingSocket: query.ms,
+            candidate: data.candidate,
+          });
+        },
+      );
+
+      peerConnection.addEventListener('track', (data: RTCTrackEvent) => {
+        audioElement.srcObject = data.streams[0];
+        console.log(data);
+      });
+
+      audioStream
+        .getTracks()
+        .forEach((track) => peerConnection.addTrack(track, audioStream));
+
+      void startSignaling(peerConnection, {
+        role: query.r as MatchingInformation['role'],
+        matchingSocket: query.ms as MatchingInformation['matchingSocket'],
+        matchingUser: query.mu as MatchingInformation['matchingUser'],
+      });
     }
-  }, [audioStream]);
+  }, [audioStream, startSignaling]);
 
   return (
     <Container>
