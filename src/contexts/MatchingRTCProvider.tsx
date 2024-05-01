@@ -7,7 +7,7 @@ import type { Socket } from 'socket.io-client';
 import type { MatchingSuccessResponse } from 'types/matching';
 import { MATCHING_SOCKET_EVENT } from 'constants/matching';
 
-const MatchingSocketContext = createContext<{
+const MatchingRTCContext = createContext<{
   socket: Socket | null;
   connection?: () => Socket;
   disconnection?: () => void;
@@ -15,11 +15,11 @@ const MatchingSocketContext = createContext<{
   socket: null,
 });
 
-interface MatchingSocketProviderProps {
+interface MatchingRTCProviderProps {
   children: ReactNode;
 }
 
-const MatchingSocketProvider = ({ children }: MatchingSocketProviderProps) => {
+const MatchingRTCProvider = ({ children }: MatchingRTCProviderProps) => {
   const router = useRouter();
 
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -42,7 +42,6 @@ const MatchingSocketProvider = ({ children }: MatchingSocketProviderProps) => {
     socket.on(
       MATCHING_SOCKET_EVENT.server.matchingSuccess,
       (data: MatchingSuccessResponse) => {
-        console.log(data);
         void router.push({
           pathname: '/matching/playing',
           query: {
@@ -56,16 +55,14 @@ const MatchingSocketProvider = ({ children }: MatchingSocketProviderProps) => {
   }, [socket]);
 
   return (
-    <MatchingSocketContext.Provider
-      value={{ socket, connection, disconnection }}
-    >
+    <MatchingRTCContext.Provider value={{ socket, connection, disconnection }}>
       {children}
-    </MatchingSocketContext.Provider>
+    </MatchingRTCContext.Provider>
   );
 };
 
-export const useMatchingSocket = () => {
-  return useContext(MatchingSocketContext);
+export const useMatchingRTC = () => {
+  return useContext(MatchingRTCContext);
 };
 
-export default MatchingSocketProvider;
+export default MatchingRTCProvider;

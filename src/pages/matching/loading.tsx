@@ -11,13 +11,13 @@ import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { MATCHING_SOCKET_EVENT } from 'constants/matching';
-import { useMatchingSocket } from 'contexts/MatchingSocketProvider';
+import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
 import { useAuthenticationState } from 'hooks/services/common/useAuthenticationState';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
-  const { connection: socketConnection } = useMatchingSocket();
+  const { connection: socketConnection } = useMatchingRTC();
 
   const { user } = useAuthenticationState();
 
