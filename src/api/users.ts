@@ -1,5 +1,8 @@
 import type { LoginRequest, LoginResponse } from 'types/login';
-import type { PasswordResetLinkRequest } from 'types/password';
+import type {
+  PasswordResetLinkRequest,
+  PasswordResetRequest,
+} from 'types/password';
 import type { ExistsRequest, RegisterRequest } from 'types/register';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/services';
@@ -57,4 +60,16 @@ export const passwordResetLink = async ({
     API_PATH.users.passwordResetLink,
     { email, redirectUrl },
   );
+};
+
+export const resetPassword = async ({
+  email,
+  tempToken,
+  password,
+}: PasswordResetRequest) => {
+  return await axios.put(API_PATH.users.password, {
+    email,
+    tempToken,
+    password,
+  });
 };

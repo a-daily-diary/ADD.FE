@@ -6,6 +6,12 @@ export interface PasswordResetLinkRequest {
   redirectUrl: string;
 }
 
+export interface PasswordResetRequest {
+  email: string;
+  tempToken: string;
+  password: string;
+}
+
 /**
  * Others
  */
