@@ -7,6 +7,7 @@ export const API_PATH = {
     register: '/users/register',
     login: '/users/login',
     passwordResetLink: '/users/password-reset-link',
+    password: '/users/password',
   },
   diaries: {
     index: '/diaries',
