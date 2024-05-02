@@ -11,7 +11,12 @@ import {
   VALID_VALUE,
 } from 'constants/validation';
 
-export const ResetPasswordForm = () => {
+interface ResetPasswordFormProps {
+  email: string;
+  token: string;
+}
+
+export const ResetPasswordForm = ({ email, token }: ResetPasswordFormProps) => {
   const {
     register,
     getValues,
