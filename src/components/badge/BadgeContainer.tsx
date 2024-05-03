@@ -23,6 +23,7 @@ export const BadgeContainer = () => {
       changePinnedBadgeMutation(id);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
+        // TODO: 에러 처리 필요
         alert(errorResponseMessage(error.response?.data.message));
       }
     }
@@ -34,7 +35,7 @@ export const BadgeContainer = () => {
       <Description>공개할 뱃지를 선택해주세요.(최대 8개)</Description>
       <BadgeList>
         {badgesData?.map((badge) => {
-          const { id, imgUrl, description, name, userToBadge } = badge;
+          const { id, imgUrl, description, name, userToBadge, hasOwn } = badge;
           // TODO: 획득 전 배지 UI
           return (
             <li key={id}>
@@ -47,7 +48,7 @@ export const BadgeContainer = () => {
                     height={80}
                     priority
                   />
-                  {userToBadge !== null && (
+                  {hasOwn && userToBadge !== null && (
                     <>
                       {userToBadge.isPinned ? (
                         <CheckedOnIcon />
