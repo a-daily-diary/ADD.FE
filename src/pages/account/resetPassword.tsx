@@ -3,6 +3,7 @@ import type { GetServerSideProps, NextPage } from 'next/types';
 import { ResetPasswordForm } from 'components/account';
 import { Seo } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
+import { getQueryParam } from 'utils';
 
 interface PageProps {
   email: string;
@@ -28,13 +29,14 @@ const ResetPassword: NextPage<PageProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  const { email, token } = query as { email: string; token: string };
+  const email = getQueryParam(query.email);
+  const token = getQueryParam(query.token);
 
   /**
    * @todo
    * 이메일과 토큰이 매칭되는 지 검증
    */
-  if (email === '' || token === '') {
+  if (email.length === 0 || token.length === 0) {
     return {
       redirect: {
         destination: PAGE_PATH.account.login,
@@ -43,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  return { props: { email, token } };
+  return { props: { email: email[0], token: token[0] } };
 };
 
 export default ResetPassword;
