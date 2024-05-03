@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import type { ErrorResponse } from 'types/response';
 import { CircleCheckedOffIcon, CircleCheckedOnIcon } from 'assets/icons';
+import { FullPageLoading } from 'components/common';
 import { useBadges, useChangePinnedBadge } from 'hooks/services';
 
 import { SVGVerticalAlignStyle } from 'styles';
@@ -29,12 +30,14 @@ export const BadgesContainer = () => {
     }
   };
 
+  if (badgesData === undefined) return <FullPageLoading />;
+
   return (
     <Section>
       <Title>배지 목록</Title>
       <Description>공개할 뱃지를 선택해주세요.(최대 8개)</Description>
       <BadgeList>
-        {badgesData?.map((badge) => {
+        {badgesData.map((badge) => {
           const { id, imgUrl, description, name, userToBadge, hasOwn } = badge;
           // TODO: 획득 전 배지 UI
           return (
