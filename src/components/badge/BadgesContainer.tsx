@@ -10,7 +10,7 @@ import { useBadges, useChangePinnedBadge } from 'hooks/services';
 import { SVGVerticalAlignStyle } from 'styles';
 import { errorResponseMessage } from 'utils';
 
-export const BadgeContainer = () => {
+export const BadgesContainer = () => {
   const { data: session } = useSession();
 
   const { badgesData } = useBadges({

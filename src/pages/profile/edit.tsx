@@ -17,7 +17,7 @@ import type {
 } from 'types/response';
 import * as api from 'api';
 
-import { BadgeContainer } from 'components/badge';
+import { BadgesContainer } from 'components/badge';
 import { Seo } from 'components/common';
 import { FormInput } from 'components/form';
 import {
@@ -194,7 +194,7 @@ const ProfileEditPage: NextPage = () => {
           </FormInputContainer>
         </Form>
 
-        <BadgeContainer />
+        <BadgesContainer />
       </Section>
     </>
   );

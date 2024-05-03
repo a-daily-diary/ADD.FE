@@ -1,2 +1,2 @@
 export * from './BadgeDetailButton';
-export * from './BadgeContainer';
+export * from './BadgesContainer';
