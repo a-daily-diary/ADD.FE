@@ -12,6 +12,18 @@ export interface PasswordResetRequest {
   password: string;
 }
 
+export interface TempTokenValidationRequest {
+  email: string;
+  tempToken: string;
+}
+
+/**
+ * Response
+ */
+export interface TempTokenValidationResponse {
+  isValidate: boolean;
+}
+
 /**
  * Others
  */
