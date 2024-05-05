@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import type { GetServerSideProps, NextPage } from 'next/types';
+import * as api from 'api';
 import { ResetPasswordForm } from 'components/account';
 import { Seo } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
@@ -32,20 +33,27 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const email = getQueryParam(query.email);
   const token = getQueryParam(query.token);
 
-  /**
-   * @todo
-   * 이메일과 토큰이 매칭되는 지 검증
-   */
-  if (email.length === 0 || token.length === 0) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
-  }
+  const REDIRECT_LOGIN_PAGE_PROPS = {
+    redirect: {
+      destination: PAGE_PATH.account.login,
+      permanent: false,
+    },
+  };
 
-  return { props: { email: email[0], token: token[0] } };
+  if (email.length === 0 || token.length === 0) {
+    return REDIRECT_LOGIN_PAGE_PROPS;
+  } else {
+    try {
+      await api.tempTokenValidation({
+        email: email[0],
+        tempToken: token[0],
+      });
+
+      return { props: { email: email[0], token: token[0] } };
+    } catch (error) {
+      return REDIRECT_LOGIN_PAGE_PROPS;
+    }
+  }
 };
 
 export default ResetPassword;
