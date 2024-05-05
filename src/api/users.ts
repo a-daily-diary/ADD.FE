@@ -2,6 +2,8 @@ import type { LoginRequest, LoginResponse } from 'types/login';
 import type {
   PasswordResetLinkRequest,
   PasswordResetRequest,
+  TempTokenValidationRequest,
+  TempTokenValidationResponse,
 } from 'types/password';
 import type { ExistsRequest, RegisterRequest } from 'types/register';
 import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
@@ -72,4 +74,17 @@ export const resetPassword = async ({
     tempToken,
     password,
   });
+};
+
+export const tempTokenValidation = async ({
+  email,
+  tempToken,
+}: TempTokenValidationRequest) => {
+  return await axios.post<SuccessResponse<TempTokenValidationResponse>>(
+    API_PATH.users.tempTokenValidation,
+    {
+      email,
+      tempToken,
+    },
+  );
 };
