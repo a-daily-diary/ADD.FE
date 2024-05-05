@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import type { PasswordResetForm } from 'types/password';
 import type { ErrorResponse } from 'types/response';
-import { resetPassword } from 'api';
+import * as api from 'api';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { PAGE_PATH } from 'constants/common';
@@ -31,7 +31,7 @@ export const ResetPasswordForm = ({ email, token }: ResetPasswordFormProps) => {
   const onSubmit: SubmitHandler<PasswordResetForm> = async (data) => {
     try {
       const { password } = data;
-      await resetPassword({ email, tempToken: token, password });
+      await api.resetPassword({ email, tempToken: token, password });
       await router.replace(PAGE_PATH.account.login);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
