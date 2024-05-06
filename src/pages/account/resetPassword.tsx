@@ -4,20 +4,17 @@ import * as api from 'api';
 import { ResetPasswordForm } from 'components/account';
 import { Seo } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
-import { getQueryParam } from 'utils';
+import { getQueryParams } from 'utils';
 
-interface PageProps {
+interface ResetPasswordPageProps {
   email: string;
   token: string;
 }
 
-const ResetPassword: NextPage<PageProps> = ({
+const ResetPassword: NextPage<ResetPasswordPageProps> = ({
   email,
   token,
-}: {
-  email: string;
-  token: string;
-}) => {
+}: ResetPasswordPageProps) => {
   return (
     <>
       <Seo title={'비밀번호 재성정 | a daily diary'} />
@@ -30,8 +27,8 @@ const ResetPassword: NextPage<PageProps> = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { query } = context;
-  const email = getQueryParam(query.email);
-  const token = getQueryParam(query.token);
+  const [email] = getQueryParams(query.email);
+  const [token] = getQueryParams(query.token);
 
   const REDIRECT_LOGIN_PAGE_PROPS = {
     redirect: {
@@ -40,19 +37,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 
-  if (email.length === 0 || token.length === 0) {
+  if (!email || !token) {
     return REDIRECT_LOGIN_PAGE_PROPS;
-  } else {
-    try {
-      await api.tempTokenValidation({
-        email: email[0],
-        tempToken: token[0],
-      });
+  }
 
-      return { props: { email: email[0], token: token[0] } };
-    } catch (error) {
-      return REDIRECT_LOGIN_PAGE_PROPS;
-    }
+  try {
+    await api.tempTokenValidation({
+      email,
+      tempToken: token,
+    });
+
+    return { props: { email, token } };
+  } catch (error) {
+    return REDIRECT_LOGIN_PAGE_PROPS;
   }
 };
 
