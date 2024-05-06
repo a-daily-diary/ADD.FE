@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -15,17 +16,16 @@ export const IconButton = ({
   return (
     <button
       type="button"
-      style={{
-        // TODO: #186 PR 머지 후 css 속성으로 수정
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: `${SIZE_STYLES[size]}px`,
-        height: `${SIZE_STYLES[size]}px`,
-        borderRadius: '50%',
-        backgroundColor,
-        userSelect: 'none',
-      }}
+      css={css`
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: ${backgroundColor};
+        user-select: none;
+
+        ${SIZE_STYLES[size]}
+      `}
       {...props}
     >
       {icon}
@@ -34,6 +34,12 @@ export const IconButton = ({
 };
 
 const SIZE_STYLES = {
-  md: 48,
-  lg: 60,
+  md: css`
+    width: 48px;
+    height: 48px;
+  `,
+  lg: css`
+    width: 60px;
+    height: 60px;
+  `,
 };
