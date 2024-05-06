@@ -1,30 +1,54 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import type { SearchForm } from 'types/search';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
+import { Z_INDEX } from 'constants/styles';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
 interface SearchHeaderProps {
-  onSaveSearchKeyword: (keywordValue: string) => void;
+  onSaveSearchKeyword: (keyword: string) => void;
 }
 
 export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
-  const { register, watch, setValue, handleSubmit } =
+  const router = useRouter();
+  const {
+    query: { keyword },
+  } = router;
+
+  const { register, watch, setValue, setFocus, handleSubmit } =
     useFormContext<SearchForm>();
   const { searchKeyword: watchSearchKeyword } = watch();
 
   const handleDeleteSearchKeyword = () => {
     setValue('searchKeyword', '');
+    setFocus('searchKeyword');
   };
 
-  const onSubmit: SubmitHandler<SearchForm> = (data) => {
-    // TODO: 검색 기능 구현
-    const { searchKeyword } = data;
-    onSaveSearchKeyword(searchKeyword);
+  const handleCancel = () => {
+    if (keyword === undefined) {
+      void router.push(PAGE_PATH.main);
+
+      return;
+    }
+
+    void router.push(PAGE_PATH.search.index);
   };
+
+  const onSubmit: SubmitHandler<SearchForm> = async (data) => {
+    const { searchKeyword } = data;
+
+    onSaveSearchKeyword(searchKeyword);
+
+    await router.push(PAGE_PATH.search.keyword(searchKeyword));
+  };
+
+  useEffect(() => {
+    setValue('searchKeyword', keyword as string);
+  }, []);
 
   return (
     <HeaderLayout>
@@ -55,7 +79,9 @@ export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
           <DeleteIcon />
         </DeleteButton>
       </SearchKeywordForm>
-      <CancelLink href={PAGE_PATH.main}>취소</CancelLink>
+      <CancelButton type="button" onClick={handleCancel}>
+        취소
+      </CancelButton>
     </HeaderLayout>
   );
 };
@@ -69,6 +95,7 @@ const HeaderLayout = styled.header`
   top: 0;
   right: 0;
   left: 0;
+  z-index: ${Z_INDEX.header};
   height: 54px;
   padding: 0 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray_06};
@@ -111,6 +138,6 @@ const DeleteButton = styled.button<{ isVisible: boolean }>`
   ${SVGVerticalAlignStyle}
 `;
 
-const CancelLink = styled(Link)`
+const CancelButton = styled.button`
   ${({ theme }) => theme.fonts.body_05}
 `;

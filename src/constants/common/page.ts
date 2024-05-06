@@ -30,4 +30,9 @@ export const PAGE_PATH = {
   setting: {
     index: '/setting',
   },
+
+  search: {
+    index: '/search',
+    keyword: (keyword: string) => `/search/${keyword}`,
+  },
 } as const;

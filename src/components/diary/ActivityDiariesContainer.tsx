@@ -24,7 +24,7 @@ export const ActivityDiariesContainer = ({
       <List>
         {diariesData.map((diary) => {
           const { id } = diary;
-          return <Diary key={`diary-list-${id}`} {...diary} />;
+          return <Diary key={`diary-list-${id}`} diaryData={diary} />;
         })}
       </List>
     </section>

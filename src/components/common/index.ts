@@ -5,6 +5,7 @@ export * from './ConfirmModal';
 export * from './IconButton';
 export * from './FloatingMenu';
 export * from './FloatingMenuButton';
+export * from './HighlightText';
 export * from './ResponsiveImage';
 export * from './Seo';
 export * from './Tab';

@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import { useFormContext } from 'react-hook-form';
 import { NoSearchResults } from './NoSearchResults';
+import type { SearchForm } from 'types/search';
 import { CloseIcon } from 'assets/icons';
-import { theme } from 'styles';
+import { PAGE_PATH } from 'constants/common';
+import { SVGVerticalAlignStyle, theme } from 'styles';
 
 interface RecentSearchContainerProps {
   recentSearchKeywords: string[];
@@ -15,6 +19,20 @@ export const RecentSearchContainer = ({
   onDeleteAllSearchKeyword,
 }: RecentSearchContainerProps) => {
   const isEmptyRecentSearches = recentSearchKeywords.length === 0;
+
+  const router = useRouter();
+
+  const { setValue } = useFormContext<SearchForm>();
+
+  const handleMoveSearchResult = (keyword: string) => async () => {
+    setValue('searchKeyword', keyword);
+
+    await router.push(PAGE_PATH.search.keyword(keyword));
+  };
+
+  const handleDeleteRecentSearch = (keyword: string) => () => {
+    onDeleteSearchKeyword(keyword);
+  };
 
   return (
     <Container>
@@ -32,21 +50,24 @@ export const RecentSearchContainer = ({
         <RecentSearchList>
           {recentSearchKeywords.map((recentSearchKeyword) => {
             return (
-              <li key={recentSearchKeyword}>
-                <RecentSearchButton
+              <RecentSearchItem key={recentSearchKeyword}>
+                <button
                   type="button"
-                  onClick={() => {
-                    onDeleteSearchKeyword(recentSearchKeyword);
-                  }}
+                  onClick={handleMoveSearchResult(recentSearchKeyword)}
                 >
                   {recentSearchKeyword}
+                </button>
+                <DeleteButton
+                  type="button"
+                  onClick={handleDeleteRecentSearch(recentSearchKeyword)}
+                >
                   <CloseIcon
                     width={16}
                     height={16}
                     stroke={theme.colors.gray_04}
                   />
-                </RecentSearchButton>
-              </li>
+                </DeleteButton>
+              </RecentSearchItem>
             );
           })}
         </RecentSearchList>
@@ -77,11 +98,12 @@ const DeleteAllButton = styled.button`
 const RecentSearchList = styled.ul`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
   padding-top: 18px;
 `;
 
-const RecentSearchButton = styled.button`
+const RecentSearchItem = styled.li`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -89,4 +111,8 @@ const RecentSearchButton = styled.button`
   border-radius: 100px;
   background-color: ${({ theme }) => theme.colors.bg_01};
   ${({ theme }) => theme.fonts.body_05}
+`;
+
+const DeleteButton = styled.button`
+  ${SVGVerticalAlignStyle}
 `;
