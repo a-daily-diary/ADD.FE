@@ -37,7 +37,7 @@ export const ActivityDetail = ({
 
   const isToday = activityDetailDateString === todayDateString;
   const isMyProfile = session?.user.username === username;
-  const hanActivities = activityCount > 0;
+  const hasActivities = activityCount > 0;
 
   return (
     <>
@@ -63,8 +63,8 @@ export const ActivityDetail = ({
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
         empty={
-          !isToday && !hanActivities ? (
-            <NoActivitiesTest>활동 내역이 없습니다</NoActivitiesTest>
+          !isToday && !hasActivities ? (
+            <NoActivitiesText>활동 내역이 없습니다</NoActivitiesText>
           ) : (
             <EmptyActivitiesDiary
               isVisibleGoToWriteButton={isToday}
@@ -98,7 +98,7 @@ const Count = styled.strong`
   font-weight: 700;
 `;
 
-const NoActivitiesTest = styled.p`
+const NoActivitiesText = styled.p`
   padding: 50px;
   text-align: center;
   color: ${({ theme }) => theme.colors.gray_02};
