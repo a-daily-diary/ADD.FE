@@ -29,13 +29,15 @@ export const ActivityDetail = ({
   const {
     date: activityDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
+    activityCount,
   } = activityDetailData;
 
   const todayDateString = dateStringFormat(today.toDateString());
   const activityDetailDateString = dateStringFormat(activityDetailDate);
 
-  const isVisibleGoToWriteButton = activityDetailDateString === todayDateString;
+  const isToday = activityDetailDateString === todayDateString;
   const isMyProfile = session?.user.username === username;
+  const hanActivities = activityCount > 0;
 
   return (
     <>
@@ -61,10 +63,14 @@ export const ActivityDetail = ({
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
         empty={
-          <EmptyActivitiesDiary
-            isVisibleGoToWriteButton={isVisibleGoToWriteButton}
-            isMyProfile={isMyProfile}
-          />
+          !isToday && !hanActivities ? (
+            <NoActivitiesTest>활동 내역이 없습니다</NoActivitiesTest>
+          ) : (
+            <EmptyActivitiesDiary
+              isVisibleGoToWriteButton={isToday}
+              isMyProfile={isMyProfile}
+            />
+          )
         }
       />
     </>
@@ -90,4 +96,11 @@ const CountList = styled.ul`
 
 const Count = styled.strong`
   font-weight: 700;
+`;
+
+const NoActivitiesTest = styled.p`
+  padding: 50px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray_02};
+  ${({ theme }) => theme.fonts.body_08};
 `;
