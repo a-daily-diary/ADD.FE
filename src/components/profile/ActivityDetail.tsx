@@ -3,7 +3,9 @@ import { Loading } from 'components/common';
 import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
 import { useActivityDetail } from 'hooks/services/queries';
-import { dateWithDayFormat } from 'utils';
+import { dateStringFormat, dateWithDayFormat } from 'utils';
+
+const today = new Date();
 
 interface ActivityDetailProps {
   dateString: string;
@@ -20,11 +22,15 @@ export const ActivityDetail = ({
   });
 
   if (activityDetailData === undefined) return <Loading />;
-
   const {
     date: activityDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
   } = activityDetailData;
+
+  const todayDateString = dateStringFormat(today.toDateString());
+  const activityDetailDateString = dateStringFormat(activityDetailDate);
+
+  const isVisibleGoToWriteButton = activityDetailDateString === todayDateString;
 
   return (
     <>
@@ -50,7 +56,11 @@ export const ActivityDetail = ({
       <ActivityDiariesContainer
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
-        empty={<EmptyActivitiesDiary />}
+        empty={
+          <EmptyActivitiesDiary
+            isVisibleGoToWriteButton={isVisibleGoToWriteButton}
+          />
+        }
       />
     </>
   );
