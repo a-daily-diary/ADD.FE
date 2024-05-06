@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useSession } from 'next-auth/react';
 import { Loading } from 'components/common';
 import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
@@ -16,12 +17,15 @@ export const ActivityDetail = ({
   dateString,
   username,
 }: ActivityDetailProps) => {
+  const { data: session } = useSession();
+
   const { activityDetailData } = useActivityDetail({
     username,
     dateString,
   });
 
   if (activityDetailData === undefined) return <Loading />;
+
   const {
     date: activityDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
@@ -31,6 +35,7 @@ export const ActivityDetail = ({
   const activityDetailDateString = dateStringFormat(activityDetailDate);
 
   const isVisibleGoToWriteButton = activityDetailDateString === todayDateString;
+  const isMyProfile = session?.user.username === username;
 
   return (
     <>
@@ -52,13 +57,13 @@ export const ActivityDetail = ({
         </CountList>
       </DetailHeader>
 
-      {/* TODO: 날짜별, 사용자별 UI 수정 필요 */}
       <ActivityDiariesContainer
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
         empty={
           <EmptyActivitiesDiary
             isVisibleGoToWriteButton={isVisibleGoToWriteButton}
+            isMyProfile={isMyProfile}
           />
         }
       />
