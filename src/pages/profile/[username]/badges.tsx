@@ -8,6 +8,7 @@ import { BadgeDetailButton } from 'components/badge';
 import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
+import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useBadges } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -47,12 +48,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return REDIRECT_LOGIN_PAGE_PROPS;
   }
 
   const { username, accessToken } = session.user;

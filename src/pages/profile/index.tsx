@@ -9,6 +9,7 @@ import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer, ActivitiesContainer } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
+import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useBookmarkedDiaries, useUserDiaries } from 'hooks/services';
@@ -117,12 +118,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return REDIRECT_LOGIN_PAGE_PROPS;
   }
 
   const { username, accessToken } = session.user;

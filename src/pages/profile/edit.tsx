@@ -24,6 +24,7 @@ import {
 } from 'components/layouts';
 import { NoLinkProfileImage, SelectProfileImage } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
+import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -198,12 +199,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return REDIRECT_LOGIN_PAGE_PROPS;
   }
 
   return { props: { session } };
