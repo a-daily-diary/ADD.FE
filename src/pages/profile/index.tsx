@@ -8,7 +8,6 @@ import { FullPageLoading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer, ActivitiesContainer } from 'components/profile';
-import { PAGE_PATH } from 'constants/common';
 import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';

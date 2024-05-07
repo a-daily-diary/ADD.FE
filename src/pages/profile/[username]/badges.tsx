@@ -7,7 +7,6 @@ import * as api from 'api';
 import { BadgeDetailButton } from 'components/badge';
 import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
-import { PAGE_PATH } from 'constants/common';
 import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useBadges } from 'hooks/services';
