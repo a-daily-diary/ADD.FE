@@ -1,40 +1,46 @@
 import styled from '@emotion/styled';
-
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
 import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-
 import type { LoadingAnimationKey } from 'types/common';
+import type { MatchingInformation } from 'types/matching';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
-import { MATCHING_SOCKET_EVENT } from 'constants/matching';
 import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
 import { useAuthenticationState } from 'hooks/services/common/useAuthenticationState';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
-  const { connection: socketConnection } = useMatchingRTC();
+  const matchingRTC = useMatchingRTC();
 
   const { user } = useAuthenticationState();
 
   const [isCancel, setIsCancel] = useState(false);
 
   useEffect(() => {
-    if (user === undefined || socketConnection === undefined) return;
+    if (user === undefined) return;
+    const { id: userId, username } = user;
 
-    const socket = socketConnection();
-
-    socket.emit(MATCHING_SOCKET_EVENT.client.joinMatchingQueue, {
-      id: user.id,
-      username: user.username,
+    matchingRTC.startMatching({
+      userInformation: { id: userId, username },
+      onSuccess: (matchingInformation: MatchingInformation) => {
+        void router.push({
+          pathname: '/matching/playing', // TODO: 상수 처리 필요
+          query: {
+            r: matchingInformation.role,
+            ms: matchingInformation.matchingSocket,
+            mu: matchingInformation.matchingUser,
+          },
+        });
+      },
     });
   }, [user]);
 
   const cancelMatching = () => {
+    matchingRTC.disconnect();
     setIsCancel(true);
     setTimeout(async () => {
       await router.push(PAGE_PATH.matching.index);

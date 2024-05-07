@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
-import { MATCHING_SOCKET_EVENT } from 'constants/matching';
 import { colors } from 'constants/styles';
 import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
 import { useAudioStream } from 'hooks/common/useAudioStream';
@@ -16,66 +15,30 @@ const MatchingController = () => {
 
   const { audioStream } = useAudioStream();
 
-  const { socket, startSignaling } = useMatchingRTC();
+  const matchingRTC = useMatchingRTC();
 
   useEffect(() => {
     const { current: audioElement } = audioRef;
 
-    if (
-      audioElement !== null &&
-      audioStream !== null &&
-      startSignaling !== undefined &&
-      socket !== null
-    ) {
-      const { query } = router;
+    if (audioElement === null || audioStream === null) return;
 
-      const peerConnection = new RTCPeerConnection({
-        iceServers: [
-          {
-            urls: [
-              'stun:stun.l.google.com:19302',
-              'stun:stun1.l.google.com:19302',
-              'stun:stun2.l.google.com:19302',
-              'stun:stun3.l.google.com:19302',
-              'stun:stun4.l.google.com:19302',
-            ],
-          },
-        ],
-      });
+    const { query } = router;
 
-      peerConnection.addEventListener(
-        'icecandidate',
-        (data: RTCPeerConnectionIceEvent) => {
-          if (data.candidate === null) return;
+    audioStream
+      .getTracks()
+      .forEach((track) => matchingRTC.peer?.addTrack(track, audioStream));
 
-          socket.emit(MATCHING_SOCKET_EVENT.client.ice, {
-            matchingSocket: query.ms,
-            candidate: data.candidate,
-          });
-        },
-      );
-
-      peerConnection.addEventListener('track', (data: RTCTrackEvent) => {
-        audioElement.srcObject = data.streams[0];
-        console.log(data);
-      });
-
-      audioStream
-        .getTracks()
-        .forEach((track) => peerConnection.addTrack(track, audioStream));
-
-      void startSignaling(peerConnection, {
-        role: query.r as MatchingInformation['role'],
-        matchingSocket: query.ms as MatchingInformation['matchingSocket'],
-        matchingUser: query.mu as MatchingInformation['matchingUser'],
-      });
-    }
-  }, [audioStream, startSignaling]);
+    void matchingRTC.startSignaling(audioElement, {
+      role: query.r as MatchingInformation['role'],
+      matchingSocket: query.ms as MatchingInformation['matchingSocket'],
+      matchingUser: query.mu as MatchingInformation['matchingUser'],
+    });
+  }, [audioStream]);
 
   return (
     <Container>
       <SubTitle>통화 제어</SubTitle>
-      <audio ref={audioRef} muted autoPlay>
+      <audio ref={audioRef} muted={false} autoPlay>
         <track kind="captions" />
       </audio>
       <CircleButton type="button" backgroundColor={colors.bg_02}>
