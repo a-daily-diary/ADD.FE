@@ -11,4 +11,4 @@ export const MATCHING_SOCKET_EVENT = {
     answer: 'answer',
     ice: 'ice',
   },
-};
+} as const;

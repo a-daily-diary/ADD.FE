@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import type { Socket } from 'socket.io-client';
 import type { MatchingInformation } from 'types/matching';
-import { MATCHING_SOCKET_EVENT } from 'constants/matching';
+import { MATCHING_SOCKET_EVENT, EXCEPTION_MESSAGE } from 'constants/matching';
 
 export class RandomMatching {
   public socket: Socket | null = null;
@@ -40,9 +40,7 @@ export class RandomMatching {
     const canUseAudio = await this.canUseAudio();
 
     if (!canUseAudio) {
-      onError(
-        '매칭 서비스 이용을 위해 마이크 권한을 설정해주세요.\nChrome 우측 상단 더보기 > 설정 > 개인 정보 및 보안 > 사이트 설정 > 마이크에서 설정할 수 있습니다.\n\n메인 페이지로 이동합니다.',
-      );
+      onError(EXCEPTION_MESSAGE.rejectMicrophone);
       return;
     }
 
@@ -76,7 +74,7 @@ export class RandomMatching {
       );
     } catch (error) {
       console.log(error);
-      onError('랜덤 매칭에 실패하였습니다.\n메인 페이지로 이동합니다.');
+      onError(EXCEPTION_MESSAGE.failedMatching);
     }
   }
 
@@ -84,6 +82,9 @@ export class RandomMatching {
     audioElement: HTMLAudioElement,
     matchingInformation: MatchingInformation,
   ) {
+    console.log(this.socket);
+    console.log(this.peer);
+    console.log(this.audioStream);
     if (this.socket === null || this.peer === null || this.audioStream === null)
       throw new Error(
         '개발자 에러: startSignaling 메소드 호출 이전에 startMatching 메소드가 먼저 호출되어야 합니다.',
