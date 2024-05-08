@@ -10,7 +10,7 @@ export class RandomMatching {
 
   private audioStream: MediaStream | null = null;
 
-  private async getAudioStream() {
+  private async canUseAudio() {
     try {
       this.audioStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -20,17 +20,10 @@ export class RandomMatching {
         name: 'microphone' as PermissionName,
       });
 
-      if (audioPermissionStatus.state === 'denied') {
-        // FIXME: 메인 페이지 이동 로직 추가 필요
-        alert('해당 서비스 사용을 위해선 마이크 권한을 허용해야합니다.');
-        return false;
-      }
+      const canUse = audioPermissionStatus.state !== 'denied';
 
-      return true;
+      return canUse;
     } catch (error) {
-      // FIXME: 메인 페이지로 이동
-      console.log(error);
-
       return false;
     }
   }
@@ -38,13 +31,22 @@ export class RandomMatching {
   public async startMatching({
     userInformation,
     onSuccess,
+    onError,
   }: {
     userInformation: { id: string; username: string };
     onSuccess: (matchingInformation: MatchingInformation) => void;
+    onError: (message: string) => void;
   }) {
-    const canUseAudio = await this.getAudioStream();
+    const canUseAudio = await this.canUseAudio();
 
-    if (canUseAudio) {
+    if (!canUseAudio) {
+      onError(
+        '매칭 서비스 이용을 위해 마이크 권한을 설정해주세요.\nChrome 우측 상단 더보기 > 설정 > 개인 정보 및 보안 > 사이트 설정 > 마이크에서 설정할 수 있습니다.\n\n메인 페이지로 이동합니다.',
+      );
+      return;
+    }
+
+    try {
       this.socket = io('ws://localhost:5001/matching'); // FIXME: 환경변수 처리
 
       this.peer = new RTCPeerConnection({
@@ -72,6 +74,9 @@ export class RandomMatching {
           onSuccess(matchingInformation);
         },
       );
+    } catch (error) {
+      console.log(error);
+      onError('랜덤 매칭에 실패하였습니다.\n메인 페이지로 이동합니다.');
     }
   }
 

@@ -36,6 +36,10 @@ const MatchingLoading: NextPage = () => {
           },
         });
       },
+      onError: (message: string) => {
+        alert(message);
+        void router.push('/'); // TODO: 상수 처리 필요
+      },
     });
   }, [user]);
 
