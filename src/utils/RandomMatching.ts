@@ -3,7 +3,7 @@ import type { Socket } from 'socket.io-client';
 import type { MatchingInformation } from 'types/matching';
 import { MATCHING_SOCKET_EVENT } from 'constants/matching';
 
-export class MatchingRTC {
+export class RandomMatching {
   public socket: Socket | null = null;
 
   public peer: RTCPeerConnection | null = null;

@@ -8,13 +8,13 @@ import type { MatchingInformation } from 'types/matching';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
-import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
+import { useRandomMatching } from 'contexts/RandomMatchingProvider';
 import { useAuthenticationState } from 'hooks/services/common/useAuthenticationState';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
-  const matchingRTC = useMatchingRTC();
+  const randomMatching = useRandomMatching();
 
   const { user } = useAuthenticationState();
 
@@ -24,7 +24,7 @@ const MatchingLoading: NextPage = () => {
     if (user === undefined) return;
     const { id: userId, username } = user;
 
-    void matchingRTC.startMatching({
+    void randomMatching.startMatching({
       userInformation: { id: userId, username },
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({
@@ -40,7 +40,7 @@ const MatchingLoading: NextPage = () => {
   }, [user]);
 
   const cancelMatching = () => {
-    matchingRTC.disconnect();
+    randomMatching.disconnect();
     setIsCancel(true);
     setTimeout(async () => {
       await router.push(PAGE_PATH.matching.index);

@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
-import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
+import { useRandomMatching } from 'contexts/RandomMatchingProvider';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
@@ -12,7 +12,7 @@ const MatchingController = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const matchingRTC = useMatchingRTC();
+  const randomMatching = useRandomMatching();
 
   useEffect(() => {
     const { current: audioElement } = audioRef;
@@ -20,7 +20,7 @@ const MatchingController = () => {
     const { query } = router;
 
     if (audioElement !== null) {
-      void matchingRTC.startSignaling(audioElement, {
+      void randomMatching.startSignaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         matchingSocket: query.ms as MatchingInformation['matchingSocket'],
         matchingUser: query.mu as MatchingInformation['matchingUser'],
@@ -28,7 +28,7 @@ const MatchingController = () => {
     }
 
     return () => {
-      matchingRTC.disconnect();
+      randomMatching.disconnect();
     };
   }, []);
 
@@ -48,7 +48,7 @@ const MatchingController = () => {
         backgroundColor={colors.red}
         onClick={() => {
           // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
-          matchingRTC.disconnect();
+          randomMatching.disconnect();
           void router.push('/');
         }}
       >

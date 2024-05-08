@@ -9,7 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { Layout } from 'components/layouts';
-import MatchingRTCProvider from 'contexts/MatchingRTCProvider';
+import RandomMatchingProvider from 'contexts/RandomMatchingProvider';
 import { theme, GlobalStyle } from 'styles';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -26,9 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <ThemeProvider theme={theme}>
               <Global styles={GlobalStyle} />
               <Layout>
-                <MatchingRTCProvider>
+                <RandomMatchingProvider>
                   <Component {...pageProps} />
-                </MatchingRTCProvider>
+                </RandomMatchingProvider>
               </Layout>
             </ThemeProvider>
           </SessionProvider>
