@@ -84,9 +84,10 @@ export class RandomMatching {
     audioElement: HTMLAudioElement,
     matchingInformation: MatchingInformation,
   ) {
-    // TODO: startMatching이 선행되어야 함. (예외처리 추가 필요)
     if (this.socket === null || this.peer === null || this.audioStream === null)
-      return;
+      throw new Error(
+        '개발자 에러: startSignaling 메소드 호출 이전에 startMatching 메소드가 먼저 호출되어야 합니다.',
+      );
 
     const { role, matchingSocket } = matchingInformation;
 
