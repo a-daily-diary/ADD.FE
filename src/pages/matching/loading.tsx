@@ -24,7 +24,7 @@ const MatchingLoading: NextPage = () => {
     if (user === undefined) return;
     const { id: userId, username } = user;
 
-    matchingRTC.startMatching({
+    void matchingRTC.startMatching({
       userInformation: { id: userId, username },
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({

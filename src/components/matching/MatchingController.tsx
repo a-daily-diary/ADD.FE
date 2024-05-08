@@ -5,7 +5,6 @@ import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { colors } from 'constants/styles';
 import { useMatchingRTC } from 'contexts/MatchingRTCProvider';
-import { useAudioStream } from 'hooks/common/useAudioStream';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
@@ -13,27 +12,25 @@ const MatchingController = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const { audioStream } = useAudioStream();
-
   const matchingRTC = useMatchingRTC();
 
   useEffect(() => {
     const { current: audioElement } = audioRef;
 
-    if (audioElement === null || audioStream === null) return;
-
     const { query } = router;
 
-    audioStream
-      .getTracks()
-      .forEach((track) => matchingRTC.peer?.addTrack(track, audioStream));
+    if (audioElement !== null) {
+      void matchingRTC.startSignaling(audioElement, {
+        role: query.r as MatchingInformation['role'],
+        matchingSocket: query.ms as MatchingInformation['matchingSocket'],
+        matchingUser: query.mu as MatchingInformation['matchingUser'],
+      });
+    }
 
-    void matchingRTC.startSignaling(audioElement, {
-      role: query.r as MatchingInformation['role'],
-      matchingSocket: query.ms as MatchingInformation['matchingSocket'],
-      matchingUser: query.mu as MatchingInformation['matchingUser'],
-    });
-  }, [audioStream]);
+    return () => {
+      matchingRTC.disconnect();
+    };
+  }, []);
 
   return (
     <Container>
@@ -46,7 +43,15 @@ const MatchingController = () => {
         <MicrophoneOffIcon />
         <span>마이크 off</span>
       </CircleButton>
-      <CircleButton type="button" backgroundColor={colors.red}>
+      <CircleButton
+        type="button"
+        backgroundColor={colors.red}
+        onClick={() => {
+          // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
+          matchingRTC.disconnect();
+          void router.push('/');
+        }}
+      >
         <EndCallIcon />
         <span>통화 종료</span>
       </CircleButton>
