@@ -153,11 +153,25 @@ export class MatchingRTC {
   }
 
   public disconnect() {
-    // TODO: event handler memory 해체 로직 추가 필요(socket, peer, interval)
-    this.socket?.disconnect();
+    if (this.socket === null || this.peer === null || this.audioStream === null)
+      return;
+
+    this.socket.removeAllListeners(MATCHING_SOCKET_EVENT.server.offer);
+    this.socket.removeAllListeners(MATCHING_SOCKET_EVENT.server.answer);
+    this.socket.removeAllListeners(MATCHING_SOCKET_EVENT.server.ice);
+    this.socket.disconnect();
     this.socket = null;
 
-    this.peer?.close();
+    this.peer.onicecandidate = null;
+    this.peer.ontrack = null;
+    this.peer.getSenders().forEach((sender) => {
+      this.peer?.removeTrack(sender);
+    });
+    this.peer.close();
     this.peer = null;
+
+    this.audioStream.getTracks().forEach((track) => {
+      track.stop();
+    });
   }
 }
