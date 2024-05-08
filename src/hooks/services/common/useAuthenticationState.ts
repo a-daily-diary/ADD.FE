@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import type { AuthenticationState } from 'types/authentication';
+import { PAGE_PATH } from 'constants/common';
 
 export const useAuthenticationState = () => {
   const session = useSession();
@@ -16,7 +17,7 @@ export const useAuthenticationState = () => {
 
   useEffect(() => {
     if (session.status === 'unauthenticated') {
-      void router.push('/account/login'); // TODO: 해당 값은 상수처리할 예정입니다.
+      void router.push(PAGE_PATH.account.login);
       alert('인증이 필요한 페이지입니다.'); // FIXME: 문구 변경할 예정입니다.
       return;
     }

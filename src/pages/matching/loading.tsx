@@ -28,7 +28,7 @@ const MatchingLoading: NextPage = () => {
       userInformation: { id: userId, username },
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({
-          pathname: '/matching/playing', // TODO: 상수 처리 필요
+          pathname: PAGE_PATH.matching.playing,
           query: {
             r: matchingInformation.role,
             ms: matchingInformation.matchingSocket,
@@ -38,7 +38,7 @@ const MatchingLoading: NextPage = () => {
       },
       onError: (message: string) => {
         alert(message);
-        void router.push('/'); // TODO: 상수 처리 필요
+        void router.push(PAGE_PATH.main);
       },
     });
   }, [user]);
