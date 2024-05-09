@@ -45,18 +45,19 @@ export class RandomMatching {
     }
 
     try {
-      this.socket = io('ws://localhost:5001/matching'); // FIXME: 환경변수 처리
+      const matchingSocketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
+
+      const stunServers = process.env.NEXT_PUBLIC_STUN_SERVERS?.split(',');
+
+      if (matchingSocketUrl === undefined)
+        throw new Error('invalid socket url');
+
+      this.socket = io(matchingSocketUrl);
 
       this.peer = new RTCPeerConnection({
         iceServers: [
           {
-            urls: [
-              'stun:stun.l.google.com:19302',
-              'stun:stun1.l.google.com:19302',
-              'stun:stun2.l.google.com:19302',
-              'stun:stun3.l.google.com:19302',
-              'stun:stun4.l.google.com:19302',
-            ], // FIXME: 환경변수 처리
+            urls: stunServers ?? [],
           },
         ],
       });
