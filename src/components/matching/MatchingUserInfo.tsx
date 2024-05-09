@@ -1,32 +1,36 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
+import { useRouter } from 'next/router';
+import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { useTimer } from 'hooks/common/useTimer';
+import { useProfile } from 'hooks/services';
 import { ScreenReaderOnly } from 'styles';
 
-interface MatchingUserInfoProps {
-  username: string;
-  thumbnailUrl: string;
-}
-
-const MatchingUserInfo = ({
-  username,
-  thumbnailUrl,
-}: MatchingUserInfoProps) => {
+const MatchingUserInfo = () => {
   const { minutes, seconds } = useTimer();
+
+  const router = useRouter();
+
+  const { query } = router;
+
+  const { profileData: matchingUserProfile } = useProfile(
+    query.mu as string, // matching username
+  );
 
   return (
     <Container>
       <SubTitle>사용자 프로필</SubTitle>
+      {/* FIXME: useProfile의 isLoading으로 스켈레톤 UI로 대체 논의 */}
       <Image
-        src={thumbnailUrl}
+        src={matchingUserProfile?.imgUrl ?? DEFAULT_PROFILE_IMAGES[0].url}
         alt="프로필 사진"
         width={80}
         height={80}
         placeholder="blur"
-        blurDataURL={thumbnailUrl}
+        blurDataURL={DEFAULT_PROFILE_IMAGES[0].url}
       />
-      <strong>{username}</strong>
+      <strong>{matchingUserProfile?.username}</strong>
       <span>
         {minutes}:{seconds}
       </span>
