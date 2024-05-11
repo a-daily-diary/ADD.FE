@@ -12,7 +12,7 @@ import { FullPageLoading, ObserverTarget, Seo, Tab } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ActivitiesContainer, ProfileContainer } from 'components/profile';
-import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver, useTabIndicator } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
@@ -90,7 +90,7 @@ export const getServerSideProps = (async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return REDIRECT_LOGIN_PAGE_PROPS;
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
   const { accessToken, username: loggedInUsername } = session.user;

@@ -7,7 +7,7 @@ import * as api from 'api';
 import { BadgeDetailButton } from 'components/badge';
 import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
-import { REDIRECT_LOGIN_PAGE_PROPS } from 'constants/server';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useBadges } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -47,7 +47,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return REDIRECT_LOGIN_PAGE_PROPS;
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
   const { username, accessToken } = session.user;
