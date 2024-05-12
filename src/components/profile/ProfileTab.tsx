@@ -1,19 +1,22 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { MY_PROFILE_TAB_LIST, YOUR_PROFILE_TAB_LIST } from 'constants/profile';
 
 interface ProfileTabProps {
-  tabList: Array<{ id: string; title: string }>;
   username?: string;
 }
 
-export const ProfileTab = ({ tabList, username }: ProfileTabProps) => {
+export const ProfileTab = ({ username }: ProfileTabProps) => {
   const { pathname } = useRouter();
 
-  const convertPathname =
-    username === undefined
-      ? pathname
-      : pathname.replace('[username]', username);
+  const isMyProfile = username === undefined;
+  const tabList = isMyProfile
+    ? MY_PROFILE_TAB_LIST
+    : YOUR_PROFILE_TAB_LIST(username);
+  const convertPathname = isMyProfile
+    ? pathname
+    : pathname.replace('[username]', username);
 
   return (
     <TabList>

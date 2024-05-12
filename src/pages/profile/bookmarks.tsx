@@ -8,7 +8,6 @@ import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer, ProfileTab } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
-import { MY_PROFILE_TAB_LIST } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
 import { useBookmarkedDiaries } from 'hooks/services';
@@ -39,7 +38,7 @@ const MyProfileBookmarks: NextPage = () => {
       <Seo title="프로필 | a daily diary" />
       <ProfileContainer username={session.user.username} />
 
-      <ProfileTab tabList={MY_PROFILE_TAB_LIST} />
+      <ProfileTab />
       <DiariesContainer
         title="프로필 - 북마크"
         diariesData={bookmarkedDiariesData}

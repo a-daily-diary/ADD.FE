@@ -12,7 +12,6 @@ import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileContainer, ProfileTab } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
-import { YOUR_PROFILE_TAB_LIST } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
@@ -40,10 +39,7 @@ const YourProfileDiaries: NextPage<
       <Seo title={`${username} 프로필 | a daily diary`} />
       <ProfileContainer username={username} isMyProfile={false} />
 
-      <ProfileTab
-        tabList={YOUR_PROFILE_TAB_LIST(username)}
-        username={username}
-      />
+      <ProfileTab username={username} />
       <DiariesContainer
         title={`${username} 프로필 - 일기`}
         diariesData={userDiariesData}

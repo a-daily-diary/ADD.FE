@@ -14,7 +14,6 @@ import {
   ProfileTab,
 } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
-import { YOUR_PROFILE_TAB_LIST } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -25,10 +24,7 @@ const YourProfile: NextPage<
     <>
       <Seo title={`${username} 프로필 | a daily diary`} />
       <ProfileContainer username={username} isMyProfile={false} />
-      <ProfileTab
-        tabList={YOUR_PROFILE_TAB_LIST(username)}
-        username={username}
-      />
+      <ProfileTab username={username} />
 
       <ActivitiesContainer title={`${username} - 활동`} username={username} />
     </>

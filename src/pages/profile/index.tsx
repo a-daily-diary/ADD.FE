@@ -10,7 +10,6 @@ import {
   ProfileTab,
 } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
-import { MY_PROFILE_TAB_LIST } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -23,7 +22,7 @@ const MyProfile: NextPage = () => {
       <Seo title="프로필 | a daily diary" />
       <ProfileContainer username={session.user.username} />
 
-      <ProfileTab tabList={MY_PROFILE_TAB_LIST} />
+      <ProfileTab />
       <ActivitiesContainer
         title="프로필 - 활동"
         username={session.user.username}
