@@ -3,10 +3,10 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { FullPageLoading, ObserverTarget, Seo } from 'components/common';
+import { FullPageLoading, ObserverTarget } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
-import { ProfileContainer, ProfileTab } from 'components/profile';
+import { ProfileLayout } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
@@ -33,11 +33,7 @@ const MyProfileDiaries: NextPage = () => {
   }
 
   return (
-    <>
-      <Seo title="프로필 | a daily diary" />
-      <ProfileContainer username={session.user.username} />
-
-      <ProfileTab />
+    <ProfileLayout isMyProfile username={session.user.username}>
       <DiariesContainer
         title="프로필 - 일기"
         diariesData={userDiariesData}
@@ -48,7 +44,7 @@ const MyProfileDiaries: NextPage = () => {
         isLoading={isUserDiariesLoading}
         isError={isUserDiariesError}
       />
-    </>
+    </ProfileLayout>
   );
 };
 

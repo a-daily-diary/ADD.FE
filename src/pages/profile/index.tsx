@@ -3,12 +3,7 @@ import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
-import { Seo } from 'components/common';
-import {
-  ProfileContainer,
-  ActivitiesContainer,
-  ProfileTab,
-} from 'components/profile';
+import { ActivitiesContainer, ProfileLayout } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -17,17 +12,14 @@ const MyProfile: NextPage = () => {
   const { data: session } = useSession();
 
   if (session === null) return <div>로그인이 필요합니다.</div>; // TODO:
-  return (
-    <>
-      <Seo title="프로필 | a daily diary" />
-      <ProfileContainer username={session.user.username} />
 
-      <ProfileTab />
+  return (
+    <ProfileLayout isMyProfile username={session.user.username}>
       <ActivitiesContainer
         title="프로필 - 활동"
         username={session.user.username}
       />
-    </>
+    </ProfileLayout>
   );
 };
 

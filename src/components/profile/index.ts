@@ -4,5 +4,6 @@ export * from './ActivitiesCalendar';
 export * from './ActivitiesInformation';
 export * from './ProfileContainer';
 export * from './ProfileImage';
+export * from './ProfileLayout';
 export * from './ProfileTab';
 export * from './SelectProfileImage';

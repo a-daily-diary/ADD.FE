@@ -7,12 +7,7 @@ import type {
   NextPage,
 } from 'next';
 import * as api from 'api';
-import { Seo } from 'components/common';
-import {
-  ActivitiesContainer,
-  ProfileContainer,
-  ProfileTab,
-} from 'components/profile';
+import { ActivitiesContainer, ProfileLayout } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -21,13 +16,9 @@ const YourProfile: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ username }) => {
   return (
-    <>
-      <Seo title={`${username} 프로필 | a daily diary`} />
-      <ProfileContainer username={username} isMyProfile={false} />
-      <ProfileTab username={username} />
-
+    <ProfileLayout isMyProfile={false} username={username}>
       <ActivitiesContainer title={`${username} - 활동`} username={username} />
-    </>
+    </ProfileLayout>
   );
 };
 
