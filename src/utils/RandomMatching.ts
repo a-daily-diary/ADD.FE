@@ -107,8 +107,8 @@ export class RandomMatching {
     // [received event] answer <- offer
     this.socket.on(
       MATCHING_SOCKET_EVENT.server.offer,
-      async (data: { offer: RTCSessionDescriptionInit }) => {
-        await this.peer?.setRemoteDescription(data.offer);
+      async (offer: RTCSessionDescriptionInit) => {
+        await this.peer?.setRemoteDescription(offer);
 
         const answer = await this.peer?.createAnswer();
 
@@ -127,15 +127,15 @@ export class RandomMatching {
     // [received event] offer <- answer
     this.socket.on(
       MATCHING_SOCKET_EVENT.server.answer,
-      async (data: { answer: RTCSessionDescriptionInit }) => {
-        await this.peer?.setRemoteDescription(data.answer);
+      async (answer: RTCSessionDescriptionInit) => {
+        await this.peer?.setRemoteDescription(answer);
       },
     );
 
     // [received event] offer <-> answer (complete signaling)
     this.socket.on(
       MATCHING_SOCKET_EVENT.server.ice,
-      async ({ candidate }: { candidate: RTCIceCandidateInit }) => {
+      async (candidate: RTCIceCandidateInit) => {
         await this.peer?.addIceCandidate(candidate);
       },
     );
