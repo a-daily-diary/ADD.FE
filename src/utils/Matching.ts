@@ -4,7 +4,7 @@ import type { Socket } from 'socket.io-client';
 import type { MatchingInformation } from 'types/matching';
 import { MATCHING_SOCKET_EVENT, EXCEPTION_MESSAGE } from 'constants/matching';
 
-export class RandomMatching {
+export class Matching {
   public socket: Socket | null = null;
 
   public peer: RTCPeerConnection | null = null;

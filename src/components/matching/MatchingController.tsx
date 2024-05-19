@@ -5,7 +5,7 @@ import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
 import { colors } from 'constants/styles';
-import { useRandomMatching } from 'contexts/RandomMatchingProvider';
+import { useMatching } from 'contexts/MatchingProvider';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
@@ -13,7 +13,7 @@ const MatchingController = () => {
 
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  const randomMatching = useRandomMatching();
+  const matching = useMatching();
 
   useEffect(() => {
     const { current: audioElement } = audioRef;
@@ -26,7 +26,7 @@ const MatchingController = () => {
         void router.replace(PAGE_PATH.main);
       }
 
-      void randomMatching.signaling(audioElement, {
+      void matching.signaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         socketId: query.ms as MatchingInformation['socketId'],
         userId: query.mu as MatchingInformation['userId'],
@@ -34,13 +34,13 @@ const MatchingController = () => {
     }
 
     return () => {
-      randomMatching.disconnect();
+      matching.disconnect();
     };
   }, []);
 
   const handleEndMatching = () => {
     // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
-    randomMatching.disconnect();
+    matching.disconnect();
     void router.replace(PAGE_PATH.main);
   };
 

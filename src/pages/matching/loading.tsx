@@ -8,13 +8,13 @@ import type { MatchingInformation } from 'types/matching';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
-import { useRandomMatching } from 'contexts/RandomMatchingProvider';
+import { useMatching } from 'contexts/MatchingProvider';
 import { useAuthentication } from 'hooks/services/common/useAuthentication';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
-  const randomMatching = useRandomMatching();
+  const matching = useMatching();
 
   const { user } = useAuthentication();
 
@@ -23,7 +23,7 @@ const MatchingLoading: NextPage = () => {
   useEffect(() => {
     if (user === undefined) return;
 
-    void randomMatching.joinQueue({
+    void matching.joinQueue({
       user,
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({
@@ -43,7 +43,7 @@ const MatchingLoading: NextPage = () => {
   }, [user]);
 
   const cancelMatching = () => {
-    randomMatching.disconnect();
+    matching.disconnect();
     setIsCancel(true);
     setTimeout(async () => {
       await router.push(PAGE_PATH.matching.index);
