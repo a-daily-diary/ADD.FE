@@ -13,6 +13,6 @@ export interface MatchingFeedbackForm {
 
 export interface MatchingInformation {
   role: 'offer' | 'answer';
-  matchingSocket: string;
-  matchingUser: string;
+  socketId: string;
+  userId: string;
 }

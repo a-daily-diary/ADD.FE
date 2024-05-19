@@ -22,17 +22,16 @@ const MatchingLoading: NextPage = () => {
 
   useEffect(() => {
     if (user === undefined) return;
-    const { id: userId, username } = user;
 
     void randomMatching.startMatching({
-      userInformation: { id: userId, username },
+      userInformation: user,
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({
           pathname: PAGE_PATH.matching.playing,
           query: {
             r: matchingInformation.role,
-            ms: matchingInformation.matchingSocket,
-            mu: matchingInformation.matchingUser,
+            ms: matchingInformation.socketId,
+            mu: matchingInformation.userId,
           },
         });
       },

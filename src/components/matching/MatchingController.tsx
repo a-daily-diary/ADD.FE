@@ -23,8 +23,8 @@ const MatchingController = () => {
     if (audioElement !== null) {
       void randomMatching.startSignaling(audioElement, {
         role: query.r as MatchingInformation['role'],
-        matchingSocket: query.ms as MatchingInformation['matchingSocket'],
-        matchingUser: query.mu as MatchingInformation['matchingUser'],
+        socketId: query.ms as MatchingInformation['socketId'],
+        userId: query.mu as MatchingInformation['userId'],
       });
     }
 

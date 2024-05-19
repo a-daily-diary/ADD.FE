@@ -85,7 +85,7 @@ export class RandomMatching {
         '개발자 에러: startSignaling 메소드 호출 이전에 startMatching 메소드가 먼저 호출되어야 합니다.',
       );
 
-    const { role, matchingSocket } = matchingInformation;
+    const { role, socketId } = matchingInformation;
 
     this.audioStream.getTracks().forEach((track) => {
       if (this.audioStream === null) return;
@@ -100,7 +100,7 @@ export class RandomMatching {
 
       // [send event] offer -> answer
       this.socket.emit(MATCHING_SOCKET_EVENT.client.offer, {
-        answerSocket: matchingSocket,
+        answerSocket: socketId,
         offer,
       });
     }
@@ -118,7 +118,7 @@ export class RandomMatching {
         if (this.socket !== null) {
           // [send event] answer -> offer
           this.socket.emit(MATCHING_SOCKET_EVENT.client.answer, {
-            offerSocket: matchingSocket,
+            offerSocket: socketId,
             answer,
           });
         }
@@ -144,7 +144,7 @@ export class RandomMatching {
     this.peer.onicecandidate = ({ candidate }: RTCPeerConnectionIceEvent) => {
       // [send event] offer <-> answer
       this.socket?.emit(MATCHING_SOCKET_EVENT.client.ice, {
-        matchingSocket,
+        matchingSocket: socketId,
         candidate,
       });
     };
