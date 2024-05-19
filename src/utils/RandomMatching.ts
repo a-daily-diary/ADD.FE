@@ -11,19 +11,17 @@ export class RandomMatching {
 
   private audioStream: MediaStream | null = null;
 
-  private async canUseAudio() {
+  private async canUseMicrophone() {
     try {
       this.audioStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
 
-      const audioPermissionStatus = await navigator.permissions.query({
+      const microphonePermission = await navigator.permissions.query({
         name: 'microphone' as PermissionName,
       });
 
-      const canUse = audioPermissionStatus.state !== 'denied';
-
-      return canUse;
+      return microphonePermission.state === 'granted';
     } catch (error) {
       return false;
     }
@@ -38,9 +36,9 @@ export class RandomMatching {
     onSuccess: (matchingInformation: MatchingInformation) => void;
     onError: (message: string) => void;
   }) {
-    const canUseAudio = await this.canUseAudio();
+    const canUseMicrophone = await this.canUseMicrophone();
 
-    if (!canUseAudio) {
+    if (!canUseMicrophone) {
       onError(EXCEPTION_MESSAGE.rejectMicrophone);
       return;
     }
