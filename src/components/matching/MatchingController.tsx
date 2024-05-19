@@ -21,6 +21,11 @@ const MatchingController = () => {
     const { query } = router;
 
     if (audioElement !== null) {
+      if (query.ms?.length === 0 || query.mu?.length === 0) {
+        alert('매칭 도중 오류가 발생했습니다. 메인 화면으로 이동합니다.');
+        void router.replace(PAGE_PATH.main);
+      }
+
       void randomMatching.startSignaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         socketId: query.ms as MatchingInformation['socketId'],
