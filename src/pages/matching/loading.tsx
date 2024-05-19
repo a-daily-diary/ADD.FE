@@ -23,7 +23,7 @@ const MatchingLoading: NextPage = () => {
   useEffect(() => {
     if (user === undefined) return;
 
-    void randomMatching.startMatching({
+    void randomMatching.joinQueue({
       user,
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({

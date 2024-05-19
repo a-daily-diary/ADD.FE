@@ -26,7 +26,7 @@ const MatchingController = () => {
         void router.replace(PAGE_PATH.main);
       }
 
-      void randomMatching.startSignaling(audioElement, {
+      void randomMatching.signaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         socketId: query.ms as MatchingInformation['socketId'],
         userId: query.mu as MatchingInformation['userId'],

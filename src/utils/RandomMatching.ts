@@ -27,7 +27,7 @@ export class RandomMatching {
     }
   }
 
-  public async startMatching({
+  public async joinQueue({
     user,
     onSuccess,
     onError,
@@ -54,11 +54,7 @@ export class RandomMatching {
       this.socket = io(matchingSocketUrl);
 
       this.peer = new RTCPeerConnection({
-        iceServers: [
-          {
-            urls: stunServers ?? [],
-          },
-        ],
+        iceServers: [{ urls: stunServers ?? [] }],
       });
 
       this.socket.emit(MATCHING_SOCKET_EVENT.client.joinQueue, user);
@@ -75,13 +71,13 @@ export class RandomMatching {
     }
   }
 
-  public async startSignaling(
+  public async signaling(
     audioElement: HTMLAudioElement,
     matchingInformation: MatchingInformation,
   ) {
     if (this.socket === null || this.peer === null || this.audioStream === null)
       throw new Error(
-        '개발자 에러: startSignaling 메소드 호출 이전에 startMatching 메소드가 먼저 호출되어야 합니다.',
+        '개발자 에러: signaling 메소드 호출 이전에 joinQueue 메소드가 먼저 호출되어야 합니다.',
       );
 
     const { role, socketId } = matchingInformation;
