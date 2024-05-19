@@ -2,7 +2,7 @@ import { createContext, useContext, useRef } from 'react';
 import type { ReactNode } from 'react';
 import { Matching } from 'utils';
 
-const MatchingContext = createContext<Matching>(new Matching());
+const MatchingContext = createContext<Matching | null>(null);
 
 interface MatchingProviderProps {
   children: ReactNode;
@@ -19,7 +19,12 @@ const MatchingProvider = ({ children }: MatchingProviderProps) => {
 };
 
 export const useMatching = () => {
-  return useContext(MatchingContext);
+  const context = useContext(MatchingContext);
+
+  if (context === null) {
+    throw new Error('MatchingContext must be used within a MatchingProvider');
+  }
+  return context;
 };
 
 export default MatchingProvider;
