@@ -62,13 +62,10 @@ export class RandomMatching {
         ],
       });
 
-      this.socket.emit(
-        MATCHING_SOCKET_EVENT.client.joinMatchingQueue,
-        userInformation,
-      );
+      this.socket.emit(MATCHING_SOCKET_EVENT.client.joinQueue, userInformation);
 
       this.socket.on(
-        MATCHING_SOCKET_EVENT.server.matchingSuccess,
+        MATCHING_SOCKET_EVENT.server.success,
         (matchingInformation: MatchingInformation) => {
           onSuccess(matchingInformation);
         },
