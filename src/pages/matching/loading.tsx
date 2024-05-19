@@ -24,7 +24,7 @@ const MatchingLoading: NextPage = () => {
     if (user === undefined) return;
 
     void randomMatching.startMatching({
-      userInformation: user,
+      user,
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.push({
           pathname: PAGE_PATH.matching.playing,

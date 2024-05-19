@@ -1,4 +1,5 @@
 import { io } from 'socket.io-client';
+import type { User } from 'next-auth';
 import type { Socket } from 'socket.io-client';
 import type { MatchingInformation } from 'types/matching';
 import { MATCHING_SOCKET_EVENT, EXCEPTION_MESSAGE } from 'constants/matching';
@@ -29,11 +30,11 @@ export class RandomMatching {
   }
 
   public async startMatching({
-    userInformation,
+    user,
     onSuccess,
     onError,
   }: {
-    userInformation: { id: string; username: string };
+    user: Pick<User, 'id' | 'username'>;
     onSuccess: (matchingInformation: MatchingInformation) => void;
     onError: (message: string) => void;
   }) {
@@ -62,7 +63,7 @@ export class RandomMatching {
         ],
       });
 
-      this.socket.emit(MATCHING_SOCKET_EVENT.client.joinQueue, userInformation);
+      this.socket.emit(MATCHING_SOCKET_EVENT.client.joinQueue, user);
 
       this.socket.on(
         MATCHING_SOCKET_EVENT.server.success,
