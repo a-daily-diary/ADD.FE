@@ -1,6 +1,6 @@
 import type { Session, User } from 'next-auth';
 
-export type AuthenticationState =
+export type Authentication =
   | {
       user: undefined;
       status: 'loading';

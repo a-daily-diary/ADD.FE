@@ -9,14 +9,14 @@ import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { useRandomMatching } from 'contexts/RandomMatchingProvider';
-import { useAuthenticationState } from 'hooks/services/common/useAuthenticationState';
+import { useAuthentication } from 'hooks/services/common/useAuthentication';
 
 const MatchingLoading: NextPage = () => {
   const router = useRouter();
 
   const randomMatching = useRandomMatching();
 
-  const { user } = useAuthenticationState();
+  const { user } = useAuthentication();
 
   const [isCancel, setIsCancel] = useState(false);
 
