@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
+import { PAGE_PATH } from 'constants/common';
 import { colors } from 'constants/styles';
 import { useRandomMatching } from 'contexts/RandomMatchingProvider';
 import { ScreenReaderOnly } from 'styles';
@@ -32,6 +33,12 @@ const MatchingController = () => {
     };
   }, []);
 
+  const handleEndMatching = () => {
+    // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
+    randomMatching.disconnect();
+    void router.replace(PAGE_PATH.main);
+  };
+
   return (
     <Container>
       <SubTitle>통화 제어</SubTitle>
@@ -46,11 +53,7 @@ const MatchingController = () => {
       <CircleButton
         type="button"
         backgroundColor={colors.red}
-        onClick={() => {
-          // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
-          randomMatching.disconnect();
-          void router.push('/');
-        }}
+        onClick={handleEndMatching}
       >
         <EndCallIcon />
         <span>통화 종료</span>
