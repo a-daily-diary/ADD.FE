@@ -26,7 +26,7 @@ const MatchingLoading: NextPage = () => {
     void matching.joinQueue({
       user,
       onSuccess: (matchingInformation: MatchingInformation) => {
-        void router.push({
+        void router.replace({
           pathname: PAGE_PATH.matching.playing,
           query: {
             r: matchingInformation.role,
@@ -37,7 +37,7 @@ const MatchingLoading: NextPage = () => {
       },
       onError: (message: string) => {
         alert(message);
-        void router.push(PAGE_PATH.main);
+        void router.replace(PAGE_PATH.main);
       },
     });
   }, [user]);
@@ -46,7 +46,7 @@ const MatchingLoading: NextPage = () => {
     matching.disconnect();
     setIsCancel(true);
     setTimeout(async () => {
-      await router.push(PAGE_PATH.matching.index);
+      await router.replace(PAGE_PATH.matching.index);
     }, 2000);
   };
 
