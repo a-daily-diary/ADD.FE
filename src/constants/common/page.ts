@@ -16,8 +16,11 @@ export const PAGE_PATH = {
   profile: {
     index: '/profile',
     edit: '/profile/edit',
+    diaries: '/profile/diaries',
+    bookmarks: '/profile/bookmarks',
     username: (username: string) => `/profile/${username}`,
     badges: (username: string) => `/profile/${username}/badges`,
+    usernameDiaries: (username: string) => `/profile/${username}/diaries`,
   },
 
   account: {
@@ -29,5 +32,10 @@ export const PAGE_PATH = {
 
   setting: {
     index: '/setting',
+  },
+
+  search: {
+    index: '/search',
+    keyword: (keyword: string) => `/search/${keyword}`,
   },
 } as const;

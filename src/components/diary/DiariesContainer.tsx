@@ -7,12 +7,16 @@ interface DiariesContainerProps {
   title: string;
   diariesData: Diaries[];
   empty: JSX.Element;
+  header?: JSX.Element;
+  highlightKeyword?: string;
 }
 
 export const DiariesContainer = ({
   title,
   diariesData,
   empty,
+  header,
+  highlightKeyword,
 }: DiariesContainerProps) => {
   const { totalCount } = diariesData[0];
   const isEmptyDiaries = totalCount === 0;
@@ -22,12 +26,21 @@ export const DiariesContainer = ({
   return (
     <section>
       <Title>{title}</Title>
+
+      {header !== undefined && header}
+
       <List>
         {diariesData.map((data) => {
           const { diaries } = data;
           return diaries.map((diary) => {
             const { id } = diary;
-            return <Diary key={`diary-list-${id}`} {...diary} />;
+            return (
+              <Diary
+                key={`diary-list-${id}`}
+                diaryData={diary}
+                highlightKeyword={highlightKeyword}
+              />
+            );
           });
         })}
       </List>

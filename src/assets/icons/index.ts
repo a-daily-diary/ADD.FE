@@ -1,9 +1,13 @@
+import ArrowDownIcon from './arrow-down.svg';
 import ArrowRightIcon from './arrow-right-circle.svg';
 import BackIcon from './back.svg';
 import BadIcon from './bad.svg';
 import BlockIcon from './block.svg';
 import BookmarkOffIcon from './bookmark_off.svg';
 import BookmarkOnIcon from './bookmark_on.svg';
+import CheckIcon from './check.svg';
+import CircleCheckedOffIcon from './checkbox-circle_off.svg';
+import CircleCheckedOnIcon from './checkbox-circle_on.svg';
 import CheckedOffIcon from './checkbox_off.svg';
 import CheckedOnIcon from './checkbox_on.svg';
 import CloseIcon from './close.svg';
@@ -47,13 +51,17 @@ import WriteDiaryIcon from './write_diary.svg';
 
 export {
   ArrowRightIcon,
+  ArrowDownIcon,
   BackIcon,
   BookmarkOffIcon,
   BookmarkOnIcon,
   CommentIcon,
   CloseIcon,
+  CheckIcon,
   CheckedOffIcon,
   CheckedOnIcon,
+  CircleCheckedOffIcon,
+  CircleCheckedOnIcon,
   DeleteIcon,
   EditIcon,
   HideIcon,

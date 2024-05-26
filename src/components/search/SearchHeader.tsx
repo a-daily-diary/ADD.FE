@@ -1,34 +1,71 @@
 import styled from '@emotion/styled';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 import type { SearchForm } from 'types/search';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
+import { Z_INDEX } from 'constants/styles';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
-export const SearchHeader = () => {
-  const { register, setValue, watch } = useFormContext<SearchForm>();
-  const { searchKeyword } = watch();
+interface SearchHeaderProps {
+  onSaveSearchKeyword: (keyword: string) => void;
+}
+
+export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
+  const router = useRouter();
+  const {
+    query: { keyword },
+  } = router;
+
+  const { register, watch, setValue, setFocus, handleSubmit } =
+    useFormContext<SearchForm>();
+  const { searchKeyword: watchSearchKeyword } = watch();
 
   const handleDeleteSearchKeyword = () => {
     setValue('searchKeyword', '');
+    setFocus('searchKeyword');
   };
 
-  const handleChangeSearch = () => {
-    // TODO: 검색 기능 구현
-    console.log(searchKeyword);
+  const handleCancel = () => {
+    if (keyword === undefined) {
+      void router.push(PAGE_PATH.main);
+
+      return;
+    }
+
+    void router.push(PAGE_PATH.search.index);
   };
+
+  const onSubmit: SubmitHandler<SearchForm> = async (data) => {
+    const { searchKeyword } = data;
+
+    onSaveSearchKeyword(searchKeyword);
+
+    await router.push(PAGE_PATH.search.keyword(searchKeyword));
+  };
+
+  useEffect(() => {
+    setValue('searchKeyword', keyword as string);
+  }, []);
 
   return (
     <HeaderLayout>
-      <SearchContainer>
+      <SearchKeywordForm onSubmit={handleSubmit(onSubmit)}>
         <SearchLabel htmlFor="searchKeyword">
-          <SearchIcon width={20} height={20} stroke={theme.colors.primary_00} />
+          <button type="submit">
+            <SearchIcon
+              width={20}
+              height={20}
+              stroke={theme.colors.primary_00}
+            />
+          </button>
         </SearchLabel>
         <SearchInput
           {...register('searchKeyword', {
             required: true,
-            onChange: handleChangeSearch,
+            setValueAs: (value: string) => value.trim(),
           })}
           type="search"
           id="searchKeyword"
@@ -36,13 +73,15 @@ export const SearchHeader = () => {
         />
         <DeleteButton
           type="button"
-          isVisible={searchKeyword?.length > 0}
+          isVisible={watchSearchKeyword?.length > 0}
           onClick={handleDeleteSearchKeyword}
         >
           <DeleteIcon />
         </DeleteButton>
-      </SearchContainer>
-      <CancelLink href={PAGE_PATH.main}>취소</CancelLink>
+      </SearchKeywordForm>
+      <CancelButton type="button" onClick={handleCancel}>
+        취소
+      </CancelButton>
     </HeaderLayout>
   );
 };
@@ -56,13 +95,14 @@ const HeaderLayout = styled.header`
   top: 0;
   right: 0;
   left: 0;
+  z-index: ${Z_INDEX.header};
   height: 54px;
   padding: 0 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray_06};
   background: ${({ theme }) => theme.colors.white};
 `;
 
-const SearchContainer = styled.div`
+const SearchKeywordForm = styled.form`
   flex: 1;
   display: flex;
   align-items: center;
@@ -94,8 +134,10 @@ const SearchInput = styled.input`
 
 const DeleteButton = styled.button<{ isVisible: boolean }>`
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+
+  ${SVGVerticalAlignStyle}
 `;
 
-const CancelLink = styled(Link)`
+const CancelButton = styled.button`
   ${({ theme }) => theme.fonts.body_05}
 `;

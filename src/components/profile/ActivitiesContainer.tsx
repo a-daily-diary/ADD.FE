@@ -133,6 +133,7 @@ const ActivitiesCalendarHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 24px;
   padding: 0 20px 0 50px;
 `;
 

@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
+import { useSession } from 'next-auth/react';
 import { Loading } from 'components/common';
 import { ActivityDiariesContainer } from 'components/diary';
 import { EmptyActivitiesDiary } from 'components/diary/EmptyActivitiesDiary';
 import { useActivityDetail } from 'hooks/services/queries';
-import { dateWithDayFormat } from 'utils';
+import { dateStringFormat, dateWithDayFormat } from 'utils';
+
+const today = new Date();
 
 interface ActivityDetailProps {
   dateString: string;
@@ -14,6 +17,8 @@ export const ActivityDetail = ({
   dateString,
   username,
 }: ActivityDetailProps) => {
+  const { data: session } = useSession();
+
   const { activityDetailData } = useActivityDetail({
     username,
     dateString,
@@ -24,7 +29,15 @@ export const ActivityDetail = ({
   const {
     date: activityDetailDate,
     activities: { commentCount, diaryCount, randomMatchingCount, diaries },
+    activityCount,
   } = activityDetailData;
+
+  const todayDateString = dateStringFormat(today.toDateString());
+  const activityDetailDateString = dateStringFormat(activityDetailDate);
+
+  const isToday = activityDetailDateString === todayDateString;
+  const isMyProfile = session?.user.username === username;
+  const hasActivities = activityCount > 0;
 
   return (
     <>
@@ -46,11 +59,19 @@ export const ActivityDetail = ({
         </CountList>
       </DetailHeader>
 
-      {/* TODO: 날짜별, 사용자별 UI 수정 필요 */}
       <ActivityDiariesContainer
         title={`${dateString} 작성한 일기`}
         diariesData={diaries}
-        empty={<EmptyActivitiesDiary />}
+        empty={
+          !isToday && !hasActivities ? (
+            <NoActivitiesText>활동 내역이 없습니다</NoActivitiesText>
+          ) : (
+            <EmptyActivitiesDiary
+              isVisibleGoToWriteButton={isToday}
+              isMyProfile={isMyProfile}
+            />
+          )
+        }
       />
     </>
   );
@@ -75,4 +96,11 @@ const CountList = styled.ul`
 
 const Count = styled.strong`
   font-weight: 700;
+`;
+
+const NoActivitiesText = styled.p`
+  padding: 50px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray_02};
+  ${({ theme }) => theme.fonts.body_08};
 `;

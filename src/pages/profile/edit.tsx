@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
+
 import { useRouter } from 'next/router';
 import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
@@ -14,6 +16,8 @@ import type {
   SuccessResponse,
 } from 'types/response';
 import * as api from 'api';
+
+import { BadgesContainer } from 'components/badge';
 import { Seo } from 'components/common';
 import { FormInput } from 'components/form';
 import {
@@ -25,6 +29,7 @@ import {
 import { NoLinkProfileImage, SelectProfileImage } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { SERVER_SIDE_PROPS } from 'constants/server';
+import { queryKeys } from 'constants/services';
 import {
   ERROR_MESSAGE,
   INVALID_VALUE,
@@ -189,6 +194,8 @@ const ProfileEditPage: NextPage = () => {
             />
           </FormInputContainer>
         </Form>
+
+        <BadgesContainer />
       </Section>
     </>
   );
@@ -202,14 +209,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
-  return { props: { session } };
+  const { username, accessToken } = session.user;
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  };
+
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery([queryKeys.badges, username], async () => {
+    return await api.getBadgesByUsername({ username, config: headers });
+  });
+  return { props: { dehydratedState: dehydrate(queryClient), session } };
 };
 
 export default ProfileEditPage;
 
 const Section = styled.section`
   margin-top: 54px;
-  min-height: calc(100vh - 54px);
 `;
 
 const Title = styled.h1`
@@ -218,6 +236,7 @@ const Title = styled.h1`
 
 const Form = styled.form`
   padding: 28px 20px;
+  border-bottom: 12px solid ${({ theme }) => theme.colors.gray_06};
 `;
 
 const FormInputContainer = styled.div`

@@ -1,43 +1,73 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import { useFormContext } from 'react-hook-form';
 import { NoSearchResults } from './NoSearchResults';
+import type { SearchForm } from 'types/search';
 import { CloseIcon } from 'assets/icons';
-import { theme } from 'styles';
+import { PAGE_PATH } from 'constants/common';
+import { SVGVerticalAlignStyle, theme } from 'styles';
 
-// TODO: 목데이터 제거
-const RECENT_SEARCHES_MOCKS = [
-  'hello',
-  'daily routine',
-  'dance',
-  'morning',
-  'movies',
-  'cakes',
-  'happy',
-  'computer',
-];
+interface RecentSearchContainerProps {
+  recentSearchKeywords: string[];
+  onDeleteSearchKeyword: (value: string) => void;
+  onDeleteAllSearchKeyword: () => void;
+}
 
-export const RecentSearchContainer = () => {
-  // TODO: localStorage 최근 검색어 목록으로 변경
-  const isEmptyRecentSearches = RECENT_SEARCHES_MOCKS.length === 0;
+export const RecentSearchContainer = ({
+  recentSearchKeywords,
+  onDeleteSearchKeyword,
+  onDeleteAllSearchKeyword,
+}: RecentSearchContainerProps) => {
+  const isEmptyRecentSearches = recentSearchKeywords.length === 0;
+
+  const router = useRouter();
+
+  const { setValue } = useFormContext<SearchForm>();
+
+  const handleMoveSearchResult = (keyword: string) => async () => {
+    setValue('searchKeyword', keyword);
+
+    await router.push(PAGE_PATH.search.keyword(keyword));
+  };
+
+  const handleDeleteRecentSearch = (keyword: string) => () => {
+    onDeleteSearchKeyword(keyword);
+  };
 
   return (
     <Container>
-      <Title>최근 검색어</Title>
+      <TitleContainer>
+        <Title>최근 검색어</Title>
+        {!isEmptyRecentSearches && (
+          <DeleteAllButton type="button" onClick={onDeleteAllSearchKeyword}>
+            전체 삭제
+          </DeleteAllButton>
+        )}
+      </TitleContainer>
       {isEmptyRecentSearches ? (
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
         <RecentSearchList>
-          {RECENT_SEARCHES_MOCKS.map((recentSearch) => {
+          {recentSearchKeywords.map((recentSearchKeyword) => {
             return (
-              <li key={recentSearch}>
-                <RecentSearchButton type="button">
-                  {recentSearch}
+              <RecentSearchItem key={recentSearchKeyword}>
+                <button
+                  type="button"
+                  onClick={handleMoveSearchResult(recentSearchKeyword)}
+                >
+                  {recentSearchKeyword}
+                </button>
+                <DeleteButton
+                  type="button"
+                  onClick={handleDeleteRecentSearch(recentSearchKeyword)}
+                >
                   <CloseIcon
                     width={16}
                     height={16}
                     stroke={theme.colors.gray_04}
                   />
-                </RecentSearchButton>
-              </li>
+                </DeleteButton>
+              </RecentSearchItem>
             );
           })}
         </RecentSearchList>
@@ -50,18 +80,30 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 const Title = styled.h2`
   ${({ theme }) => theme.fonts.headline_02}
+`;
+
+const DeleteAllButton = styled.button`
+  color: ${({ theme }) => theme.colors.gray_04};
+  ${({ theme }) => theme.fonts.body_06}
 `;
 
 const RecentSearchList = styled.ul`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
   padding-top: 18px;
 `;
 
-const RecentSearchButton = styled.button`
+const RecentSearchItem = styled.li`
   display: flex;
   align-items: center;
   gap: 12px;
@@ -69,4 +111,8 @@ const RecentSearchButton = styled.button`
   border-radius: 100px;
   background-color: ${({ theme }) => theme.colors.bg_01};
   ${({ theme }) => theme.fonts.body_05}
+`;
+
+const DeleteButton = styled.button`
+  ${SVGVerticalAlignStyle}
 `;
