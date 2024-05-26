@@ -69,11 +69,14 @@ export const resetPassword = async ({
   tempToken,
   password,
 }: PasswordResetRequest) => {
-  return await axios.put(API_PATH.users.password, {
-    email,
-    tempToken,
-    password,
-  });
+  return await axios.put<SuccessResponse<OnlyMessageResponse>>(
+    API_PATH.users.password,
+    {
+      email,
+      tempToken,
+      password,
+    },
+  );
 };
 
 export const tempTokenValidation = async ({
