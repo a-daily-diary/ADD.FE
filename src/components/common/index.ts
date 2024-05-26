@@ -8,7 +8,6 @@ export * from './FloatingMenuButton';
 export * from './HighlightText';
 export * from './ResponsiveImage';
 export * from './Seo';
-export * from './Tab';
 export * from './Loading';
 export * from './ObserverTarget';
 export * from './Popover';
