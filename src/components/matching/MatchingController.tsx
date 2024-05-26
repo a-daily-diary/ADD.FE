@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
+import { AlertModal } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { colors } from 'constants/styles';
 import { useMatching } from 'contexts/MatchingProvider';
+import { useModal } from 'hooks/common';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
@@ -15,23 +17,28 @@ const MatchingController = () => {
 
   const matching = useMatching();
 
-  useEffect(() => {
-    const { current: audioElement } = audioRef;
+  const { isVisible, handleModal } = useModal();
 
+  const signaling = async () => {
     const { query } = router;
 
-    if (audioElement !== null) {
-      if (query.ms?.length === 0 || query.mu?.length === 0) {
-        alert('매칭 도중 오류가 발생했습니다. 메인 화면으로 이동합니다.');
-        void router.replace(PAGE_PATH.main);
-      }
+    const { current: audioElement } = audioRef;
 
-      void matching.signaling(audioElement, {
+    if (audioElement === null) return;
+
+    try {
+      await matching.signaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         socketId: query.ms as MatchingInformation['socketId'],
         userId: query.mu as MatchingInformation['userId'],
       });
+    } catch (error) {
+      handleModal.open();
     }
+  };
+
+  useEffect(() => {
+    void signaling();
 
     return () => {
       matching.disconnect();
@@ -44,26 +51,40 @@ const MatchingController = () => {
     void router.replace(PAGE_PATH.main);
   };
 
+  const handleCloseAlert = () => {
+    handleModal.close();
+    void router.replace(PAGE_PATH.main);
+  };
+
   return (
-    <Container>
-      <SubTitle>통화 제어</SubTitle>
-      <audio ref={audioRef} muted={false} autoPlay>
-        <track kind="captions" />
-      </audio>
-      <CircleButton type="button" backgroundColor={colors.bg_02}>
-        <Tooltip>마이크를 켜주세요!</Tooltip>
-        <MicrophoneOffIcon />
-        <span>마이크 off</span>
-      </CircleButton>
-      <CircleButton
-        type="button"
-        backgroundColor={colors.red}
-        onClick={handleEndMatching}
-      >
-        <EndCallIcon />
-        <span>통화 종료</span>
-      </CircleButton>
-    </Container>
+    <>
+      <Container>
+        <SubTitle>통화 제어</SubTitle>
+        <audio ref={audioRef} muted={false} autoPlay>
+          <track kind="captions" />
+        </audio>
+        <CircleButton type="button" backgroundColor={colors.bg_02}>
+          <Tooltip>마이크를 켜주세요!</Tooltip>
+          <MicrophoneOffIcon />
+          <span>마이크 off</span>
+        </CircleButton>
+        <CircleButton
+          type="button"
+          backgroundColor={colors.red}
+          onClick={handleEndMatching}
+        >
+          <EndCallIcon />
+          <span>통화 종료</span>
+        </CircleButton>
+      </Container>
+      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
+      <AlertModal isVisible={isVisible} onClose={handleCloseAlert}>
+        <ModalContent>
+          <p>의도하지 않은 에러가 발생했습니다.</p>
+          <p>메인 페이지도 이동합니다.</p>
+        </ModalContent>
+      </AlertModal>
+    </>
   );
 };
 
@@ -121,4 +142,12 @@ const Tooltip = styled.div`
     border: 8px solid transparent;
     border-top-color: ${({ theme }) => theme.colors.primary_00};
   }
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 40px 32px 30px;
 `;

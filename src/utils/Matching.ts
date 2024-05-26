@@ -75,10 +75,15 @@ export class Matching {
     audioElement: HTMLAudioElement,
     matchingInformation: MatchingInformation,
   ) {
-    if (this.socket === null || this.peer === null || this.audioStream === null)
+    if (
+      this.socket === null ||
+      this.peer === null ||
+      this.audioStream === null
+    ) {
       throw new Error(
         '개발자 에러: signaling 메소드 호출 이전에 joinQueue 메소드가 먼저 호출되어야 합니다.',
       );
+    }
 
     const { role, socketId } = matchingInformation;
 
