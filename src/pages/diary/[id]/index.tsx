@@ -19,6 +19,7 @@ import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteDiary, useDiary } from 'hooks/services';
@@ -124,12 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
   const headers = {
     headers: {

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import type { GetServerSideProps, NextPage } from 'next';
 import * as api from 'api';
 import { ActivitiesContainer, ProfileLayout } from 'components/profile';
-import { PAGE_PATH } from 'constants/common';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -28,12 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
   const { username, accessToken } = session.user;

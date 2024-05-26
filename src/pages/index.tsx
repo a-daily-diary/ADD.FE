@@ -13,6 +13,7 @@ import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 
@@ -59,12 +60,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
   return { props: { session } };
