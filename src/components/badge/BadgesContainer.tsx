@@ -19,7 +19,7 @@ export const BadgesContainer = () => {
   });
   const changePinnedBadgeMutation = useChangePinnedBadge();
 
-  const handleChangePinned = (id: string) => () => {
+  const handleChangePinned = (id: string) => {
     try {
       changePinnedBadgeMutation(id);
     } catch (error) {
@@ -42,7 +42,12 @@ export const BadgesContainer = () => {
           // TODO: 획득 전 배지 UI
           return (
             <li key={id}>
-              <BadgeButton type="button" onClick={handleChangePinned(id)}>
+              <BadgeButton
+                type="button"
+                onClick={() => {
+                  handleChangePinned(id);
+                }}
+              >
                 <BadgeImageContainer>
                   <Image
                     src={imgUrl}
