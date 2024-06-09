@@ -15,7 +15,7 @@ import {
   SearchResultHeader,
 } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
-import { useIntersectionObserver, useSearchKeywordStorage } from 'hooks/common';
+import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
@@ -23,8 +23,6 @@ const SearchResultPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ keyword }) => {
   const methods = useForm<SearchForm>({ mode: 'onChange' });
-
-  const { handleSaveSearchKeyword } = useSearchKeywordStorage();
 
   const { diariesData, isLoading, isError, fetchNextPage } =
     useDiaries(keyword);
@@ -39,7 +37,8 @@ const SearchResultPage: NextPage<
       <Seo title={`${keyword} 검색 결과 | a daily diary`} />
       <Section>
         <FormProvider {...methods}>
-          <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
+          <SearchHeader />
+
           <DiariesContainer
             title={`${keyword} 검색 결과`}
             diariesData={diariesData}
