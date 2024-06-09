@@ -11,7 +11,7 @@ import { PAGE_PATH } from 'constants/common';
 import { useMatching } from 'contexts/MatchingProvider';
 import { useAuthentication } from 'hooks/services/common/useAuthentication';
 
-const MatchingLoading: NextPage = () => {
+const MatchingQueue: NextPage = () => {
   const router = useRouter();
 
   const matching = useMatching();
@@ -27,7 +27,7 @@ const MatchingLoading: NextPage = () => {
       user,
       onSuccess: (matchingInformation: MatchingInformation) => {
         void router.replace({
-          pathname: PAGE_PATH.matching.playing,
+          pathname: PAGE_PATH.matching.matchUp,
           query: {
             r: matchingInformation.role,
             ms: matchingInformation.socketId,
@@ -93,7 +93,7 @@ const MatchingLoading: NextPage = () => {
   );
 };
 
-export default MatchingLoading;
+export default MatchingQueue;
 
 const Section = styled.section`
   text-align: center;

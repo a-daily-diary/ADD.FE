@@ -9,7 +9,7 @@ import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { ScreenReaderOnly } from 'styles';
 
-const MatchingPlaying: NextPage = () => {
+const MatchUp: NextPage = () => {
   const {
     isVisible: isVisibleBeforeLeave,
     handleModal: handleBeforeLeaveModal,
@@ -39,7 +39,7 @@ const MatchingPlaying: NextPage = () => {
   );
 };
 
-export default MatchingPlaying;
+export default MatchUp;
 
 const Title = styled.h1`
   ${ScreenReaderOnly}
