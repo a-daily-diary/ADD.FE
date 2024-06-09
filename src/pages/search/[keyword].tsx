@@ -11,7 +11,6 @@ import { FullPageLoading, ObserverTarget, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import {
   NoSearchResults,
-  RecentSearchContainer,
   SearchHeader,
   SearchResultHeader,
 } from 'components/search';
@@ -24,24 +23,14 @@ const SearchResultPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ keyword }) => {
   const methods = useForm<SearchForm>({ mode: 'onChange' });
-  const { watch } = methods;
-  const { searchKeyword } = watch();
 
-  const {
-    keywords,
-    handleSaveSearchKeyword,
-    handleDeleteSearchKeyword,
-    handleDeleteAllSearchKeyword,
-  } = useSearchKeywordStorage();
+  const { handleSaveSearchKeyword } = useSearchKeywordStorage();
 
   const { diariesData, isLoading, isError, fetchNextPage } =
     useDiaries(keyword);
   const { setTargetRef } = useIntersectionObserver({
     onIntersect: fetchNextPage,
   });
-
-  const isShowRecentSearchResult =
-    searchKeyword === undefined || searchKeyword.length === 0;
 
   if (diariesData === undefined) return <FullPageLoading />;
 
@@ -51,32 +40,20 @@ const SearchResultPage: NextPage<
       <Section>
         <FormProvider {...methods}>
           <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
-          {isShowRecentSearchResult ? (
-            <RecentSearchContainer
-              recentSearchKeywords={keywords}
-              onDeleteSearchKeyword={handleDeleteSearchKeyword}
-              onDeleteAllSearchKeyword={handleDeleteAllSearchKeyword}
-            />
-          ) : (
-            <>
-              <DiariesContainer
-                title={`${keyword} 검색 결과`}
-                diariesData={diariesData}
-                empty={<NoSearchResults description="검색 결과가 없습니다." />}
-                header={
-                  <SearchResultHeader
-                    totalCount={diariesData[0].totalCount ?? 0}
-                  />
-                }
-                highlightKeyword={keyword}
-              />
-              <ObserverTarget
-                targetRef={setTargetRef}
-                isLoading={isLoading}
-                isError={isError}
-              />
-            </>
-          )}
+          <DiariesContainer
+            title={`${keyword} 검색 결과`}
+            diariesData={diariesData}
+            empty={<NoSearchResults description="검색 결과가 없습니다." />}
+            header={
+              <SearchResultHeader totalCount={diariesData[0].totalCount ?? 0} />
+            }
+            highlightKeyword={keyword}
+          />
+          <ObserverTarget
+            targetRef={setTargetRef}
+            isLoading={isLoading}
+            isError={isError}
+          />
         </FormProvider>
       </Section>
     </>
