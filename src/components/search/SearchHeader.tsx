@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -8,9 +8,8 @@ import type { SearchForm } from 'types/search';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
 import { Z_INDEX } from 'constants/styles';
-import { useSearchKeywordStorage } from 'hooks/common';
+import { useSearchKeywordStorage, useDebounce } from 'hooks/common';
 import { SVGVerticalAlignStyle, theme } from 'styles';
-import { debounce } from 'utils';
 
 export const SearchHeader = () => {
   const router = useRouter();
@@ -47,9 +46,8 @@ export const SearchHeader = () => {
     await router.push(PAGE_PATH.search.keyword(searchKeyword));
   };
 
-  const handleChangeSearchKeyword: ChangeEventHandler<SearchForm> = useCallback(
-    debounce(handleSubmit(onSubmit)),
-    [],
+  const handleChangeSearchKeyword: ChangeEventHandler<SearchForm> = useDebounce(
+    handleSubmit(onSubmit),
   );
 
   useEffect(() => {
