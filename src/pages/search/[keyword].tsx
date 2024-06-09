@@ -42,7 +42,11 @@ const SearchResultPage: NextPage<
           <DiariesContainer
             title={`${keyword} 검색 결과`}
             diariesData={diariesData}
-            empty={<NoSearchResults description="검색 결과가 없습니다." />}
+            empty={
+              <NoSearchResults
+                description={`"${keyword}" 에 대한 검색 결과가 없습니다.`}
+              />
+            }
             header={
               <SearchResultHeader totalCount={diariesData[0].totalCount ?? 0} />
             }
