@@ -17,6 +17,24 @@ const MatchingRule: NextPage = () => {
   const handleGoToMatchingQueue = () => {
     void router.push(PAGE_PATH.matching.queue);
   };
+  const RULE_LIST = [
+    {
+      icon: <EnIcon />,
+      text: '한국어 보다는 영어 사용을 권장합니다.',
+    },
+    {
+      icon: <BlockIcon />,
+      text: '특정 횟수의 경고를 받은 사용자는 차단될 수 있습니다.',
+    },
+    {
+      icon: <PrivacyIcon />,
+      text: '동의하지 않은 개인정보를 노출되거나 요청을 금지합니다.',
+    },
+    {
+      icon: <DiseaseIcon />,
+      text: '선정적인 언어, 혐오/차별/폭력적인 언어, 불법 행위/기타 행위를 제한합니다.',
+    },
+  ];
 
   return (
     <>
@@ -34,36 +52,14 @@ const MatchingRule: NextPage = () => {
             랜덤 매칭 규칙을 꼭 지켜주세요!
           </h2>
           <RuleList>
-            <li>
-              <ImageWrapper>
-                <EnIcon />
-              </ImageWrapper>
-              <p>한국어 보다는 영어 사용을 권장합니다.</p>
-            </li>
-            <li>
-              <ImageWrapper>
-                <BlockIcon />
-              </ImageWrapper>
-              <p>
-                특정 횟수의 경고를 받은 사용자는 일부 서비스 사용이 차단될 수
-                있습니다.
-              </p>
-            </li>
-            <li>
-              <ImageWrapper>
-                <PrivacyIcon />
-              </ImageWrapper>
-              <p>개인정보 노출 혹은 요청을 금지합니다.</p>
-            </li>
-            <li>
-              <ImageWrapper>
-                <DiseaseIcon />
-              </ImageWrapper>
-              <p>
-                선정적인 언어, 혐오/차별/폭력적인 언어, 불법 행위/기타 행위를
-                제한합니다.
-              </p>
-            </li>
+            {RULE_LIST.map((item, index) => {
+              return (
+                <RuleItem key={`rule-item-${index}`}>
+                  <ImageWrapper>{item.icon}</ImageWrapper>
+                  <p>{item.text}</p>
+                </RuleItem>
+              );
+            })}
           </RuleList>
           <Button
             type="button"
@@ -105,22 +101,25 @@ const RuleList = styled.ul`
   flex-direction: column;
   gap: 20px;
   margin-bottom: 50px;
-  li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    p {
-      ${({ theme }) => theme.fonts.body_04}
-    }
+`;
+
+const RuleItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  p {
+    ${({ theme }) => theme.fonts.body_04}
+    flex: 1;
+    display: inline-block;
   }
 `;
 
 const ImageWrapper = styled.div`
+  flex-basis: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: ${colors.bg_02};
-  width: 60px;
   height: 60px;
   border-radius: 20px;
 `;
