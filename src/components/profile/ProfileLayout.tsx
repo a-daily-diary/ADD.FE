@@ -15,7 +15,9 @@ export const ProfileLayout = ({
 }: ProfileLayoutProps) => {
   return (
     <>
-      <Seo title={`${isMyProfile ? username : ''} 프로필 | a daily diary`} />
+      <Seo
+        title={`${isMyProfile ? '' : `${username} `}프로필 | a daily diary`}
+      />
       <ProfileContainer username={username} isMyProfile={isMyProfile} />
 
       <ProfileTab username={isMyProfile ? undefined : username} />
