@@ -16,6 +16,7 @@ import axios from 'lib/axios';
 export const getDiaries = async ({
   currentPage,
   searchKeyword,
+  sortBy,
 }: GetDiariesRequest) => {
   const currentPageIndex = currentPage - 1;
   const {
@@ -25,6 +26,7 @@ export const getDiaries = async ({
       skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
       searchKeyword,
+      sortBy,
     },
   });
 
