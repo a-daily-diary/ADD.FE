@@ -57,7 +57,11 @@ export const getServerSideProps = (async (context) => {
       return await api.getProfileByUsername({ username, config: headers });
     });
     await queryClient.fetchQuery([queryKeys.badges, username], async () => {
-      return await api.getBadgesByUsername({ username, config: headers });
+      return await api.getBadgesByUsername({
+        username,
+        onlyPinned: true,
+        config: headers,
+      });
     });
   } catch (error) {
     if (isAxiosError(error)) {
