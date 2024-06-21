@@ -80,6 +80,12 @@
         ],
         "alphabetize": { "order": "asc" }
       }
+    ],
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error",
+      {
+        "allowNullableString": true
+      }
     ]
   },
   "settings": {

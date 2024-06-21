@@ -6,6 +6,24 @@ export interface PasswordResetLinkRequest {
   redirectUrl: string;
 }
 
+export interface PasswordResetRequest {
+  email: string;
+  tempToken: string;
+  password: string;
+}
+
+export interface TempTokenValidationRequest {
+  email: string;
+  tempToken: string;
+}
+
+/**
+ * Response
+ */
+export interface TempTokenValidationResponse {
+  isValidate: boolean;
+}
+
 /**
  * Others
  */

@@ -5,7 +5,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { PasswordFindForm } from 'types/password';
 import type { ErrorResponse } from 'types/response';
-import { passwordResetLink } from 'api';
+import * as api from 'api';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
@@ -25,7 +25,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
   const onSubmit: SubmitHandler<PasswordFindForm> = async (data) => {
     try {
       const { email } = data;
-      await passwordResetLink({
+      await api.passwordResetLink({
         email,
         redirectUrl: `${window.location.origin}/account/resetPassword`,
       });

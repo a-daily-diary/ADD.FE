@@ -1,7 +1,11 @@
 import styled from '@emotion/styled';
+import { isAxiosError } from 'axios';
 import router from 'next/router';
 import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 import type { PasswordResetForm } from 'types/password';
+import type { ErrorResponse } from 'types/response';
+import * as api from 'api';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
 import { PAGE_PATH } from 'constants/common';
@@ -11,7 +15,12 @@ import {
   VALID_VALUE,
 } from 'constants/validation';
 
-export const ResetPasswordForm = () => {
+interface ResetPasswordFormProps {
+  email: string;
+  token: string;
+}
+
+export const ResetPasswordForm = ({ email, token }: ResetPasswordFormProps) => {
   const {
     register,
     getValues,
@@ -19,12 +28,20 @@ export const ResetPasswordForm = () => {
     formState: { isValid, errors, isSubmitting },
   } = useForm<PasswordResetForm>({ mode: 'onChange' });
 
-  const onSubmit = async () => {
-    /**
-     * @todo
-     * 비밀번호 재설정 API 요청
-     */
-    await router.replace(PAGE_PATH.account.login);
+  const onSubmit: SubmitHandler<PasswordResetForm> = async (data) => {
+    try {
+      const { password } = data;
+      await api.resetPassword({ email, tempToken: token, password });
+      await router.replace(PAGE_PATH.account.login);
+    } catch (error) {
+      if (isAxiosError<ErrorResponse>(error)) {
+        /**
+         * @todo
+         * 에러 처리
+         */
+        console.log(error.response?.status);
+      }
+    }
   };
 
   return (

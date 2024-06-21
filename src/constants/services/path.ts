@@ -7,6 +7,8 @@ export const API_PATH = {
     register: '/users/register',
     login: '/users/login',
     passwordResetLink: '/users/password-reset-link',
+    password: '/users/password',
+    tempTokenValidation: '/users/temp-token-validation',
   },
   diaries: {
     index: '/diaries',
