@@ -7,7 +7,7 @@ import type {
   NextPage,
 } from 'next';
 import type { SearchForm } from 'types/search';
-import { FullPageLoading, ObserverTarget, Seo } from 'components/common';
+import { ObserverTarget, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import {
   NoSearchResults,
@@ -30,8 +30,6 @@ const SearchResultPage: NextPage<
     onIntersect: fetchNextPage,
   });
 
-  if (diariesData === undefined) return <FullPageLoading />;
-
   return (
     <>
       <Seo title={`${keyword} 검색 결과 | a daily diary`} />
@@ -39,24 +37,30 @@ const SearchResultPage: NextPage<
         <FormProvider {...methods}>
           <SearchHeader />
 
-          <DiariesContainer
-            title={`${keyword} 검색 결과`}
-            diariesData={diariesData}
-            empty={
-              <NoSearchResults
-                description={`"${keyword}" 에 대한 검색 결과가 없습니다.`}
+          {diariesData !== undefined && (
+            <>
+              <DiariesContainer
+                title={`${keyword} 검색 결과`}
+                diariesData={diariesData}
+                empty={
+                  <NoSearchResults
+                    description={`"${keyword}" 에 대한 검색 결과가 없습니다.`}
+                  />
+                }
+                header={
+                  <SearchResultHeader
+                    totalCount={diariesData[0].totalCount ?? 0}
+                  />
+                }
+                highlightKeyword={keyword}
               />
-            }
-            header={
-              <SearchResultHeader totalCount={diariesData[0].totalCount ?? 0} />
-            }
-            highlightKeyword={keyword}
-          />
-          <ObserverTarget
-            targetRef={setTargetRef}
-            isLoading={isLoading}
-            isError={isError}
-          />
+              <ObserverTarget
+                targetRef={setTargetRef}
+                isLoading={isLoading}
+                isError={isError}
+              />
+            </>
+          )}
         </FormProvider>
       </Section>
     </>
