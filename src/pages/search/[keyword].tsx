@@ -1,12 +1,13 @@
 import styled from '@emotion/styled';
 import { getServerSession } from 'next-auth';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
-import type { SearchForm } from 'types/search';
+import type { SearchForm, SortByOption } from 'types/search';
 import { ObserverTarget, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import {
@@ -15,6 +16,7 @@ import {
   SearchResultHeader,
 } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
+import { INITIAL_SORT_BY_LIST } from 'constants/search';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -22,10 +24,21 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 const SearchResultPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ keyword }) => {
+  const [sortOptions, setSortOptions] = useState<SortByOption[]>([
+    ...INITIAL_SORT_BY_LIST,
+  ]);
+
+  const selectedSortOption = useMemo(
+    () => sortOptions.find((option) => option.selected) ?? sortOptions[0],
+    [sortOptions],
+  );
+
   const methods = useForm<SearchForm>({ mode: 'onChange' });
 
-  const { diariesData, isLoading, isError, fetchNextPage } =
-    useDiaries(keyword);
+  const { diariesData, isLoading, isError, fetchNextPage } = useDiaries(
+    keyword,
+    selectedSortOption.id,
+  );
   const { setTargetRef } = useIntersectionObserver({
     onIntersect: fetchNextPage,
   });
@@ -49,7 +62,10 @@ const SearchResultPage: NextPage<
                 }
                 header={
                   <SearchResultHeader
-                    totalCount={diariesData[0].totalCount ?? 0}
+                    totalCount={diariesData[0].totalCount}
+                    selectedSortOption={selectedSortOption}
+                    sortOptions={sortOptions}
+                    setSortOptions={setSortOptions}
                   />
                 }
                 highlightKeyword={keyword}
