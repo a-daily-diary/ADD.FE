@@ -8,6 +8,7 @@ import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { Button } from 'components/common';
 import { FormInput } from 'components/form';
+import { PAGE_PATH } from 'constants/common';
 import { ERROR_MESSAGE, VALID_VALUE } from 'constants/validation';
 
 interface FindPasswordFormProps {
@@ -27,7 +28,7 @@ export const FindPasswordForm = ({ setIsSubmitted }: FindPasswordFormProps) => {
       const { email } = data;
       await api.passwordResetLink({
         email,
-        redirectUrl: `${window.location.origin}/account/resetPassword`,
+        redirectUrl: `${window.location.origin}${PAGE_PATH.account.resetPassword}`,
       });
       setIsSubmitted(true);
     } catch (error) {
