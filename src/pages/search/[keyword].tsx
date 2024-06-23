@@ -16,7 +16,7 @@ import {
   SearchResultHeader,
 } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
-import { SORT_BY_LIST } from 'constants/search';
+import { INITIAL_SORT_BY_LIST } from 'constants/search';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
@@ -24,7 +24,9 @@ import { authOptions } from 'pages/api/auth/[...nextauth]';
 const SearchResultPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ keyword }) => {
-  const [sortOptions, setSortOptions] = useState<SortByOption[]>(SORT_BY_LIST);
+  const [sortOptions, setSortOptions] = useState<SortByOption[]>([
+    ...INITIAL_SORT_BY_LIST,
+  ]);
 
   const selectedSortOption = useMemo(
     () => sortOptions.find((option) => option.selected) ?? sortOptions[0],
