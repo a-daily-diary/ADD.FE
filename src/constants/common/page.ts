@@ -28,6 +28,7 @@ export const PAGE_PATH = {
     login: '/account/login',
     register: '/account/register',
     findPassword: '/account/find-password',
+    resetPassword: '/account/reset-password',
   },
 
   setting: {
