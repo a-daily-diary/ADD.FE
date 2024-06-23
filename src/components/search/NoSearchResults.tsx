@@ -25,10 +25,11 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 44px 0;
+  padding: 44px 30px;
 `;
 
 const Description = styled.p`
   color: ${({ theme }) => theme.colors.gray_02};
-  ${({ theme }) => theme.fonts.body_05}
+  ${({ theme }) => theme.fonts.body_04};
+  word-break: break-all;
 `;

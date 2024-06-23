@@ -6,30 +6,18 @@ import type { SearchForm } from 'types/search';
 import { Seo } from 'components/common';
 import { RecentSearchContainer, SearchHeader } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
-import { useSearchKeywordStorage } from 'hooks/common';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 const SearchPage: NextPage = () => {
   const methods = useForm<SearchForm>({ mode: 'onChange' });
-
-  const {
-    keywords,
-    handleSaveSearchKeyword,
-    handleDeleteSearchKeyword,
-    handleDeleteAllSearchKeyword,
-  } = useSearchKeywordStorage();
 
   return (
     <>
       <Seo title={'검색 | a daily diary'} />
       <Section>
         <FormProvider {...methods}>
-          <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
-          <RecentSearchContainer
-            recentSearchKeywords={keywords}
-            onDeleteSearchKeyword={handleDeleteSearchKeyword}
-            onDeleteAllSearchKeyword={handleDeleteAllSearchKeyword}
-          />
+          <SearchHeader />
+          <RecentSearchContainer />
         </FormProvider>
       </Section>
     </>

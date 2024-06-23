@@ -2,18 +2,16 @@ import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
+import type { ChangeEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { SearchForm } from 'types/search';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
 import { Z_INDEX } from 'constants/styles';
+import { useSearchKeywordStorage, useDebounce } from 'hooks/common';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
-interface SearchHeaderProps {
-  onSaveSearchKeyword: (keyword: string) => void;
-}
-
-export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
+export const SearchHeader = () => {
   const router = useRouter();
   const {
     query: { keyword },
@@ -22,6 +20,8 @@ export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
   const { register, watch, setValue, setFocus, handleSubmit } =
     useFormContext<SearchForm>();
   const { searchKeyword: watchSearchKeyword } = watch();
+
+  const { handleSaveSearchKeyword } = useSearchKeywordStorage();
 
   const handleDeleteSearchKeyword = () => {
     setValue('searchKeyword', '');
@@ -41,13 +41,18 @@ export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
   const onSubmit: SubmitHandler<SearchForm> = async (data) => {
     const { searchKeyword } = data;
 
-    onSaveSearchKeyword(searchKeyword);
+    handleSaveSearchKeyword(searchKeyword);
 
     await router.push(PAGE_PATH.search.keyword(searchKeyword));
   };
 
+  const handleChangeSearchKeyword: ChangeEventHandler<SearchForm> = useDebounce(
+    handleSubmit(onSubmit),
+  );
+
   useEffect(() => {
     setValue('searchKeyword', keyword as string);
+    setFocus('searchKeyword');
   }, []);
 
   return (
@@ -66,6 +71,7 @@ export const SearchHeader = ({ onSaveSearchKeyword }: SearchHeaderProps) => {
           {...register('searchKeyword', {
             required: true,
             setValueAs: (value: string) => value.trim(),
+            onChange: handleChangeSearchKeyword,
           })}
           type="search"
           id="searchKeyword"
