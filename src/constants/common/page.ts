@@ -27,7 +27,7 @@ export const PAGE_PATH = {
     index: '/account',
     login: '/account/login',
     register: '/account/register',
-    findPassword: '/account/findPassword',
+    findPassword: '/account/find-password',
   },
 
   setting: {
