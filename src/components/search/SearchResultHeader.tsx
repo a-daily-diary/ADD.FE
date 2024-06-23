@@ -7,12 +7,14 @@ import { useClickOutside } from 'hooks/common';
 
 interface SearchResultHeaderProps {
   totalCount: number;
+  selectedSortOption: SortByOption;
   sortOptions: SortByOption[];
   setSortOptions: Dispatch<SetStateAction<SortByOption[]>>;
 }
 
 export const SearchResultHeader = ({
   totalCount,
+  selectedSortOption,
   sortOptions,
   setSortOptions,
 }: SearchResultHeaderProps) => {
@@ -42,7 +44,7 @@ export const SearchResultHeader = ({
         type="button"
         onClick={handleSortSearchResult}
       >
-        {sortOptions.find((option) => option.selected)?.title}
+        {selectedSortOption.title}
         <ArrowDownIcon />
       </SortSearchResultButton>
       {isVisible && (

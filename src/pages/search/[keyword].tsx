@@ -26,8 +26,8 @@ const SearchResultPage: NextPage<
 > = ({ keyword }) => {
   const [sortOptions, setSortOptions] = useState<SortByOption[]>(SORT_BY_LIST);
 
-  const sortBy = useMemo(
-    () => sortOptions.filter((option) => option.selected)[0].id,
+  const selectedSortOption = useMemo(
+    () => sortOptions.find((option) => option.selected) ?? sortOptions[0],
     [sortOptions],
   );
 
@@ -35,7 +35,7 @@ const SearchResultPage: NextPage<
 
   const { diariesData, isLoading, isError, fetchNextPage } = useDiaries(
     keyword,
-    sortBy,
+    selectedSortOption.id,
   );
   const { setTargetRef } = useIntersectionObserver({
     onIntersect: fetchNextPage,
@@ -61,6 +61,7 @@ const SearchResultPage: NextPage<
                 header={
                   <SearchResultHeader
                     totalCount={diariesData[0].totalCount}
+                    selectedSortOption={selectedSortOption}
                     sortOptions={sortOptions}
                     setSortOptions={setSortOptions}
                   />
