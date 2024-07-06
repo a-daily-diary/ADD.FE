@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import {
   FullPageLoading,
   ObserverTarget,
@@ -13,7 +11,6 @@ import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
-import { SERVER_SIDE_PROPS } from 'constants/server';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 
@@ -53,17 +50,6 @@ const Home: NextPage = () => {
       />
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const session = await getServerSession(req, res, authOptions);
-
-  if (session === null) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
-
-  return { props: { session } };
 };
 
 export default Home;
