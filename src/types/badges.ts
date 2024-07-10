@@ -22,3 +22,5 @@ export interface GetBadgesByUsernameRequest {
   onlyPinned?: boolean;
   config?: AxiosRequestConfig;
 }
+
+export type PatchPinnedBadgeByBadgeIdRequest = Pick<Badge, 'id'>;

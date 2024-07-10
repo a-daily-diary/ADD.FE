@@ -1,71 +1,71 @@
 import styled from '@emotion/styled';
 import { getServerSession } from 'next-auth';
+import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
-import type { SearchForm } from 'types/search';
-import { FullPageLoading, ObserverTarget, Seo } from 'components/common';
+import type { SearchForm, SortByOption } from 'types/search';
+import { ObserverTarget, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import {
   NoSearchResults,
-  RecentSearchContainer,
   SearchHeader,
   SearchResultHeader,
 } from 'components/search';
 import { PAGE_PATH } from 'constants/common';
-import { useIntersectionObserver, useSearchKeywordStorage } from 'hooks/common';
+import { INITIAL_SORT_BY_LIST } from 'constants/search';
+import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 const SearchResultPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ keyword }) => {
+  const [sortOptions, setSortOptions] = useState<SortByOption[]>([
+    ...INITIAL_SORT_BY_LIST,
+  ]);
+
+  const selectedSortOption = useMemo(
+    () => sortOptions.find((option) => option.selected) ?? sortOptions[0],
+    [sortOptions],
+  );
+
   const methods = useForm<SearchForm>({ mode: 'onChange' });
-  const { watch } = methods;
-  const { searchKeyword } = watch();
 
-  const {
-    keywords,
-    handleSaveSearchKeyword,
-    handleDeleteSearchKeyword,
-    handleDeleteAllSearchKeyword,
-  } = useSearchKeywordStorage();
-
-  const { diariesData, isLoading, isError, fetchNextPage } =
-    useDiaries(keyword);
+  const { diariesData, isLoading, isError, fetchNextPage } = useDiaries(
+    keyword,
+    selectedSortOption.id,
+  );
   const { setTargetRef } = useIntersectionObserver({
     onIntersect: fetchNextPage,
   });
-
-  const isShowRecentSearchResult =
-    searchKeyword === undefined || searchKeyword.length === 0;
-
-  if (diariesData === undefined) return <FullPageLoading />;
 
   return (
     <>
       <Seo title={`${keyword} 검색 결과 | a daily diary`} />
       <Section>
         <FormProvider {...methods}>
-          <SearchHeader onSaveSearchKeyword={handleSaveSearchKeyword} />
-          {isShowRecentSearchResult ? (
-            <RecentSearchContainer
-              recentSearchKeywords={keywords}
-              onDeleteSearchKeyword={handleDeleteSearchKeyword}
-              onDeleteAllSearchKeyword={handleDeleteAllSearchKeyword}
-            />
-          ) : (
+          <SearchHeader />
+
+          {diariesData !== undefined && (
             <>
               <DiariesContainer
                 title={`${keyword} 검색 결과`}
                 diariesData={diariesData}
-                empty={<NoSearchResults description="검색 결과가 없습니다." />}
+                empty={
+                  <NoSearchResults
+                    description={`"${keyword}" 에 대한 검색 결과가 없습니다.`}
+                  />
+                }
                 header={
                   <SearchResultHeader
-                    totalCount={diariesData[0].totalCount ?? 0}
+                    totalCount={diariesData[0].totalCount}
+                    selectedSortOption={selectedSortOption}
+                    sortOptions={sortOptions}
+                    setSortOptions={setSortOptions}
                   />
                 }
                 highlightKeyword={keyword}

@@ -17,15 +17,19 @@ export const PAGE_PATH = {
   profile: {
     index: '/profile',
     edit: '/profile/edit',
+    diaries: '/profile/diaries',
+    bookmarks: '/profile/bookmarks',
     username: (username: string) => `/profile/${username}`,
     badges: (username: string) => `/profile/${username}/badges`,
+    usernameDiaries: (username: string) => `/profile/${username}/diaries`,
   },
 
   account: {
     index: '/account',
     login: '/account/login',
     register: '/account/register',
-    findPassword: '/account/findPassword',
+    findPassword: '/account/find-password',
+    resetPassword: '/account/reset-password',
   },
 
   setting: {

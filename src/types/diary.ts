@@ -1,3 +1,4 @@
+import type { SortByType } from './search';
 import type { AxiosRequestConfig } from 'axios';
 import type { User } from 'next-auth';
 
@@ -33,6 +34,7 @@ export type DiaryForm = Pick<
 export interface GetDiariesRequest {
   currentPage: number;
   searchKeyword?: string;
+  sortBy?: SortByType;
 }
 
 export interface GetDiariesByUsernameRequest extends GetDiariesRequest {

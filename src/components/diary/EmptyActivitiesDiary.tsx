@@ -3,7 +3,15 @@ import { useRouter } from 'next/router';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 
-export const EmptyActivitiesDiary = () => {
+interface EmptyActivitiesDiaryProps {
+  isVisibleGoToWriteButton: boolean;
+  isMyProfile: boolean;
+}
+
+export const EmptyActivitiesDiary = ({
+  isVisibleGoToWriteButton,
+  isMyProfile,
+}: EmptyActivitiesDiaryProps) => {
   const router = useRouter();
 
   const handleGoToWriteDiary = () => {
@@ -14,13 +22,16 @@ export const EmptyActivitiesDiary = () => {
     <EmptyContainer>
       <EmptyTextContainer>
         <p>일기가 없습니다.</p>
-        <p>오늘 일기를 작성해보세요.</p>
+        {isMyProfile && <p>오늘 일기를 작성해보세요.</p>}
       </EmptyTextContainer>
-      <Button
-        text="일기 작성하러 가기"
-        size="sm"
-        onClick={handleGoToWriteDiary}
-      />
+
+      {isMyProfile && isVisibleGoToWriteButton && (
+        <Button
+          text="일기 작성하러 가기"
+          size="sm"
+          onClick={handleGoToWriteDiary}
+        />
+      )}
     </EmptyContainer>
   );
 };

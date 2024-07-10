@@ -1,51 +1,40 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, type Dispatch, type SetStateAction } from 'react';
+import type { SortByOption } from 'types/search';
 import { ArrowDownIcon, CheckIcon } from 'assets/icons';
 import { Popover } from 'components/common';
 import { useClickOutside } from 'hooks/common';
 
 interface SearchResultHeaderProps {
   totalCount: number;
+  selectedSortOption: SortByOption;
+  sortOptions: SortByOption[];
+  setSortOptions: Dispatch<SetStateAction<SortByOption[]>>;
 }
 
-interface SortOptions {
-  id: string;
-  title: string;
-  selected: boolean;
-}
-
-const initialSortOptions = [
-  {
-    id: 'latest',
-    title: '최신순',
-    selected: true,
-  },
-  {
-    id: 'comments',
-    title: '댓글순',
-    selected: false,
-  },
-];
-
-export const SearchResultHeader = ({ totalCount }: SearchResultHeaderProps) => {
-  const [sortOptions, setSortOptions] =
-    useState<SortOptions[]>(initialSortOptions);
-
+export const SearchResultHeader = ({
+  totalCount,
+  selectedSortOption,
+  sortOptions,
+  setSortOptions,
+}: SearchResultHeaderProps) => {
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
   const handleSortSearchResult = () => {
     setIsVisible((state) => !state);
   };
 
-  // TODO: 정렬 기능 추가
-  const handleSelectSortOption = (selectedIndex: number) => () => {
-    setSortOptions((prevState) => {
-      return prevState.map((state, stateIndex) => ({
-        ...state,
-        selected: stateIndex === selectedIndex,
-      }));
-    });
-  };
+  const handleSelectSortOption = useCallback(
+    (selectedIndex: number) => () => {
+      setSortOptions((prevState) => {
+        return prevState.map((state, stateIndex) => ({
+          ...state,
+          selected: stateIndex === selectedIndex,
+        }));
+      });
+    },
+    [],
+  );
 
   return (
     <Container>
@@ -55,11 +44,11 @@ export const SearchResultHeader = ({ totalCount }: SearchResultHeaderProps) => {
         type="button"
         onClick={handleSortSearchResult}
       >
-        {sortOptions.find((option) => option.selected)?.title}
+        {selectedSortOption.title}
         <ArrowDownIcon />
       </SortSearchResultButton>
       {isVisible && (
-        <Popover right={20}>
+        <Popover top={50} right={20}>
           <ul>
             {sortOptions.map((option, index) => {
               const { id, selected, title } = option;

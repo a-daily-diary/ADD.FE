@@ -8,7 +8,7 @@ export const useBadges = ({
   onlyPinned,
 }: GetBadgesByUsernameRequest) => {
   const { data: badgesData, isLoading } = useQuery(
-    [queryKeys.badges, username],
+    [queryKeys.badges, username, onlyPinned],
     async () => await api.getBadgesByUsername({ username, onlyPinned }),
   );
   return { badgesData, isLoading };

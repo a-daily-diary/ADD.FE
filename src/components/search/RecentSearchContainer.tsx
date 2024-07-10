@@ -5,33 +5,23 @@ import { NoSearchResults } from './NoSearchResults';
 import type { SearchForm } from 'types/search';
 import { CloseIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
+import { useSearchKeywordStorage } from 'hooks/common';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
-interface RecentSearchContainerProps {
-  recentSearchKeywords: string[];
-  onDeleteSearchKeyword: (value: string) => void;
-  onDeleteAllSearchKeyword: () => void;
-}
-
-export const RecentSearchContainer = ({
-  recentSearchKeywords,
-  onDeleteSearchKeyword,
-  onDeleteAllSearchKeyword,
-}: RecentSearchContainerProps) => {
-  const isEmptyRecentSearches = recentSearchKeywords.length === 0;
-
+export const RecentSearchContainer = () => {
   const router = useRouter();
 
   const { setValue } = useFormContext<SearchForm>();
 
-  const handleMoveSearchResult = (keyword: string) => async () => {
+  const { keywords, handleDeleteSearchKeyword, handleDeleteAllSearchKeyword } =
+    useSearchKeywordStorage();
+
+  const isEmptyRecentSearches = keywords.length === 0;
+
+  const handleMoveSearchResult = (keyword: string) => {
     setValue('searchKeyword', keyword);
 
-    await router.push(PAGE_PATH.search.keyword(keyword));
-  };
-
-  const handleDeleteRecentSearch = (keyword: string) => () => {
-    onDeleteSearchKeyword(keyword);
+    void router.push(PAGE_PATH.search.keyword(keyword));
   };
 
   return (
@@ -39,7 +29,7 @@ export const RecentSearchContainer = ({
       <TitleContainer>
         <Title>최근 검색어</Title>
         {!isEmptyRecentSearches && (
-          <DeleteAllButton type="button" onClick={onDeleteAllSearchKeyword}>
+          <DeleteAllButton type="button" onClick={handleDeleteAllSearchKeyword}>
             전체 삭제
           </DeleteAllButton>
         )}
@@ -48,18 +38,22 @@ export const RecentSearchContainer = ({
         <NoSearchResults description="최근 검색어 내역이 없습니다." />
       ) : (
         <RecentSearchList>
-          {recentSearchKeywords.map((recentSearchKeyword) => {
+          {keywords.map((recentSearchKeyword) => {
             return (
               <RecentSearchItem key={recentSearchKeyword}>
                 <button
                   type="button"
-                  onClick={handleMoveSearchResult(recentSearchKeyword)}
+                  onClick={() => {
+                    handleMoveSearchResult(recentSearchKeyword);
+                  }}
                 >
                   {recentSearchKeyword}
                 </button>
                 <DeleteButton
                   type="button"
-                  onClick={handleDeleteRecentSearch(recentSearchKeyword)}
+                  onClick={() => {
+                    handleDeleteSearchKeyword(recentSearchKeyword);
+                  }}
                 >
                   <CloseIcon
                     width={16}
