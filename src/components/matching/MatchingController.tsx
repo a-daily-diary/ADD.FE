@@ -33,6 +33,7 @@ const MatchingController = () => {
         userId: query.mu as MatchingInformation['userId'],
       });
     } catch (error) {
+      console.log(error);
       handleModal.open();
     }
   };
@@ -60,6 +61,9 @@ const MatchingController = () => {
     <>
       <Container>
         <SubTitle>통화 제어</SubTitle>
+        <audio ref={audioRef} muted={false} autoPlay>
+          <track kind="captions" />
+        </audio>
         <ButtonWrapper>
           <Tooltip>마이크를 켜주세요!</Tooltip>
           <IconButton
