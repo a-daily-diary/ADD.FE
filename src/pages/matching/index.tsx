@@ -19,18 +19,22 @@ const MatchingRule: NextPage = () => {
   };
   const RULE_LIST = [
     {
+      id: 1,
       icon: <EnIcon />,
       text: '한국어 보다는 영어 사용을 권장합니다.',
     },
     {
+      id: 2,
       icon: <BlockIcon />,
       text: '특정 횟수의 경고를 받은 사용자는 차단될 수 있습니다.',
     },
     {
+      id: 3,
       icon: <PrivacyIcon />,
       text: '동의하지 않은 개인정보를 노출되거나 요청을 금지합니다.',
     },
     {
+      id: 4,
       icon: <DiseaseIcon />,
       text: '선정적인 언어, 혐오/차별/폭력적인 언어, 불법 행위/기타 행위를 제한합니다.',
     },
@@ -52,9 +56,9 @@ const MatchingRule: NextPage = () => {
             랜덤 매칭 규칙을 꼭 지켜주세요!
           </h2>
           <RuleList>
-            {RULE_LIST.map((item, index) => {
+            {RULE_LIST.map((item) => {
               return (
-                <RuleItem key={`rule-item-${index}`}>
+                <RuleItem key={`rule-item-${item.id}`}>
                   <ImageWrapper>{item.icon}</ImageWrapper>
                   <p>{item.text}</p>
                 </RuleItem>
