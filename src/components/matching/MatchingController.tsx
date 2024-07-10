@@ -104,9 +104,9 @@ const Container = styled.article`
 
 const ButtonWrapper = styled.div`
   position: relative;
-  button {
-    margin-bottom: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const Tooltip = styled.div`
