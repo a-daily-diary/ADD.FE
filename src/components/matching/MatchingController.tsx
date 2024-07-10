@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
-import { AlertModal } from 'components/common';
+import { AlertModal, IconButton } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { colors } from 'constants/styles';
 import { useMatching } from 'contexts/MatchingProvider';
@@ -33,6 +33,7 @@ const MatchingController = () => {
         userId: query.mu as MatchingInformation['userId'],
       });
     } catch (error) {
+      console.log(error);
       handleModal.open();
     }
   };
@@ -63,19 +64,24 @@ const MatchingController = () => {
         <audio ref={audioRef} muted={false} autoPlay>
           <track kind="captions" />
         </audio>
-        <CircleButton type="button" backgroundColor={colors.bg_02}>
+        <ButtonWrapper>
           <Tooltip>마이크를 켜주세요!</Tooltip>
-          <MicrophoneOffIcon />
-          <span>마이크 off</span>
-        </CircleButton>
-        <CircleButton
-          type="button"
-          backgroundColor={colors.red}
-          onClick={handleEndMatching}
-        >
-          <EndCallIcon />
-          <span>통화 종료</span>
-        </CircleButton>
+          <IconButton
+            id="microphone"
+            backgroundColor={colors.bg_02}
+            icon={<MicrophoneOffIcon />}
+          />
+          <label htmlFor="microphone">마이크 off</label>
+        </ButtonWrapper>
+        <ButtonWrapper>
+          <IconButton
+            id="end-call"
+            backgroundColor={colors.red}
+            icon={<EndCallIcon />}
+            onClick={handleEndMatching}
+          />
+          <label htmlFor="end-call">통화 종료</label>
+        </ButtonWrapper>
       </Container>
       {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
       <AlertModal isVisible={isVisible} onClose={handleCloseAlert}>
@@ -100,39 +106,24 @@ const Container = styled.article`
   margin: 53px 0 30px;
 `;
 
-const CircleButton = styled.button<{
-  backgroundColor: string;
-}>`
+const ButtonWrapper = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 100%;
-  background-color: ${(props) => props.backgroundColor};
-  span {
-    ${({ theme }) => theme.fonts.body_07}
-    position: absolute;
-    bottom: -26px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    color: ${({ theme }) => theme.colors.gray_00};
-  }
+  flex-direction: column;
+  gap: 10px;
 `;
 
 const Tooltip = styled.div`
   ${({ theme }) => theme.fonts.button_02}
   position: absolute;
-  top: -46px;
+  top: -47px;
   left: 50%;
   transform: translateX(-50%);
-  width: 150px;
+  width: 144px;
   background-color: ${({ theme }) => theme.colors.primary_00};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 6px;
-  padding: 10px 20px;
+  padding: 11px 0;
   &::before {
     content: '';
     position: absolute;
