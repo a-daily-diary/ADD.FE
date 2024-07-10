@@ -14,6 +14,10 @@ import { ScreenReaderOnly } from 'styles';
 const MatchingRule: NextPage = () => {
   const router = useRouter();
 
+  const handleGoToMatchingQueue = () => {
+    void router.push(PAGE_PATH.matching.queue);
+  };
+
   return (
     <>
       <Seo title="랜덤 매칭 규칙 | a daily diary" />
@@ -65,9 +69,7 @@ const MatchingRule: NextPage = () => {
             type="button"
             shape="round"
             size="xl"
-            onClick={async () => {
-              await router.push(PAGE_PATH.matching.loading);
-            }}
+            onClick={handleGoToMatchingQueue}
             text="랜덤매칭 시작"
           />
         </Article>

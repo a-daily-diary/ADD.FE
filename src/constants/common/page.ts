@@ -3,7 +3,8 @@ export const PAGE_PATH = {
 
   matching: {
     index: '/matching',
-    loading: '/matching/loading',
+    queue: '/matching/queue',
+    matchUp: '/matching/match-up',
   },
 
   diary: {

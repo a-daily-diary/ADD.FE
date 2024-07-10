@@ -1,25 +1,52 @@
 import styled from '@emotion/styled';
-
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-
 import type { LoadingAnimationKey } from 'types/common';
+import type { MatchingInformation } from 'types/matching';
 import { loadingAnimation } from 'animation';
 import { Button } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
+import { useMatching } from 'contexts/MatchingProvider';
+import { useAuthentication } from 'hooks/services/common/useAuthentication';
 
-const MatchingLoading: NextPage = () => {
+const MatchingQueue: NextPage = () => {
   const router = useRouter();
+
+  const matching = useMatching();
+
+  const { user } = useAuthentication();
 
   const [isCancel, setIsCancel] = useState(false);
 
+  useEffect(() => {
+    if (user === undefined) return;
+
+    void matching.joinQueue({
+      user,
+      onSuccess: (matchingInformation: MatchingInformation) => {
+        void router.replace({
+          pathname: PAGE_PATH.matching.matchUp,
+          query: {
+            r: matchingInformation.role,
+            ms: matchingInformation.socketId,
+            mu: matchingInformation.userId,
+          },
+        });
+      },
+      onError: (message: string) => {
+        alert(message);
+        void router.replace(PAGE_PATH.main);
+      },
+    });
+  }, [user]);
+
   const cancelMatching = () => {
+    matching.disconnect();
     setIsCancel(true);
     setTimeout(async () => {
-      await router.push(PAGE_PATH.matching.index);
+      await router.replace(PAGE_PATH.matching.index);
     }, 2000);
   };
 
@@ -66,7 +93,7 @@ const MatchingLoading: NextPage = () => {
   );
 };
 
-export default MatchingLoading;
+export default MatchingQueue;
 
 const Section = styled.section`
   text-align: center;

@@ -9,6 +9,7 @@ import { SessionProvider } from 'next-auth/react';
 import { useState } from 'react';
 import type { AppProps } from 'next/app';
 import { Layout } from 'components/layouts';
+import MatchingProvider from 'contexts/MatchingProvider';
 import { theme, GlobalStyle } from 'styles';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -25,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <ThemeProvider theme={theme}>
               <Global styles={GlobalStyle} />
               <Layout>
-                <Component {...pageProps} />
+                <MatchingProvider>
+                  <Component {...pageProps} />
+                </MatchingProvider>
               </Layout>
             </ThemeProvider>
           </SessionProvider>

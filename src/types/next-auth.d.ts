@@ -10,9 +10,8 @@ declare module 'next-auth' {
     isAdmin: boolean;
     accessToken: string;
   }
-  interface Session {
+  interface Session extends DefaultSession {
     user: User;
-    accessToken: string;
   }
 }
 
