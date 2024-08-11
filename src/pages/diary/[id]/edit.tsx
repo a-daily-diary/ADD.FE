@@ -2,10 +2,10 @@ import styled from '@emotion/styled';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage, GetServerSidePropsContext } from 'next';
+import type { User } from 'next-auth';
 import type { ChangeEventHandler, FocusEventHandler } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import type { DiaryForm } from 'types/diary';
@@ -32,11 +32,10 @@ import {
 } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
-import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { useDiary, useEditDiary, useImageUpload } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
 import { ScreenReaderOnly } from 'styles';
 import { dateFormat, errorResponseMessage, textareaAutosize } from 'utils';
 
@@ -254,30 +253,30 @@ const EditDiary: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res, query } = context;
-  const { id } = query;
-  const session = await getServerSession(req, res, authOptions);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user, query } = context;
+    const { id } = query;
 
-  if (session === null) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
+    const { accessToken } = user as User;
 
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, id],
-    async () =>
-      await api.getDiaryDetail({
-        id: id as string,
-        config: {
-          headers: {
-            Authorization: `Bearer ${session.user.accessToken}`,
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery(
+      [queryKeys.diaries, id],
+      async () =>
+        await api.getDiaryDetail({
+          id: id as string,
+          config: {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
           },
-        },
-      }),
-  );
-  return { props: { dehydratedState: dehydrate(queryClient) } };
-};
+        }),
+    );
+
+    return { props: { dehydratedState: dehydrate(queryClient) } };
+  },
+);
 
 export default EditDiary;
 
