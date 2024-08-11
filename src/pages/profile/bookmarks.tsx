@@ -1,29 +1,25 @@
 import { QueryClient, dehydrate } from '@tanstack/react-query';
-import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { User } from 'next-auth';
 import * as api from 'api';
 import { FullPageLoading, ObserverTarget } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileLayout } from 'components/profile';
-import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
 import { useBookmarkedDiaries } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
 
-const MyProfileBookmarks: NextPage = () => {
-  const { data: session } = useSession();
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
+const MyProfileBookmarks: NextPage<{ user: User }> = ({ user }) => {
+  const { username } = user;
 
   const {
     bookmarkedDiariesData,
     isLoading: isBookmarkedDiariesLoading,
     isError: isBookmarkedDiariesError,
     fetchNextPage: fetchBookmarkedDiariesNextPage,
-  } = useBookmarkedDiaries(session.user.username);
+  } = useBookmarkedDiaries(username);
   const { setTargetRef: setBookmarkedDiariesTargetRef } =
     useIntersectionObserver({
       onIntersect: fetchBookmarkedDiariesNextPage,
@@ -34,7 +30,7 @@ const MyProfileBookmarks: NextPage = () => {
   }
 
   return (
-    <ProfileLayout isMyProfile username={session.user.username}>
+    <ProfileLayout isMyProfile username={username}>
       <DiariesContainer
         title="프로필 - 북마크"
         diariesData={bookmarkedDiariesData}
@@ -49,32 +45,24 @@ const MyProfileBookmarks: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const session = await getServerSession(req, res, authOptions);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user } = context;
 
-  if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
+    const { username, accessToken } = user as User;
+
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
     };
-  }
 
-  const { username, accessToken } = session.user;
-
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([queryKeys.users, username], async () => {
-    return await api.getProfileByUsername({ username, config: headers });
-  });
-  return { props: { dehydratedState: dehydrate(queryClient), session } };
-};
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery([queryKeys.users, username], async () => {
+      return await api.getProfileByUsername({ username, config: headers });
+    });
+    return { props: { dehydratedState: dehydrate(queryClient), user } };
+  },
+);
 
 export default MyProfileBookmarks;
