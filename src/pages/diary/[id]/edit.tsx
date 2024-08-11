@@ -79,13 +79,7 @@ const EditDiary: NextPage = () => {
   });
 
   const editDiaryMutation = useEditDiary(id as string);
-  const imageUploadMutation = useImageUpload({
-    path: 'diaries',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-      setValue('imgUrl', imgUrl);
-    },
-  });
+  const imageUploadMutation = useImageUpload({ path: 'diaries' });
 
   useEffect(() => {
     setFocus('content');
@@ -94,17 +88,20 @@ const EditDiary: NextPage = () => {
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          // TODO: 이미지 업로드 시 에러 처리
-          console.log(error);
-        }
-      }
+      imageUploadMutation(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+          setValue('imgUrl', imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 
