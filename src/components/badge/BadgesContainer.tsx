@@ -17,10 +17,10 @@ export const BadgesContainer = () => {
   const { badgesData } = useBadges({
     username: session?.user.username as string,
   });
-  const changePinnedBadgeMutation = useChangePinnedBadge();
+  const { mutate: changePinnedBadgeMutate } = useChangePinnedBadge();
 
   const handleChangePinned = (id: string) => {
-    changePinnedBadgeMutation(id, {
+    changePinnedBadgeMutate(id, {
       onError: (error) => {
         if (isAxiosError<ErrorResponse>(error)) {
           // TODO: 에러 처리 필요
