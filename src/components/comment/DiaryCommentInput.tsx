@@ -30,7 +30,7 @@ export const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
   } = useForm<CommentForm>({ mode: 'onChange' });
   const { comment: commentValue } = getValues();
   const { comment: commentError } = errors;
-  const writeCommentMutation = useWriteComment(diaryId);
+  const { mutate: writeCommentMutate } = useWriteComment(diaryId);
 
   useEffect(() => {
     if (commentError?.type === 'maxLength') {
@@ -49,7 +49,7 @@ export const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     const { comment } = data;
 
-    writeCommentMutation(
+    writeCommentMutate(
       { diaryId, comment },
       {
         onSuccess: () => {

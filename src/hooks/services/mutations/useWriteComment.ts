@@ -5,7 +5,8 @@ import { queryKeys } from 'constants/services';
 
 export const useWriteComment = (diaryId: string) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+
+  return useMutation(
     async ({ diaryId, comment }: WriteCommentRequest) =>
       await api.writeComment({
         diaryId,
@@ -18,6 +19,4 @@ export const useWriteComment = (diaryId: string) => {
       },
     },
   );
-
-  return mutate;
 };
