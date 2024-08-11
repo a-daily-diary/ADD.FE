@@ -9,9 +9,9 @@ import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
 import { queryKeys } from 'constants/services';
 import { useBadges } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
-const BadgePage: NextPage<{ user: User }> = ({ user }) => {
-  const { username } = user;
+const BadgePage: NextPage<{ username: string }> = ({ username }) => {
   const { badgesData } = useBadges({ username });
 
   return (
@@ -39,9 +39,10 @@ const BadgePage: NextPage<{ user: User }> = ({ user }) => {
 
 export const getServerSideProps = getServerSidePropsWithAuth(
   async (context: GetServerSidePropsContext) => {
-    const { user } = context;
+    const { user, query } = context;
+    const [username] = getQueryParams(query.username);
 
-    const { username, accessToken } = user as User;
+    const { accessToken } = user as User;
 
     const headers = {
       headers: {
@@ -54,7 +55,7 @@ export const getServerSideProps = getServerSidePropsWithAuth(
       return await api.getBadgesByUsername({ username, config: headers });
     });
 
-    return { props: { dehydratedState: dehydrate(queryClient), user } };
+    return { props: { dehydratedState: dehydrate(queryClient), username } };
   },
 );
 
