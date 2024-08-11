@@ -46,7 +46,7 @@ const Register: NextPage = () => {
     welcomeMessage: false,
   });
 
-  const registerMutation = useRegisterUser();
+  const { mutate: registerMutate } = useRegisterUser();
 
   const onSubmit: SubmitHandler<RegisterForm> = (data) => {
     if (registerStep.email)
@@ -78,7 +78,7 @@ const Register: NextPage = () => {
         .filter(([_, value]) => value)
         .map(([id, _]) => id) as TermsAgreementId[];
 
-      registerMutation(
+      registerMutate(
         {
           email,
           username,

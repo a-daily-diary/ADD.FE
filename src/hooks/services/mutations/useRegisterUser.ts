@@ -3,7 +3,7 @@ import type { RegisterRequest } from 'types/register';
 import * as api from 'api';
 
 export const useRegisterUser = () => {
-  const { mutate } = useMutation(
+  return useMutation(
     async ({
       email,
       username,
@@ -20,6 +20,4 @@ export const useRegisterUser = () => {
       });
     },
   );
-
-  return mutate;
 };
