@@ -31,13 +31,16 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
   const isCommenter = commenter.id === session?.user.id;
 
   const handleDeleteComment = () => {
-    try {
-      deleteCommentMutation({ diaryId, commentId });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    deleteCommentMutation(
+      { diaryId, commentId },
+      {
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (
