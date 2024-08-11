@@ -20,14 +20,14 @@ export const BadgesContainer = () => {
   const changePinnedBadgeMutation = useChangePinnedBadge();
 
   const handleChangePinned = (id: string) => {
-    try {
-      changePinnedBadgeMutation(id);
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        // TODO: 에러 처리 필요
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    changePinnedBadgeMutation(id, {
+      onError: (error) => {
+        if (isAxiosError<ErrorResponse>(error)) {
+          // TODO: 에러 처리 필요
+          alert(errorResponseMessage(error.response?.data.message));
+        }
+      },
+    });
   };
 
   if (badgesData === undefined) return <FullPageLoading />;
