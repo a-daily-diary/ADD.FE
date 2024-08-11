@@ -78,7 +78,7 @@ const EditDiary: NextPage = () => {
     beforeLeaveCallback: handleBeforeLeaveModal.open,
   });
 
-  const editDiaryMutation = useEditDiary(id as string);
+  const { mutate: editDiaryMutate } = useEditDiary(id as string);
   const imageUploadMutation = useImageUpload({ path: 'diaries' });
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const EditDiary: NextPage = () => {
   const onSubmit: SubmitHandler<DiaryForm> = (data) => {
     const { title, content, imgUrl, isPublic } = data;
 
-    editDiaryMutation(
+    editDiaryMutate(
       {
         title,
         content,
