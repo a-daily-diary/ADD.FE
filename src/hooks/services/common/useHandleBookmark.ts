@@ -12,11 +12,14 @@ export const useHandleBookmark = ({
     diaryId: id,
     username,
   });
-  const cancelBookmarkMutation = useCancelBookmarkDiary(id, username);
+  const { mutate: cancelBookmarkMutate } = useCancelBookmarkDiary({
+    diaryId: id,
+    username,
+  });
 
   const handleBookmark: MouseEventHandler<HTMLButtonElement> = () => {
     if (isBookmark) {
-      cancelBookmarkMutation();
+      cancelBookmarkMutate();
     } else {
       bookmarkMutate();
     }
