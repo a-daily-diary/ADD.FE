@@ -23,12 +23,7 @@ export const RegisterProfileImage = () => {
 
   const { setValue } = useFormContext<RegisterForm>();
 
-  const imageUploadMutation = useImageUpload({
-    path: 'users',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-    },
-  });
+  const imageUploadMutation = useImageUpload({ path: 'users' });
 
   useEffect(() => {
     setValue('imgUrl', previewImage);
@@ -37,16 +32,19 @@ export const RegisterProfileImage = () => {
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      }
+      imageUploadMutation(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 
