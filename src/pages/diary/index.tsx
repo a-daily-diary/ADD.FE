@@ -85,15 +85,21 @@ const WriteDiary: NextPage = () => {
   };
 
   const onSubmit: SubmitHandler<DiaryForm> = (data) => {
-    try {
-      const { title, content, imgUrl, isPublic } = data;
-      writeDiaryMutation({ title, content, imgUrl, isPublic });
-      // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    const { title, content, imgUrl, isPublic } = data;
+
+    writeDiaryMutation(
+      { title, content, imgUrl, isPublic },
+      {
+        onSuccess: () => {
+          // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (
