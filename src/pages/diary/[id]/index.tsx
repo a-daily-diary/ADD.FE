@@ -37,22 +37,26 @@ const DiaryDetailPage: NextPage<DiaryDetailPageProps> = ({ user }) => {
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
   const { diaryData, isLoading } = useDiary(id as string);
-  const deleteDiaryMutation = useDeleteDiary({ id: id as string });
+  const deleteDiaryMutation = useDeleteDiary();
 
   const handleGoToEdit = () => {
     void router.push(PAGE_PATH.diary.edit(id as string));
   };
 
   const handleDeleteDiary = () => {
-    try {
-      deleteDiaryMutation({ id: id as string });
-      // TODO: 일기 삭제 후 라우팅 처리 수정
-      router.back();
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    deleteDiaryMutation(
+      { id: id as string },
+      {
+        onSuccess: () => {
+          router.back();
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   if (diaryData === undefined || isLoading) return <FullPageLoading />;
