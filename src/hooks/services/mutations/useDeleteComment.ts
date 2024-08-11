@@ -5,7 +5,8 @@ import { queryKeys } from 'constants/services';
 
 export const useDeleteComment = (diaryId: string) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+
+  return useMutation(
     async ({ diaryId, commentId }: DeleteCommentRequest) =>
       await api.deleteComments({
         diaryId,
@@ -18,6 +19,4 @@ export const useDeleteComment = (diaryId: string) => {
       },
     },
   );
-
-  return mutate;
 };
