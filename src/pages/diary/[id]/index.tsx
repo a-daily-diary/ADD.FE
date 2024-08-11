@@ -37,14 +37,14 @@ const DiaryDetailPage: NextPage<DiaryDetailPageProps> = ({ user }) => {
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
   const { diaryData, isLoading } = useDiary(id as string);
-  const deleteDiaryMutation = useDeleteDiary();
+  const { mutate: deleteDiaryMutate } = useDeleteDiary();
 
   const handleGoToEdit = () => {
     void router.push(PAGE_PATH.diary.edit(id as string));
   };
 
   const handleDeleteDiary = () => {
-    deleteDiaryMutation(
+    deleteDiaryMutate(
       { id: id as string },
       {
         onSuccess: () => {
