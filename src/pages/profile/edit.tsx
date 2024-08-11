@@ -3,11 +3,11 @@ import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { User } from 'next-auth';
 import type { SubmitHandler } from 'react-hook-form';
 import type { EditProfileForm } from 'types/profile';
 import type {
@@ -28,7 +28,6 @@ import {
 } from 'components/layouts';
 import { NoLinkProfileImage, SelectProfileImage } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
-import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import {
   ERROR_MESSAGE,
@@ -36,38 +35,39 @@ import {
   VALID_VALUE,
 } from 'constants/validation';
 import { useEditProfile } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
 import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
-const ProfileEditPage: NextPage = () => {
+const ProfileEditPage: NextPage<{ user: User }> = ({ user }) => {
+  const { email, username, imgUrl } = user;
+
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { update } = useSession();
   const {
     register,
     getValues,
-    setValue,
     formState: { errors, isValid },
     setError,
     handleSubmit,
   } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: {
-      email: session?.user.email !== null ? session?.user.email : '',
-      username: session?.user.username !== null ? session?.user.username : '',
-      imgUrl: session?.user.imgUrl !== null ? session?.user.imgUrl : '',
+      email,
+      username,
+      imgUrl,
     },
   });
 
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
-  const [previewImage, setPreviewImage] = useState<string>(getValues('imgUrl'));
+  const [previewImage, setPreviewImage] = useState<string>(imgUrl);
 
-  const editProfileMutation = useEditProfile(session?.user.username as string);
+  const editProfileMutation = useEditProfile(username);
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
-    const currentUsername = session?.user.username;
+    const currentUsername = user.username;
 
     if (currentUsername === username) {
       const data = {
@@ -97,14 +97,20 @@ const ProfileEditPage: NextPage = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<EditProfileForm> = async (data) => {
+  const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
     try {
       const { username, imgUrl } = data;
 
-      editProfileMutation({ username, imgUrl });
-      void update({ username, imgUrl });
-
-      await router.replace(PAGE_PATH.profile.index);
+      // TODO: 프로필 수정 시 동작 확인 필요, 현재 사용 중인 닉네임일 경우 서버 처리 수정 필요
+      editProfileMutation(
+        { username, imgUrl },
+        {
+          onSuccess: async () => {
+            await update({ username, imgUrl });
+            await router.replace(PAGE_PATH.profile.index);
+          },
+        },
+      );
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {
         // TODO: 에러 처리
@@ -112,12 +118,6 @@ const ProfileEditPage: NextPage = () => {
       }
     }
   };
-
-  useEffect(() => {
-    setValue('imgUrl', previewImage);
-  }, [previewImage, setValue]);
-
-  if (session === null) return <div>로그인이 필요합니다.</div>; // TODO: 로그인 페이지로 이동 모달 생성하여 적용하기
 
   return (
     <>
@@ -140,7 +140,7 @@ const ProfileEditPage: NextPage = () => {
           <NoLinkProfileImage
             size="xl"
             src={previewImage}
-            username={session.user.username}
+            username={username}
           />
           <SelectProfileImage
             previewImage={previewImage}
@@ -201,28 +201,28 @@ const ProfileEditPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const session = await getServerSession(req, res, authOptions);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user } = context;
 
-  if (session === null) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
+    const { username, accessToken } = user as User;
 
-  const { username, accessToken } = session.user;
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([queryKeys.badges, username], async () => {
-    return await api.getBadgesByUsername({ username, config: headers });
-  });
-  return { props: { dehydratedState: dehydrate(queryClient), session } };
-};
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery(
+      [queryKeys.badges, 'username'],
+      async () => {
+        return await api.getBadgesByUsername({ username, config: headers });
+      },
+    );
+    return { props: { dehydratedState: dehydrate(queryClient), user } };
+  },
+);
 
 export default ProfileEditPage;
 
