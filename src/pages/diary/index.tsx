@@ -22,6 +22,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
+import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { useImageUpload, useWriteDiary } from 'hooks/services';
@@ -56,7 +57,7 @@ const WriteDiary: NextPage = () => {
     beforeLeaveCallback: handleBeforeLeaveModal.open,
   });
 
-  const writeDiaryMutation = useWriteDiary();
+  const { mutate: writeDiaryMutate } = useWriteDiary();
   const { mutate: imageUploadMutate } = useImageUpload({ path: 'diaries' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -87,10 +88,11 @@ const WriteDiary: NextPage = () => {
   const onSubmit: SubmitHandler<DiaryForm> = (data) => {
     const { title, content, imgUrl, isPublic } = data;
 
-    writeDiaryMutation(
+    writeDiaryMutate(
       { title, content, imgUrl, isPublic },
       {
-        onSuccess: () => {
+        onSuccess: async (diary) => {
+          await router.replace(PAGE_PATH.diary.detail(diary.id));
           // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
         },
         onError: (error) => {
