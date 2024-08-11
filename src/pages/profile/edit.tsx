@@ -39,7 +39,11 @@ import { getServerSidePropsWithAuth } from 'lib/auth';
 import { ScreenReaderOnly } from 'styles';
 import { errorResponseMessage } from 'utils';
 
-const ProfileEditPage: NextPage<{ user: User }> = ({ user }) => {
+interface ProfileEditPageProps {
+  user: User;
+}
+
+const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
   const { email, username, imgUrl } = user;
 
   const router = useRouter();

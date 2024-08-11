@@ -24,7 +24,11 @@ import { useDeleteDiary, useDiary } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { errorResponseMessage } from 'utils';
 
-const DiaryDetailPage: NextPage<{ user: User }> = ({ user }) => {
+interface DiaryDetailPageProps {
+  user: User;
+}
+
+const DiaryDetailPage: NextPage<DiaryDetailPageProps> = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
 

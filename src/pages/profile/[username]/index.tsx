@@ -9,7 +9,11 @@ import { queryKeys } from 'constants/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { getQueryParams } from 'utils';
 
-const YourProfile: NextPage<{ username: string }> = ({ username }) => {
+interface YourProfileProps {
+  username: string;
+}
+
+const YourProfile: NextPage<YourProfileProps> = ({ username }) => {
   return (
     <ProfileLayout isMyProfile={false} username={username}>
       <ActivitiesContainer title={`${username} - 활동`} username={username} />

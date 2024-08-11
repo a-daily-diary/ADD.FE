@@ -6,7 +6,11 @@ import { ActivitiesContainer, ProfileLayout } from 'components/profile';
 import { queryKeys } from 'constants/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 
-const MyProfile: NextPage<{ user: User }> = ({ user }) => {
+interface MyProfileProps {
+  user: User;
+}
+
+const MyProfile: NextPage<MyProfileProps> = ({ user }) => {
   const { username } = user;
 
   return (

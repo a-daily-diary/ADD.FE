@@ -13,7 +13,13 @@ import { useUserDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { getQueryParams } from 'utils';
 
-const YourProfileDiaries: NextPage<{ username: string }> = ({ username }) => {
+interface YourProfileDiariesProps {
+  username: string;
+}
+
+const YourProfileDiaries: NextPage<YourProfileDiariesProps> = ({
+  username,
+}) => {
   const {
     userDiariesData,
     isLoading: isUserDiariesLoading,

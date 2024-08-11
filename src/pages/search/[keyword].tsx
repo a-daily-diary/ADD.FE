@@ -16,7 +16,11 @@ import { useDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { getQueryParams } from 'utils';
 
-const SearchResultPage: NextPage<{ keyword: string }> = ({ keyword }) => {
+interface SearchResultPageProps {
+  keyword: string;
+}
+
+const SearchResultPage: NextPage<SearchResultPageProps> = ({ keyword }) => {
   const [sortOptions, setSortOptions] = useState<SortByOption[]>([
     ...INITIAL_SORT_BY_LIST,
   ]);

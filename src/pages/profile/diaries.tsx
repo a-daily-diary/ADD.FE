@@ -11,7 +11,11 @@ import { useIntersectionObserver } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 
-const MyProfileDiaries: NextPage<{ user: User }> = ({ user }) => {
+interface MyProfileDiariesProps {
+  user: User;
+}
+
+const MyProfileDiaries: NextPage<MyProfileDiariesProps> = ({ user }) => {
   const { username } = user;
 
   const {

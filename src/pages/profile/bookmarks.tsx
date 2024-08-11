@@ -11,7 +11,11 @@ import { useIntersectionObserver } from 'hooks/common';
 import { useBookmarkedDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 
-const MyProfileBookmarks: NextPage<{ user: User }> = ({ user }) => {
+interface MyProfileBookmarksProps {
+  user: User;
+}
+
+const MyProfileBookmarks: NextPage<MyProfileBookmarksProps> = ({ user }) => {
   const { username } = user;
 
   const {

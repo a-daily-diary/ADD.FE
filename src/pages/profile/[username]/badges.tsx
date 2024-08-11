@@ -11,7 +11,11 @@ import { useBadges } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { getQueryParams } from 'utils';
 
-const BadgePage: NextPage<{ username: string }> = ({ username }) => {
+interface BadgePageProps {
+  username: string;
+}
+
+const BadgePage: NextPage<BadgePageProps> = ({ username }) => {
   const { badgesData } = useBadges({ username });
 
   return (
