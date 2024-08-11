@@ -14,6 +14,7 @@ import { INITIAL_SORT_BY_LIST } from 'constants/search';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
 const SearchResultPage: NextPage<{ keyword: string }> = ({ keyword }) => {
   const [sortOptions, setSortOptions] = useState<SortByOption[]>([
@@ -77,7 +78,7 @@ const SearchResultPage: NextPage<{ keyword: string }> = ({ keyword }) => {
 
 export const getServerSideProps = getServerSidePropsWithAuth((context) => {
   const { query } = context;
-  const keyword = query?.keyword as string;
+  const [keyword] = getQueryParams(query.keyword);
 
   return { props: { keyword } };
 });

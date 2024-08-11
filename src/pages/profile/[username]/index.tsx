@@ -7,6 +7,7 @@ import { ActivitiesContainer, ProfileLayout } from 'components/profile';
 import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
 const YourProfile: NextPage<{ username: string }> = ({ username }) => {
   return (
@@ -19,7 +20,7 @@ const YourProfile: NextPage<{ username: string }> = ({ username }) => {
 export const getServerSideProps = getServerSidePropsWithAuth(
   async (context: GetServerSidePropsContext) => {
     const { user, query } = context;
-    const username = query?.username as string;
+    const [username] = getQueryParams(query.username);
 
     const { accessToken, username: loggedInUsername } = user as User;
 

@@ -11,6 +11,7 @@ import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
 const YourProfileDiaries: NextPage<{ username: string }> = ({ username }) => {
   const {
@@ -46,7 +47,7 @@ const YourProfileDiaries: NextPage<{ username: string }> = ({ username }) => {
 export const getServerSideProps = getServerSidePropsWithAuth(
   async (context: GetServerSidePropsContext) => {
     const { user, query } = context;
-    const username = query?.username as string;
+    const [username] = getQueryParams(query.username);
 
     const { accessToken } = user as User;
 
