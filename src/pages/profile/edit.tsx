@@ -67,7 +67,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
   const [previewImage, setPreviewImage] = useState<string>(imgUrl);
 
-  const editProfileMutation = useEditProfile(username);
+  const { mutate: editProfileMutate } = useEditProfile(username);
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
@@ -105,7 +105,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     const { username, imgUrl } = data;
 
     // TODO: 프로필 수정 시 동작 확인 필요, 현재 사용 중인 닉네임일 경우 서버 처리 수정 필요
-    editProfileMutation(
+    editProfileMutate(
       { username, imgUrl },
       {
         onSuccess: async () => {
