@@ -41,3 +41,12 @@ export const PAGE_PATH = {
     keyword: (keyword: string) => `/search/${keyword}`,
   },
 } as const;
+
+export const WITH_AUTH_PAGE_LIST = [
+  PAGE_PATH.main,
+  PAGE_PATH.matching.index,
+  PAGE_PATH.diary.index,
+  PAGE_PATH.profile.index,
+  PAGE_PATH.setting.index,
+  PAGE_PATH.search.index,
+] as readonly string[];
