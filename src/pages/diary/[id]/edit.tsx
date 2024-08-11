@@ -120,23 +120,28 @@ const EditDiary: NextPage = () => {
     }, 0);
   };
 
-  const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
-    try {
-      const { title, content, imgUrl, isPublic } = data;
-      editDiaryMutation({
+  const onSubmit: SubmitHandler<DiaryForm> = (data) => {
+    const { title, content, imgUrl, isPublic } = data;
+
+    editDiaryMutation(
+      {
         title,
         content,
         imgUrl,
         isPublic,
         id: id as string,
-      });
-
-      await router.replace(PAGE_PATH.diary.detail(id as string));
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+      },
+      {
+        onSuccess: async () => {
+          await router.replace(PAGE_PATH.diary.detail(id as string));
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   if (diaryData === undefined || isLoading) return <FullPageLoading />;
