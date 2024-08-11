@@ -4,20 +4,16 @@ import { queryKeys } from 'constants/services';
 
 interface UseBookmarkDiaryProps {
   diaryId: string;
-  username: string;
 }
 
-export const useBookmarkDiary = ({
-  diaryId,
-  username,
-}: UseBookmarkDiaryProps) => {
+export const useBookmarkDiary = ({ diaryId }: UseBookmarkDiaryProps) => {
   const queryClient = useQueryClient();
 
   return useMutation(async () => await api.bookmarkDiary(diaryId), {
     onSuccess: async () => {
       await queryClient.invalidateQueries([queryKeys.diaries]);
       await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
-      await queryClient.invalidateQueries([queryKeys.bookmark, username]);
+      await queryClient.invalidateQueries([queryKeys.bookmark, diaryId]);
     },
   });
 };

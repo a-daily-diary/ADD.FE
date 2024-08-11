@@ -9,6 +9,7 @@ export const useCancelFavoriteDiary = (diaryId: string) => {
     onSuccess: async () => {
       await queryClient.invalidateQueries([queryKeys.diaries]);
       await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
+      await queryClient.invalidateQueries([queryKeys.bookmark]);
     },
   });
 };

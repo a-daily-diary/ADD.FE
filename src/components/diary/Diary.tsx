@@ -38,11 +38,7 @@ const Diary = ({
   const isHighlightKeyword = highlightKeyword !== undefined;
 
   const handleFavorite = useHandleFavorite({ isFavorite, id });
-  const handleBookmark = useHandleBookmark({
-    isBookmark,
-    id,
-    username: author.username,
-  });
+  const handleBookmark = useHandleBookmark({ isBookmark, id });
 
   return (
     <Container>
