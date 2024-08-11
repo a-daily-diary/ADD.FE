@@ -1,11 +1,11 @@
 import { getServerSession } from 'next-auth';
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import type { GetServerSidePropsContext as GetServerSidePropsContextType } from 'next/types';
+import type { GetServerSidePropsContext as DefaultGetServerSidePropsContext } from 'next/types';
 import { SERVER_SIDE_PROPS } from 'constants/server';
 import { authOptions } from 'pages/api/auth/[...nextauth]';
 
 type WithAuthOptions<P> = (
-  context: GetServerSidePropsContextType,
+  context: DefaultGetServerSidePropsContext,
 ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>;
 
 export const getServerSidePropsWithAuth =
