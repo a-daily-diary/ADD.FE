@@ -19,7 +19,7 @@ export const RegisterProfileImage = () => {
   );
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
 
-  const imageUploadMutation = useImageUpload({ path: 'users' });
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
@@ -27,7 +27,7 @@ export const RegisterProfileImage = () => {
       const imageFormData = new FormData();
       imageFormData.append('image', files[0]);
 
-      imageUploadMutation(imageFormData, {
+      imageUploadMutate(imageFormData, {
         onSuccess: (imgUrl) => {
           setPreviewImage(imgUrl);
         },

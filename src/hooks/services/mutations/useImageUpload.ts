@@ -6,7 +6,7 @@ interface useImageUploadProps {
 }
 
 export const useImageUpload = ({ path }: useImageUploadProps) => {
-  const { mutate } = useMutation(async (imageFormData: FormData) => {
+  return useMutation(async (imageFormData: FormData) => {
     const {
       data: {
         data: { imgUrl },
@@ -14,6 +14,4 @@ export const useImageUpload = ({ path }: useImageUploadProps) => {
     } = await api.uploadImage({ path, imageFormData });
     return imgUrl;
   });
-
-  return mutate;
 };

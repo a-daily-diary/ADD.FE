@@ -57,7 +57,7 @@ const WriteDiary: NextPage = () => {
   });
 
   const writeDiaryMutation = useWriteDiary();
-  const imageUploadMutation = useImageUpload({ path: 'diaries' });
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'diaries' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
@@ -65,7 +65,7 @@ const WriteDiary: NextPage = () => {
       const imageFormData = new FormData();
       imageFormData.append('image', files[0]);
 
-      imageUploadMutation(imageFormData, {
+      imageUploadMutate(imageFormData, {
         onSuccess: (imgUrl) => {
           setPreviewImage(imgUrl);
           setValue('imgUrl', imgUrl);
