@@ -8,14 +8,17 @@ export const useHandleBookmark = ({
   id,
   username,
 }: Pick<DiaryDetail, 'id' | 'isBookmark'> & Pick<User, 'username'>) => {
-  const bookmarkMutation = useBookmarkDiary(id, username);
+  const { mutate: bookmarkMutate } = useBookmarkDiary({
+    diaryId: id,
+    username,
+  });
   const cancelBookmarkMutation = useCancelBookmarkDiary(id, username);
 
   const handleBookmark: MouseEventHandler<HTMLButtonElement> = () => {
     if (isBookmark) {
       cancelBookmarkMutation();
     } else {
-      bookmarkMutation();
+      bookmarkMutate();
     }
   };
 
