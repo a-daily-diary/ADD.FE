@@ -48,14 +48,20 @@ export const DiaryCommentInput = ({ diaryId }: DiaryCommentInputProps) => {
 
   const onSubmit: SubmitHandler<CommentForm> = (data) => {
     const { comment } = data;
-    try {
-      writeCommentMutation({ diaryId, comment });
-      reset();
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+
+    writeCommentMutation(
+      { diaryId, comment },
+      {
+        onSuccess: () => {
+          reset();
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (
