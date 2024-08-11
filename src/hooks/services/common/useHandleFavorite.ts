@@ -7,11 +7,11 @@ export const useHandleFavorite = ({
   id,
 }: Pick<DiaryDetail, 'id' | 'isFavorite'>) => {
   const favoriteMutation = useFavoriteDiary(id);
-  const cancelFavoriteMutation = useCancelFavoriteDiary(id);
+  const { mutate: cancelFavoriteMutate } = useCancelFavoriteDiary(id);
 
   const handleFavorite: MouseEventHandler<HTMLButtonElement> = () => {
     if (isFavorite) {
-      cancelFavoriteMutation();
+      cancelFavoriteMutate();
     } else {
       favoriteMutation();
     }
