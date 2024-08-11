@@ -18,13 +18,19 @@ import {
 
 import { Button, Seo } from 'components/common';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
+import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { Z_INDEX } from 'constants/styles';
 import { useRegisterUser } from 'hooks/services';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPage = () => {
-  const methods = useForm<RegisterForm>({ mode: 'onChange' });
+  const methods = useForm<RegisterForm>({
+    mode: 'onChange',
+    defaultValues: {
+      imgUrl: DEFAULT_PROFILE_IMAGES[0].url,
+    },
+  });
   const {
     handleSubmit,
     formState: { isValid },
