@@ -1536,6 +1536,11 @@
   dependencies:
     socket.io-client "*"
 
+"@types/webrtc@^0.0.43":
+  version "0.0.43"
+  resolved "https://registry.yarnpkg.com/@types/webrtc/-/webrtc-0.0.43.tgz#6a102c82daff5c3560cf8074707ad7055b9fa045"
+  integrity sha512-W5FyScaZ+nLb0CXP/4UaRiNr042RwW/RnLUZYt0uwveZN8w+X1gtt0bYIg9oMzt5ODiU/aQV/kyCFv24wfNrXA==
+
 "@typescript-eslint/eslint-plugin@^5.47.1":
   version "5.51.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.51.0.tgz#da3f2819633061ced84bb82c53bba45a6fe9963a"
