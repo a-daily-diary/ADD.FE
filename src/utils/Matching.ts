@@ -17,6 +17,12 @@ export class Matching {
         audio: true,
       });
 
+      // 최초 마이크 상태는 off로 설정
+      const audioTracks = this.audioStream.getAudioTracks();
+      audioTracks.forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+
       const microphonePermission = await navigator.permissions.query({
         name: 'microphone' as PermissionName,
       });
@@ -34,6 +40,8 @@ export class Matching {
     audioTracks.forEach((track) => {
       track.enabled = !track.enabled;
     });
+
+    return audioTracks[0].enabled;
   }
 
   public async joinQueue({
