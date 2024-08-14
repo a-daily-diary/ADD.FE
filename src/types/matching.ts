@@ -16,3 +16,7 @@ export interface MatchingInformation {
   socketId: string;
   userId: string;
 }
+
+export interface PeerEventHandler {
+  handleDisconnected: () => void;
+}

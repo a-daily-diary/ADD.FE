@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import type { User } from 'next-auth';
 import type { Socket } from 'socket.io-client';
-import type { MatchingInformation } from 'types/matching';
+import type { MatchingInformation, PeerEventHandler } from 'types/matching';
 import { MATCHING_SOCKET_EVENT, EXCEPTION_MESSAGE } from 'constants/matching';
 
 export class Matching {
@@ -152,6 +152,34 @@ export class Matching {
     this.peer.ontrack = (trackEvent: RTCTrackEvent) => {
       audioElement.srcObject = trackEvent.streams[0];
     };
+  }
+
+  public addPeerEventHandler({ handleDisconnected }: PeerEventHandler) {
+    if (this.peer === null) return;
+
+    const interval = setInterval(async () => {
+      if (this.peer === null) return;
+      const statistics = await this.peer.getStats(null);
+
+      statistics.forEach((report) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        switch (report.type) {
+          case 'transport':
+            {
+              const transportReport = report as RTCTransportStats;
+
+              if (
+                transportReport.dtlsState === 'closed' ||
+                transportReport.dtlsState === 'failed'
+              ) {
+                handleDisconnected();
+                clearInterval(interval);
+              }
+            }
+            break;
+        }
+      });
+    }, 1000);
   }
 
   public disconnect() {

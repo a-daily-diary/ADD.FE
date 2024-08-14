@@ -41,6 +41,10 @@ const MatchingController = () => {
   useEffect(() => {
     void signaling();
 
+    matching.addPeerEventHandler({
+      handleDisconnected: handleEndMatching,
+    });
+
     return () => {
       matching.disconnect();
     };
