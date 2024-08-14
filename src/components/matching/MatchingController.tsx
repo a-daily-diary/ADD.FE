@@ -66,6 +66,10 @@ const MatchingController = () => {
     void router.replace(PAGE_PATH.main);
   };
 
+  const handleToggleMicrophone = () => {
+    matching.toggleMicrophone();
+  };
+
   return (
     <>
       <Container>
@@ -79,6 +83,7 @@ const MatchingController = () => {
             id="microphone"
             backgroundColor={colors.bg_02}
             icon={<MicrophoneOffIcon />}
+            onClick={handleToggleMicrophone}
           />
           <label htmlFor="microphone">마이크 off</label>
         </ButtonWrapper>

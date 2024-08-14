@@ -27,6 +27,15 @@ export class Matching {
     }
   }
 
+  public toggleMicrophone() {
+    if (this.audioStream === null) return false;
+
+    const audioTracks = this.audioStream.getAudioTracks();
+    audioTracks.forEach((track) => {
+      track.enabled = !track.enabled;
+    });
+  }
+
   public async joinQueue({
     user,
     onSuccess,
