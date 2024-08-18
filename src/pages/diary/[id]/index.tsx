@@ -2,9 +2,8 @@ import styled from '@emotion/styled';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage, GetServerSidePropsContext } from 'next';
+import type { User } from 'next-auth';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { EditIcon, ReportIcon, TrashIcon } from 'assets/icons';
@@ -19,17 +18,19 @@ import { DiaryDetailContainer } from 'components/diary';
 import { Header, HeaderLeft, HeaderRight } from 'components/layouts';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
-import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useClickOutside, useModal } from 'hooks/common';
 import { useDeleteDiary, useDiary } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
 import { errorResponseMessage } from 'utils';
 
-const DiaryDetailPage: NextPage = () => {
+interface DiaryDetailPageProps {
+  user: User;
+}
+
+const DiaryDetailPage: NextPage<DiaryDetailPageProps> = ({ user }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { data: session } = useSession();
 
   const { isVisible: isVisibleDeleteModal, handleModal: handleDeleteModal } =
     useModal();
@@ -57,7 +58,7 @@ const DiaryDetailPage: NextPage = () => {
   if (diaryData === undefined || isLoading) return <FullPageLoading />;
 
   const { author, title } = diaryData;
-  const isAuthor = author.id === session?.user.id;
+  const isAuthor = author.id === user.id;
 
   return (
     <>
@@ -119,28 +120,29 @@ const DiaryDetailPage: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res, query } = context;
-  const { id } = query;
-  const session = await getServerSession(req, res, authOptions);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user, query } = context;
+    const { id } = query;
 
-  if (session === null) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${session.user.accessToken}`,
-    },
-  };
+    const { accessToken } = user as User;
 
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(
-    [queryKeys.diaries, id],
-    async () => await api.getDiaryDetail({ id: id as string, config: headers }),
-  );
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-  return { props: { dehydratedState: dehydrate(queryClient) } };
-};
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery(
+      [queryKeys.diaries, id],
+      async () =>
+        await api.getDiaryDetail({ id: id as string, config: headers }),
+    );
+
+    return { props: { dehydratedState: dehydrate(queryClient), user } };
+  },
+);
 
 export default DiaryDetailPage;
 

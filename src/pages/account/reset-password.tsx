@@ -7,7 +7,7 @@ import type {
 import * as api from 'api';
 import { ResetPasswordForm } from 'components/account';
 import { Seo } from 'components/common';
-import { PAGE_PATH } from 'constants/common';
+import { SERVER_SIDE_PROPS } from 'constants/server';
 import { getQueryParams } from 'utils';
 
 const ResetPassword: NextPage<
@@ -28,15 +28,8 @@ export const getServerSideProps = (async (context) => {
   const [email] = getQueryParams(query.email);
   const [token] = getQueryParams(query.token);
 
-  const REDIRECT_LOGIN_PAGE_PROPS = {
-    redirect: {
-      destination: PAGE_PATH.account.login,
-      permanent: false,
-    },
-  };
-
   if (!email || !token) {
-    return REDIRECT_LOGIN_PAGE_PROPS;
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 
   try {
@@ -47,7 +40,7 @@ export const getServerSideProps = (async (context) => {
 
     return { props: { email, token } };
   } catch (error) {
-    return REDIRECT_LOGIN_PAGE_PROPS;
+    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
   }
 }) satisfies GetServerSideProps;
 

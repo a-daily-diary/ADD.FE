@@ -1,25 +1,25 @@
 import { QueryClient, dehydrate } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { getServerSession } from 'next-auth';
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { User } from 'next-auth';
 import * as api from 'api';
 import { FullPageLoading, ObserverTarget } from 'components/common';
 import { DiariesContainer } from 'components/diary';
 import EmptyDiary from 'components/diary/EmptyDiary';
 import { ProfileLayout } from 'components/profile';
-import { PAGE_PATH } from 'constants/common';
 import { queryKeys } from 'constants/services';
 import { useIntersectionObserver } from 'hooks/common';
 import { useUserDiaries } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
-const YourProfileDiaries: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ username }) => {
+interface YourProfileDiariesProps {
+  username: string;
+}
+
+const YourProfileDiaries: NextPage<YourProfileDiariesProps> = ({
+  username,
+}) => {
   const {
     userDiariesData,
     isLoading: isUserDiariesLoading,
@@ -50,44 +50,35 @@ const YourProfileDiaries: NextPage<
   );
 };
 
-export const getServerSideProps = (async (context) => {
-  const { req, res, params } = context;
-  const username = params?.username as string;
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user, query } = context;
+    const [username] = getQueryParams(query.username);
 
-  const session = await getServerSession(req, res, authOptions);
+    const { accessToken } = user as User;
 
-  if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
       },
     };
-  }
 
-  const { accessToken } = session.user;
+    const queryClient = new QueryClient();
 
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
-
-  const queryClient = new QueryClient();
-
-  try {
-    await queryClient.fetchQuery([queryKeys.users, username], async () => {
-      return await api.getProfileByUsername({ username, config: headers });
-    });
-  } catch (error) {
-    if (isAxiosError(error)) {
-      return {
-        notFound: true,
-      };
+    try {
+      await queryClient.fetchQuery([queryKeys.users, username], async () => {
+        return await api.getProfileByUsername({ username, config: headers });
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        return {
+          notFound: true,
+        };
+      }
     }
-  }
 
-  return { props: { dehydratedState: dehydrate(queryClient), username } };
-}) satisfies GetServerSideProps;
+    return { props: { dehydratedState: dehydrate(queryClient), username } };
+  },
+);
 
 export default YourProfileDiaries;

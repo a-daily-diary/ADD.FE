@@ -1,35 +1,29 @@
 import styled from '@emotion/styled';
 import { QueryClient, dehydrate } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { getServerSession } from 'next-auth';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
+import type { User } from 'next-auth';
 import * as api from 'api';
 import { BadgeDetailButton } from 'components/badge';
 import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
-import { SERVER_SIDE_PROPS } from 'constants/server';
 import { queryKeys } from 'constants/services';
 import { useBadges } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
-const BadgePage: NextPage = () => {
-  const router = useRouter();
-  const {
-    query: { username },
-  } = router;
-  const { badgesData } = useBadges({ username: username as string });
+interface BadgePageProps {
+  username: string;
+}
+
+const BadgePage: NextPage<BadgePageProps> = ({ username }) => {
+  const { badgesData } = useBadges({ username });
 
   return (
     <>
-      <Seo title={`${username as string}님의 배지 | a daily diary`} />
+      <Seo title={`${username}님의 배지 | a daily diary`} />
       <Header
         left={<HeaderLeft type="이전" />}
-        title={
-          <HeaderTitle
-            title={`${username as string}님의 배지`}
-            position="center"
-          />
-        }
+        title={<HeaderTitle title={`${username}님의 배지`} position="center" />}
       />
       <Section>
         <BadgeList>
@@ -47,28 +41,27 @@ const BadgePage: NextPage = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req, res } = context;
-  const session = await getServerSession(req, res, authOptions);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user, query } = context;
+    const [username] = getQueryParams(query.username);
 
-  if (session === null) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
+    const { accessToken } = user as User;
 
-  const { username, accessToken } = session.user;
+    const headers = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    };
 
-  const headers = {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  };
+    const queryClient = new QueryClient();
+    await queryClient.prefetchQuery([queryKeys.badges, username], async () => {
+      return await api.getBadgesByUsername({ username, config: headers });
+    });
 
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery([queryKeys.badges, username], async () => {
-    return await api.getBadgesByUsername({ username, config: headers });
-  });
-  return { props: { dehydratedState: dehydrate(queryClient), session } };
-};
+    return { props: { dehydratedState: dehydrate(queryClient), username } };
+  },
+);
 
 export default BadgePage;
 

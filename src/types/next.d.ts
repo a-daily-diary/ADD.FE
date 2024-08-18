@@ -1,7 +1,8 @@
 import type { DehydratedState } from '@tanstack/react-query';
 import type { NextComponentType, NextPageContext } from 'next';
 import type { Router } from 'next/router';
-import type { Session } from 'next-auth';
+import type { GetServerSidePropsContext as DefaultGetServerSidePropsContext } from 'next/types';
+import type { Session, User } from 'next-auth';
 
 declare module 'next/app' {
   interface AppProps<P = Record<string, unknown>> {
@@ -14,5 +15,14 @@ declare module 'next/app' {
       session?: Session;
       dehydratedState: DehydratedState;
     };
+  }
+}
+
+declare module 'next' {
+  interface GetServerSidePropsContext<
+    Q extends ParsedUrlQuery = ParsedUrlQuery,
+    D = PreviewData,
+  > extends DefaultGetServerSidePropsContext<Q, D> {
+    user?: User;
   }
 }

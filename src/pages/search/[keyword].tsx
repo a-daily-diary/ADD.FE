@@ -1,12 +1,7 @@
 import styled from '@emotion/styled';
-import { getServerSession } from 'next-auth';
 import { useMemo, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next';
+import type { NextPage } from 'next';
 import type { SearchForm, SortByOption } from 'types/search';
 import { ObserverTarget, Seo } from 'components/common';
 import { DiariesContainer } from 'components/diary';
@@ -15,15 +10,17 @@ import {
   SearchHeader,
   SearchResultHeader,
 } from 'components/search';
-import { PAGE_PATH } from 'constants/common';
 import { INITIAL_SORT_BY_LIST } from 'constants/search';
 import { useIntersectionObserver } from 'hooks/common';
 import { useDiaries } from 'hooks/services';
-import { authOptions } from 'pages/api/auth/[...nextauth]';
+import { getServerSidePropsWithAuth } from 'lib/auth';
+import { getQueryParams } from 'utils';
 
-const SearchResultPage: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ keyword }) => {
+interface SearchResultPageProps {
+  keyword: string;
+}
+
+const SearchResultPage: NextPage<SearchResultPageProps> = ({ keyword }) => {
   const [sortOptions, setSortOptions] = useState<SortByOption[]>([
     ...INITIAL_SORT_BY_LIST,
   ]);
@@ -82,23 +79,13 @@ const SearchResultPage: NextPage<
     </>
   );
 };
-export const getServerSideProps = (async (context) => {
-  const { req, res, params } = context;
-  const keyword = params?.keyword as string;
 
-  const session = await getServerSession(req, res, authOptions);
-
-  if (session === null) {
-    return {
-      redirect: {
-        destination: PAGE_PATH.account.login,
-        permanent: false,
-      },
-    };
-  }
+export const getServerSideProps = getServerSidePropsWithAuth((context) => {
+  const { query } = context;
+  const [keyword] = getQueryParams(query.keyword);
 
   return { props: { keyword } };
-}) satisfies GetServerSideProps;
+});
 
 export default SearchResultPage;
 
