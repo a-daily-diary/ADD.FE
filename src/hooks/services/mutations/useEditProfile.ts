@@ -5,7 +5,8 @@ import { queryKeys } from 'constants/services';
 
 export const useEditProfile = (username: string) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+
+  return useMutation(
     async ({ username, imgUrl }: EditProfileRequest) =>
       await api.editProfile({
         username,
@@ -17,6 +18,4 @@ export const useEditProfile = (username: string) => {
       },
     },
   );
-
-  return mutate;
 };

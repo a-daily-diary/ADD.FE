@@ -17,17 +17,17 @@ export const BadgesContainer = () => {
   const { badgesData } = useBadges({
     username: session?.user.username as string,
   });
-  const changePinnedBadgeMutation = useChangePinnedBadge();
+  const { mutate: changePinnedBadgeMutate } = useChangePinnedBadge();
 
   const handleChangePinned = (id: string) => {
-    try {
-      changePinnedBadgeMutation(id);
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        // TODO: 에러 처리 필요
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    changePinnedBadgeMutate(id, {
+      onError: (error) => {
+        if (isAxiosError<ErrorResponse>(error)) {
+          // TODO: 에러 처리 필요
+          alert(errorResponseMessage(error.response?.data.message));
+        }
+      },
+    });
   };
 
   if (badgesData === undefined) return <FullPageLoading />;

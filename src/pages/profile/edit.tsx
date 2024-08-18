@@ -67,7 +67,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
   const [previewImage, setPreviewImage] = useState<string>(imgUrl);
 
-  const editProfileMutation = useEditProfile(username);
+  const { mutate: editProfileMutate } = useEditProfile(username);
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
@@ -102,25 +102,23 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
   };
 
   const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
-    try {
-      const { username, imgUrl } = data;
+    const { username, imgUrl } = data;
 
-      // TODO: 프로필 수정 시 동작 확인 필요, 현재 사용 중인 닉네임일 경우 서버 처리 수정 필요
-      editProfileMutation(
-        { username, imgUrl },
-        {
-          onSuccess: async () => {
-            await update({ username, imgUrl });
-            await router.replace(PAGE_PATH.profile.index);
-          },
+    // TODO: 프로필 수정 시 동작 확인 필요, 현재 사용 중인 닉네임일 경우 서버 처리 수정 필요
+    editProfileMutate(
+      { username, imgUrl },
+      {
+        onSuccess: async () => {
+          await update({ username, imgUrl });
+          await router.replace(PAGE_PATH.profile.index);
         },
-      );
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        // TODO: 에러 처리
-        console.log(error);
-      }
-    }
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (

@@ -2,12 +2,8 @@ import { useMutation } from '@tanstack/react-query';
 import type { RegisterRequest } from 'types/register';
 import * as api from 'api';
 
-interface UseRegisterUserProps {
-  onSuccess: () => void;
-}
-
-export const useRegisterUser = ({ onSuccess }: UseRegisterUserProps) => {
-  const { mutate } = useMutation(
+export const useRegisterUser = () => {
+  return useMutation(
     async ({
       email,
       username,
@@ -23,11 +19,5 @@ export const useRegisterUser = ({ onSuccess }: UseRegisterUserProps) => {
         termsAgreementIdList,
       });
     },
-    {
-      onSuccess: () => {
-        onSuccess();
-      },
-    },
   );
-  return mutate;
 };

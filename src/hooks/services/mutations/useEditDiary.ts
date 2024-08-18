@@ -5,7 +5,8 @@ import { queryKeys } from 'constants/services';
 
 export const useEditDiary = (id: string) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+
+  return useMutation(
     async ({ title, content, imgUrl, isPublic, id }: EditDiaryRequest) =>
       await api.editDiaryDetail({
         title,
@@ -20,6 +21,4 @@ export const useEditDiary = (id: string) => {
       },
     },
   );
-
-  return mutate;
 };

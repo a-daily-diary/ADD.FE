@@ -25,19 +25,22 @@ export const DiaryComment = ({ diaryComment, diaryId }: DiaryCommentProps) => {
     useModal();
   const { ref, isVisible, setIsVisible } = useClickOutside();
 
-  const deleteCommentMutation = useDeleteComment(diaryId);
+  const { mutate: deleteCommentMutate } = useDeleteComment(diaryId);
 
   const { id: commentId, createdAt, comment, commenter } = diaryComment;
   const isCommenter = commenter.id === session?.user.id;
 
   const handleDeleteComment = () => {
-    try {
-      deleteCommentMutation({ diaryId, commentId });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    deleteCommentMutate(
+      { diaryId, commentId },
+      {
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (

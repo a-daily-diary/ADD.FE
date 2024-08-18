@@ -1,10 +1,8 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useRef, useState } from 'react';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
-import type { RegisterForm } from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import { ImagePickerIcon } from 'assets/icons';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
@@ -21,32 +19,24 @@ export const RegisterProfileImage = () => {
   );
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
 
-  const { setValue } = useFormContext<RegisterForm>();
-
-  const imageUploadMutation = useImageUpload({
-    path: 'users',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-    },
-  });
-
-  useEffect(() => {
-    setValue('imgUrl', previewImage);
-  }, [previewImage, setValue]);
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      }
+      imageUploadMutate(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 

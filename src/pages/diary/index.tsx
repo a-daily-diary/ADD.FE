@@ -22,6 +22,7 @@ import {
   HeaderRight,
   HeaderTitle,
 } from 'components/layouts';
+import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { useBeforeLeave, useModal } from 'hooks/common';
 import { useImageUpload, useWriteDiary } from 'hooks/services';
@@ -56,29 +57,26 @@ const WriteDiary: NextPage = () => {
     beforeLeaveCallback: handleBeforeLeaveModal.open,
   });
 
-  const writeDiaryMutation = useWriteDiary();
-  const imageUploadMutation = useImageUpload({
-    path: 'diaries',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-      setValue('imgUrl', imgUrl);
-    },
-  });
+  const { mutate: writeDiaryMutate } = useWriteDiary();
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'diaries' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          // TODO: 이미지 업로드 시 에러 처리
-          console.log(error);
-        }
-      }
+      imageUploadMutate(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+          setValue('imgUrl', imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 
@@ -88,15 +86,22 @@ const WriteDiary: NextPage = () => {
   };
 
   const onSubmit: SubmitHandler<DiaryForm> = (data) => {
-    try {
-      const { title, content, imgUrl, isPublic } = data;
-      writeDiaryMutation({ title, content, imgUrl, isPublic });
-      // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+    const { title, content, imgUrl, isPublic } = data;
+
+    writeDiaryMutate(
+      { title, content, imgUrl, isPublic },
+      {
+        onSuccess: async (diary) => {
+          await router.replace(PAGE_PATH.diary.detail(diary.id));
+          // TODO: badge 데이터가 있는 경우, 모달로 배지 획득 알람 띄우기
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   return (

@@ -4,12 +4,12 @@ import { queryKeys } from 'constants/services';
 
 export const useFavoriteDiary = (diaryId: string) => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(async () => await api.favoriteDiary(diaryId), {
+
+  return useMutation(async () => await api.favoriteDiary(diaryId), {
     onSuccess: async () => {
       await queryClient.invalidateQueries([queryKeys.diaries]);
       await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
+      await queryClient.invalidateQueries([queryKeys.bookmark]);
     },
   });
-
-  return mutate;
 };

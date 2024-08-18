@@ -78,14 +78,8 @@ const EditDiary: NextPage = () => {
     beforeLeaveCallback: handleBeforeLeaveModal.open,
   });
 
-  const editDiaryMutation = useEditDiary(id as string);
-  const imageUploadMutation = useImageUpload({
-    path: 'diaries',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-      setValue('imgUrl', imgUrl);
-    },
-  });
+  const { mutate: editDiaryMutate } = useEditDiary(id as string);
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'diaries' });
 
   useEffect(() => {
     setFocus('content');
@@ -94,17 +88,20 @@ const EditDiary: NextPage = () => {
   const handleOnChangeImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          // TODO: 이미지 업로드 시 에러 처리
-          console.log(error);
-        }
-      }
+      imageUploadMutate(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+          setValue('imgUrl', imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 
@@ -120,23 +117,28 @@ const EditDiary: NextPage = () => {
     }, 0);
   };
 
-  const onSubmit: SubmitHandler<DiaryForm> = async (data) => {
-    try {
-      const { title, content, imgUrl, isPublic } = data;
-      editDiaryMutation({
+  const onSubmit: SubmitHandler<DiaryForm> = (data) => {
+    const { title, content, imgUrl, isPublic } = data;
+
+    editDiaryMutate(
+      {
         title,
         content,
         imgUrl,
         isPublic,
         id: id as string,
-      });
-
-      await router.replace(PAGE_PATH.diary.detail(id as string));
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        alert(errorResponseMessage(error.response?.data.message));
-      }
-    }
+      },
+      {
+        onSuccess: async () => {
+          await router.replace(PAGE_PATH.diary.detail(id as string));
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            alert(errorResponseMessage(error.response?.data.message));
+          }
+        },
+      },
+    );
   };
 
   if (diaryData === undefined || isLoading) return <FullPageLoading />;

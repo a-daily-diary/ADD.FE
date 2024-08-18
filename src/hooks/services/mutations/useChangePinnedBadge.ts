@@ -4,7 +4,8 @@ import { queryKeys } from 'constants/services';
 
 export const useChangePinnedBadge = () => {
   const queryClient = useQueryClient();
-  const { mutate } = useMutation(
+
+  return useMutation(
     async (badgeId: string) =>
       await api.patchPinnedBadgeByBadgeId({ id: badgeId }),
     {
@@ -13,6 +14,4 @@ export const useChangePinnedBadge = () => {
       },
     },
   );
-
-  return mutate;
 };

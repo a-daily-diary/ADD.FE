@@ -18,13 +18,19 @@ import {
 
 import { Button, Seo } from 'components/common';
 import { HeaderTitle, Header, HeaderLeft } from 'components/layouts';
+import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { queryKeys } from 'constants/services';
 import { Z_INDEX } from 'constants/styles';
 import { useRegisterUser } from 'hooks/services';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPage = () => {
-  const methods = useForm<RegisterForm>({ mode: 'onChange' });
+  const methods = useForm<RegisterForm>({
+    mode: 'onChange',
+    defaultValues: {
+      imgUrl: DEFAULT_PROFILE_IMAGES[0].url,
+    },
+  });
   const {
     handleSubmit,
     formState: { isValid },
@@ -40,13 +46,7 @@ const Register: NextPage = () => {
     welcomeMessage: false,
   });
 
-  const registerMutation = useRegisterUser({
-    onSuccess: () => {
-      setRegisterStep((state) => {
-        return { ...state, welcomeMessage: true };
-      });
-    },
-  });
+  const { mutate: registerMutate } = useRegisterUser();
 
   const onSubmit: SubmitHandler<RegisterForm> = (data) => {
     if (registerStep.email)
@@ -72,25 +72,33 @@ const Register: NextPage = () => {
     }
 
     if (registerStep.termsAgreement) {
-      try {
-        const { email, username, password, imgUrl, termsAgreement } = data;
-        // NOTE: 동의한 약관 객체를 약관 ID 문자열 배열로 변환
-        const termsAgreementIdList = Object.entries(termsAgreement)
-          .filter(([_, value]) => value)
-          .map(([id, _]) => id) as TermsAgreementId[];
+      const { email, username, password, imgUrl, termsAgreement } = data;
+      // NOTE: 동의한 약관 객체를 약관 ID 문자열 배열로 변환
+      const termsAgreementIdList = Object.entries(termsAgreement)
+        .filter(([_, value]) => value)
+        .map(([id, _]) => id) as TermsAgreementId[];
 
-        registerMutation({
+      registerMutate(
+        {
           email,
           username,
           password,
           imgUrl,
           termsAgreementIdList,
-        });
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          alert(errorResponseMessage(error.response?.data.message));
-        }
-      }
+        },
+        {
+          onSuccess: () => {
+            setRegisterStep((state) => {
+              return { ...state, welcomeMessage: true };
+            });
+          },
+          onError: (error) => {
+            if (isAxiosError<ErrorResponse>(error)) {
+              alert(errorResponseMessage(error.response?.data.message));
+            }
+          },
+        },
+      );
     }
   };
 

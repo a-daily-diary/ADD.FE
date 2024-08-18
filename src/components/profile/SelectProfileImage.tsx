@@ -24,26 +24,24 @@ export const SelectProfileImage = ({
   setPreviewImage,
 }: SelectProfileImageProps) => {
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
-  const imageUploadMutation = useImageUpload({
-    path: 'users',
-    onSuccess: (imgUrl: string) => {
-      setPreviewImage(imgUrl);
-    },
-  });
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { files } = e.target;
     if (files !== null) {
-      try {
-        const imageFormData = new FormData();
-        imageFormData.append('image', files[0]);
+      const imageFormData = new FormData();
+      imageFormData.append('image', files[0]);
 
-        imageUploadMutation(imageFormData);
-      } catch (error) {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      }
+      imageUploadMutate(imageFormData, {
+        onSuccess: (imgUrl) => {
+          setPreviewImage(imgUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError<ErrorResponse>(error)) {
+            console.log(error);
+          }
+        },
+      });
     }
   };
 
