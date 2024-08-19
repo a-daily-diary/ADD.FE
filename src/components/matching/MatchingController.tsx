@@ -3,8 +3,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
-import { AlertModal, IconButton } from 'components/common';
+import { AlertModal, ConfirmModal, IconButton } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
+import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { colors } from 'constants/styles';
 import { useMatching } from 'contexts/MatchingProvider';
 import { useModal } from 'hooks/common';
@@ -17,7 +18,11 @@ const MatchingController = () => {
 
   const matching = useMatching();
 
-  const { isVisible, handleModal } = useModal();
+  const { isVisible: isAlertVisible, handleModal: handleAlertModal } =
+    useModal();
+
+  const { isVisible: isConfirmVisible, handleModal: handleConfirmModal } =
+    useModal();
 
   const signaling = async () => {
     const { query } = router;
@@ -34,7 +39,7 @@ const MatchingController = () => {
       });
     } catch (error) {
       console.log(error);
-      handleModal.open();
+      handleAlertModal.open();
     }
   };
 
@@ -57,7 +62,7 @@ const MatchingController = () => {
   };
 
   const handleCloseAlert = () => {
-    handleModal.close();
+    handleAlertModal.close();
     void router.replace(PAGE_PATH.main);
   };
 
@@ -82,18 +87,26 @@ const MatchingController = () => {
             id="end-call"
             backgroundColor={colors.red}
             icon={<EndCallIcon />}
-            onClick={handleEndMatching}
+            onClick={handleConfirmModal.open}
           />
           <label htmlFor="end-call">통화 종료</label>
         </ButtonWrapper>
       </Container>
       {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
-      <AlertModal isVisible={isVisible} onClose={handleCloseAlert}>
+      <AlertModal isVisible={isAlertVisible} onClose={handleCloseAlert}>
         <ModalContent>
           <p>의도하지 않은 에러가 발생했습니다.</p>
           <p>메인 페이지도 이동합니다.</p>
         </ModalContent>
       </AlertModal>
+      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
+      <ConfirmModal
+        isVisible={isConfirmVisible}
+        message={MODAL_MESSAGE.endMatching}
+        confirmText={MODAL_BUTTON.end}
+        onClose={handleConfirmModal.close}
+        onConfirm={handleEndMatching}
+      />
     </>
   );
 };
