@@ -36,6 +36,7 @@
     "@next/eslint-plugin-next": "^13.1.1",
     "@types/react-calendar-heatmap": "^1.6.3",
     "@types/socket.io-client": "^3.0.0",
+    "@types/webrtc": "^0.0.43",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "eslint-config-prettier": "^8.5.0",
