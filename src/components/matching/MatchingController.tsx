@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { MatchingInformation } from 'types/matching';
-import { MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
+import { MicrophoneOnIcon, MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
 import { AlertModal, ConfirmModal, IconButton } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
@@ -15,6 +15,9 @@ const MatchingController = () => {
   const router = useRouter();
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const [isEnabledMicrophone, setIsEnabledMicrophone] =
+    useState<boolean>(false);
 
   const matching = useMatching();
 
@@ -66,6 +69,11 @@ const MatchingController = () => {
     void router.replace(PAGE_PATH.main);
   };
 
+  const handleToggleMicrophone = () => {
+    const isEnabledMicrophone = matching.toggleMicrophone();
+    setIsEnabledMicrophone(isEnabledMicrophone);
+  };
+
   return (
     <>
       <Container>
@@ -74,13 +82,18 @@ const MatchingController = () => {
           <track kind="captions" />
         </audio>
         <ButtonWrapper>
-          <Tooltip>마이크를 켜주세요!</Tooltip>
+          {!isEnabledMicrophone && <Tooltip>마이크를 켜주세요!</Tooltip>}
           <IconButton
             id="microphone"
             backgroundColor={colors.bg_02}
-            icon={<MicrophoneOffIcon />}
+            icon={
+              isEnabledMicrophone ? <MicrophoneOnIcon /> : <MicrophoneOffIcon />
+            }
+            onClick={handleToggleMicrophone}
           />
-          <label htmlFor="microphone">마이크 off</label>
+          <label htmlFor="microphone">
+            {isEnabledMicrophone ? '마이크 on' : '마이크 off'}
+          </label>
         </ButtonWrapper>
         <ButtonWrapper>
           <IconButton
