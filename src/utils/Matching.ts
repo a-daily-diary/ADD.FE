@@ -155,8 +155,6 @@ export class Matching {
   }
 
   public addPeerEventHandler({ handleDisconnected }: PeerEventHandler) {
-    if (this.peer === null) return;
-
     const interval = setInterval(async () => {
       if (this.peer === null) return;
       const statistics = await this.peer.getStats(null);
