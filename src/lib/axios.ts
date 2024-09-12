@@ -3,7 +3,7 @@ import { getSession } from 'next-auth/react';
 import type { AxiosRequestConfig } from 'axios';
 
 const options: AxiosRequestConfig = {
-  baseURL: process.env.NEXT_PUBLIC_API_HOST,
+  baseURL: '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
