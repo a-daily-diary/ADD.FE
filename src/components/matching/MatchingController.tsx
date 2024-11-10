@@ -38,7 +38,7 @@ const MatchingController = () => {
       await matching.signaling(audioElement, {
         role: query.r as MatchingInformation['role'],
         socketId: query.ms as MatchingInformation['socketId'],
-        userId: query.mu as MatchingInformation['userId'],
+        userId: query.mu as MatchingInformation['userId'], // FIXME: username으로 변경 필요
       });
     } catch (error) {
       console.log(error);
@@ -59,9 +59,8 @@ const MatchingController = () => {
   }, []);
 
   const handleEndMatching = () => {
-    // FIXME: 매칭 설문 페이지로 이동할 예정입니다.
     matching.disconnect();
-    void router.replace(PAGE_PATH.main);
+    void router.replace(PAGE_PATH.matching.survey);
   };
 
   const handleCloseAlert = () => {

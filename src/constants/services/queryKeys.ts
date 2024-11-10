@@ -1,4 +1,5 @@
 export const queryKeys = {
+  recentMatchingHistory: 'recentMatchingHistory',
   badges: 'badges',
   bookmark: 'bookmark',
   comments: 'comments',

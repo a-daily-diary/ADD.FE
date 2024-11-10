@@ -25,4 +25,8 @@ export const API_PATH = {
     index: '/badges',
     users: '/badges/users',
   },
+  matchingHistories: {
+    index: '/matching-histories',
+    recent: '/matching-histories/recent',
+  },
 } as const;

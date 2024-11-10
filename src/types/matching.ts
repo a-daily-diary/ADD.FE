@@ -5,10 +5,8 @@ interface FeedbackType {
   isBad: boolean;
 }
 
-export interface MatchingFeedbackForm {
-  feedbackType: FeedbackType;
-  message: string;
-  isBlockedMatching: boolean;
+export interface MatchingFeedbackForm extends FeedbackType {
+  content: string;
 }
 
 export interface MatchingInformation {

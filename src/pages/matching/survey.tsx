@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useForm, useWatch } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import type { SubmitHandler } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
@@ -9,23 +10,37 @@ import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { PAGE_PATH } from 'constants/common';
+import { useRecentMatchingHistory } from 'hooks/services/queries/useRecentMatchingHistory';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingSurvey = () => {
   const router = useRouter();
 
-  const { control, register, handleSubmit } = useForm<MatchingFeedbackForm>();
+  const { register, handleSubmit } = useForm<MatchingFeedbackForm>();
 
-  const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
-    console.log(data); // FIXME: 실제 API 연동할 때 사용될 데이터 console.log 입니다.
+  // TODO: BlackList 기능은 별도의 이슈에서 작업할 예정입니다.
+  const [shouldBlackList, setShouldBackList] = useState<boolean>(false);
+
+  const { data: matchingHistory } = useRecentMatchingHistory();
+
+  const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (formData) => {
+    if (!matchingHistory) return;
+
+    const { id, matchedUser } = matchingHistory;
+
+    // TODO: feedback post api 연동 시 사용할 데이터입니다.
+    console.log({
+      matchingHistoryId: id,
+      matchedUserId: matchedUser.id,
+      ...formData,
+    });
 
     await router.push(PAGE_PATH.main);
   };
 
-  const isBlockedMatching = useWatch({
-    control,
-    name: 'isBlockedMatching',
-  });
+  const handleChangeShouldBlackList = () => {
+    setShouldBackList((previous) => !previous);
+  };
 
   return (
     <>
@@ -45,11 +60,15 @@ const MatchingSurvey = () => {
           </RegularParagraph07>
           <TextArea
             placeholder="피드백을 남겨주세요."
-            {...register('message')}
+            {...register('content')}
           />
           <CheckBoxLabel>
-            <input type="checkbox" {...register('isBlockedMatching')} />
-            {isBlockedMatching ? <CheckedOnIcon /> : <CheckedOffIcon />}
+            <input
+              type="checkbox"
+              checked={shouldBlackList}
+              onChange={handleChangeShouldBlackList}
+            />
+            {shouldBlackList ? <CheckedOnIcon /> : <CheckedOffIcon />}
             <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
           <Button type="submit">피드백 작성 완료</Button>

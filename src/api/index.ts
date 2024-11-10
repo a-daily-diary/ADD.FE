@@ -8,3 +8,4 @@ export * from './bookmark';
 export * from './profile';
 export * from './activities';
 export * from './badges';
+export * from './matchingHistories';
