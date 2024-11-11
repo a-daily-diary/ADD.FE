@@ -10,6 +10,7 @@ import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { PAGE_PATH } from 'constants/common';
+import { useCreateMatchingFeedback } from 'hooks/services/mutations/useCreateMatchingFeedback';
 import { useRecentMatchingHistory } from 'hooks/services/queries/useRecentMatchingHistory';
 import { ScreenReaderOnly } from 'styles';
 
@@ -23,19 +24,29 @@ const MatchingSurvey = () => {
 
   const { data: matchingHistory } = useRecentMatchingHistory();
 
-  const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (formData) => {
+  const { mutate } = useCreateMatchingFeedback();
+
+  const onSubmit: SubmitHandler<MatchingFeedbackForm> = (formData) => {
     if (!matchingHistory) return;
 
     const { id, matchedUser } = matchingHistory;
 
-    // TODO: feedback post api 연동 시 사용할 데이터입니다.
-    console.log({
-      matchingHistoryId: id,
-      matchedUserId: matchedUser.id,
-      ...formData,
-    });
-
-    await router.push(PAGE_PATH.main);
+    mutate(
+      {
+        matchingHistoryId: id,
+        matchedUserId: matchedUser.id,
+        ...formData,
+      },
+      {
+        onSuccess: () => {
+          void router.push(PAGE_PATH.main);
+        },
+        onError: () => {
+          alert('의도하지 않은 에러가 발생하였습니다.');
+          void router.push(PAGE_PATH.main);
+        },
+      },
+    );
   };
 
   const handleChangeShouldBlackList = () => {

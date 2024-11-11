@@ -28,5 +28,6 @@ export const API_PATH = {
   matchingHistories: {
     index: '/matching-histories',
     recent: '/matching-histories/recent',
+    feedback: (id: string) => `/matching-histories/${id}/feedback`,
   },
 } as const;
