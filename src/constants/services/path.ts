@@ -30,4 +30,7 @@ export const API_PATH = {
     recent: '/matching-histories/recent',
     feedback: (id: string) => `/matching-histories/${id}/feedback`,
   },
+  blacklist: {
+    blockUser: (blockedUserId: string) => `/blacklist/${blockedUserId}`,
+  },
 } as const;

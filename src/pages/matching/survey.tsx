@@ -10,6 +10,7 @@ import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { PAGE_PATH } from 'constants/common';
+import { useBlockUser } from 'hooks/services/mutations/useBlockUser';
 import { useCreateMatchingFeedback } from 'hooks/services/mutations/useCreateMatchingFeedback';
 import { useRecentMatchingHistory } from 'hooks/services/queries/useRecentMatchingHistory';
 import { ScreenReaderOnly } from 'styles';
@@ -19,19 +20,29 @@ const MatchingSurvey = () => {
 
   const { register, handleSubmit } = useForm<MatchingFeedbackForm>();
 
-  // TODO: BlackList 기능은 별도의 이슈에서 작업할 예정입니다.
-  const [shouldBlackList, setShouldBackList] = useState<boolean>(false);
+  const [isBlockUser, setIsBlockUser] = useState<boolean>(false);
 
   const { data: matchingHistory } = useRecentMatchingHistory();
 
-  const { mutate } = useCreateMatchingFeedback();
+  const { mutate: createFeedbackMutate } = useCreateMatchingFeedback();
+
+  const { mutate: blockUserMutate } = useBlockUser();
+
+  const onRequestError = () => {
+    alert('의도하지 않은 에러가 발생하였습니다.');
+    void router.push(PAGE_PATH.main);
+  };
 
   const onSubmit: SubmitHandler<MatchingFeedbackForm> = (formData) => {
     if (!matchingHistory) return;
 
     const { id, matchedUser } = matchingHistory;
 
-    mutate(
+    if (isBlockUser) {
+      blockUserMutate(matchedUser.id, { onError: onRequestError });
+    }
+
+    createFeedbackMutate(
       {
         matchingHistoryId: id,
         matchedUserId: matchedUser.id,
@@ -41,16 +52,13 @@ const MatchingSurvey = () => {
         onSuccess: () => {
           void router.push(PAGE_PATH.main);
         },
-        onError: () => {
-          alert('의도하지 않은 에러가 발생하였습니다.');
-          void router.push(PAGE_PATH.main);
-        },
+        onError: onRequestError,
       },
     );
   };
 
-  const handleChangeShouldBlackList = () => {
-    setShouldBackList((previous) => !previous);
+  const handleChangeIsBlockUser = () => {
+    setIsBlockUser((previous) => !previous);
   };
 
   return (
@@ -76,10 +84,10 @@ const MatchingSurvey = () => {
           <CheckBoxLabel>
             <input
               type="checkbox"
-              checked={shouldBlackList}
-              onChange={handleChangeShouldBlackList}
+              checked={isBlockUser}
+              onChange={handleChangeIsBlockUser}
             />
-            {shouldBlackList ? <CheckedOnIcon /> : <CheckedOffIcon />}
+            {isBlockUser ? <CheckedOnIcon /> : <CheckedOffIcon />}
             <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
           <Button type="submit">피드백 작성 완료</Button>
