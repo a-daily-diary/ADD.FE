@@ -99,11 +99,11 @@ const GlobalStyle = css`
     -webkit-appearance: none;
   }
 
-  @media (prefers-color-scheme: dark) {
+  /* @media (prefers-color-scheme: dark) {
     html {
       color-scheme: dark;
     }
-  }
+  } */
 `;
 
 export default GlobalStyle;
