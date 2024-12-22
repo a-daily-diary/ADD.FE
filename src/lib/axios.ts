@@ -31,7 +31,7 @@ client.interceptors.response.use(
   },
   (error) => {
     if (isAxiosError(error) && error.response?.status === 401) {
-      alert('세션이 만료되었습니다.\n다시 로그인을 시도해주세요.');
+      alert('접속 시간이 만료되었습니다.\n로그인 후 다시 이용해주세요.');
       void signOut();
       return;
     }
