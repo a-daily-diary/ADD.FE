@@ -34,8 +34,8 @@ export interface CreateMatchingFeedbackResponse extends MatchingFeedbackForm {
 }
 
 export interface MatchingHistoryResponse {
-  id: 'uuid';
-  matchTime: 'number';
+  id: string;
+  matchTime: number;
   matchedUser: Omit<User, 'accessToken'>;
-  createdAt: 'date';
+  createdAt: string;
 }
