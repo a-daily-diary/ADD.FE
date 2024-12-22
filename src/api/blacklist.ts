@@ -3,11 +3,11 @@ import type { OnlyMessageResponse, SuccessResponse } from 'types/response';
 import { API_PATH } from 'constants/services';
 import axios from 'lib/axios';
 
-export const blockUser = async (blockedUserId: string) => {
+export const addToBlackList = async (blockedUserId: string) => {
   const {
     data: { data },
   } = await axios.post<SuccessResponse<OnlyMessageResponse>>(
-    API_PATH.blacklist.blockUser(blockedUserId),
+    API_PATH.blacklist.addToBlackList(blockedUserId),
   );
 
   return data.message;

@@ -31,6 +31,6 @@ export const API_PATH = {
     feedback: (id: string) => `/matching-histories/${id}/feedback`,
   },
   blacklist: {
-    blockUser: (blockedUserId: string) => `/blacklist/${blockedUserId}`,
+    addToBlackList: (blockedUserId: string) => `/blacklist/${blockedUserId}`,
   },
 } as const;

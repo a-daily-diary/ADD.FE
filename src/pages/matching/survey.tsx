@@ -10,7 +10,7 @@ import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { PAGE_PATH } from 'constants/common';
-import { useBlockUser } from 'hooks/services/mutations/useBlockUser';
+import { useAddToBlackList } from 'hooks/services/mutations/useBlockUser';
 import { useCreateMatchingFeedback } from 'hooks/services/mutations/useCreateMatchingFeedback';
 import { useRecentMatchingHistory } from 'hooks/services/queries/useRecentMatchingHistory';
 import { ScreenReaderOnly } from 'styles';
@@ -26,7 +26,7 @@ const MatchingSurvey = () => {
 
   const { mutate: createFeedbackMutate } = useCreateMatchingFeedback();
 
-  const { mutate: blockUserMutate } = useBlockUser();
+  const { mutate: addToBlackListMutate } = useAddToBlackList();
 
   const onRequestError = () => {
     alert('의도하지 않은 에러가 발생하였습니다.');
@@ -39,7 +39,7 @@ const MatchingSurvey = () => {
     const { id, matchedUser } = matchingHistory;
 
     if (isBlockUser) {
-      blockUserMutate(matchedUser.id, { onError: onRequestError });
+      addToBlackListMutate(matchedUser.id, { onError: onRequestError });
     }
 
     createFeedbackMutate(
