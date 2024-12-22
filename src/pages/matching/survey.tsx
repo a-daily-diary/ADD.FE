@@ -50,7 +50,7 @@ const MatchingSurvey = () => {
       },
       {
         onSuccess: () => {
-          void router.push(PAGE_PATH.main);
+          void router.replace(PAGE_PATH.main);
         },
         onError: onRequestError,
       },
