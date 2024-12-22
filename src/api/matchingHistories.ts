@@ -23,9 +23,12 @@ export const createMatchingFeedback = async (
 ) => {
   const { matchingHistoryId, ...feedbackForm } = payload;
 
-  const response = await axios.post<
-    SuccessResponse<CreateMatchingFeedbackResponse>
-  >(API_PATH.matchingHistories.feedback(matchingHistoryId), feedbackForm);
+  const {
+    data: { data },
+  } = await axios.post<SuccessResponse<CreateMatchingFeedbackResponse>>(
+    API_PATH.matchingHistories.feedback(matchingHistoryId),
+    feedbackForm,
+  );
 
-  return response;
+  return data;
 };
