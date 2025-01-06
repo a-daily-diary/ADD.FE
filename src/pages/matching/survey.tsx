@@ -44,9 +44,9 @@ const MatchingSurvey = () => {
 
     createFeedbackMutate(
       {
+        ...formData,
         matchingHistoryId: id,
         matchedUserId: matchedUser.id,
-        ...formData,
       },
       {
         onSuccess: () => {
