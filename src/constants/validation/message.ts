@@ -18,6 +18,8 @@ export const ERROR_MESSAGE = {
     length: '6~30자 이내로 입력해주세요.',
     pattern: '영어, 숫자, 특수문자 중 최소 2가지를 조합해주세요.',
     invalidPattern: '사용할 수 없는 문자입니다.',
+    failed:
+      '아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해주세요.',
   },
   passwordCheck: {
     required: '비밀번호를 확인해주세요.',

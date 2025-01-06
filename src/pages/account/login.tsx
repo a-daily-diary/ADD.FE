@@ -45,7 +45,7 @@ const Login: NextPage = () => {
         });
         setError('password', {
           type: 'exist',
-          message: response?.error,
+          message: ERROR_MESSAGE.password.failed,
         });
       }
       if (response?.ok === true) {
