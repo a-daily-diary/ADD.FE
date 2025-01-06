@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import type { SubmitHandler } from 'react-hook-form';
 import type { MatchingFeedbackForm } from 'types/matching';
@@ -9,23 +9,53 @@ import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import FeedbackTypeCheckbox from 'components/matching/FeedbackTypeCheckbox';
 import { PAGE_PATH } from 'constants/common';
+import { useAddToBlackList } from 'hooks/services/mutations/useBlockUser';
+import { useCreateMatchingFeedback } from 'hooks/services/mutations/useCreateMatchingFeedback';
+import { useRecentMatchingHistory } from 'hooks/services/queries/useRecentMatchingHistory';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingSurvey = () => {
   const router = useRouter();
 
-  const { control, register, handleSubmit } = useForm<MatchingFeedbackForm>();
+  const { register, handleSubmit, watch } = useForm<MatchingFeedbackForm>();
 
-  const onSubmit: SubmitHandler<MatchingFeedbackForm> = async (data) => {
-    console.log(data); // FIXME: 실제 API 연동할 때 사용될 데이터 console.log 입니다.
+  const isBlockUser = watch('isBlockUser');
 
-    await router.push(PAGE_PATH.main);
+  const { data: matchingHistory } = useRecentMatchingHistory();
+
+  const { mutate: createFeedbackMutate } = useCreateMatchingFeedback();
+
+  const { mutate: addToBlackListMutate } = useAddToBlackList();
+
+  const onRequestError = () => {
+    alert('의도하지 않은 에러가 발생하였습니다.');
+    void router.push(PAGE_PATH.main);
   };
 
-  const isBlockedMatching = useWatch({
-    control,
-    name: 'isBlockedMatching',
-  });
+  const onSubmit: SubmitHandler<MatchingFeedbackForm> = (formData) => {
+    if (!matchingHistory) return;
+
+    const { id, matchedUser } = matchingHistory;
+    const { isBlockUser, ...feedbackFormData } = formData;
+
+    if (isBlockUser) {
+      addToBlackListMutate(matchedUser.id, { onError: onRequestError });
+    }
+
+    createFeedbackMutate(
+      {
+        ...feedbackFormData,
+        matchingHistoryId: id,
+        matchedUserId: matchedUser.id,
+      },
+      {
+        onSuccess: () => {
+          void router.replace(PAGE_PATH.main);
+        },
+        onError: onRequestError,
+      },
+    );
+  };
 
   return (
     <>
@@ -45,11 +75,11 @@ const MatchingSurvey = () => {
           </RegularParagraph07>
           <TextArea
             placeholder="피드백을 남겨주세요."
-            {...register('message')}
+            {...register('content')}
           />
           <CheckBoxLabel>
-            <input type="checkbox" {...register('isBlockedMatching')} />
-            {isBlockedMatching ? <CheckedOnIcon /> : <CheckedOffIcon />}
+            <input type="checkbox" {...register('isBlockUser')} />
+            {isBlockUser ? <CheckedOnIcon /> : <CheckedOffIcon />}
             <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
           <Button type="submit">피드백 작성 완료</Button>

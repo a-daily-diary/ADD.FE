@@ -178,7 +178,13 @@ export class Matching {
 
       statistics.forEach((report) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        switch (report.type) {
+        switch (report.type as RTCStatsType) {
+          case 'inbound-rtp': {
+            // TODO: 상대방 audioLevel에 따른 UI 이벤트 적용 예정
+            // const InboundRTPReport = report as RTCInboundRtpStreamStats;
+            // console.log(InboundRTPReport.audioLevel); //  매칭 상대가 보내는 audio level
+            break;
+          }
           case 'transport':
             {
               const transportReport = report as RTCTransportStats;
@@ -195,6 +201,22 @@ export class Matching {
         }
       });
     }, 1000);
+
+    // 상대방이 의도하지 않는 방법으로 페이지를 이탈한 경우 처리(새로고침, 브라우저 닫기 등)
+    this.peer?.addEventListener('iceconnectionstatechange', () => {
+      if (this.peer === null) return;
+
+      const { iceConnectionState } = this.peer;
+
+      if (
+        iceConnectionState === 'disconnected' ||
+        iceConnectionState === 'failed' ||
+        iceConnectionState === 'closed'
+      ) {
+        handleDisconnected();
+        clearInterval(interval);
+      }
+    });
   }
 
   public disconnect() {

@@ -16,25 +16,25 @@ const FeedbackTypeCheckbox = ({ register }: FeedbackTypeCheckboxProps) => {
       id: 'isNice',
       icon: <NiceIcon />,
       description: '친절해요',
-      hookFormProps: register('feedbackType.isNice'),
+      hookFormProps: register('isNice'),
     },
     {
       id: 'isFluent',
       icon: <EngIcon />,
       description: '영어를 잘해요',
-      hookFormProps: register('feedbackType.isFluent'),
+      hookFormProps: register('isFluent'),
     },
     {
       id: 'isFun',
       icon: <FunIcon />,
       description: '재밌어요',
-      hookFormProps: register('feedbackType.isFun'),
+      hookFormProps: register('isFun'),
     },
     {
       id: 'isBad',
       icon: <BadIcon />,
       description: '불쾌해요',
-      hookFormProps: register('feedbackType.isBad'),
+      hookFormProps: register('isBad'),
     },
   ]);
 

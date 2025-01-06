@@ -5,6 +5,7 @@ export const PAGE_PATH = {
     index: '/matching',
     queue: '/matching/queue',
     matchUp: '/matching/match-up',
+    survey: '/matching/survey',
   },
 
   diary: {

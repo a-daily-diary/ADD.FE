@@ -1,3 +1,5 @@
+import type { User } from 'next-auth';
+
 interface FeedbackType {
   isNice: boolean;
   isFluent: boolean;
@@ -5,10 +7,9 @@ interface FeedbackType {
   isBad: boolean;
 }
 
-export interface MatchingFeedbackForm {
-  feedbackType: FeedbackType;
-  message: string;
-  isBlockedMatching: boolean;
+export interface MatchingFeedbackForm extends FeedbackType {
+  isBlockUser: boolean;
+  content: string;
 }
 
 export interface MatchingInformation {
@@ -19,4 +20,24 @@ export interface MatchingInformation {
 
 export interface PeerEventHandler {
   handleDisconnected: () => void;
+}
+
+/* API */
+export interface CreateMatchingFeedbackRequest
+  extends Omit<MatchingFeedbackForm, 'isBlockUser'> {
+  matchingHistoryId: string;
+  matchedUserId: string;
+}
+
+export interface CreateMatchingFeedbackResponse extends MatchingFeedbackForm {
+  writer: Omit<User, 'accessToken'>;
+  recipient: Omit<User, 'accessToken'>;
+  matchingHistory: Omit<MatchingHistoryResponse, 'matchedUser'>;
+}
+
+export interface MatchingHistoryResponse {
+  id: string;
+  matchTime: number;
+  matchedUser: Omit<User, 'accessToken'>;
+  createdAt: string;
 }

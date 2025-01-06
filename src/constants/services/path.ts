@@ -25,4 +25,12 @@ export const API_PATH = {
     index: '/badges',
     users: '/badges/users',
   },
+  matchingHistories: {
+    index: '/matching-histories',
+    recent: '/matching-histories/recent',
+    feedback: (id: string) => `/matching-histories/${id}/feedback`,
+  },
+  blacklist: {
+    addToBlackList: (blockedUserId: string) => `/blacklist/${blockedUserId}`,
+  },
 } as const;
