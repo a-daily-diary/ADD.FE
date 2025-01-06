@@ -8,6 +8,7 @@ interface FeedbackType {
 }
 
 export interface MatchingFeedbackForm extends FeedbackType {
+  isBlockUser: boolean;
   content: string;
 }
 
@@ -22,7 +23,8 @@ export interface PeerEventHandler {
 }
 
 /* API */
-export interface CreateMatchingFeedbackRequest extends MatchingFeedbackForm {
+export interface CreateMatchingFeedbackRequest
+  extends Omit<MatchingFeedbackForm, 'isBlockUser'> {
   matchingHistoryId: string;
   matchedUserId: string;
 }

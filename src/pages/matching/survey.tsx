@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import type { SubmitHandler } from 'react-hook-form';
@@ -18,9 +17,9 @@ import { ScreenReaderOnly } from 'styles';
 const MatchingSurvey = () => {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm<MatchingFeedbackForm>();
+  const { register, handleSubmit, watch } = useForm<MatchingFeedbackForm>();
 
-  const [isBlockUser, setIsBlockUser] = useState<boolean>(false);
+  const isBlockUser = watch('isBlockUser');
 
   const { data: matchingHistory } = useRecentMatchingHistory();
 
@@ -37,6 +36,7 @@ const MatchingSurvey = () => {
     if (!matchingHistory) return;
 
     const { id, matchedUser } = matchingHistory;
+    const { isBlockUser, ...feedbackFormData } = formData;
 
     if (isBlockUser) {
       addToBlackListMutate(matchedUser.id, { onError: onRequestError });
@@ -44,7 +44,7 @@ const MatchingSurvey = () => {
 
     createFeedbackMutate(
       {
-        ...formData,
+        ...feedbackFormData,
         matchingHistoryId: id,
         matchedUserId: matchedUser.id,
       },
@@ -55,10 +55,6 @@ const MatchingSurvey = () => {
         onError: onRequestError,
       },
     );
-  };
-
-  const handleChangeIsBlockUser = () => {
-    setIsBlockUser((previous) => !previous);
   };
 
   return (
@@ -82,11 +78,7 @@ const MatchingSurvey = () => {
             {...register('content')}
           />
           <CheckBoxLabel>
-            <input
-              type="checkbox"
-              checked={isBlockUser}
-              onChange={handleChangeIsBlockUser}
-            />
+            <input type="checkbox" {...register('isBlockUser')} />
             {isBlockUser ? <CheckedOnIcon /> : <CheckedOffIcon />}
             <p>이 사람이랑 전화하지 않을래요.</p>
           </CheckBoxLabel>
