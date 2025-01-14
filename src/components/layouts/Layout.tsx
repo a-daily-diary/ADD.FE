@@ -34,4 +34,5 @@ export default Layout;
 
 const Main = styled.main<{ showNavbar: boolean }>`
   ${({ showNavbar }) => showNavbar && 'margin-bottom: 63px;'};
+  background-color: #fff; // FIXME: theme 설정 시 수정 예정입니다.
 `;
