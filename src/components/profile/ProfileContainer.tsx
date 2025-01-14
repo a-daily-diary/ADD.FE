@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import Link from 'next/link';
 import { NoLinkProfileImage } from './ProfileImage';
-import { ArrowRightIcon, SettingIcon } from 'assets/icons';
+import { ArrowRightCircleIcon, SettingIcon } from 'assets/icons';
 import { FullPageLoading } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { useBadges, useProfile } from 'hooks/services';
@@ -51,7 +51,7 @@ export const ProfileContainer = ({
           );
         })}
         <BadgeLink href={PAGE_PATH.profile.badges(username)}>
-          <ArrowRightIcon />
+          <ArrowRightCircleIcon />
         </BadgeLink>
       </BadgesContainer>
       {isMyProfile && (

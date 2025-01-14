@@ -1,5 +1,6 @@
 import ArrowDownIcon from './arrow-down.svg';
-import ArrowRightIcon from './arrow-right-circle.svg';
+import ArrowRightCircleIcon from './arrow-right-circle.svg';
+import ArrowRightIcon from './arrow-right.svg';
 import BackIcon from './back.svg';
 import BadIcon from './bad.svg';
 import BlockIcon from './block.svg';
@@ -44,12 +45,14 @@ import SendInactiveIcon from './send_inactive.svg';
 import SettingIcon from './setting.svg';
 import ShowIcon from './show_pw.svg';
 import TemplateIcon from './template.svg';
+import ToggleOffIcon from './toggle_off.svg';
 import TrashIcon from './trash.svg';
 import UnlockIcon from './unlock.svg';
 import WriteCommentIcon from './write_comment.svg';
 import WriteDiaryIcon from './write_diary.svg';
 
 export {
+  ArrowRightCircleIcon,
   ArrowRightIcon,
   ArrowDownIcon,
   BackIcon,
@@ -100,4 +103,5 @@ export {
   EngIcon,
   FunIcon,
   NiceIcon,
+  ToggleOffIcon,
 };
