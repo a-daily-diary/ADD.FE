@@ -33,4 +33,7 @@ export const API_PATH = {
   blacklist: {
     addToBlackList: (blockedUserId: string) => `/blacklist/${blockedUserId}`,
   },
+  recommendTopics: {
+    getRandom: 'recommend-topics/random',
+  },
 } as const;

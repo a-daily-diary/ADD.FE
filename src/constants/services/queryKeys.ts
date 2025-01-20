@@ -8,4 +8,5 @@ export const queryKeys = {
   activities: 'activities',
   termsAgreements: 'terms-agreements',
   users: 'users',
+  randomRecommendTopic: 'random-recommend-topic',
 } as const;
