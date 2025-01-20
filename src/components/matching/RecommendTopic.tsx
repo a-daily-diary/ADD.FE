@@ -1,22 +1,36 @@
 import styled from '@emotion/styled';
 
 import { Button } from 'components/common';
+import { useRandomRecommendTopic } from 'hooks/services/queries/useRandomRecommendTopic';
 import { ScreenReaderOnly } from 'styles';
 
 const RecommendTopic = () => {
+  const { data: topic, refetch } = useRandomRecommendTopic();
+
+  const handleNextTopic = () => {
+    void refetch();
+  };
+
   return (
     <Container>
       <SubTitle>추천 대화</SubTitle>
       <Card>
         <RegularParagraph>추천하는 대화 주제</RegularParagraph>
-        <strong>Hobby</strong>
-        <span>취미</span>
+        {/* TODO: 추후 스켈레톤 UI 적용 시 해당 undefined 처리할 예정입니다. */}
+        <strong>{topic?.topicEn}</strong>
+        <span>{topic?.topicKr}</span>
         <DivisionLine />
-        <BoldParagraph>What is your hobby?</BoldParagraph>
-        <SmallParagraph>취미가 무엇인가요?</SmallParagraph>
+        <BoldParagraph>{topic?.phraseEn}</BoldParagraph>
+        <SmallParagraph>{topic?.phraseKr}</SmallParagraph>
       </Card>
       {/* FIXME: 버튼 background color 변경 필요 */}
-      <Button type="button" shape="round" size="md" text="다음 질문" />
+      <Button
+        type="button"
+        shape="round"
+        size="md"
+        text="다음 질문"
+        onClick={handleNextTopic}
+      />
     </Container>
   );
 };
