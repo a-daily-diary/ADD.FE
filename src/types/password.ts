@@ -8,7 +8,7 @@ export interface PasswordResetLinkRequest {
 
 export interface PasswordResetRequest {
   email: string;
-  tempToken: string;
+  token: string;
   password: string;
 }
 

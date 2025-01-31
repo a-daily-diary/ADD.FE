@@ -66,14 +66,14 @@ export const passwordResetLink = async ({
 
 export const resetPassword = async ({
   email,
-  tempToken,
+  token,
   password,
 }: PasswordResetRequest) => {
   return await axios.put<SuccessResponse<OnlyMessageResponse>>(
     API_PATH.users.password,
     {
       email,
-      tempToken,
+      token,
       password,
     },
   );
