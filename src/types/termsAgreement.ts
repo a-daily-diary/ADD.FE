@@ -1,4 +1,4 @@
-export type TermsAgreementId = 'service' | 'privacy' | 'marketing';
+export type TermsAgreementId = 'service' | 'privacy';
 
 export interface TermsAgreement {
   id: TermsAgreementId;
