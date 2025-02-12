@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { isAxiosError } from 'axios';
+import { isAxiosError, type AxiosResponse } from 'axios';
+import { useEffect, type ChangeEvent } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import type { AxiosResponse } from 'axios';
-import type { ChangeEvent } from 'react';
 import type {
   RegisterStep,
   RegisterForm,
@@ -45,7 +44,21 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
     getValues,
     formState: { errors },
     setError,
+    setFocus,
   } = useFormContext<RegisterForm>();
+
+  useEffect(() => {
+    // NOTE: Step이 낮은 값을 뒤로 배치하여 이미 지난 step에 대해선 find 무시
+    const fields: Array<keyof RegisterForm> = [
+      'passwordCheck',
+      'password',
+      'username',
+      'email',
+    ];
+
+    const focusField = fields.find((field) => registerStep[field]);
+    if (focusField) setFocus(focusField);
+  }, [registerStep]);
 
   const debouncedDuplicateCheck = useDebounce(
     ({ type, value }: { type: DuplicateCheckField; value: string }) => {
