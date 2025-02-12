@@ -1,8 +1,19 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import { useFormContext } from 'react-hook-form';
-import type { RegisterStep, RegisterForm } from 'types/register';
-import type { ErrorResponse } from 'types/response';
+
+import type { AxiosResponse } from 'axios';
+import type { ChangeEvent } from 'react';
+import type {
+  RegisterStep,
+  RegisterForm,
+  DuplicateCheckField,
+} from 'types/register';
+import type {
+  ErrorResponse,
+  OnlyMessageResponse,
+  SuccessResponse,
+} from 'types/response';
 import * as api from 'api';
 import { FormInput } from 'components/form';
 import {
@@ -10,7 +21,19 @@ import {
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
+import { useDebounce } from 'hooks/common';
 import { errorResponseMessage } from 'utils';
+
+const duplicateCheckMap: Record<
+  DuplicateCheckField,
+  (
+    value: string,
+  ) => Promise<AxiosResponse<SuccessResponse<OnlyMessageResponse>>>
+> = {
+  email: async (value: string) => await api.emailExists({ email: value }),
+  username: async (value: string) =>
+    await api.usernameExists({ username: value }),
+};
 
 interface RegisterProps {
   registerStep: RegisterStep;
@@ -24,39 +47,33 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
     setError,
   } = useFormContext<RegisterForm>();
 
+  const debouncedDuplicateCheck = useDebounce(
+    ({ type, value }: { type: DuplicateCheckField; value: string }) => {
+      const duplicatorChecker = duplicateCheckMap[type]; // email or username exists check function
+
+      duplicatorChecker(value).catch((error) => {
+        if (isAxiosError<ErrorResponse>(error)) {
+          setError(type, {
+            type: 'exist',
+            message: errorResponseMessage(error.response?.data.message),
+          });
+        }
+      });
+    },
+    200,
+  );
+
+  const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedDuplicateCheck({ type: 'email', value: event.target.value });
+  };
+
+  const onChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
+    debouncedDuplicateCheck({ type: 'username', value: event.target.value });
+  };
+
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
   ).length;
-
-  // TODO : lodash 설치 후 username input이 변경될 때 중복확인하는 코드로 수정
-  const handleOnBlurUsername = async () => {
-    try {
-      const { username } = getValues();
-      await api.usernameExists({ username });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        setError('username', {
-          type: 'exist',
-          message: errorResponseMessage(error.response?.data.message),
-        });
-      }
-    }
-  };
-
-  // TODO : lodash 설치 후 email input이 변경될 때 중복확인하는 코드로 수정
-  const handleOnBlurEmail = async () => {
-    try {
-      const { email } = getValues();
-      await api.emailExists({ email });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        setError('email', {
-          type: 'exist',
-          message: errorResponseMessage(error.response?.data.message),
-        });
-      }
-    }
-  };
 
   return (
     <section>
@@ -97,7 +114,7 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
               value: VALID_VALUE.email,
               message: ERROR_MESSAGE.email.pattern,
             },
-            onBlur: handleOnBlurEmail,
+            onChange: onChangeEmail,
           })}
           type="text"
           placeholder="이메일"
@@ -121,10 +138,10 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
                 value: VALID_VALUE.username.pattern,
                 message: ERROR_MESSAGE.username.pattern,
               },
+              onChange: onChangeUsername,
               validate: (value) =>
                 !INVALID_VALUE.username.test(value) ||
                 ERROR_MESSAGE.username.invalidPattern,
-              onBlur: handleOnBlurUsername,
             })}
             type="text"
             placeholder="닉네임"
