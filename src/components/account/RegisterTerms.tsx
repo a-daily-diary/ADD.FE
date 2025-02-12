@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { TermsDetail } from './TermsDetail';
 import type { ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/register';
-import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
+import type { TermsAgreementId } from 'types/termsAgreement';
+import { ArrowRightIcon, CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { useTermsAgreements } from 'hooks/services';
 import { FadeInAnimationStyle } from 'styles';
 
@@ -18,6 +20,8 @@ type TermsAgreementField = 'termsAgreement.service' | 'termsAgreement.privacy';
 export const RegisterTerms = () => {
   const { termsAgreementsData } = useTermsAgreements();
   const { register, setValue } = useFormContext<RegisterForm>();
+
+  const [targetTerms, setTargetTerms] = useState<TermsAgreementId | null>(null);
 
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreementState>({
     all: false,
@@ -82,6 +86,10 @@ export const RegisterTerms = () => {
     }
   };
 
+  const onCloseTermsDetail = () => {
+    setTargetTerms(null);
+  };
+
   return (
     <Section>
       <Title>약관에 동의해주세요.</Title>
@@ -97,10 +105,10 @@ export const RegisterTerms = () => {
       </CheckboxLabel>
       <CheckboxList>
         {termsAgreementsData?.map((term) => {
-          const { id, title, isRequired } = term;
+          const { id, title, contents, isRequired } = term;
           const fieldName = `termsAgreement.${id}` as TermsAgreementField;
           return (
-            <li key={`terms-and-conditions-${id}`}>
+            <ListItem key={`terms-and-conditions-${id}`}>
               <CheckboxInput
                 id={id}
                 type="checkbox"
@@ -112,10 +120,24 @@ export const RegisterTerms = () => {
               />
               <CheckboxLabel htmlFor={id}>
                 {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}
-                {title}
+                {title} {isRequired && '(필수)'}
               </CheckboxLabel>
-              {/* TODO: 각 이용 약관 모달 형식으로 보여주기 */}
-            </li>
+              <IconButton
+                type="button"
+                onClick={() => {
+                  setTargetTerms(id);
+                }}
+              >
+                <ArrowRightIcon />
+              </IconButton>
+              {targetTerms === id && (
+                <TermsDetail
+                  title={title}
+                  contents={contents}
+                  onClose={onCloseTermsDetail}
+                />
+              )}
+            </ListItem>
           );
         })}
       </CheckboxList>
@@ -130,6 +152,19 @@ const Section = styled.section`
 const Title = styled.h1`
   margin-bottom: 36px;
   ${({ theme }) => theme.fonts.headline_01}
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
 `;
 
 const CheckboxList = styled.ul`
