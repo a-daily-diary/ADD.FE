@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
-import { isAxiosError, type AxiosResponse } from 'axios';
-import { useEffect, type ChangeEvent } from 'react';
+import { isAxiosError } from 'axios';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import type {
@@ -8,11 +8,7 @@ import type {
   RegisterForm,
   DuplicateCheckField,
 } from 'types/register';
-import type {
-  ErrorResponse,
-  OnlyMessageResponse,
-  SuccessResponse,
-} from 'types/response';
+import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { FormInput } from 'components/form';
 import {
@@ -23,22 +19,15 @@ import {
 import { useDebounce } from 'hooks/common';
 import { errorResponseMessage } from 'utils';
 
-const duplicateCheckMap: Record<
-  DuplicateCheckField,
-  (
-    value: string,
-  ) => Promise<AxiosResponse<SuccessResponse<OnlyMessageResponse>>>
-> = {
-  email: async (value: string) => await api.emailExists({ email: value }),
-  username: async (value: string) =>
-    await api.usernameExists({ username: value }),
-};
-
 interface RegisterProps {
   registerStep: RegisterStep;
+  changeIsEmailOrUsernameDuplicated: (value: boolean) => void;
 }
 
-export const RegisterInformation = ({ registerStep }: RegisterProps) => {
+export const RegisterInformation = ({
+  registerStep,
+  changeIsEmailOrUsernameDuplicated,
+}: RegisterProps) => {
   const {
     register,
     getValues,
@@ -60,29 +49,36 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
     if (focusField) setFocus(focusField);
   }, [registerStep]);
 
-  const debouncedDuplicateCheck = useDebounce(
-    ({ type, value }: { type: DuplicateCheckField; value: string }) => {
-      const duplicatorChecker = duplicateCheckMap[type]; // email or username exists check function
-
-      duplicatorChecker(value).catch((error) => {
-        if (isAxiosError<ErrorResponse>(error)) {
-          setError(type, {
-            type: 'exist',
-            message: errorResponseMessage(error.response?.data.message),
-          });
-        }
+  const handleAxiosError = (type: DuplicateCheckField, error: unknown) => {
+    if (isAxiosError<ErrorResponse>(error)) {
+      setError(type, {
+        type: 'exist',
+        message: errorResponseMessage(error.response?.data.message),
       });
-    },
-    200,
-  );
-
-  const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
-    debouncedDuplicateCheck({ type: 'email', value: event.target.value });
+    }
   };
 
-  const onChangeUsername = (event: ChangeEvent<HTMLInputElement>) => {
-    debouncedDuplicateCheck({ type: 'username', value: event.target.value });
-  };
+  const onChangeEmail = useDebounce(async () => {
+    changeIsEmailOrUsernameDuplicated(true);
+
+    try {
+      await api.emailExists({ email: getValues('email') });
+      changeIsEmailOrUsernameDuplicated(false);
+    } catch (error) {
+      handleAxiosError('email', error);
+    }
+  }, 200);
+
+  const onChangeUsername = useDebounce(async () => {
+    changeIsEmailOrUsernameDuplicated(true);
+
+    try {
+      await api.usernameExists({ username: getValues('username') });
+      changeIsEmailOrUsernameDuplicated(false);
+    } catch (error) {
+      handleAxiosError('username', error);
+    }
+  }, 200);
 
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
