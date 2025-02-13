@@ -10,3 +10,4 @@ export * from './activities';
 export * from './badges';
 export * from './matchingHistories';
 export * from './blacklist';
+export * from './recommendTopics';
