@@ -5,7 +5,9 @@ import { useRef, useState } from 'react';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { ErrorResponse } from 'types/response';
 import { ImagePickerIcon } from 'assets/icons';
-import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { AlertModal } from 'components/common';
+import { ALLOW_IMAGE_TYPES, DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { useModal } from 'hooks/common';
 import { useImageUpload } from 'hooks/services';
 import {
   FadeInAnimationStyle,
@@ -21,23 +23,33 @@ export const RegisterProfileImage = () => {
 
   const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
-  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const { files } = e.target;
-    if (files !== null) {
-      const imageFormData = new FormData();
-      imageFormData.append('image', files[0]);
+  const { isVisible, handleModal } = useModal();
 
-      imageUploadMutate(imageFormData, {
-        onSuccess: (imgUrl) => {
-          setPreviewImage(imgUrl);
-        },
-        onError: (error) => {
-          if (isAxiosError<ErrorResponse>(error)) {
-            console.log(error);
-          }
-        },
-      });
+  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
+    // NOTE: input의 multiple 속성이 false이므로 files length는 최대 1임을 보장합니다.
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // NOTE: input의 accept 속성은 개발자 도구에서 제거할 수 있기 때문에, 이중으로 체크합니다.
+    if (!ALLOW_IMAGE_TYPES.includes(file.type)) {
+      handleModal.open();
+      return;
     }
+
+    const imageFormData = new FormData();
+    imageFormData.append('image', file);
+
+    imageUploadMutate(imageFormData, {
+      onSuccess: (imgUrl) => {
+        setPreviewImage(imgUrl);
+        // TODO: react hook form에 등록 -> useEffect로 통합할지 고민
+      },
+      onError: (error) => {
+        if (isAxiosError<ErrorResponse>(error)) {
+          console.log(error);
+        }
+      },
+    });
   };
 
   const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
@@ -46,60 +58,69 @@ export const RegisterProfileImage = () => {
     imageRef.current.forEach((element, index) => {
       if (element === e.target) {
         setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
+        // TODO: react hook form에 등록 -> useEffect로 통합할지 고민
       }
     });
   };
 
   return (
-    <Section>
-      <TitleContainer>
-        <Title>프로필 사진을 등록해주세요.</Title>
-        <DescriptionText>
-          프로필로 등록할 사진을 앨범에서 가져오시거나, <br /> 기본 프로필
-          이미지에서 선택해주세요.
-        </DescriptionText>
-      </TitleContainer>
-      <PreviewImageContainer>
-        <PreviewImage
-          src={previewImage}
-          alt="프로필"
-          width={160}
-          height={160}
-        />
-      </PreviewImageContainer>
-      <ImageFileContainer>
-        <ImageFileLabel htmlFor="selectImageFile">
-          <ImagePickerIcon />
-        </ImageFileLabel>
-        <ImageFileInput
-          type="file"
-          id="selectImageFile"
-          accept="image/*"
-          onChange={handleImageFile}
-        />
-        <>
-          {DEFAULT_PROFILE_IMAGES.map((image, index) => {
-            const { id, url } = image;
-            return (
-              <ImageButton
-                key={`default-images-${id}`}
-                type="button"
-                onClick={handleDefaultProfileImage}
-                isActive={url === previewImage}
-              >
-                <Image
-                  ref={(element) => (imageRef.current[index] = element)}
-                  src={url}
-                  alt={`기본 프로필 이미지 ${id}`}
-                  width={60}
-                  height={60}
-                />
-              </ImageButton>
-            );
-          })}
-        </>
-      </ImageFileContainer>
-    </Section>
+    <>
+      <Section>
+        <TitleContainer>
+          <Title>프로필 사진을 등록해주세요.</Title>
+          <DescriptionText>
+            프로필로 등록할 사진을 앨범에서 가져오시거나, <br /> 기본 프로필
+            이미지에서 선택해주세요.
+          </DescriptionText>
+        </TitleContainer>
+        <PreviewImageContainer>
+          <PreviewImage
+            src={previewImage}
+            alt="프로필"
+            width={160}
+            height={160}
+          />
+        </PreviewImageContainer>
+        <ImageFileContainer>
+          <ImageFileLabel htmlFor="selectImageFile">
+            <ImagePickerIcon />
+          </ImageFileLabel>
+          <ImageFileInput
+            type="file"
+            id="selectImageFile"
+            accept={ALLOW_IMAGE_TYPES.join(', ')}
+            onChange={handleImageFile}
+          />
+          <>
+            {DEFAULT_PROFILE_IMAGES.map((image, index) => {
+              const { id, url } = image;
+              return (
+                <ImageButton
+                  key={`default-images-${id}`}
+                  type="button"
+                  onClick={handleDefaultProfileImage}
+                  isActive={url === previewImage}
+                >
+                  <Image
+                    ref={(element) => (imageRef.current[index] = element)}
+                    src={url}
+                    alt={`기본 프로필 이미지 ${id}`}
+                    width={60}
+                    height={60}
+                  />
+                </ImageButton>
+              );
+            })}
+          </>
+        </ImageFileContainer>
+      </Section>
+      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
+      <AlertModal isVisible={isVisible} onClose={handleModal.close}>
+        <ModalContent>
+          <p>SVG 파일은 업로드할 수 없습니다.</p>
+        </ModalContent>
+      </AlertModal>
+    </>
   );
 };
 
@@ -166,4 +187,12 @@ const ImageButton = styled.button<{ isActive: boolean }>`
   border-radius: 50%;
   transition: border 0.2s;
   aspect-ratio: 1;
+`;
+
+const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 40px 32px 30px;
 `;
