@@ -5,9 +5,8 @@ import { useRef, useState } from 'react';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
 import type { ErrorResponse } from 'types/response';
 import { ImagePickerIcon } from 'assets/icons';
-import { AlertModal } from 'components/common';
 import { ALLOW_IMAGE_TYPES, DEFAULT_PROFILE_IMAGES } from 'constants/profile';
-import { useModal } from 'hooks/common';
+import { useAlert } from 'hooks/common/useAlert';
 import { useImageUpload } from 'hooks/services';
 import {
   FadeInAnimationStyle,
@@ -21,9 +20,9 @@ export const RegisterProfileImage = () => {
   );
   const imageRef = useRef<Array<HTMLImageElement | null>>([]);
 
-  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
+  const { action: alertAction, Alert } = useAlert();
 
-  const { isVisible, handleModal } = useModal();
+  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     // NOTE: input의 multiple 속성이 false이므로 files length는 최대 1임을 보장합니다.
@@ -32,7 +31,7 @@ export const RegisterProfileImage = () => {
 
     // NOTE: input의 accept 속성은 개발자 도구에서 제거할 수 있기 때문에, 이중으로 체크합니다.
     if (!ALLOW_IMAGE_TYPES.includes(file.type)) {
-      handleModal.open();
+      alertAction('SVG 파일은 업로드할 수 없습니다.');
       return;
     }
 
@@ -114,12 +113,7 @@ export const RegisterProfileImage = () => {
           </>
         </ImageFileContainer>
       </Section>
-      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
-      <AlertModal isVisible={isVisible} onClose={handleModal.close}>
-        <ModalContent>
-          <p>SVG 파일은 업로드할 수 없습니다.</p>
-        </ModalContent>
-      </AlertModal>
+      {Alert}
     </>
   );
 };
@@ -187,12 +181,4 @@ const ImageButton = styled.button<{ isActive: boolean }>`
   border-radius: 50%;
   transition: border 0.2s;
   aspect-ratio: 1;
-`;
-
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 40px 32px 30px;
 `;

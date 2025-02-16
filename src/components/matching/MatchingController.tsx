@@ -3,12 +3,13 @@ import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import type { MatchingInformation } from 'types/matching';
 import { MicrophoneOnIcon, MicrophoneOffIcon, EndCallIcon } from 'assets/icons';
-import { AlertModal, ConfirmModal, IconButton } from 'components/common';
+import { ConfirmModal, IconButton } from 'components/common';
 import { PAGE_PATH } from 'constants/common';
 import { MODAL_BUTTON, MODAL_MESSAGE } from 'constants/modal';
 import { colors } from 'constants/styles';
 import { useMatching } from 'contexts/MatchingProvider';
 import { useModal } from 'hooks/common';
+import { useAlert } from 'hooks/common/useAlert';
 import { ScreenReaderOnly } from 'styles';
 
 const MatchingController = () => {
@@ -21,8 +22,9 @@ const MatchingController = () => {
 
   const matching = useMatching();
 
-  const { isVisible: isAlertVisible, handleModal: handleAlertModal } =
-    useModal();
+  const { action: alertAction, Alert } = useAlert(() => {
+    void router.replace(PAGE_PATH.main);
+  });
 
   const { isVisible: isConfirmVisible, handleModal: handleConfirmModal } =
     useModal();
@@ -42,7 +44,9 @@ const MatchingController = () => {
       });
     } catch (error) {
       console.log(error);
-      handleAlertModal.open();
+      alertAction(
+        '의도하지 않은 에러가 발생했습니다.\n메인 페이지도 이동합니다.',
+      );
     }
   };
 
@@ -61,11 +65,6 @@ const MatchingController = () => {
   const handleEndMatching = () => {
     matching.disconnect();
     void router.replace(PAGE_PATH.matching.survey);
-  };
-
-  const handleCloseAlert = () => {
-    handleAlertModal.close();
-    void router.replace(PAGE_PATH.main);
   };
 
   const handleToggleMicrophone = () => {
@@ -104,14 +103,7 @@ const MatchingController = () => {
           <label htmlFor="end-call">통화 종료</label>
         </ButtonWrapper>
       </Container>
-      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
-      <AlertModal isVisible={isAlertVisible} onClose={handleCloseAlert}>
-        <ModalContent>
-          <p>의도하지 않은 에러가 발생했습니다.</p>
-          <p>메인 페이지도 이동합니다.</p>
-        </ModalContent>
-      </AlertModal>
-      {/* FIXME: 디자인이 없어 임시로 디자인한 모달입니다. 추후 변경 예정 */}
+      {Alert}
       <ConfirmModal
         isVisible={isConfirmVisible}
         message={MODAL_MESSAGE.endMatching}
@@ -162,12 +154,4 @@ const Tooltip = styled.div`
     border: 8px solid transparent;
     border-top-color: ${({ theme }) => theme.colors.primary_00};
   }
-`;
-
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 40px 32px 30px;
 `;
