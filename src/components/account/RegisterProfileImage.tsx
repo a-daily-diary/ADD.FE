@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { MouseEventHandler, ChangeEventHandler } from 'react';
+import type { RegisterForm } from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import { ImagePickerIcon } from 'assets/icons';
 import { ALLOW_IMAGE_TYPES, DEFAULT_PROFILE_IMAGES } from 'constants/profile';
@@ -15,6 +17,8 @@ import {
 } from 'styles';
 
 export const RegisterProfileImage = () => {
+  const { setValue } = useFormContext<RegisterForm>();
+
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
@@ -23,6 +27,15 @@ export const RegisterProfileImage = () => {
   const { action: alertAction, Alert } = useAlert();
 
   const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
+
+  useEffect(() => {
+    if (previewImage.length === 0) {
+      alertAction('선택된 이미지가 없습니다. 다시 시도해주세요.');
+      return;
+    }
+
+    setValue('imgUrl', previewImage);
+  }, [previewImage]);
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     // NOTE: input의 multiple 속성이 false이므로 files length는 최대 1임을 보장합니다.
@@ -41,7 +54,6 @@ export const RegisterProfileImage = () => {
     imageUploadMutate(imageFormData, {
       onSuccess: (imgUrl) => {
         setPreviewImage(imgUrl);
-        // TODO: react hook form에 등록 -> useEffect로 통합할지 고민
       },
       onError: (error) => {
         if (isAxiosError<ErrorResponse>(error)) {
@@ -57,7 +69,6 @@ export const RegisterProfileImage = () => {
     imageRef.current.forEach((element, index) => {
       if (element === e.target) {
         setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
-        // TODO: react hook form에 등록 -> useEffect로 통합할지 고민
       }
     });
   };
