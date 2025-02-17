@@ -31,7 +31,7 @@ export const ResetPasswordForm = ({ email, token }: ResetPasswordFormProps) => {
   const onSubmit: SubmitHandler<PasswordResetForm> = async (data) => {
     try {
       const { password } = data;
-      await api.resetPassword({ email, tempToken: token, password });
+      await api.resetPassword({ email, token, password });
       await router.replace(PAGE_PATH.account.login);
     } catch (error) {
       if (isAxiosError<ErrorResponse>(error)) {

@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import type {
-  GetServerSideProps,
   InferGetServerSidePropsType,
+  GetServerSidePropsContext,
   NextPage,
-} from 'next/types';
+} from 'next';
 import * as api from 'api';
 import { ResetPasswordForm } from 'components/account';
 import { Seo } from 'components/common';
 import { SERVER_SIDE_PROPS } from 'constants/server';
+import { getServerSidePropsWithAuth } from 'lib/auth';
 import { getQueryParams } from 'utils';
 
 const ResetPassword: NextPage<
@@ -23,26 +24,34 @@ const ResetPassword: NextPage<
   );
 };
 
-export const getServerSideProps = (async (context) => {
-  const { query } = context;
-  const [email] = getQueryParams(query.email);
-  const [token] = getQueryParams(query.token);
+export const getServerSideProps = getServerSidePropsWithAuth(
+  async (context: GetServerSidePropsContext) => {
+    const { user, query } = context;
 
-  if (!email || !token) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
+    if (user) {
+      const { email, accessToken } = user;
+      return { props: { email, token: accessToken } };
+    }
 
-  try {
-    await api.tempTokenValidation({
-      email,
-      tempToken: token,
-    });
+    const [email] = getQueryParams(query.email);
+    const [token] = getQueryParams(query.token);
 
-    return { props: { email, token } };
-  } catch (error) {
-    return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
-  }
-}) satisfies GetServerSideProps;
+    if (!email || !token) {
+      return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
+    }
+
+    try {
+      await api.tempTokenValidation({
+        email,
+        tempToken: token,
+      });
+
+      return { props: { email, token } };
+    } catch (error) {
+      return SERVER_SIDE_PROPS.REDIRECT_LOGIN;
+    }
+  },
+);
 
 export default ResetPassword;
 

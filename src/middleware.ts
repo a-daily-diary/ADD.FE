@@ -12,6 +12,9 @@ export async function middleware(request: NextRequest) {
   const isLoggedIn = session != null;
 
   if (isLoggedIn) {
+    // NOTE: 로그인 상태에서 비밀번호 재설정 페이지 접근 가능
+    if (pathname.startsWith(PAGE_PATH.account.resetPassword)) return;
+
     // NOTE: 로그인 상태에서 로그인, 회원가입 페이지 접근 불가
     if (pathname.startsWith(PAGE_PATH.account.index)) {
       return NextResponse.redirect(new URL(PAGE_PATH.main, request.url));
