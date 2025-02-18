@@ -6,6 +6,7 @@ import { ProfileTab } from './ProfileTab';
 import { SearchIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import { SearchHeader2 } from 'components/search/SearchHeader2';
+import { PAGE_QUERY_PARAM } from 'constants/common';
 import { theme } from 'styles';
 import { convertPathname, getQueryParams } from 'utils';
 
@@ -23,7 +24,9 @@ export const ProfileLayout = ({
 }: ProfileLayoutProps) => {
   const router = useRouter();
 
-  const searchMode = Object.keys(router.query).includes('search');
+  const searchMode = Object.keys(router.query).includes(
+    PAGE_QUERY_PARAM.search,
+  );
   const pathname = convertPathname(router.pathname, router.query);
 
   return (
@@ -36,7 +39,7 @@ export const ProfileLayout = ({
       {searchMode ? (
         <SearchHeader2
           from={pathname}
-          to={(search) => `${pathname}?search=${search}`}
+          to={(search) => `${pathname}?${PAGE_QUERY_PARAM.search}=${search}`}
           initialValue={getQueryParams(router.query.search)[0]}
         />
       ) : (
@@ -46,7 +49,7 @@ export const ProfileLayout = ({
             <button
               type="button"
               onClick={() => {
-                void router.push(`${pathname}?search=`);
+                void router.push(`${pathname}?${PAGE_QUERY_PARAM.search}=`);
               }}
             >
               <SearchIcon

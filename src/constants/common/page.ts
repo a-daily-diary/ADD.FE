@@ -51,3 +51,7 @@ export const WITH_AUTH_PAGE_LIST = [
   PAGE_PATH.setting.index,
   PAGE_PATH.search.index,
 ] as readonly string[];
+
+export const PAGE_QUERY_PARAM = {
+  search: 'search',
+} as const;
