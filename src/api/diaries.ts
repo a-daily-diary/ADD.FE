@@ -39,6 +39,7 @@ export const getDiaries = async ({
 export const getDiariesByUsername = async ({
   currentPage,
   username,
+  searchKeyword,
 }: GetDiariesByUsernameRequest) => {
   const currentPageIndex = currentPage - 1;
   const {
@@ -46,6 +47,7 @@ export const getDiariesByUsername = async ({
   } = await axios.get<SuccessResponse<Diaries>>(API_PATH.diaries.index, {
     params: {
       username,
+      searchKeyword,
       skip: PAGE_SIZE * currentPageIndex,
       take: PAGE_SIZE,
     },
@@ -60,6 +62,7 @@ export const getDiariesByUsername = async ({
 export const getBookmarkedDiariesByUsername = async ({
   currentPage,
   username,
+  searchKeyword,
 }: GetDiariesByUsernameRequest) => {
   const currentPageIndex = currentPage - 1;
   const {
@@ -68,6 +71,7 @@ export const getBookmarkedDiariesByUsername = async ({
     `${API_PATH.diaries.bookmark}/${username}`,
     {
       params: {
+        searchKeyword,
         skip: PAGE_SIZE * currentPageIndex,
         take: PAGE_SIZE,
       },
