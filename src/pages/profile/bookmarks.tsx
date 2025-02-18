@@ -34,7 +34,7 @@ const MyProfileBookmarks: NextPage<MyProfileBookmarksProps> = ({ user }) => {
   }
 
   return (
-    <ProfileLayout isMyProfile username={username}>
+    <ProfileLayout isMyProfile username={username} searchable>
       <DiariesContainer
         title="프로필 - 북마크"
         diariesData={bookmarkedDiariesData}

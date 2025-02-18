@@ -34,7 +34,6 @@ export const ProfileTab = ({ username }: ProfileTabProps) => {
 
 const TabList = styled.ul`
   display: flex;
-  padding: 14px 14px 0;
 `;
 
 const Tab = styled.li<{ active: boolean }>`

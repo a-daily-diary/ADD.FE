@@ -35,7 +35,7 @@ const YourProfileDiaries: NextPage<YourProfileDiariesProps> = ({
   }
 
   return (
-    <ProfileLayout isMyProfile={false} username={username}>
+    <ProfileLayout isMyProfile={false} username={username} searchable>
       <DiariesContainer
         title={`${username} 프로필 - 일기`}
         diariesData={userDiariesData}
