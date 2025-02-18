@@ -48,6 +48,7 @@ const MyProfileBookmarks: NextPage<MyProfileBookmarksProps> = ({ user }) => {
         title="프로필 - 북마크"
         diariesData={bookmarkedDiariesData}
         empty={<EmptyDiary text="북마크한 일기가 없습니다." />}
+        highlightKeyword={searchKeyword}
       />
       <ObserverTarget
         targetRef={setBookmarkedDiariesTargetRef}

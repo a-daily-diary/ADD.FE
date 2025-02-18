@@ -48,6 +48,7 @@ const YourProfileDiaries: NextPage<YourProfileDiariesProps> = ({
         title={`${username} 프로필 - 일기`}
         diariesData={userDiariesData}
         empty={<EmptyDiary text="일기가 없습니다." />}
+        highlightKeyword={searchKeyword}
       />
       <ObserverTarget
         targetRef={setUserDiariesTargetRef}
