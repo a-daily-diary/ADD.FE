@@ -12,3 +12,10 @@ export const DEFAULT_PROFILE_IMAGES = [
     url: 'http://add.bucket.s3.amazonaws.com/default/dd_blue.PNG',
   },
 ];
+
+export const ALLOW_IMAGE_TYPES = [
+  'image/png',
+  'image/jpeg',
+  'image/webp',
+  'image/gif',
+];
