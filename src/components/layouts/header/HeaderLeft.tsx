@@ -34,7 +34,7 @@ export const HeaderLeft = ({ type, onClick }: HeaderLeftProps) => {
         <Button
           type="button"
           onClick={() => {
-            router.back();
+            onClick ? onClick() : router.back();
           }}
         >
           <BackIcon />

@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { TermsDetail } from './TermsDetail';
 import type { ChangeEventHandler } from 'react';
 import type { RegisterForm } from 'types/register';
-import { CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
+import type { TermsAgreementId } from 'types/termsAgreement';
+import { ArrowRightIcon, CheckedOffIcon, CheckedOnIcon } from 'assets/icons';
 import { useTermsAgreements } from 'hooks/services';
 import { FadeInAnimationStyle } from 'styles';
 
@@ -11,31 +13,24 @@ interface TermsAgreementState {
   all: boolean;
   service: boolean;
   privacy: boolean;
-  marketing: boolean;
 }
 
-type TermsAgreementField =
-  | 'termsAgreement.service'
-  | 'termsAgreement.privacy'
-  | 'termsAgreement.marketing';
+type TermsAgreementField = 'termsAgreement.service' | 'termsAgreement.privacy';
 
 export const RegisterTerms = () => {
   const { termsAgreementsData } = useTermsAgreements();
   const { register, setValue } = useFormContext<RegisterForm>();
 
+  const [targetTerms, setTargetTerms] = useState<TermsAgreementId | null>(null);
+
   const [agreedToTerms, setAgreedToTerms] = useState<TermsAgreementState>({
-    all: true,
-    service: true,
-    privacy: true,
-    marketing: true,
+    all: false,
+    service: false,
+    privacy: false,
   });
 
   useEffect(() => {
-    if (
-      agreedToTerms.service &&
-      agreedToTerms.privacy &&
-      agreedToTerms.marketing
-    ) {
+    if (agreedToTerms.service && agreedToTerms.privacy) {
       setAgreedToTerms((state) => {
         return { ...state, all: true };
       });
@@ -44,7 +39,7 @@ export const RegisterTerms = () => {
         return { ...state, all: false };
       });
     }
-  }, [agreedToTerms.service, agreedToTerms.privacy, agreedToTerms.marketing]);
+  }, [agreedToTerms.service, agreedToTerms.privacy]);
 
   const handleOnToggleCheckbox: ChangeEventHandler = (e) => {
     const { id } = e.target as HTMLInputElement;
@@ -54,14 +49,12 @@ export const RegisterTerms = () => {
           all: false,
           service: false,
           privacy: false,
-          marketing: false,
         });
         setValue(
           'termsAgreement',
           {
             service: false,
             privacy: false,
-            marketing: false,
           },
           { shouldValidate: true },
         );
@@ -70,14 +63,12 @@ export const RegisterTerms = () => {
           all: true,
           service: true,
           privacy: true,
-          marketing: true,
         });
         setValue(
           'termsAgreement',
           {
             service: true,
             privacy: true,
-            marketing: true,
           },
           { shouldValidate: true },
         );
@@ -93,11 +84,10 @@ export const RegisterTerms = () => {
         return { ...state, privacy: !state.privacy };
       });
     }
-    if (id === 'marketing') {
-      setAgreedToTerms((state) => {
-        return { ...state, marketing: !state.marketing };
-      });
-    }
+  };
+
+  const onCloseTermsDetail = () => {
+    setTargetTerms(null);
   };
 
   return (
@@ -115,10 +105,10 @@ export const RegisterTerms = () => {
       </CheckboxLabel>
       <CheckboxList>
         {termsAgreementsData?.map((term) => {
-          const { id, title, isRequired } = term;
+          const { id, title, contents, isRequired } = term;
           const fieldName = `termsAgreement.${id}` as TermsAgreementField;
           return (
-            <li key={`terms-and-conditions-${id}`}>
+            <ListItem key={`terms-and-conditions-${id}`}>
               <CheckboxInput
                 id={id}
                 type="checkbox"
@@ -130,10 +120,24 @@ export const RegisterTerms = () => {
               />
               <CheckboxLabel htmlFor={id}>
                 {agreedToTerms[id] ? <CheckedOnIcon /> : <CheckedOffIcon />}
-                {title}
+                {title} {isRequired && '(필수)'}
               </CheckboxLabel>
-              {/* TODO: 각 이용 약관 모달 형식으로 보여주기 */}
-            </li>
+              <IconButton
+                type="button"
+                onClick={() => {
+                  setTargetTerms(id);
+                }}
+              >
+                <ArrowRightIcon />
+              </IconButton>
+              {targetTerms === id && (
+                <TermsDetail
+                  title={title}
+                  contents={contents}
+                  onClose={onCloseTermsDetail}
+                />
+              )}
+            </ListItem>
           );
         })}
       </CheckboxList>
@@ -148,6 +152,19 @@ const Section = styled.section`
 const Title = styled.h1`
   margin-bottom: 36px;
   ${({ theme }) => theme.fonts.headline_01}
+`;
+
+const ListItem = styled.li`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
 `;
 
 const CheckboxList = styled.ul`
