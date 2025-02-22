@@ -1,7 +1,13 @@
 import styled from '@emotion/styled';
 import { isAxiosError } from 'axios';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { RegisterStep, RegisterForm } from 'types/register';
+
+import type {
+  RegisterStep,
+  RegisterForm,
+  DuplicateCheckField,
+} from 'types/register';
 import type { ErrorResponse } from 'types/response';
 import * as api from 'api';
 import { FormInput } from 'components/form';
@@ -10,53 +16,73 @@ import {
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
+import { useDebounce } from 'hooks/common';
 import { errorResponseMessage } from 'utils';
 
 interface RegisterProps {
   registerStep: RegisterStep;
+  changeIsEmailOrUsernameDuplicated: (value: boolean) => void;
 }
 
-export const RegisterInformation = ({ registerStep }: RegisterProps) => {
+export const RegisterInformation = ({
+  registerStep,
+  changeIsEmailOrUsernameDuplicated,
+}: RegisterProps) => {
   const {
     register,
     getValues,
     formState: { errors },
     setError,
+    setFocus,
   } = useFormContext<RegisterForm>();
+
+  useEffect(() => {
+    // NOTE: Step이 낮은 값을 뒤로 배치하여 이미 지난 step에 대해선 find 무시
+    const fields: Array<keyof RegisterForm> = [
+      'passwordCheck',
+      'password',
+      'username',
+      'email',
+    ];
+
+    const focusField = fields.find((field) => registerStep[field]);
+    if (focusField) setFocus(focusField);
+  }, [registerStep]);
+
+  const handleAxiosError = (type: DuplicateCheckField, error: unknown) => {
+    if (isAxiosError<ErrorResponse>(error)) {
+      setError(type, {
+        type: 'exist',
+        message: errorResponseMessage(error.response?.data.message),
+      });
+    }
+  };
+
+  const onChangeEmail = useDebounce(async () => {
+    changeIsEmailOrUsernameDuplicated(true);
+
+    try {
+      await api.emailExists({ email: getValues('email') });
+      changeIsEmailOrUsernameDuplicated(false);
+    } catch (error) {
+      handleAxiosError('email', error);
+    }
+  }, 200);
+
+  const onChangeUsername = useDebounce(async () => {
+    changeIsEmailOrUsernameDuplicated(true);
+
+    try {
+      await api.usernameExists({ username: getValues('username') });
+      changeIsEmailOrUsernameDuplicated(false);
+    } catch (error) {
+      handleAxiosError('username', error);
+    }
+  }, 200);
 
   const registerStepValues = Object.values(registerStep).filter(
     (value) => value,
   ).length;
-
-  // TODO : lodash 설치 후 username input이 변경될 때 중복확인하는 코드로 수정
-  const handleOnBlurUsername = async () => {
-    try {
-      const { username } = getValues();
-      await api.usernameExists({ username });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        setError('username', {
-          type: 'exist',
-          message: errorResponseMessage(error.response?.data.message),
-        });
-      }
-    }
-  };
-
-  // TODO : lodash 설치 후 email input이 변경될 때 중복확인하는 코드로 수정
-  const handleOnBlurEmail = async () => {
-    try {
-      const { email } = getValues();
-      await api.emailExists({ email });
-    } catch (error) {
-      if (isAxiosError<ErrorResponse>(error)) {
-        setError('email', {
-          type: 'exist',
-          message: errorResponseMessage(error.response?.data.message),
-        });
-      }
-    }
-  };
 
   return (
     <section>
@@ -97,7 +123,7 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
               value: VALID_VALUE.email,
               message: ERROR_MESSAGE.email.pattern,
             },
-            onBlur: handleOnBlurEmail,
+            onChange: onChangeEmail,
           })}
           type="text"
           placeholder="이메일"
@@ -121,10 +147,10 @@ export const RegisterInformation = ({ registerStep }: RegisterProps) => {
                 value: VALID_VALUE.username.pattern,
                 message: ERROR_MESSAGE.username.pattern,
               },
+              onChange: onChangeUsername,
               validate: (value) =>
                 !INVALID_VALUE.username.test(value) ||
                 ERROR_MESSAGE.username.invalidPattern,
-              onBlur: handleOnBlurUsername,
             })}
             type="text"
             placeholder="닉네임"

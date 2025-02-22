@@ -25,6 +25,9 @@ import { useRegisterUser } from 'hooks/services';
 import { errorResponseMessage } from 'utils';
 
 const Register: NextPage = () => {
+  const [isEmailOrUsernameDuplicated, setIsEmailOrUsernameDuplicated] =
+    useState(true);
+
   const methods = useForm<RegisterForm>({
     mode: 'onChange',
     defaultValues: {
@@ -47,6 +50,10 @@ const Register: NextPage = () => {
   });
 
   const { mutate: registerMutate } = useRegisterUser();
+
+  const changeIsEmailOrUsernameDuplicated = (value: boolean) => {
+    setIsEmailOrUsernameDuplicated(value);
+  };
 
   const onSubmit: SubmitHandler<RegisterForm> = (data) => {
     if (registerStep.email)
@@ -113,14 +120,24 @@ const Register: NextPage = () => {
         <FormProvider {...methods}>
           <From onSubmit={handleSubmit(onSubmit)}>
             {!registerStep.imgUrl && !registerStep.termsAgreement && (
-              <RegisterInformation registerStep={registerStep} />
+              <RegisterInformation
+                registerStep={registerStep}
+                changeIsEmailOrUsernameDuplicated={
+                  changeIsEmailOrUsernameDuplicated
+                }
+              />
             )}
             {!registerStep.termsAgreement && registerStep.imgUrl && (
               <RegisterProfileImage />
             )}
             {registerStep.termsAgreement && <RegisterTerms />}
             <ButtonContainer>
-              <Button type="submit" disabled={!isValid} fullWidth text="다음" />
+              <Button
+                type="submit"
+                disabled={isEmailOrUsernameDuplicated || !isValid}
+                fullWidth
+                text="다음"
+              />
             </ButtonContainer>
           </From>
         </FormProvider>

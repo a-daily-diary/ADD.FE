@@ -7,6 +7,8 @@ export type RegisterForm = Omit<RegisterRequest, 'termsAgreementIdList'> & {
   };
 };
 
+export type DuplicateCheckField = 'email' | 'username';
+
 /* Request */
 
 export type ExistsRequest = Record<string, string>;
