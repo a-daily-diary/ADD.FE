@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { MouseEventHandler } from 'react';
 import type { RegisterForm } from 'types/register';
 import { ProfileUpload } from 'components/common';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
@@ -15,7 +14,6 @@ export const RegisterProfileImage = () => {
   const [previewImage, setPreviewImage] = useState<string>(
     DEFAULT_PROFILE_IMAGES[0].url,
   );
-  const imageRef = useRef<Array<HTMLImageElement | null>>([]);
 
   const { action: alertAction, Alert } = useAlert();
 
@@ -27,16 +25,6 @@ export const RegisterProfileImage = () => {
 
     setValue('imgUrl', previewImage);
   }, [previewImage]);
-
-  const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
-    e,
-  ) => {
-    imageRef.current.forEach((element, index) => {
-      if (element === e.target) {
-        setPreviewImage(DEFAULT_PROFILE_IMAGES[index].url);
-      }
-    });
-  };
 
   return (
     <>
@@ -58,17 +46,18 @@ export const RegisterProfileImage = () => {
         </PreviewImageContainer>
         <ImageFileContainer>
           <ProfileUpload onChange={setPreviewImage} />
-          {DEFAULT_PROFILE_IMAGES.map((image, index) => {
+          {DEFAULT_PROFILE_IMAGES.map((image) => {
             const { id, url } = image;
             return (
               <ImageButton
                 key={`default-images-${id}`}
                 type="button"
-                onClick={handleDefaultProfileImage}
+                onClick={() => {
+                  setPreviewImage(image.url);
+                }}
                 isActive={url === previewImage}
               >
                 <Image
-                  ref={(element) => (imageRef.current[index] = element)}
                   src={url}
                   alt={`기본 프로필 이미지 ${id}`}
                   width={60}
