@@ -1,20 +1,13 @@
 import styled from '@emotion/styled';
-import { isAxiosError } from 'axios';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import type { MouseEventHandler, ChangeEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
 import type { RegisterForm } from 'types/register';
-import type { ErrorResponse } from 'types/response';
-import { ImagePickerIcon } from 'assets/icons';
-import { ALLOW_IMAGE_TYPES, DEFAULT_PROFILE_IMAGES } from 'constants/profile';
+import { ProfileUpload } from 'components/common';
+import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { useAlert } from 'hooks/common/useAlert';
-import { useImageUpload } from 'hooks/services';
-import {
-  FadeInAnimationStyle,
-  SVGVerticalAlignStyle,
-  ScreenReaderOnly,
-} from 'styles';
+import { FadeInAnimationStyle, SVGVerticalAlignStyle } from 'styles';
 
 export const RegisterProfileImage = () => {
   const { setValue } = useFormContext<RegisterForm>();
@@ -26,8 +19,6 @@ export const RegisterProfileImage = () => {
 
   const { action: alertAction, Alert } = useAlert();
 
-  const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
-
   useEffect(() => {
     if (previewImage.length === 0) {
       alertAction('선택된 이미지가 없습니다. 다시 시도해주세요.');
@@ -36,32 +27,6 @@ export const RegisterProfileImage = () => {
 
     setValue('imgUrl', previewImage);
   }, [previewImage]);
-
-  const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    // NOTE: input의 multiple 속성이 false이므로 files length는 최대 1임을 보장합니다.
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    // NOTE: input의 accept 속성은 개발자 도구에서 제거할 수 있기 때문에, 이중으로 체크합니다.
-    if (!ALLOW_IMAGE_TYPES.includes(file.type)) {
-      alertAction('SVG 파일은 업로드할 수 없습니다.');
-      return;
-    }
-
-    const imageFormData = new FormData();
-    imageFormData.append('image', file);
-
-    imageUploadMutate(imageFormData, {
-      onSuccess: (imgUrl) => {
-        setPreviewImage(imgUrl);
-      },
-      onError: (error) => {
-        if (isAxiosError<ErrorResponse>(error)) {
-          console.log(error);
-        }
-      },
-    });
-  };
 
   const handleDefaultProfileImage: MouseEventHandler<HTMLButtonElement> = (
     e,
@@ -92,36 +57,26 @@ export const RegisterProfileImage = () => {
           />
         </PreviewImageContainer>
         <ImageFileContainer>
-          <ImageFileLabel htmlFor="selectImageFile">
-            <ImagePickerIcon />
-          </ImageFileLabel>
-          <ImageFileInput
-            type="file"
-            id="selectImageFile"
-            accept={ALLOW_IMAGE_TYPES.join(', ')}
-            onChange={handleImageFile}
-          />
-          <>
-            {DEFAULT_PROFILE_IMAGES.map((image, index) => {
-              const { id, url } = image;
-              return (
-                <ImageButton
-                  key={`default-images-${id}`}
-                  type="button"
-                  onClick={handleDefaultProfileImage}
-                  isActive={url === previewImage}
-                >
-                  <Image
-                    ref={(element) => (imageRef.current[index] = element)}
-                    src={url}
-                    alt={`기본 프로필 이미지 ${id}`}
-                    width={60}
-                    height={60}
-                  />
-                </ImageButton>
-              );
-            })}
-          </>
+          <ProfileUpload onChange={setPreviewImage} />
+          {DEFAULT_PROFILE_IMAGES.map((image, index) => {
+            const { id, url } = image;
+            return (
+              <ImageButton
+                key={`default-images-${id}`}
+                type="button"
+                onClick={handleDefaultProfileImage}
+                isActive={url === previewImage}
+              >
+                <Image
+                  ref={(element) => (imageRef.current[index] = element)}
+                  src={url}
+                  alt={`기본 프로필 이미지 ${id}`}
+                  width={60}
+                  height={60}
+                />
+              </ImageButton>
+            );
+          })}
         </ImageFileContainer>
       </Section>
       {Alert}
@@ -165,21 +120,6 @@ const ImageFileContainer = styled.div`
   align-items: center;
   width: fit-content;
   margin: 32px auto;
-`;
-
-const ImageFileLabel = styled.label`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.bg_02};
-  aspect-ratio: 1;
-  cursor: pointer;
-`;
-
-const ImageFileInput = styled.input`
-  ${ScreenReaderOnly}
 `;
 
 const ImageButton = styled.button<{ isActive: boolean }>`
