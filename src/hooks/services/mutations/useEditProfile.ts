@@ -3,7 +3,7 @@ import type { EditProfileRequest } from 'types/profile';
 import * as api from 'api';
 import { queryKeys } from 'constants/services';
 
-export const useEditProfile = (username: string) => {
+export const useEditProfile = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
@@ -13,7 +13,7 @@ export const useEditProfile = (username: string) => {
         imgUrl,
       }),
     {
-      onSuccess: async () => {
+      onSuccess: async ({ username }) => {
         await queryClient.invalidateQueries([queryKeys.users, username]);
       },
     },

@@ -18,7 +18,7 @@ export const ProfileUpload = ({ onChange }: ProfileUploadProps) => {
   const { mutate: imageUploadMutate } = useImageUpload({ path: 'users' });
 
   const handleImageFile: ChangeEventHandler<HTMLInputElement> = (e) => {
-    // NOTE: input의 multiple 속성이 없으로 files length는 최대 1임을 보장합니다.
+    // NOTE: input의 multiple 속성이 없으므로 files length는 최대 1임을 보장합니다.
     const file = e.target.files?.[0];
     if (!file) return;
 
