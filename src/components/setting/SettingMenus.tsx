@@ -54,7 +54,7 @@ export const SettingMenus = () => {
 };
 
 const List = styled.ul`
-  margin-top: 54px;
+  margin-top: 12px;
 `;
 
 const ListItem = styled.li`
