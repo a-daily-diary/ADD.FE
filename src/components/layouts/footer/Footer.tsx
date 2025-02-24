@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { FOOTER_HEIGHT } from 'constants/styles';
 
 export const Footer = () => {
   return (
@@ -18,6 +19,7 @@ export const Footer = () => {
 
 const FooterLayout = styled.footer`
   width: 100%;
+  height: ${FOOTER_HEIGHT};
   padding: 16px 20px;
   background-color: ${({ theme }) => theme.colors.bg_02};
   position: fixed;
