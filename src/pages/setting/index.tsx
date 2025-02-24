@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import type { NextPage } from 'next/types';
 import { Seo } from 'components/common';
 import { Header, HeaderLeft, HeaderTitle } from 'components/layouts';
+import { Footer } from 'components/layouts/footer';
 import { SettingMenus } from 'components/setting';
 
 const SettingPage: NextPage = () => {
@@ -15,6 +16,7 @@ const SettingPage: NextPage = () => {
       <Section>
         <SettingMenus />
       </Section>
+      <Footer />
     </>
   );
 };
