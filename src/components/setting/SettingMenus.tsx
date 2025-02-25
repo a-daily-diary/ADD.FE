@@ -1,15 +1,13 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { SettingThemeToggle } from './SettingThemeToggle';
 import { ArrowRightThinIcon } from 'assets/icons';
 import { PAGE_PATH } from 'constants/common';
 
 const SETTING_MENUS = [
   {
     title: '다크모드',
-    /**
-     * @TODO 토글 컴포넌트로 변경
-     */
-    action: <></>,
+    action: <SettingThemeToggle />,
   },
   {
     title: '비밀번호 재설정',
