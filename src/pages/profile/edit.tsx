@@ -4,7 +4,7 @@ import { isAxiosError } from 'axios';
 
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import type { User } from 'next-auth';
@@ -34,7 +34,6 @@ import {
   INVALID_VALUE,
   VALID_VALUE,
 } from 'constants/validation';
-import { useAlert } from 'hooks/common/useAlert';
 import { useEditProfile } from 'hooks/services';
 import { getServerSidePropsWithAuth } from 'lib/auth';
 import { ScreenReaderOnly } from 'styles';
@@ -56,6 +55,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     formState: { errors, isValid },
     setError,
     handleSubmit,
+    watch,
   } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: {
@@ -65,22 +65,12 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     },
   });
 
-  const { action: alertAction, Alert } = useAlert();
+  const previewImage = watch('imgUrl');
 
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
-  const [previewImage, setPreviewImage] = useState<string>(imgUrl);
 
   const { mutate: editProfileMutate } = useEditProfile();
-
-  useEffect(() => {
-    if (previewImage.length === 0) {
-      alertAction('선택된 이미지가 없습니다. 다시 시도해주세요.');
-      return;
-    }
-
-    setValue('imgUrl', previewImage);
-  }, [previewImage]);
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
@@ -112,6 +102,10 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
         setSuccessDuplicateCheckUsername(undefined);
       }
     }
+  };
+
+  const onChangePreviewImage = (imagePath: string) => {
+    setValue('imgUrl', imagePath);
   };
 
   const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
@@ -159,7 +153,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
           />
           <SelectProfileImage
             previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            onChangePreviewImage={onChangePreviewImage}
           />
           <FormInputContainer>
             <FormInput
@@ -212,7 +206,6 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
 
         <BadgesContainer />
       </Section>
-      {Alert}
     </>
   );
 };

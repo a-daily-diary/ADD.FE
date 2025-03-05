@@ -1,22 +1,21 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { type Dispatch, type SetStateAction } from 'react';
 import { ProfileUpload } from 'components/common';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
 import { SVGVerticalAlignStyle } from 'styles';
 
 interface SelectProfileImageProps {
   previewImage: string;
-  setPreviewImage: Dispatch<SetStateAction<string>>;
+  onChangePreviewImage: (imageUrl: string) => void;
 }
 
 export const SelectProfileImage = ({
   previewImage,
-  setPreviewImage,
+  onChangePreviewImage,
 }: SelectProfileImageProps) => {
   return (
     <ImageFileContainer>
-      <ProfileUpload onChange={setPreviewImage} />
+      <ProfileUpload onChange={onChangePreviewImage} />
       {DEFAULT_PROFILE_IMAGES.map((image) => {
         const { id, url } = image;
         return (
@@ -24,7 +23,7 @@ export const SelectProfileImage = ({
             key={`default-images-${id}`}
             type="button"
             onClick={() => {
-              setPreviewImage(image.url);
+              onChangePreviewImage(image.url);
             }}
             isActive={url === previewImage}
           >

@@ -1,30 +1,19 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import type { RegisterForm } from 'types/register';
 import { ProfileUpload } from 'components/common';
 import { DEFAULT_PROFILE_IMAGES } from 'constants/profile';
-import { useAlert } from 'hooks/common/useAlert';
 import { FadeInAnimationStyle, SVGVerticalAlignStyle } from 'styles';
 
 export const RegisterProfileImage = () => {
-  const { setValue } = useFormContext<RegisterForm>();
+  const { setValue, watch } = useFormContext<RegisterForm>();
 
-  const [previewImage, setPreviewImage] = useState<string>(
-    DEFAULT_PROFILE_IMAGES[0].url,
-  );
+  const previewImage = watch('imgUrl');
 
-  const { action: alertAction, Alert } = useAlert();
-
-  useEffect(() => {
-    if (previewImage.length === 0) {
-      alertAction('선택된 이미지가 없습니다. 다시 시도해주세요.');
-      return;
-    }
-
-    setValue('imgUrl', previewImage);
-  }, [previewImage]);
+  const onChangePreviewImage = (imageUrl: string) => {
+    setValue('imgUrl', imageUrl);
+  };
 
   return (
     <>
@@ -45,7 +34,7 @@ export const RegisterProfileImage = () => {
           />
         </PreviewImageContainer>
         <ImageFileContainer>
-          <ProfileUpload onChange={setPreviewImage} />
+          <ProfileUpload onChange={onChangePreviewImage} />
           {DEFAULT_PROFILE_IMAGES.map((image) => {
             const { id, url } = image;
             return (
@@ -53,7 +42,7 @@ export const RegisterProfileImage = () => {
                 key={`default-images-${id}`}
                 type="button"
                 onClick={() => {
-                  setPreviewImage(image.url);
+                  onChangePreviewImage(image.url);
                 }}
                 isActive={url === previewImage}
               >
@@ -68,7 +57,6 @@ export const RegisterProfileImage = () => {
           })}
         </ImageFileContainer>
       </Section>
-      {Alert}
     </>
   );
 };
