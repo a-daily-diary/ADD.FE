@@ -4,27 +4,23 @@ import { useEffect, useRef } from 'react';
 import type { FormEvent } from 'react';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
-import { useSearchKeywordStorage, useDebounce } from 'hooks/common';
+import { useDebounce } from 'hooks/common';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
-interface SearchHeaderProps {
+interface ProfileDiarySearchHeaderProps {
   from: string;
   to: (path: string) => string;
-  saveToStorage?: boolean;
   initialValue?: string | null;
 }
 
-export const SearchHeader2 = ({
+export const ProfileDiarySearchHeader = ({
   from,
   to,
-  saveToStorage,
   initialValue,
-}: SearchHeaderProps) => {
+}: ProfileDiarySearchHeaderProps) => {
   const router = useRouter();
 
   const searchRef = useRef<HTMLInputElement | null>(null);
-
-  const { handleSaveSearchKeyword } = useSearchKeywordStorage();
 
   const handleClearSearchKeyword = () => {
     const searchElement = searchRef.current;
@@ -41,8 +37,6 @@ export const SearchHeader2 = ({
   const submitSearch = () => {
     const searchKeyword = searchRef.current?.value;
     if (searchKeyword === undefined) return;
-
-    if (saveToStorage === true) handleSaveSearchKeyword(searchKeyword);
 
     void router.push(to(searchKeyword), undefined, { shallow: true });
   };

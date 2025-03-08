@@ -5,7 +5,7 @@ import { ProfileContainer } from './ProfileContainer';
 import { ProfileTab } from './ProfileTab';
 import { SearchIcon } from 'assets/icons';
 import { Seo } from 'components/common';
-import { SearchHeader2 } from 'components/search/SearchHeader2';
+import { ProfileDiarySearchHeader } from 'components/profile/ProfileDiarySearchHeader';
 import { PAGE_QUERY_PARAM } from 'constants/common';
 import { theme } from 'styles';
 import { convertPathname, getQueryParams } from 'utils';
@@ -37,7 +37,7 @@ export const ProfileLayout = ({
       <ProfileContainer username={username} isMyProfile={isMyProfile} />
 
       {searchMode ? (
-        <SearchHeader2
+        <ProfileDiarySearchHeader
           from={pathname}
           to={(search) => `${pathname}?${PAGE_QUERY_PARAM.search}=${search}`}
           initialValue={getQueryParams(router.query.search)[0]}
