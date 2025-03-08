@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { useEffect, useRef } from 'react';
-import type { FormEvent } from 'react';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
 import { useDebounce } from 'hooks/common';
@@ -20,43 +20,36 @@ export const ProfileDiarySearchHeader = ({
 }: ProfileDiarySearchHeaderProps) => {
   const router = useRouter();
 
-  const searchRef = useRef<HTMLInputElement | null>(null);
+  const methods = useForm<{ search: string }>({
+    defaultValues: {
+      search: initialValue ?? '',
+    },
+  });
+  const { register, handleSubmit, setValue, setFocus } = methods;
 
   const handleClearSearchKeyword = () => {
-    const searchElement = searchRef.current;
-    if (!searchElement) return;
-
-    searchElement.value = '';
-    searchElement.focus();
+    setValue('search', '');
+    setFocus('search');
   };
 
   const handleCancel = () => {
     void router.push(from);
   };
 
-  const submitSearch = () => {
-    const searchKeyword = searchRef.current?.value;
-    if (searchKeyword === undefined) return;
-
-    void router.push(to(searchKeyword), undefined, { shallow: true });
+  const onSubmit = (data: { search: string }) => {
+    void router.push(to(data.search), undefined, { shallow: true });
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    submitSearch();
-  };
+  const handleChangeSearchKeyword = useDebounce(handleSubmit(onSubmit));
 
+  // FIXME: 검색 시 FullPageLoading가 잠시 마운트되는 동안 해당 컴포넌트가 언마운트되어 focus가 풀리는 이슈 임시 처리 -> Skeleton UI 적용으로 해결할 예정
   useEffect(() => {
-    searchRef.current?.focus();
-
-    if (initialValue && searchRef.current) {
-      searchRef.current.value = initialValue;
-    }
+    setFocus('search');
   }, []);
 
   return (
     <HeaderLayout>
-      <SearchKeywordForm onSubmit={handleSubmit}>
+      <SearchKeywordForm {...methods} onSubmit={handleSubmit(onSubmit)}>
         <SearchLabel htmlFor="searchKeyword">
           <button type="submit">
             <SearchIcon
@@ -70,8 +63,10 @@ export const ProfileDiarySearchHeader = ({
           type="search"
           id="searchKeyword"
           placeholder="검색어를 입력하세요."
-          ref={searchRef}
-          onChange={useDebounce(submitSearch)}
+          {...register('search', {
+            setValueAs: (value: string) => value.trim(),
+            onChange: handleChangeSearchKeyword,
+          })}
         />
         <DeleteButton
           type="button"
