@@ -21,13 +21,17 @@ export const getQueryParams = (
  * @param pathname Pages Router의 pathname
  * @param query  Pages Router의 query
  * @param regex  pathname에서 치환하고 싶은 값의 정규식 (default. 대소문자 영어, 특수문자(_ -))
- * @returns pathname에서 query 값에 속해있는 값을 치환한 문자열을 반환합니다.
+ * @returns pathname에서 query 값에 속해있는 값을 치환한 문자열을 반환합니다. 예제) profile/[username]/diaries -> profile/nickname/diaries
  */
-export const convertPathname = (
-  pathname: string,
-  query: ParsedUrlQuery,
+export const convertPathname = ({
+  pathname,
+  query,
   regex = /\[([a-zA-Z0-9_-]+)\]/g,
-) => {
+}: {
+  pathname: string;
+  query: ParsedUrlQuery;
+  regex?: RegExp;
+}) => {
   const result = pathname.replace(
     regex,
     (match, extract: string) => getQueryParams(query[extract])[0] ?? match,

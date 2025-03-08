@@ -23,11 +23,10 @@ export const ProfileLayout = ({
   searchable,
 }: ProfileLayoutProps) => {
   const router = useRouter();
+  const { query, pathname } = router;
 
-  const searchMode = Object.keys(router.query).includes(
-    PAGE_QUERY_PARAM.search,
-  );
-  const pathname = convertPathname(router.pathname, router.query);
+  const searchMode = Object.keys(query).includes(PAGE_QUERY_PARAM.search);
+  const convertedPathname = convertPathname({ pathname, query });
 
   return (
     <>
@@ -38,9 +37,11 @@ export const ProfileLayout = ({
 
       {searchMode ? (
         <ProfileDiarySearchHeader
-          from={pathname}
-          to={(search) => `${pathname}?${PAGE_QUERY_PARAM.search}=${search}`}
-          initialValue={getQueryParams(router.query.search)[0]}
+          from={convertedPathname}
+          to={(search) =>
+            `${convertedPathname}?${PAGE_QUERY_PARAM.search}=${search}`
+          }
+          initialValue={getQueryParams(query.search)[0]}
         />
       ) : (
         <FlexLayout>
@@ -49,7 +50,9 @@ export const ProfileLayout = ({
             <button
               type="button"
               onClick={() => {
-                void router.push(`${pathname}?${PAGE_QUERY_PARAM.search}=`);
+                void router.push(
+                  `${convertedPathname}?${PAGE_QUERY_PARAM.search}=`,
+                );
               }}
             >
               <SearchIcon
