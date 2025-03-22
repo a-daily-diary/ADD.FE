@@ -12,6 +12,7 @@ export const useBookmarkedDiaries = (username: string) => {
           currentPage: pageParam as number,
         }),
       getNextPageParam: (lastPage) => lastPage.nextPage,
+      cacheTime: 0, // FIXME: 더 좋은 방식에 대한 고민 필요
     });
 
   const isLoading = isFetching && !isFetchingNextPage;

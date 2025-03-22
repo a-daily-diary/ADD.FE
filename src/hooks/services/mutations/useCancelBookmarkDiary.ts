@@ -15,7 +15,7 @@ export const useCancelBookmarkDiary = ({
     onSuccess: async () => {
       await queryClient.invalidateQueries([queryKeys.diaries]);
       await queryClient.invalidateQueries([queryKeys.diaries, diaryId]);
-      await queryClient.invalidateQueries([queryKeys.bookmark, diaryId]);
+      await queryClient.invalidateQueries([queryKeys.bookmark]);
     },
   });
 };
