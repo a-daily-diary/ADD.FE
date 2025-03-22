@@ -24,7 +24,7 @@ const YourProfileDiaries: NextPage<YourProfileDiariesProps> = ({
 }) => {
   const router = useRouter();
   const searchKeyword = getQueryParams(
-    router.query[PAGE_QUERY_PARAM.search],
+    router.query[PAGE_QUERY_PARAM.searchKeyword],
   )[0];
 
   const {

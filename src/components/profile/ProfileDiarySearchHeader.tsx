@@ -1,29 +1,21 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { DeleteIcon, SearchIcon } from 'assets/icons';
 import { Z_INDEX } from 'constants/styles';
 import { useDebounce } from 'hooks/common';
+import { useSearchKeyword } from 'hooks/common/useSearchKeyword';
 import { SVGVerticalAlignStyle, theme } from 'styles';
 
-interface ProfileDiarySearchHeaderProps {
-  from: string;
-  to: (path: string) => string;
-  initialValue?: string | null;
-}
-
-export const ProfileDiarySearchHeader = ({
-  from,
-  to,
-  initialValue,
-}: ProfileDiarySearchHeaderProps) => {
-  const router = useRouter();
+export const ProfileDiarySearchHeader = () => {
+  const {
+    searchKeyword,
+    onChange: onChangeSearchKeyword,
+    onRemove: onRemoveSearchKeyword,
+  } = useSearchKeyword();
 
   const methods = useForm<{ search: string }>({
-    defaultValues: {
-      search: initialValue ?? '',
-    },
+    defaultValues: { search: searchKeyword },
   });
   const { register, handleSubmit, setValue, setFocus } = methods;
 
@@ -32,12 +24,8 @@ export const ProfileDiarySearchHeader = ({
     setFocus('search');
   };
 
-  const handleCancel = () => {
-    void router.push(from);
-  };
-
   const onSubmit = (data: { search: string }) => {
-    void router.push(to(data.search), undefined, { shallow: true });
+    onChangeSearchKeyword(data.search);
   };
 
   const handleChangeSearchKeyword = useDebounce(handleSubmit(onSubmit));
@@ -76,7 +64,7 @@ export const ProfileDiarySearchHeader = ({
           <DeleteIcon />
         </DeleteButton>
       </SearchKeywordForm>
-      <CancelButton type="button" onClick={handleCancel}>
+      <CancelButton type="button" onClick={onRemoveSearchKeyword}>
         취소
       </CancelButton>
     </HeaderLayout>

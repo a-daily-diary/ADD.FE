@@ -1,14 +1,12 @@
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import { type PropsWithChildren } from 'react';
 import { ProfileContainer } from './ProfileContainer';
 import { ProfileTab } from './ProfileTab';
 import { SearchIcon } from 'assets/icons';
 import { Seo } from 'components/common';
 import { ProfileDiarySearchHeader } from 'components/profile/ProfileDiarySearchHeader';
-import { PAGE_QUERY_PARAM } from 'constants/common';
+import { useSearchKeyword } from 'hooks/common/useSearchKeyword';
 import { theme } from 'styles';
-import { convertPathname, getQueryParams } from 'utils';
 
 interface ProfileLayoutProps extends PropsWithChildren {
   isMyProfile: boolean;
@@ -22,11 +20,11 @@ export const ProfileLayout = ({
   username,
   searchable,
 }: ProfileLayoutProps) => {
-  const router = useRouter();
-  const { query, pathname } = router;
+  const { isSearchMode, onChange } = useSearchKeyword();
 
-  const searchMode = Object.keys(query).includes(PAGE_QUERY_PARAM.search);
-  const convertedPathname = convertPathname({ pathname, query });
+  const navigateToSearchMode = () => {
+    onChange('');
+  };
 
   return (
     <>
@@ -35,26 +33,13 @@ export const ProfileLayout = ({
       />
       <ProfileContainer username={username} isMyProfile={isMyProfile} />
 
-      {searchMode ? (
-        <ProfileDiarySearchHeader
-          from={convertedPathname}
-          to={(search) =>
-            `${convertedPathname}?${PAGE_QUERY_PARAM.search}=${search}`
-          }
-          initialValue={getQueryParams(query.search)[0]}
-        />
+      {isSearchMode ? (
+        <ProfileDiarySearchHeader />
       ) : (
         <FlexLayout>
           <ProfileTab username={isMyProfile ? undefined : username} />
           {searchable === true && (
-            <button
-              type="button"
-              onClick={() => {
-                void router.push(
-                  `${convertedPathname}?${PAGE_QUERY_PARAM.search}=`,
-                );
-              }}
-            >
+            <button type="button" onClick={navigateToSearchMode}>
               <SearchIcon
                 width={24}
                 height={24}

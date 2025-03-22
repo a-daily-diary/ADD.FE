@@ -53,5 +53,5 @@ export const WITH_AUTH_PAGE_LIST = [
 ] as readonly string[];
 
 export const PAGE_QUERY_PARAM = {
-  search: 'search',
+  searchKeyword: 'searchKeyword',
 } as const;
