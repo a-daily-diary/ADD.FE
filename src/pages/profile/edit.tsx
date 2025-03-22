@@ -51,9 +51,11 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
   const {
     register,
     getValues,
+    setValue,
     formState: { errors, isValid },
     setError,
     handleSubmit,
+    watch,
   } = useForm<EditProfileForm>({
     mode: 'onChange',
     defaultValues: {
@@ -63,11 +65,12 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
     },
   });
 
+  const previewImage = watch('imgUrl');
+
   const [successDuplicateCheckUsername, setSuccessDuplicateCheckUsername] =
     useState<SuccessResponse<OnlyMessageResponse> | undefined>(undefined);
-  const [previewImage, setPreviewImage] = useState<string>(imgUrl);
 
-  const { mutate: editProfileMutate } = useEditProfile(username);
+  const { mutate: editProfileMutate } = useEditProfile();
 
   const handleDuplicateCheckUsername = async () => {
     const { username } = getValues();
@@ -99,6 +102,10 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
         setSuccessDuplicateCheckUsername(undefined);
       }
     }
+  };
+
+  const onChangePreviewImage = (imagePath: string) => {
+    setValue('imgUrl', imagePath);
   };
 
   const onSubmit: SubmitHandler<EditProfileForm> = (data) => {
@@ -146,7 +153,7 @@ const ProfileEditPage: NextPage<ProfileEditPageProps> = ({ user }) => {
           />
           <SelectProfileImage
             previewImage={previewImage}
-            setPreviewImage={setPreviewImage}
+            onChangePreviewImage={onChangePreviewImage}
           />
           <FormInputContainer>
             <FormInput

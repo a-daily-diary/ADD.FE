@@ -1,3 +1,4 @@
+export * from './ProfileUpload';
 export * from './AlertModal';
 export * from './Button';
 export * from './ColorChip';

@@ -23,9 +23,9 @@ export const getProfileByUsername = async ({
 export const editProfile = async ({ username, imgUrl }: EditProfileRequest) => {
   const {
     data: { data },
-  } = await axios.put<SuccessResponse<Partial<User>>>(
-    `${API_PATH.users.index}`,
-    { username, imgUrl },
-  );
+  } = await axios.put<SuccessResponse<User>>(`${API_PATH.users.index}`, {
+    username,
+    imgUrl,
+  });
   return data;
 };
