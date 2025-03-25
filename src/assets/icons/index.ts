@@ -1,6 +1,7 @@
 import ArrowDownIcon from './arrow-down.svg';
 import ArrowCircleRightIcon from './arrow-right-circle.svg';
 import ArrowRightIcon from './arrow-right.svg';
+import ArrowRightThinIcon from './arrow_right_thin.svg';
 import BackIcon from './back.svg';
 import BadIcon from './bad.svg';
 import BlockIcon from './block.svg';
@@ -54,6 +55,7 @@ export {
   ArrowCircleRightIcon,
   ArrowDownIcon,
   ArrowRightIcon,
+  ArrowRightThinIcon,
   BackIcon,
   BookmarkOffIcon,
   BookmarkOnIcon,

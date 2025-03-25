@@ -13,3 +13,4 @@ export * from './Loading';
 export * from './ObserverTarget';
 export * from './Popover';
 export * from './FullScreenModal';
+export * from './Toggle';

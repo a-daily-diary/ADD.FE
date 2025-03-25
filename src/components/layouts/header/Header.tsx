@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import type { ReactNode } from 'react';
-import { Z_INDEX } from 'constants/styles';
+import { HEADER_HEIGHT, Z_INDEX } from 'constants/styles';
 
 interface HeaderProps {
   left: ReactNode;
@@ -27,7 +27,7 @@ const HeaderLayout = styled.header`
   right: 0;
   left: 0;
   z-index: ${Z_INDEX.header};
-  height: 54px;
+  height: ${HEADER_HEIGHT};
   padding: 0 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray_06};
   background: ${({ theme }) => theme.colors.white};
