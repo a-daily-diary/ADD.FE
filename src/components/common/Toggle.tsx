@@ -67,7 +67,7 @@ const ToggleInput = styled.input`
 
   &:disabled {
     pointer-events: none;
-    cursor: default;
+    cursor: not-allowed;
     background-color: ${({ theme }) => theme.colors.gray_05};
   }
 `;
